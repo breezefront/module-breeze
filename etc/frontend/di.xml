@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\View\Result\Page">
+        <plugin name="swissup_breeze" type="Swissup\Breeze\Plugin\ViewResultPage" sortOrder="-1"/>
+    </type>
+    <type name="Magento\Framework\App\Config">
+        <plugin name="swissup_breeze" type="Swissup\Breeze\Plugin\AppConfig"/>
+    </type>
+
+    <type name="Swissup\Breeze\Model\Filter">
+        <arguments>
+            <argument name="domFilters" xsi:type="array">
+                <item name="script" xsi:type="object">Swissup\Breeze\Model\Filter\Dom\Script</item>
+                <item name="collect_components" xsi:type="object">Swissup\Breeze\Model\Filter\Dom\CollectComponents</item>
+            </argument>
+            <argument name="strFilters" xsi:type="array">
+                <item name="varnish" xsi:type="object">Swissup\Breeze\Model\Filter\Str\Varnish</item>
+                <item name="inject_components" xsi:type="object">Swissup\Breeze\Model\Filter\Str\InjectComponents</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Swissup\Breeze\Model\JsBuild">
+        <arguments>
+            <argument name="minifier" xsi:type="object">jsMinificationAdapter</argument>
+        </arguments>
+    </type>
+</config>

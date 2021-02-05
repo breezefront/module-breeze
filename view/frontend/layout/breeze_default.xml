@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="header">
+            <block class="Swissup\Breeze\Block\Js" name="breeze.js">
+                <arguments>
+                    <argument name="cache_lifetime" xsi:type="number">864000</argument> <!-- 10 days -->
+                    <argument name="assets" xsi:type="array">
+                        <item name="cash" xsi:type="string">Swissup_Breeze::js/lib/cash-8.1.0.min.js</item>
+                        <item name="turbo" xsi:type="string">Swissup_Breeze::js/lib/turbo-7.0.0-beta4.min.js</item>
+                        <item name="breeze" xsi:type="string">Swissup_Breeze::js/breeze.js</item>
+                    </argument>
+                    <argument name="bundles" xsi:type="array">
+                        <item name="default" xsi:type="array">
+                            <item name="sort_order" xsi:type="number">10</item>
+                            <item name="components" xsi:type="array">
+                                <item name="menu" xsi:type="string">Swissup_Breeze/js/components/menu</item>
+                                <item name="dropdown" xsi:type="string">Swissup_Breeze/js/components/dropdown</item>
+                                <item name="collapsible" xsi:type="string">Swissup_Breeze/js/components/collapsible</item>
+                                <item name="tabs" xsi:type="string">Swissup_Breeze/js/components/tabs</item>
+                                <item name="accordion" xsi:type="string">Swissup_Breeze/js/components/accordion</item>
+                            </item>
+                        </item>
+                    </argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+
+        <referenceBlock name="cookie-status-check" remove="true"/>
+    </body>
+</page>
