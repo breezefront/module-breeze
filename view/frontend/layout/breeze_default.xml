@@ -8,7 +8,10 @@
                     <argument name="cache_lifetime" xsi:type="number">864000</argument> <!-- 10 days -->
                     <argument name="assets" xsi:type="array">
                         <item name="cash" xsi:type="string">Swissup_Breeze::js/lib/cash-8.1.0.min.js</item>
-                        <item name="turbo" xsi:type="string">Swissup_Breeze::js/lib/turbo-7.0.0-beta4.min.js</item>
+                        <item name="turbo" xsi:type="array">
+                            <item name="url" xsi:type="string">Swissup_Breeze::js/lib/turbo-7.0.0-beta4.min.js</item>
+                            <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Data::isTurboEnabled"/>
+                        </item>
                         <item name="breeze" xsi:type="string">Swissup_Breeze::js/breeze.js</item>
                     </argument>
                     <argument name="bundles" xsi:type="array">

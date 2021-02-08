@@ -4,6 +4,7 @@ namespace Swissup\Breeze\Helper;
 
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Store\Model\ScopeInterface;
 
 class Data extends AbstractHelper
 {
@@ -37,10 +38,30 @@ class Data extends AbstractHelper
         if ($this->_getRequest()->getParam('amp')) {
             $this->isEnabled = false;
         } else {
-            $this->isEnabled = (bool) $this->getThemeConfig('enabled');
+            $this->isEnabled = $this->getConfig('design/breeze/enabled');
+
+            if ($this->isEnabled === 'theme') {
+                $this->isEnabled = $this->getThemeConfig('enabled');
+            }
+
+            $this->isEnabled = (bool) $this->isEnabled;
         }
 
         return $this->isEnabled;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isTurboEnabled()
+    {
+        $result = $this->getConfig('design/breeze/turbo');
+
+        if ($result === 'theme') {
+            $result = $this->getThemeConfig('turbo');
+        }
+
+        return (bool) $result;
     }
 
     /**
@@ -52,5 +73,15 @@ class Data extends AbstractHelper
         return $this->viewConfig
             ->getViewConfig()
             ->getVarValue('Swissup_Breeze', $key);
+    }
+
+    /**
+     * @param  string $path
+     * @param  string $scope
+     * @return string
+     */
+    public function getConfig($path, $scope = ScopeInterface::SCOPE_STORE)
+    {
+        return $this->scopeConfig->getValue($path, $scope);
     }
 }
