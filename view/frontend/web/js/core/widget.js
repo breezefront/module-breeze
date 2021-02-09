@@ -1,35 +1,5 @@
 /* global WeakMap */
-
-var loadEventName = 'DOMContentLoaded';
-
-if (typeof Turbo !== 'undefined') {
-    loadEventName = 'turbo:load';
-}
-
-document.addEventListener(loadEventName, function (event) {
-    'use strict';
-
-    document.dispatchEvent(new CustomEvent('breeze:load', {
-        detail: event.detail ? event.detail : {
-            url: window.location.href
-        }
-    }));
-
-    document.querySelectorAll('[data-mage-init]').forEach(function (el) {
-        var settings = JSON.parse(el.dataset.mageInit);
-
-        Object.entries(settings).forEach(function (config) {
-            document.dispatchEvent(new CustomEvent('breeze:mount:' + config[0], {
-                detail: {
-                    el: el,
-                    settings: config[1]
-                }
-            }));
-        });
-    });
-});
-
-window.breeze = {};
+window.breeze = window.breeze || {};
 window.breeze.widget = (function () {
     'use strict';
 
@@ -142,7 +112,10 @@ window.breeze.widget = (function () {
         initialize: function (options, element) {
             this.element = element;
             this.options = $.extend({}, this.options, options || {});
-            this.init();
+
+            if (this.init) {
+                this.init();
+            }
 
             return this;
         }
@@ -167,11 +140,23 @@ window.breeze.widget = (function () {
             };
         }
 
-        /** @param {Function|String} settings */
+        /** @param {Object|Function|String} settings */
         $.fn[name] = function (settings) {
             var result = this;
 
-            if (typeof settings === 'string') {
+            if ($.isPlainObject(this)) {
+                // widget without element: $.fn.dataPost().send()
+
+                settings = settings || {};
+
+                if (typeof prototype === 'function') {
+                    result = prototype.call(window, settings);
+                } else {
+                    result = new Widget(prototype, settings, window);
+                }
+            } else if (typeof settings === 'string') {
+                // widget instance or method: $(el).dropdown('open')
+
                 result = undefined;
 
                 this.each(function () {
@@ -190,6 +175,8 @@ window.breeze.widget = (function () {
                     }
                 });
             } else {
+                // widget initialization
+
                 this.each(function () {
                     var el = this,
                         instance = registry.get(name, el);
@@ -211,9 +198,3 @@ window.breeze.widget = (function () {
         return $.fn[name];
     };
 })();
-
-document.addEventListener('turbo:before-cache', function () {
-    'use strict';
-
-    window.breeze.widget().destroy();
-});
