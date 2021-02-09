@@ -7,8 +7,6 @@ if (typeof Turbo !== 'undefined') {
 document.addEventListener(loadEventName, function (event) {
     'use strict';
 
-    console.log(loadEventName);
-
     document.dispatchEvent(new CustomEvent('breeze:load', {
         detail: event.detail ? event.detail : {
             url: window.location.href

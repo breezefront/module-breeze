@@ -14,7 +14,7 @@
                         </item>
                         <item name="breeze-fn" xsi:type="string">Swissup_Breeze::js/core/fn.js</item>
                         <item name="breeze-widget" xsi:type="string">Swissup_Breeze::js/core/widget.js</item>
-                        <item name="breeze-events" xsi:type="string">Swissup_Breeze::js/core/events.js</item>
+                        <item name="breeze-main" xsi:type="string">Swissup_Breeze::js/core/main.js</item>
                     </argument>
                     <argument name="bundles" xsi:type="array">
                         <item name="default" xsi:type="array">
