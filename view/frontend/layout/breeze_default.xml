@@ -8,6 +8,7 @@
                     <argument name="cache_lifetime" xsi:type="number">864000</argument> <!-- 10 days -->
                     <argument name="assets" xsi:type="array">
                         <item name="cash" xsi:type="string">Swissup_Breeze::js/lib/cash-8.1.0.min.js</item>
+                        <item name="cookie" xsi:type="string">Swissup_Breeze::js/lib/js.cookie-3.0.0-rc1.min.js</item>
                         <item name="underscore" xsi:type="string">Swissup_Breeze::js/lib/underscore-1.12.0.min.js</item>
                         <item name="turbo" xsi:type="array">
                             <item name="url" xsi:type="string">Swissup_Breeze::js/lib/turbo-7.0.0-beta4.min.js</item>
@@ -23,6 +24,7 @@
                             <item name="sort_order" xsi:type="number">10</item>
                             <item name="components" xsi:type="array">
                                 <item name="dataPost" xsi:type="string">Swissup_Breeze/js/components/dataPost</item>
+                                <item name="mage/cookies" xsi:type="string">Swissup_Breeze/js/components/cookies</item>
                                 <item name="menu" xsi:type="string">Swissup_Breeze/js/components/menu</item>
                                 <item name="dropdown" xsi:type="string">Swissup_Breeze/js/components/dropdown</item>
                                 <item name="collapsible" xsi:type="string">Swissup_Breeze/js/components/collapsible</item>
