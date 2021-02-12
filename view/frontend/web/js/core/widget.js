@@ -126,7 +126,13 @@ window.breeze.widget = (function () {
             return {
                 /** @param {String} method */
                 invoke: function (method) {
-                    registry.get(name).forEach(function (instance) {
+                    var collection = registry.get(name);
+
+                    if (!collection) {
+                        return;
+                    }
+
+                    collection.forEach(function (instance) {
                         if (instance[method]) {
                             instance[method]();
                         }
