@@ -1,0 +1,13 @@
+<?php
+    $isCookieSecure = $block->getSessionConfig()->getCookieSecure() ? 'true' : 'false';
+?>
+
+<script data-breeze>
+var cookiesConfig = {
+    expires: null,
+    path: '<?= $block->escapeJs($block->getPath()) ?>',
+    domain: '<?= $block->escapeJs($block->getDomain()) ?>',
+    secure: <?= $isCookieSecure ?>,
+    lifetime: '<?= $block->escapeJs($block->getLifetime()) ?>'
+};
+</script>
