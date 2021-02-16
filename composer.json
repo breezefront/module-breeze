@@ -1,6 +1,6 @@
 {
     "name": "swissup/module-breeze",
-    "description": "This module makes possible to run Breeze Theme on Magento",
+    "description": "Performant Magento 2 frontend for any theme",
     "type": "magento2-module",
     "version": "1.0.0",
     "license": [

@@ -1,8 +1,8 @@
 # Breeze
 
-Breeze - is a Magento2 module written for Breeze Theme. It's job to disable
-all default layout updates and provide ability to apply breeze-specific updates
-only when Breeze Theme is active.
+Breeze — is an alternate approach to get the performant Luma/Blank/Custom based
+Magento 2 frontend. It's a Magento 2 module that replaces all javascript with
+its own implementation.
 
 ## Installation
 
