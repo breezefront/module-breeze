@@ -54,13 +54,10 @@
             }
 
             $(selector).each(function () {
-                var data = $(this).data('mage-init') || {};
-
-                $.each(components, function (component, config) {
-                    data[component] = config;
-                });
-
-                $(this).data('mage-init', data);
+                $(this).data(
+                    'mage-init',
+                    $.extend($(this).data('mage-init') || {}, components)
+                );
             });
 
             delete settings[selector];
