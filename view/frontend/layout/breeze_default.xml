@@ -27,6 +27,7 @@
                             <item name="active" xsi:type="boolean">true</item>
                             <item name="sort_order" xsi:type="number">10</item>
                             <item name="components" xsi:type="array">
+                                <item name="Magento_PageCache/js/form-key-provider" xsi:type="string">Swissup_Breeze/js/components/formKey</item>
                                 <item name="dataPost" xsi:type="string">Swissup_Breeze/js/components/dataPost</item>
                                 <item name="menu" xsi:type="string">Swissup_Breeze/js/components/menu</item>
                                 <item name="dropdown" xsi:type="string">Swissup_Breeze/js/components/dropdown</item>
