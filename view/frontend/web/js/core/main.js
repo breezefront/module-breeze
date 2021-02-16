@@ -2,15 +2,27 @@
     'use strict';
 
     /** Init 'data-mage-init' and 'text/x-magento-init' scripts */
-    function mount(component, config, el) {
-        console.log('breeze:mount:' + component);
+    function mount(component, details) {
+        console.log(component);
 
         document.dispatchEvent(new CustomEvent('breeze:mount:' + component, {
-            detail: {
-                el: el,
-                settings: config
-            }
+            detail: details
         }));
+    }
+
+    /** Init view components */
+    function mountView(scope, config) {
+        $('[data-bind*="scope:"]')
+            .filter(function () {
+                return $(this).data('bind').indexOf(scope) !== -1;
+            })
+            .each(function () {
+                mount(config.component, {
+                    settings: config,
+                    el: this,
+                    scope: scope
+                });
+            });
     }
 
     /** Process 'data-mage-init' and 'text/x-magento-init' scripts */
@@ -34,7 +46,16 @@
                 config = Object.values(config)[0];
             }
 
-            mount(component, config, el);
+            if (component === 'Magento_Ui/js/core/app') {
+                $.each(config.components, function (scope, cfg) {
+                    mountView(scope, cfg);
+                });
+            } else {
+                mount(component, {
+                    settings: config,
+                    el: el
+                });
+            }
         });
     }
 
@@ -94,6 +115,7 @@
     });
 
     document.addEventListener('turbo:before-cache', function () {
-        window.breeze.widget().destroy();
+        // destroy all widgets and views
+        window.breeze.registry.delete();
     });
 })();
