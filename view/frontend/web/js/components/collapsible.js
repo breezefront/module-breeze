@@ -44,7 +44,9 @@
 
         /** Hide expanded widgets */
         destroy: function () {
-            this.close();
+            if (!this.options.active) {
+                this.close();
+            }
         },
 
         /** Open dropdown */
