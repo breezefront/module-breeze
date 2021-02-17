@@ -38,6 +38,7 @@
                                 <item name="accordion" xsi:type="string">Swissup_Breeze/js/components/accordion</item>
 
                                 <!-- ViewModels -->
+                                <item name="Magento_Customer/js/view/customer" xsi:type="string">Swissup_Breeze/js/components/view/customer</item>
                                 <item name="Magento_Theme/js/view/messages" xsi:type="string">Swissup_Breeze/js/components/view/messages</item>
                             </item>
                         </item>
