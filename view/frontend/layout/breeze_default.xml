@@ -20,6 +20,7 @@
                         <item name="breeze-widget" xsi:type="string">Swissup_Breeze::js/core/component/widget.js</item>
                         <item name="breeze-view" xsi:type="string">Swissup_Breeze::js/core/component/view.js</item>
                         <item name="breeze-cookie" xsi:type="string">Swissup_Breeze::js/core/cookie.js</item>
+                        <item name="breeze-sectionData" xsi:type="string">Swissup_Breeze::js/core/sectionData.js</item>
                         <item name="breeze-main" xsi:type="string">Swissup_Breeze::js/core/main.js</item>
                     </argument>
                     <argument name="bundles" xsi:type="array">
@@ -27,6 +28,7 @@
                             <item name="active" xsi:type="boolean">true</item>
                             <item name="sort_order" xsi:type="number">10</item>
                             <item name="components" xsi:type="array">
+                                <item name="Magento_Customer/js/customer-data" xsi:type="string">Swissup_Breeze/js/components/customerData</item>
                                 <item name="Magento_PageCache/js/form-key-provider" xsi:type="string">Swissup_Breeze/js/components/formKey</item>
                                 <item name="dataPost" xsi:type="string">Swissup_Breeze/js/components/dataPost</item>
                                 <item name="menu" xsi:type="string">Swissup_Breeze/js/components/menu</item>
@@ -34,6 +36,9 @@
                                 <item name="collapsible" xsi:type="string">Swissup_Breeze/js/components/collapsible</item>
                                 <item name="tabs" xsi:type="string">Swissup_Breeze/js/components/tabs</item>
                                 <item name="accordion" xsi:type="string">Swissup_Breeze/js/components/accordion</item>
+
+                                <!-- ViewModels -->
+                                <item name="Magento_Theme/js/view/messages" xsi:type="string">Swissup_Breeze/js/components/view/messages</item>
                             </item>
                         </item>
                     </argument>
