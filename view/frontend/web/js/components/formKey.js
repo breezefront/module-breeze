@@ -27,7 +27,9 @@
 
         if (!formKey) {
             formKey = generateFormKeyString();
-            breeze.cookies.set('form_key', formKey);
+            breeze.cookies.set('form_key', formKey, {
+                expires: 1
+            });
         }
 
         $('input[name="form_key"]').val(formKey);
