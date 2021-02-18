@@ -40,18 +40,11 @@
             }
 
             if (params.data.confirmation) {
-                console.error('uiConfirm is not implemented');
-                // uiConfirm({
-                //     content: params.data.confirmationMessage,
-                //     actions: {
-                //         /** @inheritdoc */
-                //         confirm: function () {
-                //             $form.appendTo('body').hide().submit();
-                //         }
-                //     }
-                // });
+                if (confirm(params.data.confirmationMessage)) {
+                    $form.appendTo('body').hide().trigger('submit');
+                }
             } else {
-                $form.appendTo('body').hide().submit();
+                $form.appendTo('body').hide().trigger('submit');
             }
         }
     });
