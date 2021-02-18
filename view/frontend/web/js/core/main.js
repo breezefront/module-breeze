@@ -5,9 +5,11 @@
     function mount(component, details) {
         console.log(component);
 
-        document.dispatchEvent(new CustomEvent('breeze:mount:' + component, {
-            detail: details
-        }));
+        window.requestIdleCallback(function () {
+            document.dispatchEvent(new CustomEvent('breeze:mount:' + component, {
+                detail: details
+            }));
+        });
     }
 
     /** Init view components */
