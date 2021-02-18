@@ -1,0 +1,19 @@
+<?php
+    $helper = $this->helper(\Magento\Framework\Json\Helper\Data::class);
+    $sections = $helper->jsonEncode($block->getSections());
+    $clientSections = $helper->jsonEncode($block->getClientSideSections());
+    $baseUrls = $helper->jsonEncode(array_unique([
+        $block->getUrl(null, ['_secure' => true]),
+        $block->getUrl(null, ['_secure' => false]),
+    ]));
+    $sectionNames = $helper->jsonEncode($block->getData('sectionNamesProvider')->getSectionNames());
+?>
+
+<script data-breeze>
+    var sectionsConfig = {
+        sections: <?= /* @noEscape */ $sections ?>,
+        clientSideSections: <?= /* @noEscape */ $clientSections ?>,
+        baseUrls: <?= /* @noEscape */ $baseUrls ?>,
+        sectionNames: <?= /* @noEscape */ $sectionNames ?>
+    }
+</script>

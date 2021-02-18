@@ -19,7 +19,8 @@
                         <item name="breeze-widget" xsi:type="string">Swissup_Breeze::js/core/component/widget.js</item>
                         <item name="breeze-view" xsi:type="string">Swissup_Breeze::js/core/component/view.js</item>
                         <item name="breeze-cookie" xsi:type="string">Swissup_Breeze::js/core/cookie.js</item>
-                        <item name="breeze-sectionData" xsi:type="string">Swissup_Breeze::js/core/sectionData.js</item>
+                        <item name="breeze-storage" xsi:type="string">Swissup_Breeze::js/core/storage.js</item>
+                        <item name="breeze-sections" xsi:type="string">Swissup_Breeze::js/core/sections.js</item>
                         <item name="breeze-main" xsi:type="string">Swissup_Breeze::js/core/main.js</item>
                     </argument>
                     <argument name="bundles" xsi:type="array">
@@ -49,5 +50,6 @@
         <referenceBlock name="cookie-status-check" remove="true"/>
         <referenceBlock name="js_cookies" remove="true"/>
         <referenceBlock name="cookie_config" template="Swissup_Breeze::theme/js/cookie.phtml"/>
+        <referenceBlock name="customer.section.config" template="Swissup_Breeze::customer/js/section-config.phtml"/>
     </body>
 </page>

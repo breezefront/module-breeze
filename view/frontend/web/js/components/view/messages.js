@@ -5,13 +5,11 @@
     breeze.view('messages', {
         /** Init component */
         init: function () {
-            var json = breeze.cookies.get('mage-messages');
-
-            this.cookieMessages = json ? _.unique(JSON.parse(json), 'text') : [];
-            this.messages = breeze.sectionData.get('messages');
+            this.cookieMessages = _.unique(breeze.cookies.getJson('mage-messages') || [], 'text');
+            this.messages = breeze.sections.get('messages');
 
             if (!_.isEmpty(this.messages().messages)) {
-                breeze.sectionData.set('messages', {});
+                breeze.sections.set('messages', {});
             }
 
             breeze.cookies.remove('mage-messages', {

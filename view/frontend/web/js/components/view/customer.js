@@ -3,7 +3,7 @@
     'use strict';
 
     breeze.view('customer', {
-        customer: breeze.sectionData.get('customer')
+        customer: breeze.sections.get('customer')
     });
 
     document.addEventListener('breeze:mount:Magento_Customer/js/view/customer', function (event) {
