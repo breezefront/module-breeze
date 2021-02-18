@@ -23,6 +23,12 @@
          */
         prepareMessageForHtml: function (message) {
             return message;
+        },
+
+        /** Hide all messages */
+        destroy: function () {
+            $('.messages', this.element).remove();
+            this.messages([]);
         }
     });
 
