@@ -40,6 +40,7 @@
                                 <!-- ViewModels -->
                                 <item name="Magento_Customer/js/view/customer" xsi:type="string">Swissup_Breeze/js/components/view/customer</item>
                                 <item name="Magento_Theme/js/view/messages" xsi:type="string">Swissup_Breeze/js/components/view/messages</item>
+                                <item name="Magento_Catalog/js/view/compare-products" xsi:type="string">Swissup_Breeze/js/components/view/compareProducts</item>
                             </item>
                         </item>
                     </argument>
