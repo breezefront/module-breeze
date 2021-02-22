@@ -15,6 +15,7 @@
                             <item name="url" xsi:type="string">Swissup_Breeze::js/lib/turbo-7.0.0-beta4.min.js</item>
                             <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Data::isTurboEnabled"/>
                         </item>
+                        <item name="breeze-fn" xsi:type="string">Swissup_Breeze::js/core/fn.js</item>
                         <item name="breeze-object" xsi:type="string">Swissup_Breeze::js/core/component/component.js</item>
                         <item name="breeze-widget" xsi:type="string">Swissup_Breeze::js/core/component/widget.js</item>
                         <item name="breeze-view" xsi:type="string">Swissup_Breeze::js/core/component/view.js</item>

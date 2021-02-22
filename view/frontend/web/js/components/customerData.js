@@ -168,7 +168,7 @@
         customerData.initialize(event.detail.settings);
     });
 
-    document.addEventListener('submit', function (event) {
+    $(document).on('submit', function (event) {
         var sections;
 
         if (!event.target.method.match(/post|put|delete/i)) {

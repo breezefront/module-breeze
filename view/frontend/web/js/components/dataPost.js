@@ -39,12 +39,14 @@
                 // });
             }
 
+            $form.appendTo('body').hide();
+
             if (params.data.confirmation) {
                 if (confirm(params.data.confirmationMessage)) {
-                    $form.appendTo('body').hide().trigger('submit');
+                    $form.submit();
                 }
             } else {
-                $form.appendTo('body').hide().trigger('submit');
+                $form.submit();
             }
         }
     });
