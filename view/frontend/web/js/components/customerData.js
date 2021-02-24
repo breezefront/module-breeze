@@ -100,8 +100,7 @@
          * @param {Boolean} forceNewSectionTimestamp
          */
         reload: function (sections, forceNewSectionTimestamp) {
-            var urlSuffix = '',
-                params = {};
+            var params = {};
 
             sections = sections || [];
 
@@ -113,16 +112,15 @@
                 params.force_new_section_timestamp = true;
             }
 
-            if (!_.isEmpty(params)) {
-                urlSuffix = '?' + (new URLSearchParams(params)).toString();
-            }
+            breeze.request.get({
+                url: this.options.sectionLoadUrl,
+                data: params,
+                accept: 'json',
 
-            fetch(this.options.sectionLoadUrl + urlSuffix)
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (data) {
-                    var sectionDataIds = breeze.cookies.getJson('section_data_ids') || {};
+                /** Success callback */
+                success: function (response) {
+                    var data = response.body,
+                        sectionDataIds = breeze.cookies.getJson('section_data_ids') || {};
 
                     $(document).trigger('customer-data-reload', [sections]);
 
@@ -137,7 +135,8 @@
                     storage.remove('messages');
 
                     breeze.cookies.setJson('section_data_ids', sectionDataIds);
-                });
+                }
+            });
         },
 
         /**
@@ -167,23 +166,15 @@
         }
     };
 
-    document.addEventListener('breeze:mount:Magento_Customer/js/customer-data', function (event) {
-        customerData.initialize(event.detail.settings);
+    $(document).on('customerData:reload', function (event, data) {
+        customerData.reload(data.sections, data.forceNewSectionTimestamp);
     });
 
-    $(document).on('submit', function (event) {
-        var sections;
+    $(document).on('customerData:invalidate', function (event, data) {
+        customerData.invalidate(data.sections);
+    });
 
-        if (!event.target.method.match(/post|put|delete/i)) {
-            return;
-        }
-
-        sections = breeze.sections.getAffectedSections(event.target.action);
-
-        if (!sections.length) {
-            return;
-        }
-
-        customerData.invalidate(sections);
+    $(document).on('breeze:mount:Magento_Customer/js/customer-data', function (event) {
+        customerData.initialize(event.detail.settings);
     });
 })();

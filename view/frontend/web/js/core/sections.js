@@ -91,6 +91,73 @@ window.breeze.sections = (function () {
          */
         set: function (name, section) {
             this.get(name)(section);
+        },
+
+        /**
+         * @param {Array} names
+         * @param {Boolean} forceNewSectionTimestamp
+         */
+        reload: function (names, forceNewSectionTimestamp) {
+            $(document).trigger('customerData:reload', {
+                sections: names,
+                forceNewSectionTimestamp: forceNewSectionTimestamp
+            });
+        },
+
+        /**
+         * @param {Array} names
+         */
+        invalidate: function (names) {
+            $(document).trigger('customerData:invalidate', {
+                sections: names
+            });
         }
     };
+})();
+
+(function () {
+    'use strict';
+
+    var sections = window.breeze.sections;
+
+    $(document).on('ajaxComplete', function (event, data) {
+        var names,
+            response = data.response,
+            request = data.response.req,
+            redirects = ['redirect', 'backUrl'];
+
+        if (!request.method.match(/post|put|delete/i)) {
+            return;
+        }
+
+        names = sections.getAffectedSections(request.url);
+
+        if (!names.length) {
+            return;
+        }
+
+        sections.invalidate(names);
+
+        if (_.isObject(response.body) && !_.isEmpty(_.pick(response.body, redirects))) {
+            return;
+        }
+
+        sections.reload(names, true);
+    });
+
+    $(document).on('submit', function (event) {
+        var names;
+
+        if (!event.target.method.match(/post|put|delete/i)) {
+            return;
+        }
+
+        names = sections.getAffectedSections(event.target.action);
+
+        if (!names.length) {
+            return;
+        }
+
+        sections.invalidate(names);
+    });
 })();
