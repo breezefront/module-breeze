@@ -13,8 +13,15 @@ $.each(methods, function () {
     /** Native methods proxy */
     $.fn[method] = function () {
         this.each(function () {
-            $(this).data('turbo', false).trigger(method);
-            this[method]();
+            var event = document.createEvent('Event');
+
+            event.initEvent(method, true, true);
+
+            $(this).trigger(event);
+
+            if (!event.defaultPrevented) {
+                this[method]();
+            }
         });
     };
 });
