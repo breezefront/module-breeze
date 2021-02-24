@@ -122,17 +122,26 @@
                     var data = response.body,
                         sectionDataIds = breeze.cookies.getJson('section_data_ids') || {};
 
-                    $(document).trigger('customer-data-reload', [sections]);
-
                     $.each(data, function (sectionName, sectionData) {
+                        // No need to store messages, but data_id must be
+                        // in storage otherwise it will expire.
+                        if (sectionName === 'messages') {
+                            sectionData = {
+                                data_id: sectionData.data_id,
+                                messages: []
+                            };
+                        }
+
                         sectionDataIds[sectionName] = sectionData.data_id;
                         storage.set(sectionName, sectionData);
                         storageInvalidation.remove(sectionName);
                         breeze.sections.set(sectionName, sectionData);
                     });
 
-                    // No need to store messages for the next page load.
-                    storage.remove('messages');
+                    $(document).trigger('customer-data-reload', {
+                        sections: sections,
+                        response: data
+                    });
 
                     breeze.cookies.setJson('section_data_ids', sectionDataIds);
                 }

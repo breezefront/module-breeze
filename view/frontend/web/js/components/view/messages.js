@@ -7,7 +7,11 @@
         init: function () {
             this.cookieMessages = _.unique(breeze.cookies.getJson('mage-messages') || [], 'text');
             this.messages = breeze.sections.get('messages');
+            this.removeCookieMessages();
+        },
 
+        /** Remove mage-messages cookie */
+        removeCookieMessages: function () {
             breeze.cookies.remove('mage-messages', {
                 domain: ''
             });
@@ -28,7 +32,19 @@
         }
     });
 
-    document.addEventListener('breeze:mount:Magento_Theme/js/view/messages', function (event) {
+    // Merge cookie messages (ajax compare) with json response messages
+    $(document).on('customer-data-reload', function (event, data) {
+        var cookieMessages = breeze.cookies.getJson('mage-messages') || [],
+            messages = _.get(data, 'response.messages'.split('.'), {});
+
+        breeze.view('messages').invoke('removeCookieMessages');
+
+        messages.messages = messages.messages || [];
+        messages.messages = messages.messages.concat(cookieMessages);
+        breeze.sections.set('messages', messages);
+    });
+
+    $(document).on('breeze:mount:Magento_Theme/js/view/messages', function (event) {
         $(event.detail.el).messages(event.detail.settings);
     });
 })();
