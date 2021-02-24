@@ -16,7 +16,7 @@
     function mountView(scope, config) {
         $('[data-bind*="scope:"]')
             .filter(function () {
-                return $(this).data('bind').indexOf(scope) !== -1;
+                return $(this).attr('data-bind').indexOf(scope) !== -1;
             })
             .each(function () {
                 mount(config.component, {
@@ -77,9 +77,9 @@
             }
 
             $(selector).each(function () {
-                $(this).data(
-                    'mage-init',
-                    $.extend($(this).data('mage-init') || {}, components)
+                $(this).attr(
+                    'data-mage-init',
+                    JSON.stringify($.extend($(this).data('mage-init') || {}, components))
                 );
             });
 
