@@ -120,7 +120,8 @@ window.breeze.component = function (BaseClass) {
 
         /** @param {Object|Function|String} settings */
         $.fn[name] = function (settings) {
-            var result = this;
+            var result = this,
+                args = arguments;
 
             if ($.isPlainObject(this)) {
                 // object without element: $.fn.dataPost().send()
@@ -136,6 +137,7 @@ window.breeze.component = function (BaseClass) {
                 // object instance or method: $(el).dropdown('open')
 
                 result = undefined;
+                args = Array.prototype.slice.call(args, 1);
 
                 this.each(function () {
                     var instance = window.breeze.registry.get(name, this);
@@ -146,7 +148,7 @@ window.breeze.component = function (BaseClass) {
                         return false;
                     }
 
-                    result = instance[settings]();
+                    result = instance[settings].apply(instance, args);
 
                     if (result !== instance && result !== undefined) {
                         return false;
