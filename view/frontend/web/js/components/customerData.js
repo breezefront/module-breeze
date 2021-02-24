@@ -149,20 +149,22 @@
         },
 
         /**
-         * @param {Array} sectionNames
+         * @param {Array} sections
          */
-        invalidate: function (sectionNames) {
+        invalidate: function (sections) {
             var sectionDataIds = breeze.cookies.getJson('section_data_ids') || {};
 
-            sectionNames = _.contains(sectionNames, '*') ?
-                breeze.sections.getSectionNames() : sectionNames;
+            sections = _.contains(sections, '*') ?
+                breeze.sections.getSectionNames() : sections;
 
-            $(document).trigger('customer-data-invalidate', [sectionNames]);
+            $(document).trigger('customer-data-invalidate', {
+                sections: sections
+            });
 
-            storage.remove(sectionNames);
+            storage.remove(sections);
 
             // Invalidate section in cookie (increase version of section with 1000)
-            $(sectionNames)
+            $(sections)
                 .filter(function () {
                     return !breeze.sections.isClientSideSection(this);
                 })
