@@ -133,6 +133,9 @@
                         breeze.sections.set(sectionName, sectionData);
                     });
 
+                    // No need to store messages for the next page load.
+                    storage.remove('messages');
+
                     breeze.cookies.setJson('section_data_ids', sectionDataIds);
                 });
         },
