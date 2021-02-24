@@ -41,12 +41,12 @@
 
             $form.appendTo('body').hide();
 
-            if (params.data.confirmation) {
-                if (confirm(params.data.confirmationMessage)) {
-                    $form.submit();
-                }
-            } else {
+            if (!params.data.confirmation || confirm(params.data.confirmationMessage)) { // eslint-disable-line
                 $form.submit();
+                // breeze.request.post({
+                //     form: $form,
+                //     strict: false
+                // });
             }
         }
     });
