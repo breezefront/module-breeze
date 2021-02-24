@@ -2,6 +2,15 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
+        <!-- <referenceContainer name="head.additional"> -->
+        <referenceContainer name="before.body.end">
+            <block class="Swissup\Breeze\Block\JsTranslations" name="breeze.translations">
+                <arguments>
+                    <argument name="cache_lifetime" xsi:type="number">864000</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+
         <referenceContainer name="header">
             <block class="Swissup\Breeze\Block\Js" name="breeze.js">
                 <arguments>
@@ -18,6 +27,7 @@
                         </item>
                         <item name="breeze-fn" xsi:type="string">Swissup_Breeze::js/core/fn.js</item>
                         <item name="breeze-request" xsi:type="string">Swissup_Breeze::js/core/request.js</item>
+                        <item name="breeze-translate" xsi:type="string">Swissup_Breeze::js/core/translate.js</item>
                         <item name="breeze-object" xsi:type="string">Swissup_Breeze::js/core/component/component.js</item>
                         <item name="breeze-widget" xsi:type="string">Swissup_Breeze::js/core/component/widget.js</item>
                         <item name="breeze-view" xsi:type="string">Swissup_Breeze::js/core/component/view.js</item>
