@@ -27,8 +27,6 @@ class Filter
     }
 
     /**
-     * Prepare AMP-compatible html markup and add AMP components
-     *
      * @param  string $html Rendered html
      * @return string       Processed html
      */
