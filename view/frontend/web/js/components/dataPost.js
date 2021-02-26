@@ -8,7 +8,6 @@
             '<% _.each(data.data, function(value, index) { %>' +
             '<input name="<%- index %>" value="<%- value %>">' +
             '<% }) %></form>',
-            postTrigger: ['a[data-post]', 'button[data-post]', 'span[data-post]'],
             formKeyInputSelector: 'input[name="form_key"]'
         },
 
@@ -51,8 +50,8 @@
         }
     });
 
-    $(document).on('click.dataPost', '[data-post]', function () {
-        var params = $(this).data('post');
+    $(document).on('click.dataPost', '[data-post], [data-post-remove]', function () {
+        var params = $(this).data('post') || $(this).data('post-remove');
 
         $.fn.dataPost().postData(params);
 
