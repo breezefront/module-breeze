@@ -15,6 +15,11 @@ class Filter
     protected $strFilters;
 
     /**
+     * @var array
+     */
+    protected $escapedBlocks = [];
+
+    /**
      * @param array $domFilters
      * @param array $strFilters
      */
@@ -32,7 +37,12 @@ class Filter
      */
     public function process($html)
     {
-        $html = $this->prepareDomDocumentHtml($html);
+        // fix special characters
+        if (function_exists('mb_convert_encoding')) {
+            $html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
+        }
+
+        $html = $this->escapeHtmlInsideScriptTags($html);
 
         libxml_use_internal_errors(true);
         $document = new \DOMDocument();
@@ -42,37 +52,54 @@ class Filter
             $filter->process($document);
         }
 
-        $output = $document->saveHTML();
+        $html = $document->saveHTML();
+        $html = $this->unescapeHtmlInsideScriptTags($html);
 
         foreach ($this->strFilters as $filter) {
-            $output = $filter->process($output);
+            $html = $filter->process($html);
         }
 
-        return $output;
+        return $html;
+    }
+
+    /**
+     * Fix broken html within script tag with type="text/x-magento-template"
+     * Fix too early close tag inner script : <script>alert("</div>")</script>
+     *
+     * @see https://stackoverflow.com/questions/236073/why-split-the-script-tag-when-writing-it-with-document-write/236106#236106
+     *
+     * @param  string $html
+     * @return string
+     */
+    private function escapeHtmlInsideScriptTags($html)
+    {
+        $matches = [];
+        $pattern = '/<script\b[^>]*>(.*?)<\/script>/is';
+        preg_match_all($pattern, $html, $matches);
+
+        foreach ($matches[1] as $script) {
+            if (strpos($script, '</') === false) {
+                continue;
+            }
+
+            $escapedScript = str_replace('</', '<\/', $script);
+            $html = str_replace($script, $escapedScript, $html);
+
+            $this->escapedBlocks[$script] = $escapedScript;
+        }
+
+        return $html;
     }
 
     /**
      * @param  string $html
      * @return string
      */
-    private function prepareDomDocumentHtml($html)
+    protected function unescapeHtmlInsideScriptTags($html)
     {
-        // fix special characters
-        if (function_exists('mb_convert_encoding')) {
-            $html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
+        foreach ($this->escapedBlocks as $originalHtml => $escapedHtml) {
+            $html = str_replace($escapedHtml, $originalHtml, $html);
         }
-
-        // escape too early close tag inner script : <script>alert("</div>")</script>
-        // https://stackoverflow.com/questions/236073/why-split-the-script-tag-when-writing-it-with-document-write/236106#236106
-        $regExp = '/<script\b[^>]*>(.*?)<\/script>/is';
-        $matches = [];
-        preg_match_all($regExp, $html, $matches);
-        foreach ($matches[1] as $_script) {
-            if (strstr($_script, '</')) {
-                $html = str_replace($_script, str_replace('</', '<\/', $_script), $html);
-            }
-        }
-
         return $html;
     }
 }
