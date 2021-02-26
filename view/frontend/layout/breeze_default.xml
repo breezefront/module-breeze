@@ -79,7 +79,7 @@
 
         <!-- Add ko templates -->
         <referenceContainer name="before.body.end">
-            <block class="Magento\Framework\View\Element\Template" template="Swissup_Breeze::ko/product-image.phtml"/>
+            <block class="Magento\Framework\View\Element\Template" template="Swissup_Breeze::ko/shared/product-image.phtml"/>
         </referenceContainer>
     </body>
 </page>
