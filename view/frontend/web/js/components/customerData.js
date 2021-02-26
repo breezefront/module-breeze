@@ -52,10 +52,6 @@
                 return;
             }
 
-            $.each(storage.get(), function (name, value) {
-                breeze.sections.set(name, value);
-            });
-
             if (sectionNames.length > 0) {
                 this.reload(sectionNames);
             }

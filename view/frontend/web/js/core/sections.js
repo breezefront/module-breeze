@@ -118,7 +118,8 @@ window.breeze.sections = (function () {
 (function () {
     'use strict';
 
-    var sections = window.breeze.sections;
+    var sections = window.breeze.sections,
+        storage = window.breeze.storage.ns('mage-cache-storage');
 
     $(document).on('ajaxComplete', function (event, data) {
         var names,
@@ -159,5 +160,11 @@ window.breeze.sections = (function () {
         }
 
         sections.invalidate(names);
+    });
+
+    $(document).on('breeze:load', function () {
+        $.each(storage.get(), function (name, value) {
+            sections.set(name, value);
+        });
     });
 })();
