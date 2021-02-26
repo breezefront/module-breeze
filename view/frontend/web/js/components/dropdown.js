@@ -5,6 +5,7 @@
     breeze.widget('dropdown', {
         options: {
             active: 'active',
+            dialog: false,
             menu: '[data-target="dropdown"]'
         },
 
@@ -16,6 +17,7 @@
             $(this.element).attr('data-dropdown', true);
             $(this.element).attr('aria-haspopup', true);
             $(this.parent).attr('data-trigger', true);
+            $(this.parent).attr('data-dropdown-parent', true);
 
             this.close();
         },
@@ -65,6 +67,18 @@
         var dropdown = $(event.target).closest('[data-dropdown]').dropdown('instance'),
             status = dropdown && dropdown.status;
 
+        if (!dropdown) {
+            // Do not close dropdown when click inside its content
+            dropdown = $(event.target)
+                .closest('[data-dropdown-parent]')
+                .find('[data-dropdown]')
+                .dropdown('instance');
+
+            if (dropdown && dropdown.options.dialog) {
+                return;
+            }
+        }
+
         window.breeze.widget('dropdown').invoke('close');
 
         if (dropdown) {
@@ -72,7 +86,7 @@
                 dropdown.open();
             }
 
-            event.stopPropagation();
+            return false;
         }
     });
 })();
