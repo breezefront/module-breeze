@@ -28,7 +28,7 @@ class CollectComponents extends AbstractFilter
             $value = json_decode($node->textContent, true);
             foreach ($value as $selector => $components) {
                 foreach (array_keys($components) as $component) {
-                    $this->addComponent($name);
+                    $this->addComponent($component);
                 }
             }
         }
