@@ -65,6 +65,12 @@
                             <item name="Magento_Wishlist/js/view/wishlist" xsi:type="string">Swissup_Breeze/js/components/view/wishlist</item>
                         </item>
                     </item>
+                    <item name="product" xsi:type="array">
+                        <item name="sort_order" xsi:type="number">20</item>
+                        <item name="components" xsi:type="array">
+                            <item name="Magento_Catalog/js/validate-product" xsi:type="string">Swissup_Breeze/js/components/validateProduct</item>
+                        </item>
+                    </item>
                 </argument>
             </arguments>
         </block>
