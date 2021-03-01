@@ -24,6 +24,14 @@ class Script
                 continue;
             }
 
+            if ($node->textContent &&
+                strpos($node->textContent, 'require(') === false &&
+                // strpos($node->textContent, 'require =') === false &&
+                strpos($node->textContent, 'require.') === false
+            ) {
+                continue;
+            }
+
             $remove[] = $node;
         }
 

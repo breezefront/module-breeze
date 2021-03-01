@@ -77,6 +77,8 @@
         <referenceBlock name="customer.section.config" template="Swissup_Breeze::customer/js/section-config.phtml"/>
         <referenceBlock name="wishlist_sidebar" template="Swissup_Breeze::wishlist/sidebar.phtml"/>
 
+        <referenceBlock name="minicart" template="Swissup_Breeze::checkout/minicart.phtml"/>
+
         <!-- Add ko templates -->
         <referenceContainer name="before.body.end">
             <block class="Magento\Framework\View\Element\Template" template="Swissup_Breeze::ko/shared/product-image.phtml"/>
