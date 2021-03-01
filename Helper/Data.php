@@ -47,7 +47,19 @@ class Data extends AbstractHelper
             $this->isEnabled = (bool) $this->isEnabled;
         }
 
+        if ($this->isEnabled) {
+            $this->isEnabled = $this->isCurrentPageSupported();
+        }
+
         return $this->isEnabled;
+    }
+
+    protected function isCurrentPageSupported()
+    {
+        $page = $this->_request->getFullActionName();
+
+        return strpos($page, 'checkout_') === false
+            && strpos($page, 'multishipping_') === false;
     }
 
     /**
