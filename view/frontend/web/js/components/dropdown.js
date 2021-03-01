@@ -64,17 +64,18 @@
     });
 
     $(document).on('click.dropdown', function (event) {
-        var dropdown = $(event.target).closest('[data-dropdown]').dropdown('instance'),
+        var dialog,
+            dropdown = $(event.target).closest('[data-dropdown]').dropdown('instance'),
             status = dropdown && dropdown.status;
 
         if (!dropdown) {
             // Do not close dropdown when click inside its content
-            dropdown = $(event.target)
+            dialog = $(event.target)
                 .closest('[data-dropdown-parent]')
                 .find('[data-dropdown]')
                 .dropdown('instance');
 
-            if (dropdown && dropdown.options.dialog) {
+            if (dialog && dialog.options.dialog) {
                 return;
             }
         }
