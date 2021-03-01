@@ -2,6 +2,9 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
+        <remove src="mage/calendar.css"/>
+        <remove src="mage/gallery/gallery.css"/>
+
         <!-- disable turbo cache since it's not working with knockout (compare sidebar) -->
         <meta name="turbo-cache-control" content="no-cache"/>
     </head>
