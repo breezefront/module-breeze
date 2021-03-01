@@ -101,6 +101,9 @@
     }
 
     document.addEventListener(eventName(), function (event) {
+        // destroy all widgets and views if turbo cache is disabled
+        window.breeze.registry.delete();
+
         document.dispatchEvent(new CustomEvent('breeze:load', {
             detail: event.detail ? event.detail : {
                 url: window.location.href
