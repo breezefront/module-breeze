@@ -58,6 +58,7 @@
                             <item name="tabs" xsi:type="string">Swissup_Breeze/js/components/tabs</item>
                             <item name="accordion" xsi:type="string">Swissup_Breeze/js/components/accordion</item>
                             <item name="catalogAddToCart" xsi:type="string">Swissup_Breeze/js/components/catalogAddToCart</item>
+                            <item name="productListToolbarForm" xsi:type="string">Swissup_Breeze/js/components/productListToolbarForm</item>
                             <item name="theme" xsi:type="string">Swissup_Breeze/js/components/theme</item>
 
                             <!-- ViewModels -->
