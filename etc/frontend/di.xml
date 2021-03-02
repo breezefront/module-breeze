@@ -13,6 +13,7 @@
             <argument name="domFilters" xsi:type="array">
                 <item name="script" xsi:type="object">Swissup\Breeze\Model\Filter\Dom\Script</item>
                 <item name="collect_components" xsi:type="object">Swissup\Breeze\Model\Filter\Dom\CollectComponents</item>
+                <item name="form_validation" xsi:type="object">Swissup\Breeze\Model\Filter\Dom\FormValidation</item>
             </argument>
             <argument name="strFilters" xsi:type="array">
                 <item name="varnish" xsi:type="object">Swissup\Breeze\Model\Filter\Str\Varnish</item>
