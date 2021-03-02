@@ -119,10 +119,7 @@
                 delete paramData[paramName];
             }
 
-            paramData = Object.keys(paramData).map(function (key) {
-                return key + '=' + paramData[key];
-            }).join('&');
-
+            paramData = $.params(paramData);
             location.href = baseUrl + (paramData.length ? '?' + paramData : '');
         }
     });

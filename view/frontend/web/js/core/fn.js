@@ -25,3 +25,12 @@ $.each(methods, function () {
         });
     };
 });
+
+/** Serialize object to query string */
+$.params = function (object) {
+    'use strict';
+
+    return Object.keys(object).map(function (key) {
+        return key + '=' + object[key];
+    }).join('&');
+};
