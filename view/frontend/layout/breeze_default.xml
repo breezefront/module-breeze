@@ -53,7 +53,6 @@
                             <item name="dataPost" xsi:type="string">Swissup_Breeze/js/components/dataPost</item>
                             <item name="menu" xsi:type="string">Swissup_Breeze/js/components/menu</item>
                             <item name="dropdown" xsi:type="string">Swissup_Breeze/js/components/dropdown</item>
-                            <!-- <item name="dropdownDialog" xsi:type="string">Swissup_Breeze/js/components/dropdownDialog</item> -->
                             <item name="collapsible" xsi:type="string">Swissup_Breeze/js/components/collapsible</item>
                             <item name="tabs" xsi:type="string">Swissup_Breeze/js/components/tabs</item>
                             <item name="accordion" xsi:type="string">Swissup_Breeze/js/components/accordion</item>
