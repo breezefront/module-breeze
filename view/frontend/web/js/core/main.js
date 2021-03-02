@@ -3,13 +3,19 @@
 
     /** Init 'data-mage-init' and 'text/x-magento-init' scripts */
     function mount(component, details) {
-        console.log(component);
-
-        window.requestIdleCallback(function () {
+        /** Callback to run while browser is resting */
+        function callback() {
+            console.log(component);
             document.dispatchEvent(new CustomEvent('breeze:mount:' + component, {
                 detail: details
             }));
-        });
+        }
+
+        if (window.requestIdleCallback) {
+            window.requestIdleCallback(callback);
+        } else {
+            window.setTimeout(callback, 1);
+        }
     }
 
     /** Init view components */
