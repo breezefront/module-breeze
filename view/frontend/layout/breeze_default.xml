@@ -42,6 +42,8 @@
                     <item name="breeze-storage" xsi:type="string">Swissup_Breeze::js/core/storage.js</item>
                     <item name="breeze-sections" xsi:type="string">Swissup_Breeze::js/core/sections.js</item>
                     <item name="breeze-main" xsi:type="string">Swissup_Breeze::js/core/main.js</item>
+                    <item name="breeze-common" xsi:type="string">Swissup_Breeze::js/common/common.js</item>
+                    <item name="breeze-theme" xsi:type="string">Swissup_Breeze::js/common/theme.js</item>
                 </argument>
                 <argument name="bundles" xsi:type="array">
                     <item name="default" xsi:type="array">
@@ -58,7 +60,6 @@
                             <item name="accordion" xsi:type="string">Swissup_Breeze/js/components/accordion</item>
                             <item name="catalogAddToCart" xsi:type="string">Swissup_Breeze/js/components/catalogAddToCart</item>
                             <item name="productListToolbarForm" xsi:type="string">Swissup_Breeze/js/components/productListToolbarForm</item>
-                            <item name="theme" xsi:type="string">Swissup_Breeze/js/components/theme</item>
 
                             <!-- ViewModels -->
                             <item name="Magento_Customer/js/view/customer" xsi:type="string">Swissup_Breeze/js/components/view/customer</item>
