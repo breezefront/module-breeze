@@ -32,7 +32,7 @@
                         <item name="url" xsi:type="string">Swissup_Breeze::js/lib/turbo-7.0.0-beta4.min.js</item>
                         <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Data::isTurboEnabled"/>
                     </item>
-                    <item name="breeze-fn" xsi:type="string">Swissup_Breeze::js/core/fn.js</item>
+                    <item name="breeze-extend" xsi:type="string">Swissup_Breeze::js/core/extend.js</item>
                     <item name="breeze-request" xsi:type="string">Swissup_Breeze::js/core/request.js</item>
                     <item name="breeze-translate" xsi:type="string">Swissup_Breeze::js/core/translate.js</item>
                     <item name="breeze-object" xsi:type="string">Swissup_Breeze::js/core/component/component.js</item>
