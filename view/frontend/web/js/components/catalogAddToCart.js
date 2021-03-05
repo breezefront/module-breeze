@@ -24,10 +24,6 @@
 
             if (self.options.bindSubmit && !element.attr('data-catalog-addtocart-initialized')) {
                 element.attr('data-catalog-addtocart-initialized', 1);
-                element.on('submit', function (event) {
-                    event.preventDefault();
-                    self.submitForm($(element));
-                });
             }
 
             $(self.options.addToCartButtonSelector, element).prop('disabled', false);
@@ -142,10 +138,10 @@
         }
     });
 
-    // $(document).on('submit', '[data-catalog-addtocart-initialized]', function (event) {
-    //     event.preventDefault();
-    //     $(this).catalogAddToCart('instance').ajaxSubmit($(this));
-    // });
+    $(document).on('submit', '[data-catalog-addtocart-initialized]', function (event) {
+        event.preventDefault();
+        $(this).catalogAddToCart('instance').ajaxSubmit($(this));
+    });
 
     $(document).on('breeze:mount:catalogAddToCart', function (event) {
         $(event.detail.el).catalogAddToCart(event.detail.settings);

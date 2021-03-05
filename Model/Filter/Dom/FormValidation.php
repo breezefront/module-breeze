@@ -33,6 +33,8 @@ class FormValidation extends AbstractFilter
                     continue;
                 }
 
+                $this->addComponent($validator);
+
                 $method = str_replace(' ', '', ucwords(str_replace('-', ' ', $validator)));
                 $method = 'apply' . $method;
 
