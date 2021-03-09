@@ -3,17 +3,15 @@
     'use strict';
 
     /** Contructor */
-    var Validator = function (element, options) {
-        this.element = element;
+    var Validator = function (form, options) {
+        this.form = form;
         this.options = $.extend({
             errorClass: 'mage-error',
             errorTextTag: '<div>',
             errorTextClass: 'mage-error'
         }, options || {});
 
-        if ($(element).is('form')) {
-            $(element).attr('novalidate', true);
-        }
+        $(form).attr('novalidate', true);
     };
 
     Validator.prototype = {
@@ -199,7 +197,7 @@
         _elements: function (elements) {
             var added = {};
 
-            elements = elements || this.element;
+            elements = elements || this.form;
             elements = $(elements);
 
             if ($(elements[0]).is('form')) {
