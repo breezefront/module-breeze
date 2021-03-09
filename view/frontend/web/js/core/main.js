@@ -1,3 +1,4 @@
+/* global ko */
 (function () {
     'use strict';
 
@@ -95,6 +96,51 @@
         script.textContent = JSON.stringify(settings);
     }
 
+    /** Extract json by key from dataBind string */
+    function extractJsonFromDataBind(key, dataBind) {
+        var json = {},
+            bindings = ko.expressionRewriting.parseObjectLiteral(dataBind);
+
+        /** Parse mageInit binding from data-bind string */
+        function parseJson(string) {
+            var parsed = {},
+                literal = ko.expressionRewriting.parseObjectLiteral(string);
+
+            if (literal[0].unknown) {
+                return literal[0].unknown;
+            }
+
+            $.each(literal, function (i, object) {
+                parsed[object.key] = parseJson(object.value);
+            });
+
+            return parsed;
+        }
+
+        $.each(bindings, function (i, binding) {
+            if (binding.key !== 'mageInit') {
+                return;
+            }
+
+            json = parseJson(binding.value);
+
+            return false;
+        });
+
+        return json;
+    }
+
+    /** Update data-mage-init attribute for all matches elements based on data-bind value */
+    function convertDataBindToDataMageInit(el) {
+        $(el).attr(
+            'data-mage-init',
+            JSON.stringify($.extend(
+                $(el).data('mage-init') || {},
+                extractJsonFromDataBind('mageInit', $(el).data('bind'))
+            ))
+        );
+    }
+
     /** Get event name to listen */
     function eventName() {
         var name = 'DOMContentLoaded';
@@ -119,6 +165,10 @@
         document
             .querySelectorAll('[type="text/x-magento-init"]')
             .forEach(convertScriptsToDataMageInit);
+
+        document
+            .querySelectorAll('[data-bind*="mageInit:"]')
+            .forEach(convertDataBindToDataMageInit);
 
         document
             .querySelectorAll('[data-mage-init],[type="text/x-magento-init"]')
