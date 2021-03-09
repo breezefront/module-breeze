@@ -114,6 +114,10 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         foreach ($this->bundles as $bundleName => $bundle) {
             if (isset($bundle['components'][$name])) {
                 $this->bundles[$bundleName]['active'] = true;
+
+                if (is_array($this->bundles[$bundleName]['components'][$name])) {
+                    $this->bundles[$bundleName]['components'][$name]['active'] = true;
+                }
             }
         }
     }
@@ -143,6 +147,21 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         $bundles = array_filter($this->bundles, function ($bundle) {
             return $bundle['active'] ?? false;
         });
+
+        // unset disabled modules
+        foreach ($bundles as $bundleName => $bundle) {
+            foreach ($bundle['components'] as $componentName => $component) {
+                if (!is_array($component) || !empty($component['active'])) {
+                    continue;
+                }
+
+                $component['enabled'] = $component['enabled'] ?? true;
+
+                if (!$component['enabled']) {
+                    unset($bundles[$bundleName]['components'][$componentName]);
+                }
+            }
+        }
 
         uasort($bundles, function ($a, $b) {
             $a = $a['sort_order'] ?? 1000;
