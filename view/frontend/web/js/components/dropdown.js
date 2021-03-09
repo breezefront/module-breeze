@@ -4,7 +4,8 @@
 
     breeze.widget('dropdown', {
         options: {
-            active: 'active',
+            parent: null,
+            activeClass: 'active',
             dialog: false,
             menu: '[data-target="dropdown"]'
         },
@@ -12,7 +13,12 @@
         /** Init widget */
         init: function () {
             this.status = false;
-            this.parent = this.element.parentNode;
+
+            if (this.options.parent) {
+                this.parent = $(this.options.parent);
+            } else {
+                this.parent = this.element.parentNode;
+            }
 
             $(this.element).attr('data-dropdown', true);
             $(this.element).attr('aria-haspopup', true);
@@ -31,9 +37,9 @@
         open: function () {
             this.status = true;
 
-            $(this.element).addClass(this.options.active)
+            $(this.element).addClass(this.options.activeClass)
                 .attr('aria-expanded', true);
-            $(this.parent).addClass(this.options.active)
+            $(this.parent).addClass(this.options.activeClass)
                 .find(this.options.menu)
                 .attr('aria-hidden', false);
         },
@@ -42,9 +48,9 @@
         close: function () {
             this.status = false;
 
-            $(this.element).removeClass(this.options.active)
+            $(this.element).removeClass(this.options.activeClass)
                 .attr('aria-expanded', false);
-            $(this.parent).removeClass(this.options.active)
+            $(this.parent).removeClass(this.options.activeClass)
                 .find(this.options.menu)
                 .attr('aria-hidden', true);
         },
