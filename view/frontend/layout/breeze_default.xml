@@ -75,7 +75,13 @@
                         <item name="sort_order" xsi:type="number">20</item>
                         <item name="components" xsi:type="array">
                             <item name="Magento_Catalog/js/validate-product" xsi:type="string">Swissup_Breeze/js/components/validateProduct</item>
-                            <item name="paypalCheckout" xsi:type="string">Swissup_Breeze/js/components/paypalCheckout</item>
+                            <item name="paypalCheckout" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/paypalCheckout</item>
+                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isAnyEnabled">
+                                    <param name="0">payment/paypal_express_bml/active</param>
+                                    <param name="1">payment/payflow_express_bml/active</param>
+                                </item>
+                            </item>
                         </item>
                     </item>
                     <item name="customer" xsi:type="array">
