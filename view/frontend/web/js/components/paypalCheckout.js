@@ -31,7 +31,7 @@
 
             event.preventDefault();
 
-            if (!form.attr('action').length) {
+            if (productId && !form.attr('action').length) {
                 originalForm = $('form[action*="/"]')
                     .has('input[name="product"][value="%1"]'.replace('%1', productId));
             }
