@@ -31,6 +31,11 @@
 
             event.preventDefault();
 
+            if (!form.attr('action').length) {
+                originalForm = $('form[action*="/"]')
+                    .has('input[name="product"][value="%1"]'.replace('%1', productId));
+            }
+
             if (this.agreements().askToCreate && confirm(this.agreements().confirmMessage)) { // eslint-disable-line
                 this.redirect(this.agreements().confirmUrl, originalForm);
             } else {
