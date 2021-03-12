@@ -63,6 +63,12 @@
                             <item name="catalogAddToCart" xsi:type="string">Swissup_Breeze/js/components/catalogAddToCart</item>
                             <item name="productListToolbarForm" xsi:type="string">Swissup_Breeze/js/components/productListToolbarForm</item>
                             <item name="validation" xsi:type="string">Swissup_Breeze/js/components/validation</item>
+                            <item name="addToCart" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/msrp</item>
+                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
+                                    <param name="path">sales/msrp/enabled</param>
+                                </item>
+                            </item>
                             <item name="paypalCheckout" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/paypalCheckout</item>
                                 <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isAnyEnabled">
