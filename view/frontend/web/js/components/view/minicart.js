@@ -2,11 +2,21 @@
 (function () {
     'use strict';
 
+    var minicart = $('[data-block="minicart"]');
+
+    /** Init minicart popup scripts */
+    function initSidebar() {
+        minicart.trigger('contentUpdated');
+    }
+
+    minicart.on('dropdowndialogopen', initSidebar);
+
     breeze.view('minicart', {
         cart: {},
         shoppingCartUrl: window.checkout.shoppingCartUrl,
         maxItemsToDisplay: window.checkout.maxItemsToDisplay,
         isLoading: ko.observable(false),
+        initSidebar: initSidebar,
 
         /**
          * @override
@@ -28,7 +38,7 @@
          * Close mini shopping cart.
          */
         closeMinicart: function () {
-            $('[data-block="minicart"]').find('[data-dropdown]').dropdown('close');
+            $('[data-block="minicart"]').find('[data-role="dropdownDialog"]').dropdownDialog('close');
         },
 
         /**

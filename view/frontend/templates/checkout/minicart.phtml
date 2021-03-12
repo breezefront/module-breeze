@@ -5,10 +5,6 @@
 
 <div data-block="minicart" class="minicart-wrapper">
     <a class="action showcart" href="<?= $block->escapeUrl($block->getShoppingCartUrl()) ?>"
-        <?php if (false && $block->getIsNeedToDisplaySideBar()): ?>
-            data-dropdown="true"
-            data-mage-init='{ "dropdown": { "dialog": true }}'
-        <?php endif ?>
         data-bind="scope: 'minicart_content'">
         <span class="text"><?= $block->escapeHtml(__('My Cart')) ?></span>
         <span class="counter qty empty"
@@ -28,7 +24,17 @@
         </span>
     </a>
     <?php if (false && $block->getIsNeedToDisplaySideBar()):?>
-        <div class="block block-minicart" data-target="dropdown">
+        <div class="block block-minicart"
+             data-role="dropdownDialog"
+             data-mage-init='{"dropdownDialog":{
+                "appendTo":"[data-block=minicart]",
+                "triggerTarget":".showcart",
+                "timeout": "2000",
+                "closeOnMouseLeave": false,
+                "closeOnEscape": true,
+                "triggerClass":"active",
+                "parentClass":"active",
+                "buttons":[]}}'>
             <div id="minicart-content-wrapper" data-bind="scope: 'minicart_content', template: 'minicart'"></div>
             <?= $block->getChildHtml('minicart.addons') ?>
         </div>
