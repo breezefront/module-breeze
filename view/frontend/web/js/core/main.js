@@ -152,6 +152,22 @@
         return name;
     }
 
+    /**
+     * @param {Element} node
+     */
+    function walk(node) {
+        node = node || document;
+
+        node.querySelectorAll('[type="text/x-magento-init"]')
+            .forEach(convertScriptsToDataMageInit);
+
+        node.querySelectorAll('[data-bind*="mageInit:"]')
+            .forEach(convertDataBindToDataMageInit);
+
+        node.querySelectorAll('[data-mage-init],[type="text/x-magento-init"]')
+            .forEach(processElement);
+    }
+
     document.addEventListener(eventName(), function (event) {
         // destroy all widgets and views if turbo cache is disabled
         window.breeze.registry.delete();
@@ -162,17 +178,11 @@
             }
         }));
 
-        document
-            .querySelectorAll('[type="text/x-magento-init"]')
-            .forEach(convertScriptsToDataMageInit);
+        walk(document);
+    });
 
-        document
-            .querySelectorAll('[data-bind*="mageInit:"]')
-            .forEach(convertDataBindToDataMageInit);
-
-        document
-            .querySelectorAll('[data-mage-init],[type="text/x-magento-init"]')
-            .forEach(processElement);
+    $(document).on('contentUpdated', function (event) {
+        walk(event.target);
     });
 
     document.addEventListener('turbo:before-cache', function () {
