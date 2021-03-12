@@ -23,6 +23,7 @@
                     </select>
                 </formElements>
             </field>
+            <!--
             <field name="breeze_turbo" component="Magento_Catalog/js/components/visible-on-option/select" formElement="select">
                 <argument name="data" xsi:type="array">
                     <item name="config" xsi:type="array">
@@ -49,6 +50,7 @@
                     </select>
                 </formElements>
             </field>
+            -->
         </fieldset>
     </fieldset>
 </form>
