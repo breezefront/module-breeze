@@ -9,8 +9,8 @@
             formKey = $('input[name="form_key"]').val();
 
         if (!formKey ||
-            form.attr('method') !== 'post' ||
-            form.attr('action').indexOf(window.BASE_URL) !== 0 ||
+            form.prop('method') !== 'post' ||
+            form.prop('action').indexOf(window.BASE_URL) !== 0 ||
             form.children('input[name="form_key"]').length
         ) {
             return;
