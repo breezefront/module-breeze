@@ -24,7 +24,7 @@
          */
         initialize: function (options, element) {
             this.element = element;
-            this.options = $.extend({}, this.options, options || {});
+            this.options = $.extend(true, {}, this.options, options || {});
 
             if (this.init) {
                 this.init();
