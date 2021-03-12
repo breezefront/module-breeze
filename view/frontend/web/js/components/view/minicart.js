@@ -11,7 +11,7 @@
         /**
          * @override
          */
-        init: function () {
+        create: function () {
             var cartData = breeze.sections.get('cart');
 
             this.update(cartData());

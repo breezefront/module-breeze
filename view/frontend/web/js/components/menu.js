@@ -13,7 +13,7 @@
         },
 
         /** Init widget */
-        init: function () {
+        create: function () {
             var mql = window.matchMedia(this.options.mediaBreakpoint);
 
             if (this.options.responsive) {

@@ -168,6 +168,8 @@ window.breeze.component = function (BaseClass) {
                             instance = new BaseClass(prototype, settings, el);
                         }
                         window.breeze.registry.set(name, el, instance);
+                    } else {
+                        instance.option(settings).init();
                     }
                 });
             }

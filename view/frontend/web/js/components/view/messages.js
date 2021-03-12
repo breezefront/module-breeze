@@ -4,7 +4,7 @@
 
     breeze.view('messages', {
         /** Init component */
-        init: function () {
+        create: function () {
             this.cookieMessages = _.unique(breeze.cookies.getJson('mage-messages') || [], 'text');
             this.messages = breeze.sections.get('messages');
             this.removeCookieMessages();

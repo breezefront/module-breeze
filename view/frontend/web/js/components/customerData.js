@@ -37,11 +37,11 @@
             this.options = settings;
             invalidateCacheBySessionTimeOut(this.options);
             invalidateCacheByCloseCookieSession();
-            this.init();
+            this.create();
         },
 
         /** Init component */
-        init: function () {
+        create: function () {
             var sectionNames = this.getExpiredSectionNames();
 
             // store switcher

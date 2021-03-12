@@ -25,15 +25,28 @@
          */
         initialize: function (options, element) {
             this.element = element;
-            this.options = $.extend(true, {}, this.options, options || {});
-
-            if (this.init) {
-                this.init();
-            }
+            this.option(options);
+            this.create();
+            this.init();
 
             if (!ko.dataFor(element)) {
                 ko.applyBindings(this, element);
             }
+
+            return this;
+        },
+
+        /** [create description] */
+        create: function () {},
+
+        /** [init description] */
+        init: function () {},
+
+        /**
+         * @param {Object} options
+         */
+        option: function (options) {
+            this.options = $.extend(true, {}, this.options, options || {});
 
             return this;
         }

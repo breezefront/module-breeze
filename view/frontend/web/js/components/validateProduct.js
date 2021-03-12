@@ -4,7 +4,7 @@
 
     breeze.widget('productValidate', {
         /** Initialize plugin */
-        init: function () {
+        create: function () {
             $(this.element).validator();
             $(this.element).catalogAddToCart(this.options);
         }

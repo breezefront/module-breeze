@@ -4,7 +4,7 @@
 
     breeze.widget('validator', {
         /** Init widget */
-        init: function () {
+        create: function () {
             var self = this;
 
             this.validator = breeze.validator(this.element, this.options);

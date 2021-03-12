@@ -10,7 +10,7 @@
         },
 
         /** Init widget */
-        init: function () {
+        create: function () {
             this.agreements = breeze.sections.get('paypal-billing-agreement');
             this.onClickHandler = this.onClick.bind(this);
             $(this.element).on('click', '[data-action="checkout-form-submit"]', this.onClickHandler);

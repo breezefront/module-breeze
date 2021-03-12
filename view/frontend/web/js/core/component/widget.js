@@ -24,11 +24,24 @@
          */
         initialize: function (options, element) {
             this.element = element;
-            this.options = $.extend(true, {}, this.options, options || {});
+            this.option(options);
+            this.create();
+            this.init();
 
-            if (this.init) {
-                this.init();
-            }
+            return this;
+        },
+
+        /** [create description] */
+        create: function () {},
+
+        /** [init description] */
+        init: function () {},
+
+        /**
+         * @param {Object} options
+         */
+        option: function (options) {
+            this.options = $.extend(true, {}, this.options, options || {});
 
             return this;
         }

@@ -18,7 +18,7 @@
         },
 
         /** Init widget */
-        init: function () {
+        create: function () {
             var self = this,
                 element = $(self.element);
 

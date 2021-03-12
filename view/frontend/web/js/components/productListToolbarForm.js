@@ -21,7 +21,7 @@
         },
 
         /** @inheritdoc */
-        init: function () {
+        create: function () {
             var self = this,
                 controls = [
                     'mode',

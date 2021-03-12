@@ -11,7 +11,7 @@
         },
 
         /** Init widget */
-        init: function () {
+        create: function () {
             this.status = false;
 
             if (this.options.parent) {

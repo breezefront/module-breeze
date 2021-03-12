@@ -17,7 +17,7 @@
         },
 
         /** Mount widget on the element */
-        init: function () {
+        create: function () {
             this.header  = typeof this.options.header === 'object' ?
                 this.options.header : $(this.element).find(this.options.header).first();
             this.trigger = typeof this.options.trigger === 'object' ?
