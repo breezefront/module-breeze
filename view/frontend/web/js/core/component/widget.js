@@ -41,7 +41,11 @@
          * @param {Object} options
          */
         option: function (options) {
-            this.options = $.extend(true, {}, this.options, options || {});
+            if (typeof options === 'string') {
+                this.options = options;
+            } else {
+                this.options = $.extend(true, {}, this.options, options || {});
+            }
 
             return this;
         }
