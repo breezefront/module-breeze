@@ -98,6 +98,10 @@
         reload: function (sections, forceNewSectionTimestamp) {
             var params = {};
 
+            if (!this.options) {
+                return this.invalidate(sections);
+            }
+
             sections = sections || [];
 
             if (sections.length) {
