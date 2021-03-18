@@ -51,5 +51,5 @@
         }
     };
 
-    window.breeze.widget = window.breeze.component(WidgetModel);
+    window.breeze.widget = window.breeze.component(window.breeze.factory(WidgetModel, false));
 })();

@@ -28,12 +28,16 @@
             this.option(options);
             this.create();
             this.init();
+            this.applyBindings(element);
 
+            return this;
+        },
+
+        /** [applyBindings description] */
+        applyBindings: function (element) {
             if (!ko.dataFor(element)) {
                 ko.applyBindings(this, element);
             }
-
-            return this;
         },
 
         /** [create description] */
@@ -52,5 +56,5 @@
         }
     };
 
-    window.breeze.view = window.breeze.component(ViewModel);
+    window.breeze.view = window.breeze.component(window.breeze.factory(ViewModel, true));
 })();

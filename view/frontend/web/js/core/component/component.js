@@ -8,7 +8,7 @@ window.breeze.registry = (function () {
     return {
         /**
          * @param {String} type
-         * @param {Object} key
+         * @param {Element} key
          * @return {Mixed}
          */
         get: function (type, key) {
@@ -37,7 +37,7 @@ window.breeze.registry = (function () {
 
         /**
          * @param {String} type
-         * @param {Object} key
+         * @param {Element} key
          * @param {Object} value
          */
         set: function (type, key, value) {
@@ -54,7 +54,7 @@ window.breeze.registry = (function () {
 
         /**
          * @param {String} type
-         * @param {Object} key
+         * @param {Element} key
          */
         delete: function (type, key) {
             var instance, index;
@@ -89,8 +89,46 @@ window.breeze.registry = (function () {
     };
 })();
 
+/** Class factory */
+window.breeze.factory = function (BaseClass, singleton) {
+    'use strict';
+
+    var registry = {};
+
+    /** [getIdKey description] */
+    function getIdKey(name, settings) {
+        var key = name;
+
+        try {
+            key += JSON.stringify(settings);
+        } catch (e) {
+            //
+        }
+
+        return key;
+    }
+
+    return function (name, prototype, settings, el) {
+        var instance,
+            key = getIdKey(name, settings);
+
+        if (singleton && registry[key]) {
+            registry[key].applyBindings(el);
+        } else {
+            if (typeof prototype === 'function') {
+                instance = prototype.call(el, settings);
+            } else {
+                instance = new BaseClass(prototype, settings, el);
+            }
+            registry[key] = instance;
+        }
+
+        return registry[key];
+    };
+};
+
 /** Abstract function to create components */
-window.breeze.component = function (BaseClass) {
+window.breeze.component = function (factory) {
     'use strict';
 
     return function (name, prototype) {
@@ -125,14 +163,7 @@ window.breeze.component = function (BaseClass) {
 
             if ($.isPlainObject(this)) {
                 // object without element: $.fn.dataPost().send()
-
-                settings = settings || {};
-
-                if (typeof prototype === 'function') {
-                    result = prototype.call(window, settings);
-                } else {
-                    result = new BaseClass(prototype, settings, window);
-                }
+                result = factory(name, prototype, settings || {}, window);
             } else if (typeof settings === 'string') {
                 // object instance or method: $(el).dropdown('open')
 
@@ -162,11 +193,7 @@ window.breeze.component = function (BaseClass) {
                         instance = window.breeze.registry.get(name, el);
 
                     if (!instance) {
-                        if (typeof prototype === 'function') {
-                            instance = prototype.call(el, settings);
-                        } else {
-                            instance = new BaseClass(prototype, settings, el);
-                        }
+                        instance = factory(name, prototype, settings, el);
                         window.breeze.registry.set(name, el, instance);
                     } else {
                         instance.option(settings).init();
