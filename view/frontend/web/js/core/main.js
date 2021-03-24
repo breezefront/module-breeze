@@ -28,8 +28,7 @@
             .each(function () {
                 mount(config.component, {
                     settings: config,
-                    el: this,
-                    scope: scope
+                    el: this
                 });
             });
     }
@@ -57,6 +56,7 @@
 
             if (component === 'Magento_Ui/js/core/app') {
                 $.each(config.components, function (scope, cfg) {
+                    cfg.__scope = scope;
                     mountView(scope, cfg);
                 });
             } else {

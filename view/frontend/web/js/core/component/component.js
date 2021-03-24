@@ -95,24 +95,13 @@ window.breeze.factory = function (BaseClass, singleton) {
 
     var registry = {};
 
-    /** [getIdKey description] */
-    function getIdKey(name, settings) {
-        var key = name;
-
-        try {
-            key += JSON.stringify(settings);
-        } catch (e) {
-            //
-        }
-
-        return key;
-    }
-
     return function (name, prototype, settings, el) {
-        var instance,
-            key = getIdKey(name, settings);
+        var instance, key;
 
-        if (singleton && registry[key]) {
+        settings = settings || {};
+        key = settings.__scope;
+
+        if (singleton && key && registry[key]) {
             registry[key].applyBindings(el);
         } else {
             if (typeof prototype === 'function') {
@@ -120,7 +109,12 @@ window.breeze.factory = function (BaseClass, singleton) {
             } else {
                 instance = new BaseClass(prototype, settings, el);
             }
-            registry[key] = instance;
+
+            if (singleton && key) {
+                registry[key] = instance;
+            } else {
+                return instance;
+            }
         }
 
         return registry[key];
@@ -163,7 +157,7 @@ window.breeze.component = function (factory) {
 
             if ($.isPlainObject(this)) {
                 // object without element: $.fn.dataPost().send()
-                result = factory(name, prototype, settings || {}, window);
+                result = factory(name, prototype, settings, window);
             } else if (typeof settings === 'string') {
                 // object instance or method: $(el).dropdown('open')
 
