@@ -117,6 +117,10 @@
                 .send(params.data)
                 .set('X-Requested-With', 'XMLHttpRequest');
 
+            if (params.type) {
+                request.type(params.type);
+            }
+
             if (params.ok) {
                 request.ok(params.ok);
             } else if (params.strict !== false) {
