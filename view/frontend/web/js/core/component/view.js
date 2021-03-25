@@ -1,4 +1,4 @@
-/* global ko */
+/* global ko _ */
 (function () {
     'use strict';
 
@@ -50,9 +50,18 @@
          * @param {Object} options
          */
         option: function (options) {
-            this.options = $.extend(true, {}, this.options, options || {});
+            this.options = $.extend(true, {}, this.options || {}, options || {});
+            this.options = $.extend(true, this.options, this.options.config || {});
 
             return this;
+        },
+
+        /**
+         * @param {String} path
+         * @return {Mixed}
+         */
+        path: function (path) {
+            return _.get(this.options, path.split('/'));
         }
     };
 

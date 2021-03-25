@@ -1,4 +1,4 @@
-/* global breeze */
+/* global breeze _ */
 (function () {
     'use strict';
 
@@ -210,6 +210,31 @@
                 this.closePopup();
             }
         }
+    });
+
+    // minicart totals integration
+    $(document).one('breeze:mount:Magento_Checkout/js/view/minicart', function () {
+        /**
+         * @param {Array} cartItems
+         * @return {Boolean}
+         */
+        function isMsrpApplied(cartItems) {
+            return _.find(cartItems, function (item) {
+                if (_.has(item, 'canApplyMsrp')) {
+                    return item.canApplyMsrp;
+                }
+
+                return false;
+            });
+        }
+
+        breeze.sections.get('cart').subscribe(function (updatedCart) {
+            var view = window.breeze.registry.get('minicart')[0];
+
+            if (view) {
+                view.displaySubtotal(!isMsrpApplied(updatedCart.items));
+            }
+        }, this);
     });
 
     $(document).on('breeze:mount:addToCart', function (event) {

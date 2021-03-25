@@ -18,12 +18,12 @@
             <span class="counter-label">
             <!-- ko if: getCartParam('summary_count') -->
                 <!-- ko text: getCartParam('summary_count') --><!-- /ko -->
-                <!-- ko i18n: 'items' --><!-- /ko -->
+                <!-- ko text: $t('items') --><!-- /ko -->
             <!-- /ko -->
             </span>
         </span>
     </a>
-    <?php if (false && $block->getIsNeedToDisplaySideBar()):?>
+    <?php if ($block->getIsNeedToDisplaySideBar()):?>
         <div class="block block-minicart"
              data-role="dropdownDialog"
              data-mage-init='{"dropdownDialog":{
@@ -35,7 +35,13 @@
                 "triggerClass":"active",
                 "parentClass":"active",
                 "buttons":[]}}'>
-            <div id="minicart-content-wrapper" data-bind="scope: 'minicart_content', template: 'minicart'"></div>
+            <div id="minicart-content-wrapper" data-bind="
+                scope: 'minicart_content',
+                template: {
+                    if: shouldRender,
+                    name: 'minicart'
+                }
+            "></div>
             <?= $block->getChildHtml('minicart.addons') ?>
         </div>
     <?php endif ?>

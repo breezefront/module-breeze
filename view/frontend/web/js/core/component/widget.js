@@ -44,7 +44,7 @@
             if (typeof options === 'string') {
                 this.options = options;
             } else {
-                this.options = $.extend(true, {}, this.options, options || {});
+                this.options = $.extend(true, {}, this.options || {}, options || {});
             }
 
             return this;

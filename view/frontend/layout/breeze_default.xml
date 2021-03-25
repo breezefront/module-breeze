@@ -28,6 +28,7 @@
                     <item name="cookie" xsi:type="string">Swissup_Breeze::js/lib/js.cookie-3.0.0-rc1.min.js</item>
                     <item name="underscore" xsi:type="string">Swissup_Breeze::js/lib/underscore-1.12.0.min.js</item>
                     <item name="knockout" xsi:type="string">Swissup_Breeze::js/lib/knockout-3.5.1.min.js</item>
+                    <item name="knockout-extend" xsi:type="string">Swissup_Breeze::js/core/extend-ko.js</item>
                     <item name="turbo" xsi:type="array">
                         <item name="url" xsi:type="string">Swissup_Breeze::js/lib/turbo-7.0.0-beta4.min.js</item>
                         <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Data::isTurboEnabled"/>
@@ -52,6 +53,7 @@
                         <item name="components" xsi:type="array">
                             <item name="Magento_Customer/js/customer-data" xsi:type="string">Swissup_Breeze/js/components/customerData</item>
                             <item name="Magento_PageCache/js/form-key-provider" xsi:type="string">Swissup_Breeze/js/components/formKey</item>
+                            <item name="Magento_Ui/js/block-loader" xsi:type="string">Swissup_Breeze/js/components/blockLoader</item>
                             <item name="dataPost" xsi:type="string">Swissup_Breeze/js/components/dataPost</item>
                             <item name="menu" xsi:type="string">Swissup_Breeze/js/components/menu</item>
                             <item name="dropdown" xsi:type="string">Swissup_Breeze/js/components/dropdown</item>
@@ -114,12 +116,30 @@
         <referenceBlock name="cookie_config" template="Swissup_Breeze::theme/js/cookie.phtml"/>
         <referenceBlock name="customer.section.config" template="Swissup_Breeze::customer/js/section-config.phtml"/>
         <referenceBlock name="wishlist_sidebar" template="Swissup_Breeze::wishlist/sidebar.phtml"/>
-
         <referenceBlock name="minicart" template="Swissup_Breeze::checkout/minicart.phtml"/>
 
         <!-- Add ko templates -->
         <referenceContainer name="before.body.end">
-            <block class="Magento\Framework\View\Element\Template" template="Swissup_Breeze::ko/shared/product-image.phtml"/>
+            <block class="Swissup\Breeze\Block\KoTemplate" name="breeze.productImage" template="Swissup_Breeze::ko/shared/product-image.phtml"/>
+            <block class="Swissup\Breeze\Block\KoTemplate" name="breeze.minicart" template="Swissup_Breeze::ko/checkout/minicart.phtml">
+                <container name="subtotalContainer">
+                    <block class="Magento\Framework\View\Element\Template" name="subtotal" template="Swissup_Breeze::ko/checkout/minicart/subtotal.phtml">
+                        <block class="Magento\Framework\View\Element\Template" name="subtotal.totals" template="Swissup_Breeze::ko/checkout/minicart/subtotal/totals.phtml">
+                            <container name="minicart-subtotal-hidden">
+                                <block class="Magento\Framework\View\Element\Template" template="Swissup_Breeze::ko/checkout/minicart/subtotal/msrp.phtml"/>
+                            </container>
+                        </block>
+                    </block>
+                </container>
+                <container name="extraInfo"></container>
+                <container name="promotion"></container>
+                <container name="signInPopup"></container>
+            </block>
+            <block class="Swissup\Breeze\Block\KoTemplate" name="breeze.minicart.defaultRenderer" template="Swissup_Breeze::ko/checkout/minicart/item/default.phtml">
+                <container name="priceSidebar">
+                    <block class="Magento\Framework\View\Element\Template" template="Swissup_Breeze::ko/checkout/minicart/item/price.phtml"/>
+                </container>
+            </block>
         </referenceContainer>
     </body>
 </page>

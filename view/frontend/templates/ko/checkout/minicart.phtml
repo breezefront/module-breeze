@@ -1,0 +1,94 @@
+<div class="block-title">
+    <strong>
+        <span class="text" data-bind="text: $t('My Cart')"></span>
+        <span class="qty empty" data-bind="
+            css: { empty: !!getCartParam('summary_count') == false },
+            attr: { title: $t('Items in Cart') },
+            text: getCartParam('summary_count')
+        "></span>
+    </strong>
+</div>
+
+<div class="block-content">
+    <button type="button" id="btn-minicart-close" class="action close" data-action="close" data-bind="
+            attr: {
+                title: $t('Close')
+            },
+            click: closeMinicart
+        ">
+        <span data-bind="text: $t('Close')"></span>
+    </button>
+
+    <!-- ko if: (getCartParam('summary_count')) -->
+        <div class="items-total">
+            <!-- ko if: (maxItemsToDisplay < getCartLineItemsCount()) -->
+                <span class="count" data-bind="text: maxItemsToDisplay"></span>
+                <span data-bind="text: $t('of')"></span>
+            <!--/ko-->
+
+            <span class="count" data-bind="text: getCartParam('summary_count')"></span>
+
+            <!-- ko if: (getCartParam('summary_count') > 1) -->
+                <span data-bind="text: $t('Items in Cart')"></span>
+            <!--/ko-->
+            <!-- ko if: (getCartParam('summary_count') === 1) -->
+                <span data-bind="text: $t('Item in Cart')"></span>
+            <!--/ko-->
+        </div>
+
+        <?= $block->getChildHtml('subtotalContainer') ?>
+        <?= $block->getChildHtml('extraInfo') ?>
+
+        <!-- ko if: (getCartParam('possible_onepage_checkout')) -->
+            <div class="actions">
+                <div class="primary">
+                    <button id="top-cart-btn-checkout"
+                        type="button"
+                        class="action primary checkout"
+                        data-action="close"
+                        data-bind="
+                            attr: {
+                                title: $t('Proceed to Checkout')
+                            },
+                            click: closeMinicart,
+                            text: $t('Proceed to Checkout')
+                        "></button>
+                    <div data-bind="html: getCartParamUnsanitizedHtml('extra_actions')"></div>
+                </div>
+            </div>
+        <!--/ko-->
+
+        <strong class="subtitle" data-bind="text: $t('Recently added item(s)')"></strong>
+        <div data-action="scroll" class="minicart-items-wrapper">
+            <ol id="mini-cart" class="minicart-items" data-bind="
+                template: {
+                    name: getItemRenderer.bind($data),
+                    foreach: getCartItems(), as: 'item'
+                }
+            "></ol>
+        </div>
+    <!--/ko-->
+
+    <!-- ko ifnot: (getCartParam('summary_count')) -->
+        <strong class="subtitle empty" data-bind="text: $t('You have no items in your shopping cart.')"></strong>
+    <!--/ko-->
+
+    <!-- ko if: (getCartParam('summary_count')) -->
+        <div class="actions">
+            <div class="secondary">
+                <a class="action viewcart" data-bind="attr: {href: shoppingCartUrl}">
+                    <span data-bind="text: $t('View and Edit Cart')"></span>
+                </a>
+            </div>
+        </div>
+    <!--/ko-->
+
+    <?php $promo = $block->getChildHtml('promotion') ?>
+    <?php if ($promo) : ?>
+        <div id="minicart-widgets" class="minicart-widgets">
+            <?= $promo ?>
+        </div>
+    <?php endif ?>
+</div>
+
+<?= $block->getChildHtml('signInPopup') ?>
