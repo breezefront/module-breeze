@@ -78,6 +78,12 @@
                                     <param name="1">payment/payflow_express_bml/active</param>
                                 </item>
                             </item>
+                            <item name="cookieNotices" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/cookieNotices</item>
+                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
+                                    <param name="path">web/cookie/cookie_restriction</param>
+                                </item>
+                            </item>
 
                             <!-- ViewModels -->
                             <item name="Magento_Customer/js/view/customer" xsi:type="string">Swissup_Breeze/js/components/view/customer</item>
