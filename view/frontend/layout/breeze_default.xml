@@ -101,6 +101,12 @@
                         <item name="sort_order" xsi:type="number">30</item>
                         <item name="components" xsi:type="array">
                             <item name="validate-customer-password" xsi:type="string">Swissup_Breeze/js/components/validators/customer</item>
+                            <item name="Magento_LoginAsCustomerAssistance/js/opt-in" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/customerAssistance</item>
+                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
+                                    <param name="path">login_as_customer/general/enabled</param>
+                                </item>
+                            </item>
                         </item>
                     </item>
                     <item name="cart" xsi:type="array">
