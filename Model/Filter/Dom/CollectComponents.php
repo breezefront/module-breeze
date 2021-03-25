@@ -14,6 +14,22 @@ class CollectComponents extends AbstractFilter
     {
         $xpath = new \DOMXPath($document);
 
+        $this->collect($document, $xpath);
+
+        $templates = $xpath->query('//*[@type="text/x-magento-template"]');
+        foreach ($templates as $template) {
+            $doc = new \DOMDocument();
+            $doc->loadHTML(str_replace('<\/', '</', $template->textContent));
+            $this->collect($doc, new \DOMXPath($doc));
+        }
+    }
+
+    /**
+     * @param \DOMDocument $document
+     * @param \DOMXPath $xpath
+     */
+    private function collect(\DOMDocument $document, \DOMXPath $xpath)
+    {
         $nodes = $xpath->query('//*[@data-mage-init]', $document);
         foreach ($nodes as $node) {
             $value = $node->getAttribute('data-mage-init');
