@@ -83,7 +83,12 @@
                             <item name="Magento_Theme/js/view/messages" xsi:type="string">Swissup_Breeze/js/components/view/messages</item>
                             <item name="Magento_Catalog/js/view/compare-products" xsi:type="string">Swissup_Breeze/js/components/view/compareProducts</item>
                             <item name="Magento_Checkout/js/view/minicart" xsi:type="string">Swissup_Breeze/js/components/view/minicart</item>
-                            <item name="Magento_Wishlist/js/view/wishlist" xsi:type="string">Swissup_Breeze/js/components/view/wishlist</item>
+                            <item name="Magento_Wishlist/js/view/wishlist" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/view/wishlist</item>
+                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
+                                    <param name="module">wishlist/general/active</param>
+                                </item>
+                            </item>
                         </item>
                     </item>
                     <item name="product" xsi:type="array">
