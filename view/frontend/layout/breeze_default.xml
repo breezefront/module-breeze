@@ -133,7 +133,7 @@
 
         <!-- Add ko templates -->
         <referenceContainer name="before.body.end">
-            <block class="Swissup\Breeze\Block\KoTemplate" name="breeze.productImage" template="Swissup_Breeze::ko/shared/product-image.phtml"/>
+            <block class="Swissup\Breeze\Block\KoTemplate" name="breeze.productImage" template="Swissup_Breeze::ko/catalog/product-image.phtml"/>
             <block class="Swissup\Breeze\Block\KoTemplate" name="breeze.minicart" template="Swissup_Breeze::ko/checkout/minicart.phtml">
                 <container name="subtotalContainer">
                     <block class="Magento\Framework\View\Element\Template" name="subtotal" template="Swissup_Breeze::ko/checkout/minicart/subtotal.phtml">
