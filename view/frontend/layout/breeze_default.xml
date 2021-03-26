@@ -84,6 +84,12 @@
                                     <param name="path">web/cookie/cookie_restriction</param>
                                 </item>
                             </item>
+                            <item name="Magento_Persistent/js/view/additional-welcome" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/persistent</item>
+                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
+                                    <param name="path">persistent/options/enabled</param>
+                                </item>
+                            </item>
 
                             <!-- ViewModels -->
                             <item name="Magento_Customer/js/view/customer" xsi:type="string">Swissup_Breeze/js/components/view/customer</item>
