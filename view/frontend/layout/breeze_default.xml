@@ -53,6 +53,7 @@
                         <item name="components" xsi:type="array">
                             <item name="Magento_Customer/js/customer-data" xsi:type="string">Swissup_Breeze/js/components/customerData</item>
                             <item name="Magento_PageCache/js/form-key-provider" xsi:type="string">Swissup_Breeze/js/components/formKey</item>
+                            <item name="pageCache" xsi:type="string">Swissup_Breeze/js/components/pageCache</item>
                             <item name="Magento_Ui/js/block-loader" xsi:type="string">Swissup_Breeze/js/components/blockLoader</item>
                             <item name="dataPost" xsi:type="string">Swissup_Breeze/js/components/dataPost</item>
                             <item name="menu" xsi:type="string">Swissup_Breeze/js/components/menu</item>
