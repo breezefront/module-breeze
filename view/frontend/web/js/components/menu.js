@@ -21,6 +21,8 @@
                 this.toggleMode(mql);
             }
 
+            this._setActiveMenu(); // varnish fix
+
             if (this.options.expanded) {
                 this.expand();
             }
@@ -109,6 +111,69 @@
 
                     return false;
                 });
+        },
+
+        /** [_setActiveMenu description] */
+        _setActiveMenu: function () {
+            var currentUrl = window.location.href.split('?')[0];
+
+            if (!this._setActiveMenuForCategory(currentUrl)) {
+                this._setActiveMenuForProduct(currentUrl);
+            }
+        },
+
+        /** [_setActiveMenuForCategory description] */
+        _setActiveMenuForCategory: function (url) {
+            var activeCategoryLink = this.element.find('a[href="' + url + '"]'),
+                classes,
+                classNav;
+
+            if (!activeCategoryLink || !activeCategoryLink.parent().hasClass('category-item')) {
+                return false;
+            } else if (!activeCategoryLink.parent().hasClass('active')) {
+                activeCategoryLink.parent().addClass('active');
+                classes = activeCategoryLink.parent().attr('class');
+                classNav = classes.match(/(nav\-)[0-9]+(\-[0-9]+)+/gi);
+
+                if (classNav) {
+                    this._setActiveParent(classNav[0]);
+                }
+            }
+
+            return true;
+        },
+
+        /** [_setActiveParent description] */
+        _setActiveParent: function (childClassName) {
+            var parentElement,
+                parentClass = childClassName.substr(0, childClassName.lastIndexOf('-'));
+
+            if (parentClass.lastIndexOf('-') !== -1) {
+                parentElement = this.element.find('.' + parentClass);
+
+                if (parentElement) {
+                    parentElement.addClass('has-active');
+                }
+                this._setActiveParent(parentClass);
+            }
+        },
+
+        /** [_setActiveMenuForProduct description] */
+        _setActiveMenuForProduct: function (currentUrl) {
+            var categoryUrlExtension,
+                lastUrlSection,
+                possibleCategoryUrl,
+                //retrieve first category URL to know what extension is used for category URLs
+                firstCategoryUrl = this.element.find('> li a').attr('href');
+
+            if (firstCategoryUrl) {
+                lastUrlSection = firstCategoryUrl.substr(firstCategoryUrl.lastIndexOf('/'));
+                categoryUrlExtension = lastUrlSection.lastIndexOf('.') !== -1 ?
+                    lastUrlSection.substr(lastUrlSection.lastIndexOf('.')) : '';
+
+                possibleCategoryUrl = currentUrl.substr(0, currentUrl.lastIndexOf('/')) + categoryUrlExtension;
+                this._setActiveMenuForCategory(possibleCategoryUrl);
+            }
         }
     });
 
