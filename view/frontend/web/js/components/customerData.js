@@ -145,7 +145,9 @@
                         response: data
                     });
 
-                    breeze.cookies.setJson('section_data_ids', sectionDataIds);
+                    breeze.cookies.setJson('section_data_ids', sectionDataIds, {
+                        domain: false
+                    });
                 }
             });
         },
@@ -175,7 +177,9 @@
                     storageInvalidation.set(this, true);
                 });
 
-            breeze.cookies.setJson('section_data_ids', sectionDataIds);
+            breeze.cookies.setJson('section_data_ids', sectionDataIds, {
+                domain: false
+            });
         }
     };
 
