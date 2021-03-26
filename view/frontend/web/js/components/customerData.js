@@ -24,7 +24,9 @@
      */
     function invalidateCacheByCloseCookieSession() {
         if (!breeze.cookies.get('mage-cache-sessid')) {
-            breeze.cookies.set('mage-cache-sessid', true);
+            breeze.cookies.set('mage-cache-sessid', true, {
+                domain: false
+            });
             storage.removeAll();
         }
     }
