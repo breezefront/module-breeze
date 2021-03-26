@@ -86,6 +86,62 @@
         return data;
     }
 
+    /**
+     * @param {Object} request
+     * @param {Promise} params
+     */
+    function prepareRequest(request, params) {
+        request.set('X-Requested-With', 'XMLHttpRequest');
+
+        if (params.type) {
+            request.type(params.type);
+
+            if (params.type === 'json') {
+                request.accept('json');
+
+                /** Force json parser as Magento returns text/html for some responses */
+                request.parse(function (response, text) {
+                    return JSON.parse(text);
+                });
+            }
+        }
+
+        if (params.ok) {
+            request.ok(params.ok);
+        } else if (params.strict !== false) {
+            request.ok(function (response) {
+                return response.body;
+            });
+        }
+
+        return request
+            .on('response', function (response) {
+                onResponse(response, params);
+            })
+            .catch(function (error) {
+                return onError(error, params);
+            })
+            .then(function (response) {
+                return onSuccess(response, params);
+            });
+    }
+
+    /**
+     * @param {Object} params
+     * @return {Promise}
+     */
+    function preparePostRequest(params) {
+        return prepareRequest(superagent.post(params.url).send(params.data), params);
+    }
+
+    /**
+     * @param {Object} params
+     * @return {Promise}
+     */
+    function prepareGetRequest(params) {
+        return prepareRequest(superagent.get(params.url).query(params.data), params);
+    }
+
     window.breeze = window.breeze || {};
     window.breeze.request = {
         /**
@@ -93,8 +149,6 @@
          * @return {Promise}
          */
         post: function (params) {
-            var request;
-
             params = prepareParams(params);
 
             if (params.each || params instanceof Element) {
@@ -112,33 +166,7 @@
                 params.data = prepareData(params.data);
             }
 
-            request = superagent
-                .post(params.url)
-                .send(params.data)
-                .set('X-Requested-With', 'XMLHttpRequest');
-
-            if (params.type) {
-                request.type(params.type);
-            }
-
-            if (params.ok) {
-                request.ok(params.ok);
-            } else if (params.strict !== false) {
-                request.ok(function (response) {
-                    return response.body;
-                });
-            }
-
-            return request
-                .on('response', function (response) {
-                    onResponse(response, params);
-                })
-                .catch(function (error) {
-                    return onError(error, params);
-                })
-                .then(function (response) {
-                    return onSuccess(response, params);
-                });
+            return preparePostRequest(params);
         },
 
         /**
@@ -146,21 +174,7 @@
          * @return {Promise}
          */
         get: function (params) {
-            params = prepareParams(params);
-
-            return superagent
-                .get(params.url)
-                .query(params.data)
-                .set('X-Requested-With', 'XMLHttpRequest')
-                .on('response', function (response) {
-                    onResponse(response, params);
-                })
-                .catch(function (error) {
-                    return onError(error, params);
-                })
-                .then(function (response) {
-                    return onSuccess(response, params);
-                });
+            return prepareGetRequest(prepareParams(params));
         }
     };
 })();
