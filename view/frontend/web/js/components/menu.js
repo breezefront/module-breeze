@@ -164,7 +164,7 @@
                 lastUrlSection,
                 possibleCategoryUrl,
                 //retrieve first category URL to know what extension is used for category URLs
-                firstCategoryUrl = this.element.find('> li a').attr('href');
+                firstCategoryUrl = this.element.children('li').find('a').attr('href');
 
             if (firstCategoryUrl) {
                 lastUrlSection = firstCategoryUrl.substr(firstCategoryUrl.lastIndexOf('/'));
