@@ -8,9 +8,9 @@
             var self = this;
 
             if (breeze.cookies.get(this.options.cookieName)) {
-                $(this.element).hide();
+                this.element.hide();
             } else {
-                $(this.element).show();
+                this.element.show();
             }
 
             $(this.options.cookieAllowButtonSelector).on('click', function () {

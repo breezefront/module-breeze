@@ -59,7 +59,7 @@
 
         /** Expand nested menus */
         expand: function () {
-            var subMenus = $(this.element).find(this.options.menus),
+            var subMenus = this.element.find(this.options.menus),
                 expandedMenus = subMenus.find(this.options.menus);
 
             expandedMenus.addClass('shown').addClass('expanded');

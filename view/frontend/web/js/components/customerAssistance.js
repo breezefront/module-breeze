@@ -8,7 +8,7 @@
             var self = this;
 
             //jscs:disable requireCamelCaseOrUpperCaseIdentifiers
-            $(this.element).on('submit', function () {
+            this.element.on('submit', function () {
                 this.elements.assistance_allowed.value =
                     this.elements.assistance_allowed_checkbox.checked ?
                         self.options.allowAccess : self.options.denyAccess;

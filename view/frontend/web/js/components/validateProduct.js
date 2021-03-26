@@ -5,8 +5,8 @@
     breeze.widget('productValidate', {
         /** Initialize plugin */
         create: function () {
-            $(this.element).validator();
-            $(this.element).catalogAddToCart(this.options);
+            this.element.validator();
+            this.element.catalogAddToCart(this.options);
         }
     });
 

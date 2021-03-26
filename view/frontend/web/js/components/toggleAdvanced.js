@@ -17,14 +17,14 @@
             var self = this;
 
             this.options = $.extend(this.options, _.filter({
-                baseToggleClass: $(this.element).data('base-toggle-class'),
-                selectorsToggleClass: $(this.element).data('selectors-toggle-class'),
-                toggleContainers: $(this.element).data('toggle-selectors')
+                baseToggleClass: this.element.data('base-toggle-class'),
+                selectorsToggleClass: this.element.data('selectors-toggle-class'),
+                toggleContainers: this.element.data('toggle-selectors')
             }, function (value) {
                 return value;
             }));
 
-            $(this.element).on('click', function (e) {
+            this.element.on('click', function (e) {
                 e.preventDefault();
                 self.toggle();
             });
@@ -32,7 +32,7 @@
 
         /** Toggle dropdown */
         toggle: function () {
-            $(this.element).toggleClass(this.options.baseToggleClass);
+            this.element.toggleClass(this.options.baseToggleClass);
 
             if (this.options.toggleContainers) {
                 $(this.options.toggleContainers).toggleClass(this.options.selectorsToggleClass);

@@ -24,7 +24,7 @@
             this._decorate(this.breadcrumbs);
 
             if ($('script#breadcrumbs').length) {
-                $(this.element).html(_.template($('script#breadcrumbs').html())({
+                this.element.html(_.template($('script#breadcrumbs').html())({
                     'breadcrumbs': this.breadcrumbs
                 }));
             }

@@ -18,22 +18,22 @@
 
         /** Mount widget on the element */
         create: function () {
-            this.header  = typeof this.options.header === 'object' ?
-                this.options.header : $(this.element).find(this.options.header).first();
+            this.header = typeof this.options.header === 'object' ?
+                this.options.header : this.element.find(this.options.header).first();
             this.trigger = typeof this.options.trigger === 'object' ?
-                this.options.trigger : $(this.header).find(this.options.trigger).first();
+                this.options.trigger : this.header.find(this.options.trigger).first();
             this.content = typeof this.options.content === 'object' ?
-                this.options.content : $(this.header).next(this.options.content).first();
+                this.options.content : this.header.next(this.options.content).first();
 
             if (!this.trigger.length) {
                 this.trigger = this.header;
             }
 
-            $(this.header).attr('role', 'tab');
-            $(this.trigger).attr('data-trigger', true);
-            $(this.element).attr('data-collapsible', true);
-            $(this.element).attr('role', 'tablist');
-            $(this.content).attr('role', 'tabpanel');
+            this.header.attr('role', 'tab');
+            this.trigger.attr('data-trigger', true);
+            this.element.attr('data-collapsible', true);
+            this.element.attr('role', 'tablist');
+            this.content.attr('role', 'tabpanel');
 
             if (this.options.active) {
                 this.open();
@@ -51,26 +51,26 @@
 
         /** Open dropdown */
         open: function () {
-            $(this.element).trigger('beforeOpen');
+            this.element.trigger('beforeOpen');
 
             if (this.options.openedState) {
-                $(this.element).addClass(this.options.openedState);
+                this.element.addClass(this.options.openedState);
             }
 
             if (this.options.collateral.element) {
                 $(this.options.collateral.element).addClass(this.options.collateral.openedState);
             }
 
-            $(this.header).attr({
+            this.header.attr({
                 'aria-selected': true,
                 'aria-expanded': true
             });
-            $(this.content).attr({
+            this.content.attr({
                 'aria-hidden': false
             });
-            $(this.content).show();
+            this.content.show();
 
-            $(this.element).trigger('dimensionsChanged', {
+            this.element.trigger('dimensionsChanged', {
                 opened: true
             });
         },
@@ -78,30 +78,30 @@
         /** Close dropdown */
         close: function () {
             if (this.options.openedState) {
-                $(this.element).removeClass(this.options.openedState);
+                this.element.removeClass(this.options.openedState);
             }
 
             if (this.options.collateral.element) {
                 $(this.options.collateral.element).removeClass(this.options.collateral.openedState);
             }
 
-            $(this.header).attr({
+            this.header.attr({
                 'aria-selected': false,
                 'aria-expanded': false
             });
-            $(this.content).attr({
+            this.content.attr({
                 'aria-hidden': true
             });
-            $(this.content).hide();
+            this.content.hide();
 
-            $(this.element).trigger('dimensionsChanged', {
+            this.element.trigger('dimensionsChanged', {
                 opened: false
             });
         },
 
         /** Toggle dropdown */
         toggle: function () {
-            if ($(this.element).hasClass(this.options.openedState)) {
+            if (this.element.hasClass(this.options.openedState)) {
                 if (this.options.collapsible) {
                     this.close();
                 }

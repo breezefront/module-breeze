@@ -28,7 +28,7 @@
         _addObservers: function () {
             var self = this;
 
-            $(this.element).on('click', this.options.button.checkout, function () {
+            this.element.on('click', this.options.button.checkout, function () {
                 var cart = breeze.sections.get('cart'),
                     customer = breeze.sections.get('customer'),
                     element = $(self.options.button.checkout);

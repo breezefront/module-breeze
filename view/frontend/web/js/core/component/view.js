@@ -24,7 +24,7 @@
          * @return {ViewModel}
          */
         initialize: function (options, element) {
-            this.element = element;
+            this.element = $(element);
             this.option(options);
             this.create();
             this.init();

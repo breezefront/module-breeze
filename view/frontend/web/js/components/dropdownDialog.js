@@ -125,7 +125,7 @@
 
             $(window).one('resize.dropdownDialog', this.closeHandler);
 
-            $(this.element).trigger('dropdowndialogopen');
+            this.element.trigger('dropdowndialogopen');
         },
 
         /** Close dialog */
@@ -137,13 +137,13 @@
 
             $(window).off('resize.dropdownDialog', this.closeHandler);
 
-            $(this.element).trigger('dropdowndialogclose');
+            this.element.trigger('dropdowndialogclose');
         },
 
         /** [toggleClasses description] */
         toggleClasses: function (flag) {
             if (this.options.dialogContentClass) {
-                $(this.element).toggleClass(this.options.dialogContentClass, flag);
+                this.element.toggleClass(this.options.dialogContentClass, flag);
             }
 
             if (this.options.triggerClass && this.trigger) {

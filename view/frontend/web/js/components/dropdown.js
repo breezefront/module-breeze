@@ -17,13 +17,13 @@
             if (this.options.parent) {
                 this.parent = $(this.options.parent);
             } else {
-                this.parent = this.element.parentNode;
+                this.parent = this.element.parent();
             }
 
-            $(this.element).attr('data-dropdown', true);
-            $(this.element).attr('aria-haspopup', true);
-            $(this.parent).attr('data-trigger', true);
-            $(this.parent).attr('data-dropdown-parent', true);
+            this.element.attr('data-dropdown', true);
+            this.element.attr('aria-haspopup', true);
+            this.parent.attr('data-trigger', true);
+            this.parent.attr('data-dropdown-parent', true);
 
             this.close();
         },
@@ -37,9 +37,9 @@
         open: function () {
             this.status = true;
 
-            $(this.element).addClass(this.options.activeClass)
+            this.element.addClass(this.options.activeClass)
                 .attr('aria-expanded', true);
-            $(this.parent).addClass(this.options.activeClass)
+            this.parent.addClass(this.options.activeClass)
                 .find(this.options.menu)
                 .attr('aria-hidden', false);
         },
@@ -48,9 +48,9 @@
         close: function () {
             this.status = false;
 
-            $(this.element).removeClass(this.options.activeClass)
+            this.element.removeClass(this.options.activeClass)
                 .attr('aria-expanded', false);
-            $(this.parent).removeClass(this.options.activeClass)
+            this.parent.removeClass(this.options.activeClass)
                 .find(this.options.menu)
                 .attr('aria-hidden', true);
         },

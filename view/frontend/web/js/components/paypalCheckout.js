@@ -13,12 +13,12 @@
         create: function () {
             this.agreements = breeze.sections.get('paypal-billing-agreement');
             this.onClickHandler = this.onClick.bind(this);
-            $(this.element).on('click', '[data-action="checkout-form-submit"]', this.onClickHandler);
+            this.element.on('click', '[data-action="checkout-form-submit"]', this.onClickHandler);
         },
 
         /** Destroy widget listeners */
         destroy: function () {
-            $(this.element).off('click', this.onClickHandler);
+            this.element.off('click', this.onClickHandler);
         },
 
         /** [onClick description] */

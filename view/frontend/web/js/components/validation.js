@@ -10,8 +10,8 @@
             this.validator = breeze.validator(this.element, this.options);
 
             // do not use event delegation because this callback should be first
-            if (!$(this.element).attr('data-validator')) {
-                $(this.element).attr('data-validator', true).on('submit', function () {
+            if (!this.element.attr('data-validator')) {
+                this.element.attr('data-validator', true).on('submit', function () {
                     if (!self.validator.isValid()) {
                         return false;
                     }
