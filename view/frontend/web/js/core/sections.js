@@ -115,6 +115,8 @@ window.breeze.sections = (function () {
     };
 })();
 
+window.customerData = window.breeze.sections;
+
 (function () {
     'use strict';
 
