@@ -27,6 +27,16 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
     protected $bundles = [];
 
     /**
+     * @var array
+     */
+    protected $activeComponents = [];
+
+    /**
+     * @var array
+     */
+    protected $activeBundles = null;
+
+    /**
      * @param \Magento\Backend\Block\Context $context
      * @param \Magento\Framework\View\Asset\ConfigInterface $assetConfig
      * @param \Magento\Framework\View\Page\Config $pageConfig
@@ -111,15 +121,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
      */
     public function addItem($name)
     {
-        foreach ($this->bundles as $bundleName => $bundle) {
-            if (isset($bundle['components'][$name])) {
-                $this->bundles[$bundleName]['active'] = true;
-
-                if (is_array($this->bundles[$bundleName]['components'][$name])) {
-                    $this->bundles[$bundleName]['components'][$name]['active'] = true;
-                }
-            }
-        }
+        $this->activeComponents[$name] = $name;
     }
 
     /**
@@ -144,26 +146,55 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
      */
     protected function getActiveBundles()
     {
-        $bundles = array_filter($this->bundles, function ($bundle) {
-            return $bundle['active'] ?? false;
-        });
+        if ($this->activeBundles !== null) {
+            return $this->activeBundles;
+        }
 
-        // unset disabled modules
-        foreach ($bundles as $bundleName => $bundle) {
+        $this->activeBundles = [];
+
+        foreach ($this->bundles as $bundleName => $bundle) {
+            if (!empty($bundle['active'])) {
+                $this->activeBundles[$bundleName] = $bundle;
+                continue;
+            }
+
+            $registeredNames = array_keys($bundle['components']);
+            foreach ($bundle['components'] as $component) {
+                if (!is_array($component) || empty($component['names'])) {
+                    continue;
+                }
+                $registeredNames += $component['names'];
+            }
+
+            if (array_intersect($registeredNames, $this->activeComponents)) {
+                $this->activeBundles[$bundleName] = $bundle;
+            }
+        }
+
+        // unset disabled component when it's not active
+        foreach ($this->activeBundles as $bundleName => $bundle) {
             foreach ($bundle['components'] as $componentName => $component) {
-                if (!is_array($component) || !empty($component['active'])) {
+                if (!is_array($component) ||
+                    !empty($component['active']) ||
+                    in_array($componentName, $this->activeComponents)
+                ) {
+                    continue;
+                }
+
+                $names = $component['names'] ?? [];
+                if ($names && array_intersect($names, $this->activeComponents)) {
                     continue;
                 }
 
                 $component['enabled'] = $component['enabled'] ?? true;
 
                 if (!$component['enabled']) {
-                    unset($bundles[$bundleName]['components'][$componentName]);
+                    unset($this->activeBundles[$bundleName]['components'][$componentName]);
                 }
             }
         }
 
-        uasort($bundles, function ($a, $b) {
+        uasort($this->activeBundles, function ($a, $b) {
             $a = $a['sort_order'] ?? 1000;
             $b = $b['sort_order'] ?? 1000;
 
@@ -174,6 +205,6 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
             return $a < $b ? -1 : 1;
         });
 
-        return $bundles;
+        return $this->activeBundles;
     }
 }
