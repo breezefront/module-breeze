@@ -5,6 +5,11 @@ namespace Swissup\Breeze\Model\Filter;
 class AbstractFilter
 {
     /**
+     * @var \Magento\Framework\View\LayoutInterface
+     */
+    protected $layout;
+
+    /**
      * @param \Magento\Framework\View\LayoutInterface $layout
      */
     public function __construct(
