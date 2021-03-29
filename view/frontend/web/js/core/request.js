@@ -108,7 +108,9 @@
 
         if (params.ok) {
             request.ok(params.ok);
-        } else if (params.strict !== false) {
+        } else if (params.strict !== false &&
+            ['html'].indexOf(params.type) === -1
+        ) {
             request.ok(function (response) {
                 return response.body;
             });
