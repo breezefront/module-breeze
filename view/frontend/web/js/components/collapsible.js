@@ -32,8 +32,11 @@
             this.header.attr('role', 'tab');
             this.trigger.attr('data-trigger', true);
             this.element.attr('data-collapsible', true);
-            this.element.attr('role', 'tablist');
             this.content.attr('role', 'tabpanel');
+
+            if (this.header.parent().attr('role') !== 'presentation') {
+                this.header.parent().attr('role', 'tablist');
+            }
 
             if (this.options.active) {
                 this.open();
