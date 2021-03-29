@@ -49,6 +49,7 @@
                 element.prop('disabled', true);
                 location.href = self.options.url.checkout;
             }).on('click', this.options.button.remove, function (event) {
+                event.preventDefault();
                 event.stopPropagation();
 
                 if (confirm(self.options.confirmMessage)) {
@@ -201,10 +202,10 @@
             }).then(function (response) {
                 elem.prop('disabled', false);
 
-                if (response.success) {
+                if (response.body.success) {
                     callback.call(this, elem, response);
-                } else if (response.error_message) {
-                    alert(response.error_message);
+                } else if (response.body.error_message) {
+                    alert(response.body.error_message);
                 }
             });
         },
