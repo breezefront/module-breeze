@@ -8,7 +8,7 @@
         }, settings));
     });
 
-    document.addEventListener('breeze:mount:accordion', function (event) {
+    $(document).on('breeze:mount:accordion', function (event) {
         $(event.detail.el).accordion(event.detail.settings);
     });
 })();

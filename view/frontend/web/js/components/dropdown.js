@@ -65,7 +65,7 @@
         }
     });
 
-    document.addEventListener('breeze:mount:dropdown', function (event) {
+    $(document).on('breeze:mount:dropdown', function (event) {
         $(event.detail.el).dropdown(event.detail.settings);
     });
 

@@ -168,7 +168,7 @@
             .forEach(processElement);
     }
 
-    document.addEventListener(eventName(), function (event) {
+    $(document).on(eventName(), function (event) {
         // destroy all widgets and views if turbo cache is disabled
         window.breeze.registry.delete();
 
@@ -185,7 +185,7 @@
         walk(event.target);
     });
 
-    document.addEventListener('turbo:before-cache', function () {
+    $(document).on('turbo:before-cache', function () {
         // destroy all widgets and views
         window.breeze.registry.delete();
     });

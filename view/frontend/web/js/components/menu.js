@@ -177,7 +177,7 @@
         }
     });
 
-    document.addEventListener('breeze:mount:menu', function (event) {
+    $(document).on('breeze:mount:menu', function (event) {
         $(event.detail.el).menu(event.detail.settings);
     });
 })();

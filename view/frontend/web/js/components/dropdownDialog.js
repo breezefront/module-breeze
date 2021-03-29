@@ -209,7 +209,7 @@
         }
     });
 
-    document.addEventListener('breeze:mount:dropdownDialog', function (event) {
+    $(document).on('breeze:mount:dropdownDialog', function (event) {
         $(event.detail.el).dropdownDialog(event.detail.settings);
     });
 })();

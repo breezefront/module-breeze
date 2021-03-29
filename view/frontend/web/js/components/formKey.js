@@ -35,7 +35,7 @@
         $('input[name="form_key"]').val(formKey);
     }
 
-    document.addEventListener('breeze:mount:Magento_PageCache/js/form-key-provider', function () {
+    $(document).on('breeze:mount:Magento_PageCache/js/form-key-provider', function () {
         initFormKey();
     });
 })();

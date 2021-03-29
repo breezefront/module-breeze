@@ -111,7 +111,7 @@
         }
     });
 
-    document.addEventListener('breeze:mount:collapsible', function (event) {
+    $(document).on('breeze:mount:collapsible', function (event) {
         $(event.detail.el).collapsible(event.detail.settings);
     });
 

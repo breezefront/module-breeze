@@ -417,7 +417,7 @@
         }
     });
 
-    document.addEventListener('breeze:mount:Magento_Checkout/js/view/minicart', function (event) {
+    $(document).on('breeze:mount:Magento_Checkout/js/view/minicart', function (event) {
         $(event.detail.el).minicart(event.detail.settings);
     });
 })();

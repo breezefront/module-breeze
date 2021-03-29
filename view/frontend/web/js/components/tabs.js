@@ -44,7 +44,7 @@
         });
     });
 
-    document.addEventListener('breeze:mount:tabs', function (event) {
+    $(document).on('breeze:mount:tabs', function (event) {
         $(event.detail.el).tabs(event.detail.settings);
     });
 })();

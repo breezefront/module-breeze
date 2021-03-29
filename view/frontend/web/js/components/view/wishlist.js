@@ -6,7 +6,7 @@
         wishlist: breeze.sections.get('wishlist')
     });
 
-    document.addEventListener('breeze:mount:Magento_Wishlist/js/view/wishlist', function (event) {
+    $(document).on('breeze:mount:Magento_Wishlist/js/view/wishlist', function (event) {
         $(event.detail.el).wishlist(event.detail.settings);
     });
 })();

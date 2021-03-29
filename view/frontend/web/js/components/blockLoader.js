@@ -54,7 +54,7 @@
         };
     });
 
-    document.addEventListener('breeze:mount:Magento_Ui/js/block-loader', function (event) {
+    $(document).on('breeze:mount:Magento_Ui/js/block-loader', function (event) {
         $.fn.blockLoader(event.detail.settings);
     });
 })();

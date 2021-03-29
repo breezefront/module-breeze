@@ -173,7 +173,7 @@
         }
     });
 
-    document.addEventListener('breeze:mount:pageCache', function (event) {
+    $(document).on('breeze:mount:pageCache', function (event) {
         $(event.detail.el).pageCache(event.detail.settings);
     });
 })();

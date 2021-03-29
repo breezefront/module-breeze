@@ -6,7 +6,7 @@
         compareProducts: breeze.sections.get('compare-products')
     });
 
-    document.addEventListener('breeze:mount:Magento_Catalog/js/view/compare-products', function (event) {
+    $(document).on('breeze:mount:Magento_Catalog/js/view/compare-products', function (event) {
         $(event.detail.el).compareProducts(event.detail.settings);
     });
 })();
