@@ -66,6 +66,12 @@
                 result.errors[0].field.focus();
             }
 
+            if (result.valid && this.options.onValid) {
+                this.options.onValid(result);
+            } else if (!result.valid && this.options.onInvalid) {
+                this.options.onInvalid(result);
+            }
+
             return result;
         },
 
