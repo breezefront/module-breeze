@@ -79,7 +79,7 @@
 
             $(elements).each(function () {
                 self.removeErrorClass(this);
-                self.removeErrorNodes(this);
+                self._overridable('removeErrorNodes', [this]);
             });
         },
 
@@ -228,7 +228,19 @@
          */
         _showErrors: function (element, errors) {
             this.addErrorClass(element);
-            this.addErrorNodes(element, this.createErrorNodes(element, errors));
+            this._overridable('addErrorNodes', [element, this.createErrorNodes(element, errors)]);
+        },
+
+        /**
+         * @param {String} methodName
+         * @param {Array} args
+         */
+        _overridable: function (methodName, args) {
+            if (this.options[methodName]) {
+                this.options[methodName].apply(this, args);
+            } else {
+                this.methodName.apply(this, args);
+            }
         },
 
         /**
