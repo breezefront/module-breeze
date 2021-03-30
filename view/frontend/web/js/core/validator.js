@@ -67,9 +67,9 @@
             }
 
             if (result.valid && this.options.onValid) {
-                this.options.onValid(result);
+                this.options.onValid.call(this, result);
             } else if (!result.valid && this.options.onInvalid) {
-                this.options.onInvalid(result);
+                this.options.onInvalid.call(this, result);
             }
 
             return result;
