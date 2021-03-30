@@ -57,8 +57,9 @@
             });
 
             // Reviews and other third-party links
-            $(document).on('click', 'a[href*="#"]', function () {
+            $(document).on('click', 'a[href*="#"]', function (event) {
                 var anchor = $(this).attr('href').split('#')[1],
+                    element,
                     index;
 
                 if (!anchor || self.element.has(this).length) {
@@ -71,8 +72,15 @@
                     return;
                 }
 
+                event.preventDefault();
                 self.collapsibles.eq(index).collapsible('open');
-                self.triggers.eq(index).get(0).scrollIntoView();
+                element = self.contents.find('#' + anchor);
+
+                if (!element.length) {
+                    element = self.triggers.eq(index);
+                }
+
+                element.get(0).scrollIntoView();
             });
         },
 
@@ -82,8 +90,8 @@
                 activeTrigger,
                 activeContent;
 
-            if (!hash) {
-                return -1;
+            if (!hash || hash.length <= 1) {
+                return index;
             }
 
             activeTrigger = this.triggers.has('[href*="' + hash + '"');
