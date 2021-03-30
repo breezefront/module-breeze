@@ -37,7 +37,7 @@
 
             this.triggers.attr('role', 'tab');
 
-            activeIndex = this.findActiveTabIndex();
+            activeIndex = this.findActiveTabIndex(location.hash);
 
             if (activeIndex > -1) {
                 this.options.active = activeIndex;
