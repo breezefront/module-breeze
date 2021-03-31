@@ -122,10 +122,14 @@ class JsBuild
      */
     private function getPath()
     {
-        return $this->staticContext->getConfigPath()
-            . '/'
-            . $this->name
-            . ($this->minification->isEnabled('js') ? '.min.js' : '.js');
+        $suffix = '';
+        $name = str_replace('::', '/', $this->name);
+
+        if (strpos($name, '.js') === false) {
+            $suffix = $this->minification->isEnabled('js') ? '.min.js' : '.js';
+        }
+
+        return $this->staticContext->getConfigPath() . '/' . $name . $suffix;
     }
 
     /**
