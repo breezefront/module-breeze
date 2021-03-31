@@ -60,7 +60,7 @@ class JsBuild
     /**
      * @var array
      */
-    private $components;
+    private $items;
 
     /**
      * @param \Magento\Framework\View\Asset\Repository $assetRepo
@@ -71,7 +71,7 @@ class JsBuild
      * @param \Magento\Framework\Code\Minifier\AdapterInterface $minifier
      * @param Dir $moduleDir
      * @param string $name
-     * @param array $components
+     * @param array $items
      */
     public function __construct(
         \Magento\Framework\View\Asset\Repository $assetRepo,
@@ -82,7 +82,7 @@ class JsBuild
         \Magento\Framework\Code\Minifier\AdapterInterface $minifier,
         Dir $moduleDir,
         $name,
-        array $components = []
+        array $items = []
     ) {
         $this->assetRepo = $assetRepo;
         $this->staticContext = $assetRepo->getStaticViewFileContext();
@@ -94,7 +94,7 @@ class JsBuild
         $this->minification = $minification;
         $this->minifier = $minifier;
         $this->name = $name;
-        $this->components = $components;
+        $this->items = $items;
     }
 
     /**
@@ -136,12 +136,16 @@ class JsBuild
         $build = [];
         $staticPath = $this->staticContext->getPath();
 
-        foreach ($this->components as $name => $component) {
-            $path = is_array($component) ? $component['path'] : $component;
+        foreach ($this->items as $name => $item) {
+            $path = is_array($item) ? $item['path'] : $item;
 
             try {
-                list($module, $relativePath) = explode('/', $path, 2);
-                $relativePath .= '.js';
+                $delimiter = strpos($path, '::') !== false ? '::' : '/';
+                list($module, $relativePath) = explode($delimiter, $path, 2);
+
+                if (strpos($relativePath, '.js') === false) {
+                    $relativePath .= '.js';
+                }
 
                 if (!$this->moduleManager->isEnabled($module)) {
                     continue;
@@ -160,7 +164,7 @@ class JsBuild
                 // try to read files from pub/static folder (minified and overriden by theme)
                 $fullFilepaths = [];
                 $fullFilepath = $staticPath . '/' . $module . '/' . str_replace($area, '', $filepath);
-                if ($this->minification->isEnabled('js')) {
+                if (strpos($fullFilepath, '.min.js') === false && $this->minification->isEnabled('js')) {
                     $fullFilepaths[] = substr($fullFilepath, 0, -2) . 'min.js';
                 }
                 $fullFilepaths[] = $fullFilepath;

@@ -29,7 +29,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
     /**
      * @var array
      */
-    protected $activeComponents = [];
+    protected $activeItems = [];
 
     /**
      * @var array
@@ -60,6 +60,10 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
     protected function _prepareLayout()
     {
+        if (!$this->getData('assets')) {
+            return;
+        }
+
         $properties = [
             'attributes' => 'data-breeze defer',
         ];
@@ -95,18 +99,18 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
         foreach ($this->getActiveBundles() as $name => $bundle) {
             if (!$merge) {
-                foreach ($bundle['components'] as $component) {
-                    $path = is_array($component) ? $component['path'] : $component;
+                foreach ($bundle['items'] as $item) {
+                    $path = is_array($item) ? $item['path'] : $item;
                     $jsBuild = $this->jsBuildFactory->create([
                         'name' => $path,
-                        'components' => []
+                        'items' => []
                     ]);
                     $scripts[] = sprintf(self::TEMPLATE, $jsBuild->getAsset()->getUrl());
                 }
             } else {
                 $jsBuild = $this->jsBuildFactory->create([
                     'name' => 'Swissup_Breeze/bundles/' . $name,
-                    'components' => $bundle['components']
+                    'items' => $bundle['items']
                 ]);
                 $jsBuild->publishIfNotExist();
                 $scripts[] = sprintf(self::TEMPLATE, $jsBuild->getAsset()->getUrl());
@@ -121,7 +125,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
      */
     public function addItem($name)
     {
-        $this->activeComponents[$name] = $name;
+        $this->activeItems[$name] = $name;
     }
 
     /**
@@ -133,7 +137,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
         foreach ($this->getActiveBundles() as $bundleName => $bundle) {
             $info[] = $bundleName;
-            $info = array_merge($info, array_keys($bundle['components']));
+            $info = array_merge($info, array_keys($bundle['items']));
         }
 
         sort($info);
@@ -158,38 +162,38 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                 continue;
             }
 
-            $registeredNames = array_keys($bundle['components']);
-            foreach ($bundle['components'] as $component) {
-                if (!is_array($component) || empty($component['names'])) {
+            $registeredNames = array_keys($bundle['items']);
+            foreach ($bundle['items'] as $item) {
+                if (!is_array($item) || empty($item['names'])) {
                     continue;
                 }
-                $registeredNames += $component['names'];
+                $registeredNames += $item['names'];
             }
 
-            if (array_intersect($registeredNames, $this->activeComponents)) {
+            if (array_intersect($registeredNames, $this->activeItems)) {
                 $this->activeBundles[$bundleName] = $bundle;
             }
         }
 
         // unset disabled component when it's not active
         foreach ($this->activeBundles as $bundleName => $bundle) {
-            foreach ($bundle['components'] as $componentName => $component) {
-                if (!is_array($component) ||
-                    !empty($component['active']) ||
-                    in_array($componentName, $this->activeComponents)
+            foreach ($bundle['items'] as $itemName => $item) {
+                if (!is_array($item) ||
+                    !empty($item['active']) ||
+                    in_array($itemName, $this->activeItems)
                 ) {
                     continue;
                 }
 
-                $names = $component['names'] ?? [];
-                if ($names && array_intersect($names, $this->activeComponents)) {
+                $names = $item['names'] ?? [];
+                if ($names && array_intersect($names, $this->activeItems)) {
                     continue;
                 }
 
-                $component['enabled'] = $component['enabled'] ?? true;
+                $item['enabled'] = $item['enabled'] ?? true;
 
-                if (!$component['enabled']) {
-                    unset($this->activeBundles[$bundleName]['components'][$componentName]);
+                if (!$item['enabled']) {
+                    unset($this->activeBundles[$bundleName]['items'][$itemName]);
                 }
             }
         }
