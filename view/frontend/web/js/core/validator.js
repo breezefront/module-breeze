@@ -245,7 +245,7 @@
             if (this.options[methodName]) {
                 this.options[methodName].apply(this, args);
             } else {
-                this.methodName.apply(this, args);
+                this[methodName].apply(this, args);
             }
         },
 
