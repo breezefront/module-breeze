@@ -193,6 +193,8 @@
          * @param {Function} callback - callback method to execute after AJAX success
          */
         _ajax: function (url, data, elem, callback) {
+            var self = this;
+
             elem.prop('disabled', true);
 
             breeze.request.post({
@@ -203,7 +205,7 @@
                 elem.prop('disabled', false);
 
                 if (response.body.success) {
-                    callback.call(this, elem, response);
+                    callback.call(self, elem, response);
                 } else if (response.body.error_message) {
                     alert(response.body.error_message);
                 }
