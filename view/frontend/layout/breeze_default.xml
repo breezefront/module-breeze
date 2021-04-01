@@ -130,6 +130,18 @@
                                     <!-- <item name="form-submit" xsi:type="string">Magento_Review/js/submit-review</item> -->
                                 </item>
                             </item>
+                            <item name="upsellProducts" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/upsellProducts</item>
+                                <item name="deps" xsi:type="array">
+                                    <item name="shuffle-and-reveal" xsi:type="string">Swissup_Breeze/js/common/shuffle-and-reveal</item>
+                                </item>
+                            </item>
+                            <item name="relatedProducts" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/relatedProducts</item>
+                                <item name="deps" xsi:type="array">
+                                    <item name="shuffle-and-reveal" xsi:type="string">Swissup_Breeze/js/common/shuffle-and-reveal</item>
+                                </item>
+                            </item>
                         </item>
                     </item>
                     <item name="customer" xsi:type="array">
