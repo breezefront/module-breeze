@@ -100,20 +100,33 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         foreach ($this->getActiveBundles() as $name => $bundle) {
             if (!$merge) {
                 foreach ($bundle['items'] as $item) {
-                    $path = is_array($item) ? $item['path'] : $item;
-                    $jsBuild = $this->jsBuildFactory->create([
-                        'name' => $path,
-                        'items' => []
-                    ]);
-                    $scripts[] = sprintf(self::TEMPLATE, $jsBuild->getAsset()->getUrl());
+                    $path = $item;
+                    $paths = [];
+
+                    if (is_array($item)) {
+                        $path = $item['path'];
+                        $paths = $item['deps'] ?? [];
+                    }
+
+                    $paths[] = $path;
+                    foreach ($paths as $path) {
+                        $url = $this->jsBuildFactory->create(['name' => $path])
+                            ->getAsset()
+                            ->getUrl();
+
+                        $scripts[$url] = sprintf(self::TEMPLATE, $url);
+                    }
                 }
             } else {
-                $jsBuild = $this->jsBuildFactory->create([
-                    'name' => 'Swissup_Breeze/bundles/' . $name,
-                    'items' => $bundle['items']
-                ]);
-                $jsBuild->publishIfNotExist();
-                $scripts[] = sprintf(self::TEMPLATE, $jsBuild->getAsset()->getUrl());
+                $url = $this->jsBuildFactory->create([
+                        'name' => 'Swissup_Breeze/bundles/' . $name,
+                        'items' => $bundle['items']
+                    ])
+                    ->publishIfNotExist()
+                    ->getAsset()
+                    ->getUrl();
+
+                $scripts[$url] = sprintf(self::TEMPLATE, $url);
             }
         }
 

@@ -138,67 +138,29 @@ class JsBuild
     public function publish()
     {
         $build = [];
+        $loadedDeps = [];
         $staticPath = $this->staticContext->getPath();
 
         foreach ($this->items as $name => $item) {
-            $path = is_array($item) ? $item['path'] : $item;
+            $build[$name] = '';
+            $path = $item;
+            $deps = [];
 
-            try {
-                $delimiter = strpos($path, '::') !== false ? '::' : '/';
-                list($module, $relativePath) = explode($delimiter, $path, 2);
-
-                if (strpos($relativePath, '.js') === false) {
-                    $relativePath .= '.js';
-                }
-
-                if (!$this->moduleManager->isEnabled($module)) {
-                    continue;
-                }
-
-                $modulePath = $this->moduleDir->getDir($module, Dir::MODULE_VIEW_DIR);
-                $moduleDir = $this->readDirFactory->create($modulePath);
-            } catch (\Exception $e) {
-                continue;
+            if (is_array($item)) {
+                $path = $item['path'];
+                $deps = $item['deps'] ?? [];
             }
 
-            foreach (['frontend/web/', 'base/web/'] as $area) {
-                $fileContents = '';
-                $filepath = $area . $relativePath;
-
-                // try to read files from pub/static folder (minified and overriden by theme)
-                $fullFilepaths = [];
-                $fullFilepath = $staticPath . '/' . $module . '/' . str_replace($area, '', $filepath);
-                if (strpos($fullFilepath, '.min.js') === false && $this->minification->isEnabled('js')) {
-                    $fullFilepaths[] = substr($fullFilepath, 0, -2) . 'min.js';
-                }
-                $fullFilepaths[] = $fullFilepath;
-
-                foreach ($fullFilepaths as $fullFilepath) {
-                    if (!$this->staticDir->isExist($fullFilepath)) {
-                        continue;
-                    }
-
-                    try {
-                        $fileContents = $this->staticDir->readFile($fullFilepath);
-                        break;
-                    } catch (\Exception $e) {
-                        continue;
-                    }
-                }
-
-                // read directly from module sources
-                if (!$fileContents) {
-                    try {
-                        $fileContents = $moduleDir->readFile($filepath);
-                    } catch (\Exception $e) {
-                        continue;
-                    }
-                }
-
-                $build[$name] = $fileContents;
+            $deps = array_diff($deps, $loadedDeps);
+            foreach ($deps as $depPath) {
+                $build[$name] .= $this->getContents($depPath);
+                $loadedDeps[$depPath] = $depPath;
             }
+
+            $build[$name] .= $this->getContents($path);
         }
 
+        $build = array_filter($build);
         $content = implode("\n", $build);
 
         if ($this->minification->isEnabled('js')) {
@@ -210,5 +172,69 @@ class JsBuild
             ->writeFile($this->getPath(), $content);
 
         return $this;
+    }
+
+    /**
+     * @param string $path
+     * @return string
+     */
+    private function getContents($path)
+    {
+        $delimiter = strpos($path, '::') !== false ? '::' : '/';
+        list($module, $relativePath) = explode($delimiter, $path, 2);
+
+        if (strpos($relativePath, '.js') === false) {
+            $relativePath .= '.js';
+        }
+
+        if (!$this->moduleManager->isEnabled($module)) {
+            return '';
+        }
+
+        try {
+            $modulePath = $this->moduleDir->getDir($module, Dir::MODULE_VIEW_DIR);
+            $moduleDir = $this->readDirFactory->create($modulePath);
+        } catch (\Exception $e) {
+            return '';
+        }
+
+        foreach (['frontend/web/', 'base/web/'] as $area) {
+            $fileContents = '';
+            $filepath = $area . $relativePath;
+
+            // try to read files from pub/static folder (minified and overriden by theme)
+            $fullFilepaths = [];
+            $fullFilepath = $staticPath . '/' . $module . '/' . str_replace($area, '', $filepath);
+            if (strpos($fullFilepath, '.min.js') === false && $this->minification->isEnabled('js')) {
+                $fullFilepaths[] = substr($fullFilepath, 0, -2) . 'min.js';
+            }
+            $fullFilepaths[] = $fullFilepath;
+
+            foreach ($fullFilepaths as $fullFilepath) {
+                if (!$this->staticDir->isExist($fullFilepath)) {
+                    continue;
+                }
+
+                try {
+                    $fileContents = $this->staticDir->readFile($fullFilepath);
+                    break;
+                } catch (\Exception $e) {
+                    continue;
+                }
+            }
+
+            // read directly from module sources
+            if (!$fileContents) {
+                try {
+                    $fileContents = $moduleDir->readFile($filepath);
+                } catch (\Exception $e) {
+                    continue;
+                }
+            }
+
+            return $fileContents;
+        }
+
+        return '';
     }
 }
