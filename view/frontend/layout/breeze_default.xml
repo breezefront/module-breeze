@@ -76,6 +76,12 @@
                             <item name="catalogAddToCart" xsi:type="string">Swissup_Breeze/js/components/catalogAddToCart</item>
                             <item name="productListToolbarForm" xsi:type="string">Swissup_Breeze/js/components/productListToolbarForm</item>
                             <item name="validation" xsi:type="string">Swissup_Breeze/js/components/validation</item>
+                            <item name="quickSearch" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/quickSearch</item>
+                                <item name="deps" xsi:type="array">
+                                    <item name="keys" xsi:type="string">Swissup_Breeze/js/common/keys</item>
+                                </item>
+                            </item>
                             <item name="addToCart" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/msrp</item>
                                 <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">

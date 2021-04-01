@@ -1,36 +1,56 @@
-var methods = [
-    'click',
-    'submit',
-    'blur',
-    'focus'
-];
-
-$.each(methods, function () {
+(function () {
     'use strict';
 
-    var method = this;
+    var methods = [
+        'click',
+        'submit',
+        'blur',
+        'focus'
+    ];
 
-    /** Native methods proxy */
-    $.fn[method] = function () {
-        this.each(function () {
-            var event = document.createEvent('Event');
+    $.each(methods, function () {
+        var method = this;
 
-            event.initEvent(method, true, true);
+        /** Native methods proxy */
+        $.fn[method] = function () {
+            this.each(function () {
+                var event = document.createEvent('Event');
 
-            $(this).trigger(event);
+                event.initEvent(method, true, true);
 
-            if (!event.defaultPrevented) {
-                this[method]();
-            }
-        });
+                $(this).trigger(event);
+
+                if (!event.defaultPrevented) {
+                    this[method]();
+                }
+            });
+        };
+    });
+
+    /** [isVisible description] */
+    function isVisible(i, el) {
+        return el.offsetWidth || el.offsetHeight || el.getClientRects().length;
+    }
+
+    /** [isVisible description] */
+    function isHidden(i, el) {
+        return !isVisible(i, el);
+    }
+
+    /** Return visible elements */
+    $.fn.visible = function () {
+        return this.filter(isVisible);
     };
-});
 
-/** Serialize object to query string */
-$.params = function (object) {
-    'use strict';
+    /** Return hidden elements */
+    $.fn.hidden = function () {
+        return this.filter(isHidden);
+    };
 
-    return Object.keys(object).map(function (key) {
-        return key + '=' + object[key];
-    }).join('&');
-};
+    /** Serialize object to query string */
+    $.params = function (object) {
+        return Object.keys(object).map(function (key) {
+            return key + '=' + object[key];
+        }).join('&');
+    };
+})();
