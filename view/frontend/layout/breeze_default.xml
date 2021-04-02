@@ -61,23 +61,23 @@
                         <item name="active" xsi:type="boolean">true</item>
                         <item name="sort_order" xsi:type="number">10</item>
                         <item name="items" xsi:type="array">
-                            <item name="Magento_Customer/js/customer-data" xsi:type="string">Swissup_Breeze/js/components/customerData</item>
-                            <item name="Magento_PageCache/js/form-key-provider" xsi:type="string">Swissup_Breeze/js/components/formKey</item>
-                            <item name="pageCache" xsi:type="string">Swissup_Breeze/js/components/pageCache</item>
-                            <item name="Magento_Ui/js/block-loader" xsi:type="string">Swissup_Breeze/js/components/blockLoader</item>
-                            <item name="dataPost" xsi:type="string">Swissup_Breeze/js/components/dataPost</item>
+                            <item name="Magento_Customer/js/customer-data" xsi:type="string">Swissup_Breeze/js/components/customer-data</item>
+                            <item name="Magento_PageCache/js/form-key-provider" xsi:type="string">Swissup_Breeze/js/components/form-key</item>
+                            <item name="pageCache" xsi:type="string">Swissup_Breeze/js/components/page-cache</item>
+                            <item name="Magento_Ui/js/block-loader" xsi:type="string">Swissup_Breeze/js/components/block-loader</item>
+                            <item name="dataPost" xsi:type="string">Swissup_Breeze/js/components/data-post</item>
                             <item name="menu" xsi:type="string">Swissup_Breeze/js/components/menu</item>
                             <item name="dropdown" xsi:type="string">Swissup_Breeze/js/components/dropdown</item>
-                            <item name="dropdownDialog" xsi:type="string">Swissup_Breeze/js/components/dropdownDialog</item>
+                            <item name="dropdownDialog" xsi:type="string">Swissup_Breeze/js/components/dropdown-dialog</item>
                             <item name="collapsible" xsi:type="string">Swissup_Breeze/js/components/collapsible</item>
                             <item name="tabs" xsi:type="string">Swissup_Breeze/js/components/tabs</item>
                             <item name="accordion" xsi:type="string">Swissup_Breeze/js/components/accordion</item>
-                            <item name="toggleAdvanced" xsi:type="string">Swissup_Breeze/js/components/toggleAdvanced</item>
-                            <item name="catalogAddToCart" xsi:type="string">Swissup_Breeze/js/components/catalogAddToCart</item>
-                            <item name="productListToolbarForm" xsi:type="string">Swissup_Breeze/js/components/productListToolbarForm</item>
+                            <item name="toggleAdvanced" xsi:type="string">Swissup_Breeze/js/components/toggle-advanced</item>
+                            <item name="catalogAddToCart" xsi:type="string">Swissup_Breeze/js/components/catalog-add-to-cart</item>
+                            <item name="productListToolbarForm" xsi:type="string">Swissup_Breeze/js/components/product-list-toolbar-form</item>
                             <item name="validation" xsi:type="string">Swissup_Breeze/js/components/validation</item>
                             <item name="quickSearch" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/quickSearch</item>
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/quick-search</item>
                                 <item name="deps" xsi:type="array">
                                     <item name="keys" xsi:type="string">Swissup_Breeze/js/common/keys</item>
                                 </item>
@@ -89,14 +89,14 @@
                                 </item>
                             </item>
                             <item name="paypalCheckout" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/paypalCheckout</item>
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/paypal-checkout</item>
                                 <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isAnyEnabled">
                                     <param name="0">payment/paypal_express_bml/active</param>
                                     <param name="1">payment/payflow_express_bml/active</param>
                                 </item>
                             </item>
                             <item name="cookieNotices" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/cookieNotices</item>
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/cookie-notices</item>
                                 <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
                                     <param name="path">web/cookie/cookie_restriction</param>
                                 </item>
@@ -111,7 +111,7 @@
                             <!-- ViewModels -->
                             <item name="Magento_Customer/js/view/customer" xsi:type="string">Swissup_Breeze/js/components/view/customer</item>
                             <item name="Magento_Theme/js/view/messages" xsi:type="string">Swissup_Breeze/js/components/view/messages</item>
-                            <item name="Magento_Catalog/js/view/compare-products" xsi:type="string">Swissup_Breeze/js/components/view/compareProducts</item>
+                            <item name="Magento_Catalog/js/view/compare-products" xsi:type="string">Swissup_Breeze/js/components/view/compare-products</item>
                             <item name="Magento_Checkout/js/view/minicart" xsi:type="string">Swissup_Breeze/js/components/view/minicart</item>
                             <item name="Magento_Wishlist/js/view/wishlist" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/view/wishlist</item>
@@ -124,7 +124,7 @@
                     <item name="product" xsi:type="array">
                         <item name="sort_order" xsi:type="number">20</item>
                         <item name="items" xsi:type="array">
-                            <item name="Magento_Catalog/js/validate-product" xsi:type="string">Swissup_Breeze/js/components/validateProduct</item>
+                            <item name="Magento_Catalog/js/validate-product" xsi:type="string">Swissup_Breeze/js/components/validate-product</item>
                             <item name="breadcrumbs" xsi:type="string">Swissup_Breeze/js/components/breadcrumbs</item>
                             <item name="reviews" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/reviews</item>
@@ -137,13 +137,13 @@
                                 </item>
                             </item>
                             <item name="upsellProducts" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/upsellProducts</item>
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/upsell-products</item>
                                 <item name="deps" xsi:type="array">
                                     <item name="shuffle-and-reveal" xsi:type="string">Swissup_Breeze/js/common/shuffle-and-reveal</item>
                                 </item>
                             </item>
                             <item name="relatedProducts" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/relatedProducts</item>
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/related-products</item>
                                 <item name="deps" xsi:type="array">
                                     <item name="shuffle-and-reveal" xsi:type="string">Swissup_Breeze/js/common/shuffle-and-reveal</item>
                                 </item>
@@ -155,7 +155,7 @@
                         <item name="items" xsi:type="array">
                             <item name="validate-customer-password" xsi:type="string">Swissup_Breeze/js/components/validators/customer</item>
                             <item name="Magento_LoginAsCustomerAssistance/js/opt-in" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/customerAssistance</item>
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/customer-assistance</item>
                                 <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
                                     <param name="path">login_as_customer/general/enabled</param>
                                 </item>
