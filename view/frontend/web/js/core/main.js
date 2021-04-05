@@ -21,16 +21,23 @@
 
     /** Init view components */
     function mountView(scope, config) {
-        $('[data-bind*="scope:"]')
-            .filter(function () {
-                return $(this).attr('data-bind').indexOf(scope) !== -1;
-            })
-            .each(function () {
+        var elements =  $('[data-bind*="scope:"]').filter(function () {
+            return $(this).attr('data-bind').indexOf(scope) !== -1;
+        });
+
+        if (elements.length) {
+            elements.each(function () {
                 mount(config.component, {
                     settings: config,
                     el: this
                 });
             });
+        } else {
+            mount(config.component, {
+                settings: config,
+                el: false
+            });
+        }
     }
 
     /** Process 'data-mage-init' and 'text/x-magento-init' scripts */
