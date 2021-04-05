@@ -139,7 +139,6 @@ class JsBuild
     {
         $build = [];
         $loadedDeps = [];
-        $staticPath = $this->staticContext->getPath();
 
         foreach ($this->items as $name => $item) {
             $build[$name] = '';
@@ -180,6 +179,7 @@ class JsBuild
      */
     private function getContents($path)
     {
+        $staticPath = $this->staticContext->getPath();
         $delimiter = strpos($path, '::') !== false ? '::' : '/';
         list($module, $relativePath) = explode($delimiter, $path, 2);
 
