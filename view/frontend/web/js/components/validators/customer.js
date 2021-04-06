@@ -2,6 +2,17 @@
 (function () {
     'use strict';
 
+    window.breeze.validator.validators['password-not-equal-to-user-name'] = [
+        function (value, element, params) {
+            if (typeof params === 'string') {
+                return value.toLowerCase() !== params.toLowerCase();
+            }
+
+            return true;
+        },
+        $t('The password can\'t be the same as the email address. Create a new password and try again.')
+    ];
+
     window.breeze.validator.validators['validate-customer-password'] = [
         function (value, element) {
             var counter = 0,
