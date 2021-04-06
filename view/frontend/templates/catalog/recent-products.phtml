@@ -1,0 +1,107 @@
+<?php
+    $config = $block->getBreezeConfig();
+?>
+
+<div class="block widget" data-bind="
+    scope: '<?= $config['scope'] ?>',
+    css: options.additionalClasses,
+    visible: visible,
+    if: visible
+">
+    <div class="block-title">
+        <strong role="heading" aria-level="2" data-bind="text: options.title"></strong>
+    </div>
+    <div class="block-content">
+        <div data-bind="css: 'products-' + options.displayMode">
+            <ol class="product-items" data-bind="foreach: items">
+                <li class="product-item">
+                    <div class="product-item-info">
+                        <?php if (!empty($config['attributes']['image'])) : ?>
+                            <a class="product-item-photo" data-bind="
+                                attr: { href: url, title: name },
+                                template: { name: 'productImage', data: $parent.getImageData($data) }
+                            "></a>
+                        <?php endif ?>
+
+                        <div class="product-item-details">
+                            <?php if (!empty($config['attributes']['name'])) : ?>
+                                <strong class="product-item-name">
+                                    <a data-bind="attr: { href: url }" class="product-item-link">
+                                        <span data-bind="html: name"></span>
+                                    </a>
+                                </strong>
+                            <?php endif ?>
+
+                            <?php if (!empty($config['attributes']['price'])) : ?>
+                                <div class="price-box" data-bind="html: $parent.getPriceHtml($data)"></div>
+                            <?php endif ?>
+
+                            <?php if (!empty($config['buttons'])) : ?>
+                                <div class="product-item-actions">
+                                    <?php if (!empty($config['buttons']['add_to_cart'])) : ?>
+                                        <!-- ko if: is_salable -->
+                                        <div class="actions-primary">
+                                            <button type="button"
+                                                title="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                                                class="action tocart primary"
+                                                data-bind="attr: {'data-post': $parent.getAddToCartPostParams($data) }">
+                                                <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+                                            </button>
+                                        </div>
+                                        <!-- /ko -->
+                                    <?php endif ?>
+
+                                    <?php if (!empty($config['buttons']['add_to_compare']) || !empty($config['buttons']['add_to_wishlist'])) : ?>
+                                        <div data-role="add-to-links" class="actions-secondary">
+                                            <?php if (!empty($config['buttons']['add_to_wishlist'])) : ?>
+                                                <button class="action towishlist"
+                                                    title="<?= $block->escapeHtml(__('Add to Wishlist')) ?>"
+                                                    data-bind="attr: {'data-post': $parent.getAddToWishlistPostParams($data) }"
+                                                    data-action="add-to-wishlist"
+                                                    role="button">
+                                                    <span><?= $block->escapeHtml(__('Add to Wishlist')) ?></span>
+                                                </button>
+                                            <?php endif ?>
+
+                                            <?php if (!empty($config['buttons']['add_to_compare'])) : ?>
+                                                <button class="action tocompare"
+                                                    title="<?= $block->escapeHtml(__('Add To Compare')) ?>"
+                                                    data-bind="attr: {'data-post': $parent.getAddToComparePostParams($data) }"
+                                                    data-action="add-to-compare"
+                                                    role="button">
+                                                    <span><?= $block->escapeHtml(__('Add To Compare')) ?></span>
+                                                </button>
+                                            <?php endif ?>
+                                        </div>
+                                    <?php endif ?>
+                                </div>
+                            <?php endif ?>
+
+                            <?php if (!empty($config['attributes']['learn_more'])) : ?>
+                                <div class="product-item-description">
+                                    <a class="product-item-link" data-bind="attr: {href: $data.url}"
+                                    ><?= $block->escapeHtml(__('Learn More')) ?></a>
+                                </div>
+                            <?php endif ?>
+                        </div>
+                    </div>
+                </li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Magento_Ui/js/core/app": {
+            "components": {
+                "<?= $config['scope'] ?>": {
+                    "component": "<?= $config['component'] ?>",
+                    "config": <?= json_encode($config) ?>
+                }
+            }
+        }
+    }
+}
+</script>

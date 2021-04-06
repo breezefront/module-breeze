@@ -22,6 +22,19 @@ window.breeze.storage = (function () {
         },
 
         /**
+         * @param {Mixed} keys
+         */
+        remove: function (keys) {
+            if (typeof keys === 'string') {
+                keys = [keys];
+            }
+
+            keys.forEach(function (key) {
+                storage.removeItem(key);
+            });
+        },
+
+        /**
          * @param {String} namespace
          * @return {Object}
          */

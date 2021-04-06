@@ -162,6 +162,7 @@ window.customerData = window.breeze.sections;
         }
 
         sections.invalidate(names);
+        window.breeze.storage.remove(names);
     });
 
     $(document).on('breeze:load', function () {

@@ -1,3 +1,4 @@
+/* global breeze */
 (function () {
     'use strict';
 
@@ -23,4 +24,19 @@
         input.setAttribute('auto-added-form-key', '1');
         form.get(0).appendChild(input);
     });
+
+    /** [getScopeId description] */
+    breeze.getScopeId = function (scope) {
+        var mapping = {
+            'store': window.checkout ? window.checkout.storeId : '',
+            'group': window.checkout ? window.checkout.storeGroupId : '',
+            'website': window.checkout ? window.checkout.websiteId : ''
+        };
+
+        if (!mapping[scope]) {
+            scope = 'website';
+        }
+
+        return mapping[scope];
+    };
 })();

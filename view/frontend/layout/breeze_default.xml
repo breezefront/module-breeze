@@ -107,6 +107,7 @@
                                     <param name="path">persistent/options/enabled</param>
                                 </item>
                             </item>
+                            <item name="Swissup_Breeze/js/recent-products" xsi:type="string">Swissup_Breeze/js/components/recent-products</item>
 
                             <!-- ViewModels -->
                             <item name="Magento_Customer/js/view/customer" xsi:type="string">Swissup_Breeze/js/components/view/customer</item>
@@ -125,6 +126,7 @@
                         <item name="sort_order" xsi:type="number">20</item>
                         <item name="items" xsi:type="array">
                             <item name="Magento_Catalog/js/validate-product" xsi:type="string">Swissup_Breeze/js/components/validate-product</item>
+                            <item name="Magento_Catalog/js/product/view/provider" xsi:type="string">Swissup_Breeze/js/components/register-viewed-products</item>
                             <item name="breadcrumbs" xsi:type="string">Swissup_Breeze/js/components/breadcrumbs</item>
                             <item name="reviews" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/reviews</item>

@@ -7,6 +7,12 @@
     <type name="Magento\Framework\App\Config">
         <plugin name="swissup_breeze" type="Swissup\Breeze\Plugin\AppConfig"/>
     </type>
+    <type name="Magento\Catalog\Block\Widget\RecentlyViewed">
+        <plugin name="swissup_breeze" type="Swissup\Breeze\Plugin\RecentlyViewedAndCompared" />
+    </type>
+    <type name="Magento\Catalog\Block\Widget\RecentlyCompared">
+        <plugin name="swissup_breeze" type="Swissup\Breeze\Plugin\RecentlyViewedAndCompared" />
+    </type>
 
     <type name="Swissup\Breeze\Model\Filter">
         <arguments>
