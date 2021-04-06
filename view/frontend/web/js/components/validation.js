@@ -35,6 +35,8 @@
         }
     });
 
+    $.fn.validation = $.fn.validator;
+
     $(document).on('breeze:mount:validation', function (event) {
         $(event.detail.el).validator(event.detail.settings);
     });
