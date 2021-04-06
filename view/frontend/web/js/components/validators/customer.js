@@ -2,6 +2,28 @@
 (function () {
     'use strict';
 
+    window.breeze.validator.validators['validate-emails'] = [
+        function (value) {
+            var validRegexp, emails, i;
+
+            if (!value) {
+                return true;
+            }
+
+            validRegexp = /^([a-z0-9,!\#\$%&'\*\+\/=\?\^_`\{\|\}~-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z0-9,!\#\$%&'\*\+\/=\?\^_`\{\|\}~-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*@([a-z0-9-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z0-9-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*\.(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]){2,})$/i; //eslint-disable-line max-len
+            emails = value.split(/[\s\n\,]+/g);
+
+            for (i = 0; i < emails.length; i++) {
+                if (!validRegexp.test(emails[i].trim())) {
+                    return false;
+                }
+            }
+
+            return true;
+        },
+        $t('Please enter valid email addresses, separated by commas. For example, johndoe@domain.com, johnsmith@domain.com.')
+    ];
+
     window.breeze.validator.validators['password-not-equal-to-user-name'] = [
         function (value, element, params) {
             if (typeof params === 'string') {
