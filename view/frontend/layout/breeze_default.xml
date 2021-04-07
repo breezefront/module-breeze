@@ -61,6 +61,8 @@
                         <item name="active" xsi:type="boolean">true</item>
                         <item name="sort_order" xsi:type="number">10</item>
                         <item name="items" xsi:type="array">
+                            <item name="breeze-validators" xsi:type="string">Swissup_Breeze/js/components/validators/core</item>
+
                             <item name="dropdown" xsi:type="string">Swissup_Breeze/js/components/ui/dropdown</item>
                             <item name="dropdownDialog" xsi:type="string">Swissup_Breeze/js/components/ui/dropdown-dialog</item>
                             <item name="collapsible" xsi:type="string">Swissup_Breeze/js/components/ui/collapsible</item>
