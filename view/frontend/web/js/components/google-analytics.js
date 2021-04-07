@@ -74,7 +74,7 @@
         }
     });
 
-    $(document).on('breeze:mount:Magento_GoogleAnalytics/js/google-analytics', function (event) {
-        $.fn.googleAnalytics(event.detail.settings);
+    $(document).on('breeze:mount:Magento_GoogleAnalytics/js/google-analytics', function (event, data) {
+        $.fn.googleAnalytics(data.settings);
     });
 })();

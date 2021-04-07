@@ -37,12 +37,12 @@
 
     $.fn.validation = $.fn.validator;
 
-    $(document).on('breeze:mount:validation', function (event) {
-        $(event.detail.el).validator(event.detail.settings);
+    $(document).on('breeze:mount:validation', function (event, data) {
+        $(data.el).validator(data.settings);
     });
 
-    $(document).on('breeze:mount:Magento_Customer/js/block-submit-on-send', function (event) {
-        $('#' + event.detail.settings.formId).validator(event.detail.settings);
+    $(document).on('breeze:mount:Magento_Customer/js/block-submit-on-send', function (event, data) {
+        $('#' + data.settings.formId).validator(data.settings);
     });
 
     $(document).on('breeze:load', function () {

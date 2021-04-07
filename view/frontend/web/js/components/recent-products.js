@@ -105,7 +105,7 @@
         }
     });
 
-    $(document).on('breeze:mount:Swissup_Breeze/js/components/recent-products', function (event) {
-        $(event.detail.el).recentProducts(event.detail.settings);
+    $(document).on('breeze:mount:Swissup_Breeze/js/components/recent-products', function (event, data) {
+        $(data.el).recentProducts(data.settings);
     });
 })();

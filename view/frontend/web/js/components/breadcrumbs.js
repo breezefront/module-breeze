@@ -183,7 +183,7 @@
         }
     });
 
-    $(document).on('breeze:mount:breadcrumbs', function (event) {
-        $(event.detail.el).breadcrumbs(event.detail.settings);
+    $(document).on('breeze:mount:breadcrumbs', function (event, data) {
+        $(data.el).breadcrumbs(data.settings);
     });
 })();

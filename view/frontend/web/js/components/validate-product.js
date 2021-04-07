@@ -10,7 +10,7 @@
         }
     });
 
-    $(document).on('breeze:mount:Magento_Catalog/js/validate-product', function (event) {
-        $(event.detail.el).productValidate(event.detail.settings);
+    $(document).on('breeze:mount:Magento_Catalog/js/validate-product', function (event, data) {
+        $(data.el).productValidate(data.settings);
     });
 })();

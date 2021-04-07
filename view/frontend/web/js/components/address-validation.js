@@ -117,7 +117,7 @@
         }
     });
 
-    $(document).on('breeze:mount:addressValidation', function (event) {
-        $(event.detail.el).addressValidation(event.detail.settings);
+    $(document).on('breeze:mount:addressValidation', function (event, data) {
+        $(data.el).addressValidation(data.settings);
     });
 })();

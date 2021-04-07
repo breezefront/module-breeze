@@ -40,7 +40,7 @@
         }
     });
 
-    $(document).on('breeze:mount:toggleAdvanced', function (event) {
-        $(event.detail.el).toggleAdvanced(event.detail.settings);
+    $(document).on('breeze:mount:toggleAdvanced', function (event, data) {
+        $(data.el).toggleAdvanced(data.settings);
     });
 })();

@@ -8,7 +8,7 @@
         }, settings));
     });
 
-    $(document).on('breeze:mount:accordion', function (event) {
-        $(event.detail.el).accordion(event.detail.settings);
+    $(document).on('breeze:mount:accordion', function (event, data) {
+        $(data.el).accordion(data.settings);
     });
 })();

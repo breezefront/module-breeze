@@ -44,7 +44,7 @@
         breeze.sections.set('messages', messages);
     });
 
-    $(document).on('breeze:mount:Magento_Theme/js/view/messages', function (event) {
-        $(event.detail.el).messages(event.detail.settings);
+    $(document).on('breeze:mount:Magento_Theme/js/view/messages', function (event, data) {
+        $(data.el).messages(data.settings);
     });
 })();

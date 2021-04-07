@@ -30,7 +30,7 @@
         }
     });
 
-    $(document).on('breeze:mount:cookieNotices', function (event) {
-        $(event.detail.el).cookieNotices(event.detail.settings);
+    $(document).on('breeze:mount:cookieNotices', function (event, data) {
+        $(data.el).cookieNotices(data.settings);
     });
 })();

@@ -237,7 +237,7 @@
         }, this);
     });
 
-    $(document).on('breeze:mount:addToCart', function (event) {
-        $(event.detail.el).addToCart(event.detail.settings);
+    $(document).on('breeze:mount:addToCart', function (event, data) {
+        $(data.el).addToCart(data.settings);
     });
 })();

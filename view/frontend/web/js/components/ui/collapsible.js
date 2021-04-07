@@ -114,8 +114,8 @@
         }
     });
 
-    $(document).on('breeze:mount:collapsible', function (event) {
-        $(event.detail.el).collapsible(event.detail.settings);
+    $(document).on('breeze:mount:collapsible', function (event, data) {
+        $(data.el).collapsible(data.settings);
     });
 
     $(document).on('click.collapsible', '[data-trigger]', function () {

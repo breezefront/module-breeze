@@ -236,7 +236,7 @@
         }
     });
 
-    $(document).on('breeze:mount:regionUpdater', function (event) {
-        $(event.detail.el).regionUpdater(event.detail.settings);
+    $(document).on('breeze:mount:regionUpdater', function (event, data) {
+        $(data.el).regionUpdater(data.settings);
     });
 })();

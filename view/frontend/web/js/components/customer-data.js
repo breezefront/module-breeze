@@ -191,7 +191,7 @@
         customerData.invalidate(data.sections);
     });
 
-    $(document).on('breeze:mount:Magento_Customer/js/customer-data', function (event) {
-        customerData.initialize(event.detail.settings);
+    $(document).on('breeze:mount:Magento_Customer/js/customer-data', function (event, data) {
+        customerData.initialize(data.settings);
     });
 })();

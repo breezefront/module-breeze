@@ -56,7 +56,7 @@
         }
     });
 
-    $(document).on('breeze:mount:relatedProducts', function (event) {
-        $(event.detail.el).relatedProducts(event.detail.settings);
+    $(document).on('breeze:mount:relatedProducts', function (event, data) {
+        $(data.el).relatedProducts(data.settings);
     });
 })();

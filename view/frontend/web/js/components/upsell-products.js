@@ -21,7 +21,7 @@
         }
     });
 
-    $(document).on('breeze:mount:upsellProducts', function (event) {
-        $(event.detail.el).upsellProducts(event.detail.settings);
+    $(document).on('breeze:mount:upsellProducts', function (event, data) {
+        $(data.el).upsellProducts(data.settings);
     });
 })();

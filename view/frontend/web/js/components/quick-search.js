@@ -301,7 +301,7 @@
         }
     });
 
-    $(document).on('breeze:mount:quickSearch', function (event) {
-        $(event.detail.el).quickSearch(event.detail.settings);
+    $(document).on('breeze:mount:quickSearch', function (event, data) {
+        $(data.el).quickSearch(data.settings);
     });
 })();

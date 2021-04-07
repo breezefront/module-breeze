@@ -6,7 +6,7 @@
         customer: breeze.sections.get('customer')
     });
 
-    $(document).on('breeze:mount:Magento_Customer/js/view/customer', function (event) {
-        $(event.detail.el).customer(event.detail.settings);
+    $(document).on('breeze:mount:Magento_Customer/js/view/customer', function (event, data) {
+        $(data.el).customer(data.settings);
     });
 })();

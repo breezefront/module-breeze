@@ -124,7 +124,7 @@
         }
     });
 
-    $(document).on('breeze:mount:productListToolbarForm', function (event) {
-        $(event.detail.el).productListToolbarForm(event.detail.settings);
+    $(document).on('breeze:mount:productListToolbarForm', function (event, data) {
+        $(data.el).productListToolbarForm(data.settings);
     });
 })();

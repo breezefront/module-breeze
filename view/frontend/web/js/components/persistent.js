@@ -35,7 +35,7 @@
         }
     });
 
-    $(document).on('breeze:mount:Magento_Persistent/js/view/additional-welcome', function (event) {
-        $(event.detail.el).persistent(event.detail.settings);
+    $(document).on('breeze:mount:Magento_Persistent/js/view/additional-welcome', function (event, data) {
+        $(data.el).persistent(data.settings);
     });
 })();

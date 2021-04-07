@@ -38,8 +38,8 @@
         }
     });
 
-    $(document).on('breeze:mount:Magento_Review/js/process-reviews', function (event) {
-        $(event.detail.settings.reviewsTabSelector).ajaxReviews(event.detail.settings);
+    $(document).on('breeze:mount:Magento_Review/js/process-reviews', function (event, data) {
+        $(data.settings.reviewsTabSelector).ajaxReviews(data.settings);
     });
 
     // Review Form
@@ -55,8 +55,8 @@
         }
     });
 
-    $(document).on('breeze:mount:Magento_Review/js/view/review', function (event) {
-        $(event.detail.el).reviewForm(event.detail.settings);
+    $(document).on('breeze:mount:Magento_Review/js/view/review', function (event, data) {
+        $(data.el).reviewForm(data.settings);
     });
 
     breeze.validator.validators['rating-required'] = [
@@ -66,8 +66,8 @@
         $t('Please select one of each of the ratings above.')
     ];
 
-    $(document).on('breeze:mount:Magento_Review/js/validate-review', function (event) {
-        $(event.detail.el).validator({
+    $(document).on('breeze:mount:Magento_Review/js/validate-review', function (event, data) {
+        $(data.el).validator({
             /** Disable button to prevent multiple submits */
             onValid: function () {
                 this.form.find('.submit').prop('disabled', true);

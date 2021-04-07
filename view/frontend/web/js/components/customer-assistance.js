@@ -17,7 +17,7 @@
         }
     });
 
-    $(document).on('breeze:mount:Magento_LoginAsCustomerAssistance/js/opt-in', function (event) {
-        $(event.detail.el).customerAssistance(event.detail.settings);
+    $(document).on('breeze:mount:Magento_LoginAsCustomerAssistance/js/opt-in', function (event, data) {
+        $(data.el).customerAssistance(data.settings);
     });
 })();

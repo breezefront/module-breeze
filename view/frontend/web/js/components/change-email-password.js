@@ -116,7 +116,7 @@
         }
     });
 
-    $(document).on('breeze:mount:changeEmailPassword', function (event) {
-        $(event.detail.el).changeEmailPassword(event.detail.settings);
+    $(document).on('breeze:mount:changeEmailPassword', function (event, data) {
+        $(data.el).changeEmailPassword(data.settings);
     });
 })();

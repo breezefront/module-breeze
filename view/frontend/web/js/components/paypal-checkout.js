@@ -64,7 +64,7 @@
         }
     });
 
-    $(document).on('breeze:mount:paypalCheckout', function (event) {
-        $(event.detail.el).paypalCheckout(event.detail.settings);
+    $(document).on('breeze:mount:paypalCheckout', function (event, data) {
+        $(data.el).paypalCheckout(data.settings);
     });
 })();

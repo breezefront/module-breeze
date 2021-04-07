@@ -420,7 +420,7 @@
         }
     });
 
-    $(document).on('breeze:mount:Magento_Checkout/js/view/minicart', function (event) {
-        $(event.detail.el).minicart(event.detail.settings);
+    $(document).on('breeze:mount:Magento_Checkout/js/view/minicart', function (event, data) {
+        $(data.el).minicart(data.settings);
     });
 })();

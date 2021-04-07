@@ -65,8 +65,8 @@
         }
     });
 
-    $(document).on('breeze:mount:dropdown', function (event) {
-        $(event.detail.el).dropdown(event.detail.settings);
+    $(document).on('breeze:mount:dropdown', function (event, data) {
+        $(data.el).dropdown(data.settings);
     });
 
     $(document).on('click.dropdown', function (event) {

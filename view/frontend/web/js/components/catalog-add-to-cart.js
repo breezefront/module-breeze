@@ -143,7 +143,7 @@
         $(this).catalogAddToCart('instance').ajaxSubmit($(this));
     });
 
-    $(document).on('breeze:mount:catalogAddToCart', function (event) {
-        $(event.detail.el).catalogAddToCart(event.detail.settings);
+    $(document).on('breeze:mount:catalogAddToCart', function (event, data) {
+        $(data.el).catalogAddToCart(data.settings);
     });
 })();

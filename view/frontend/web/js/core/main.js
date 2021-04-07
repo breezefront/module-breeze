@@ -3,12 +3,10 @@
     'use strict';
 
     /** Init 'data-mage-init' and 'text/x-magento-init' scripts */
-    function mount(component, details) {
+    function mount(component, data) {
         /** Callback to run while browser is resting */
         function callback() {
-            document.dispatchEvent(new CustomEvent('breeze:mount:' + component, {
-                detail: details
-            }));
+            $(document).trigger('breeze:mount:' + component, data);
         }
 
         if (window.requestIdleCallback) {

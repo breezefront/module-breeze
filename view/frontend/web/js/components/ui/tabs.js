@@ -110,7 +110,7 @@
         }
     });
 
-    $(document).on('breeze:mount:tabs', function (event) {
-        $(event.detail.el).tabs(event.detail.settings);
+    $(document).on('breeze:mount:tabs', function (event, data) {
+        $(data.el).tabs(data.settings);
     });
 })();
