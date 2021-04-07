@@ -6,7 +6,6 @@
     function mount(component, details) {
         /** Callback to run while browser is resting */
         function callback() {
-            console.log(component);
             document.dispatchEvent(new CustomEvent('breeze:mount:' + component, {
                 detail: details
             }));
