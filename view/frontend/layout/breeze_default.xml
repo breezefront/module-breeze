@@ -61,18 +61,19 @@
                         <item name="active" xsi:type="boolean">true</item>
                         <item name="sort_order" xsi:type="number">10</item>
                         <item name="items" xsi:type="array">
+                            <item name="dropdown" xsi:type="string">Swissup_Breeze/js/components/ui/dropdown</item>
+                            <item name="dropdownDialog" xsi:type="string">Swissup_Breeze/js/components/ui/dropdown-dialog</item>
+                            <item name="collapsible" xsi:type="string">Swissup_Breeze/js/components/ui/collapsible</item>
+                            <item name="tabs" xsi:type="string">Swissup_Breeze/js/components/ui/tabs</item>
+                            <item name="accordion" xsi:type="string">Swissup_Breeze/js/components/ui/accordion</item>
+                            <item name="toggleAdvanced" xsi:type="string">Swissup_Breeze/js/components/ui/toggle-advanced</item>
+
                             <item name="Magento_Customer/js/customer-data" xsi:type="string">Swissup_Breeze/js/components/customer-data</item>
                             <item name="Magento_PageCache/js/form-key-provider" xsi:type="string">Swissup_Breeze/js/components/form-key</item>
                             <item name="pageCache" xsi:type="string">Swissup_Breeze/js/components/page-cache</item>
                             <item name="Magento_Ui/js/block-loader" xsi:type="string">Swissup_Breeze/js/components/block-loader</item>
                             <item name="dataPost" xsi:type="string">Swissup_Breeze/js/components/data-post</item>
                             <item name="menu" xsi:type="string">Swissup_Breeze/js/components/menu</item>
-                            <item name="dropdown" xsi:type="string">Swissup_Breeze/js/components/dropdown</item>
-                            <item name="dropdownDialog" xsi:type="string">Swissup_Breeze/js/components/dropdown-dialog</item>
-                            <item name="collapsible" xsi:type="string">Swissup_Breeze/js/components/collapsible</item>
-                            <item name="tabs" xsi:type="string">Swissup_Breeze/js/components/tabs</item>
-                            <item name="accordion" xsi:type="string">Swissup_Breeze/js/components/accordion</item>
-                            <item name="toggleAdvanced" xsi:type="string">Swissup_Breeze/js/components/toggle-advanced</item>
                             <item name="catalogAddToCart" xsi:type="string">Swissup_Breeze/js/components/catalog-add-to-cart</item>
                             <item name="productListToolbarForm" xsi:type="string">Swissup_Breeze/js/components/product-list-toolbar-form</item>
                             <item name="validation" xsi:type="string">Swissup_Breeze/js/components/validation</item>
