@@ -149,7 +149,7 @@
 
             this.thumbs.eq(this.activeIndex).removeClass('active');
             this.thumbs.eq(index).addClass('active');
-            this.thumbs.eq(index).get(0).focus();
+            this.thumbs.eq(index).focus();
             this.image.attr('src', fullscreen ? data.full : data.img);
             this.stage.toggleClass('video', data.videoUrl);
 
