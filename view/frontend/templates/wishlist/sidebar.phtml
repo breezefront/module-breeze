@@ -3,6 +3,11 @@
 <?php
     $wishlistViewModel = $block->getData('wishlistDataViewModel');
 
+    // Magento 2.4.1 fix
+    if (!$wishlistViewModel) {
+        $wishlistViewModel = $this->helper(\Magento\Wishlist\Helper\Data::class);
+    }
+
     if (!$wishlistViewModel->isAllow()) {
         return;
     }
