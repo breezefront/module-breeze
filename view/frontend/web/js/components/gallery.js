@@ -36,8 +36,6 @@
 
         /** [create description] */
         create: function () {
-            console.log(this.options);
-
             this.options = _.extend(this.options, this.options.options || {});
             this.gallery = this.element.parent();
             this.parent = this.gallery.parent();
