@@ -7,9 +7,11 @@
         display: flex;
         flex-direction: column;
 
+        .prev,
+        .next,
         .close {
-            display: none;
-            color: #a4a4a4;
+            position: absolute;
+            color: #999;
             &:hover {
                 color: #777;
             }
@@ -17,6 +19,39 @@
                 width: 24px;
                 height: 24px;
                 vertical-align: top;
+            }
+        }
+
+        .close {
+            display: none;
+        }
+
+        .prev,
+        .next {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            left: 0;
+            top: 50%;
+            width: 40px;
+            height: 80px;
+            margin-top: -40px;
+            background: rgba(255,255,255,0.6);
+            z-index: 11;
+            transition: all 150ms ease-in;
+            &:hover {
+                opacity: 1;
+            }
+        }
+        .next {
+            left: auto;
+            right: 0;
+        }
+        .stage:hover {
+            .prev,
+            .next {
+                opacity: .8;
             }
         }
 

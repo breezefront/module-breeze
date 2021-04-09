@@ -60,13 +60,22 @@
                 $.fn.blockLoader().hide(self.stage);
             });
 
-            this.stage.on('click', '.main-image-wrapper', function () {
-                if (self.options.data[self.activeIndex].videoUrl) {
-                    self.play();
-                } else {
-                    self.open();
-                }
-            });
+            this.stage
+                .on('click', '.next', function (event) {
+                    event.preventDefault();
+                    self.next();
+                })
+                .on('click', '.prev', function (event) {
+                    event.preventDefault();
+                    self.prev();
+                })
+                .on('click', '.main-image-wrapper', function () {
+                    if (self.options.data[self.activeIndex].videoUrl) {
+                        self.play();
+                    } else {
+                        self.open();
+                    }
+                });
 
             this.thumbs.on('click', function (event) {
                 var index = $(this).index();
