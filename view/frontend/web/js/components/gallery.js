@@ -89,10 +89,20 @@
                 }
             });
 
-            this.gallery.find('.close').on('click', function (event) {
-                event.preventDefault();
-                self.close();
-            });
+            this.gallery
+                .on('click', function () {
+                    if (self.gallery.is(':focus-within')) {
+                        return;
+                    }
+
+                    this.focus({
+                        preventScroll: true
+                    });
+                })
+                .find('.close').on('click', function (event) {
+                    event.preventDefault();
+                    self.close();
+                });
 
             $(document).on('keydown', function (event) {
                 if (self.options.keyboard === false) {
@@ -156,12 +166,16 @@
 
             this.thumbs.eq(this.activeIndex).removeClass('active');
             this.thumbs.eq(index).addClass('active');
-            this.thumbs.eq(index).focus();
             this.image.attr('src', fullscreen ? data.full : data.img);
             this.stage.toggleClass('video', data.videoUrl);
 
             if (!this.image.get(0).complete && !data.videoUrl) {
                 $.fn.blockLoader().show(this.stage);
+            }
+
+            // scroll to hidden thumbnail only if we will not affect page scroll offset
+            if (fullscreen || this.isInViewport(this.thumbs)) {
+                this.thumbs.eq(index).focus();
             }
 
             if (this.activeIndex !== index) {
@@ -225,6 +239,12 @@
             this.stage.prepend(
                 _.template(params.template || this.options.video.template)(params)
             );
+        },
+
+        isInViewport: function (el) {
+            var rect = el.get(0).getBoundingClientRect();
+
+            return rect.top >= 0 && rect.bottom <= $(window).height();
         }
     });
 
