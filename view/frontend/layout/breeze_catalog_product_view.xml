@@ -7,5 +7,11 @@
                 name="breeze.breadcrumbs"
                 template="Swissup_Breeze::ko/theme/breadcrumbs.phtml"/>
         </referenceContainer>
+
+        <referenceBlock name="product.info.media.image" template="Swissup_Breeze::catalog/product/gallery.phtml"/>
+        <referenceContainer name="skip_gallery_before.wrapper" remove="true"/>
+        <referenceContainer name="skip_gallery_after.wrapper" remove="true"/>
+        <referenceBlock name="skip_gallery_after.target" remove="true"/>
+        <referenceBlock name="skip_gallery_before.target" remove="true"/>
     </body>
 </page>

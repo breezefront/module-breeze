@@ -1,0 +1,74 @@
+<?php
+$images = $block->getGalleryImages()->getItems();
+$mainImage = current(array_filter($images, function ($img) use ($block) {
+    return $block->isMainImage($img);
+}));
+
+if (!empty($images) && empty($mainImage)) {
+    $mainImage = $block->getGalleryImages()->getFirstItem();
+}
+
+$helper = $block->getData('imageHelper');
+$mainImageUrl = $mainImage ?
+    $mainImage->getData('medium_image_url') :
+    $helper->getDefaultPlaceholderUrl('image');
+
+$width = (int) $block->getImageAttribute('product_page_image_medium', 'width');
+$height = (int) $block->getImageAttribute('product_page_image_medium', 'height');
+$height = $height ?: $width;
+$thumbWidth = (int) $block->getImageAttribute('product_page_image_small', 'width');
+$thumbHeight = (int) $block->getImageAttribute('product_page_image_small', 'height');
+$thumbHeight = $thumbHeight ?: $thumbWidth;
+
+?>
+
+<div class="breeze-gallery <?= $block->getGalleryOptions()->getVar('gallery/navdir') ?>">
+    <div class="stage" data-gallery-role="gallery-placeholder" data-bind="blockLoader: true">
+        <div class="main-image-wrapper">
+            <img loading="lazy" alt="<?= $mainImage->getLabel() ?>"
+                class="main-image"
+                src="<?= $mainImageUrl ?>"
+                width="<?= $width ?>"
+                height="<?= $height ?>"
+            />
+        </div>
+    </div>
+
+    <?php if (count($images) > 1) : ?>
+        <div class="thumbnails">
+        <?php foreach ($images as $image) : ?>
+            <?php
+                $classes = array_filter([
+                    'item',
+                    $block->isMainImage($image) ? 'active' : '',
+                    $image->getVideoUrl() ? 'video' : ''
+                ]);
+            ?>
+            <a class="<?= implode(' ', $classes) ?>" href="<?= $image->getLargeImageUrl() ?>">
+                <img loading="lazy" alt="<?= $image->getLabel() ?>"
+                    src="<?= $image->getSmallImageUrl() ?>"
+                    width="<?= $thumbWidth ?>"
+                    height="<?= $thumbHeight ?>"
+                />
+            </a>
+        <?php endforeach ?>
+        </div>
+    <?php endif ?>
+
+    <a href="#" class="close">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+    </a>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "[data-gallery-role=gallery-placeholder]": {
+            "mage/gallery/gallery": {
+                "data": <?= /* @noEscape */ $block->getGalleryImagesJson() ?>,
+                "options": <?= /* @noEscape */ $block->getGalleryOptions()->getOptionsJson() ?>
+            }
+        }
+    }
+</script>
