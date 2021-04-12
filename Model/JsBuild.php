@@ -3,6 +3,7 @@
 namespace Swissup\Breeze\Model;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\Component\ComponentRegistrar;
 use Magento\Framework\Module\Dir;
 
 class JsBuild
@@ -53,6 +54,16 @@ class JsBuild
     private $minifier;
 
     /**
+     * @var \Magento\Framework\View\DesignInterface
+     */
+    private $design;
+
+    /**
+     * @var ComponentRegistrar $componentRegistrar
+     */
+    private $componentRegistrar;
+
+    /**
      * @var string
      */
     private $name;
@@ -69,6 +80,8 @@ class JsBuild
      * @param \Magento\Framework\Module\Manager $moduleManager
      * @param \Magento\Framework\View\Asset\Minification $minification
      * @param \Magento\Framework\Code\Minifier\AdapterInterface $minifier
+     * @param \Magento\Framework\View\DesignInterface $design
+     * @param ComponentRegistrar $componentRegistrar
      * @param Dir $moduleDir
      * @param string $name
      * @param array $items
@@ -80,6 +93,8 @@ class JsBuild
         \Magento\Framework\Module\Manager $moduleManager,
         \Magento\Framework\View\Asset\Minification $minification,
         \Magento\Framework\Code\Minifier\AdapterInterface $minifier,
+        \Magento\Framework\View\DesignInterface $design,
+        ComponentRegistrar $componentRegistrar,
         Dir $moduleDir,
         $name,
         array $items = []
@@ -89,6 +104,8 @@ class JsBuild
         $this->filesystem = $filesystem;
         $this->staticDir = $this->filesystem->getDirectoryRead(DirectoryList::STATIC_VIEW);
         $this->readDirFactory = $readDirFactory;
+        $this->design = $design;
+        $this->componentRegistrar = $componentRegistrar;
         $this->moduleDir = $moduleDir;
         $this->moduleManager = $moduleManager;
         $this->minification = $minification;
@@ -179,62 +196,128 @@ class JsBuild
      */
     private function getContents($path)
     {
+        list($module, $relativePath) = $this->extractModuleAndPath($path);
+
+        if ($module) {
+            $contents = $this->readFileFromModule($module, $relativePath);
+        } else {
+            $contents = $this->readFileFromTheme($relativePath);
+        }
+
+        return $contents;
+    }
+
+    /**
+     * @param string $path
+     * @return string
+     */
+    private function readFileFromTheme($path)
+    {
+        $contents = $this->readFileFromPubStatic($path);
+        if ($contents !== false) {
+            return $contents;
+        }
+
+        try {
+            $dir = $this->componentRegistrar->getPath(
+                ComponentRegistrar::THEME,
+                $this->design->getDesignTheme()->getFullPath()
+            );
+            $dir = $this->readDirFactory->create($dir);
+        } catch (\Exception $e) {
+            return '';
+        }
+
+        try {
+            return $dir->readFile('web/' . $path);
+        } catch (\Exception $e) {
+            return '';
+        }
+    }
+
+    /**
+     * @param string $module
+     * @param string $path
+     * @return string
+     */
+    private function readFileFromModule($module, $path)
+    {
+        if (!$this->moduleManager->isEnabled($module)) {
+            return '';
+        }
+
+        $contents = $this->readFileFromPubStatic($module . '/' . $path);
+        if ($contents !== false) {
+            return $contents;
+        }
+
+        try {
+            $dir = $this->moduleDir->getDir($module, Dir::MODULE_VIEW_DIR);
+            $dir = $this->readDirFactory->create($dir);
+        } catch (\Exception $e) {
+            return '';
+        }
+
+        // read directly from module sources
+        foreach (['frontend/web/', 'base/web/'] as $area) {
+            try {
+                return $dir->readFile($area . $path);
+            } catch (Exception $e) {
+                continue;
+            }
+        }
+
+        return '';
+    }
+
+    /**
+     * @param string $path
+     * @return string|false
+     */
+    private function readFileFromPubStatic($path)
+    {
         $staticPath = $this->staticContext->getPath();
+
+        $fullFilepaths = [];
+        $fullFilepath = $staticPath . '/' . $path;
+        if (strpos($fullFilepath, '.min.js') === false && $this->minification->isEnabled('js')) {
+            $fullFilepaths[] = substr($fullFilepath, 0, -2) . 'min.js';
+        }
+        $fullFilepaths[] = $fullFilepath;
+
+        foreach ($fullFilepaths as $fullFilepath) {
+            try {
+                return $this->staticDir->readFile($fullFilepath);
+            } catch (\Exception $e) {
+                continue;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $path
+     * @return array
+     */
+    private function extractModuleAndPath($path)
+    {
         $delimiter = strpos($path, '::') !== false ? '::' : '/';
+
         list($module, $relativePath) = explode($delimiter, $path, 2);
+
+        if (strpos($module, '_') === false) {
+            $module = false;
+            $relativePath = $path;
+        }
 
         if (strpos($relativePath, '.js') === false) {
             $relativePath .= '.js';
         }
 
-        if (!$this->moduleManager->isEnabled($module)) {
-            return '';
-        }
-
-        try {
-            $modulePath = $this->moduleDir->getDir($module, Dir::MODULE_VIEW_DIR);
-            $moduleDir = $this->readDirFactory->create($modulePath);
-        } catch (\Exception $e) {
-            return '';
-        }
-
-        foreach (['frontend/web/', 'base/web/'] as $area) {
-            $fileContents = '';
-            $filepath = $area . $relativePath;
-
-            // try to read files from pub/static folder (minified and overriden by theme)
-            $fullFilepaths = [];
-            $fullFilepath = $staticPath . '/' . $module . '/' . str_replace($area, '', $filepath);
-            if (strpos($fullFilepath, '.min.js') === false && $this->minification->isEnabled('js')) {
-                $fullFilepaths[] = substr($fullFilepath, 0, -2) . 'min.js';
-            }
-            $fullFilepaths[] = $fullFilepath;
-
-            foreach ($fullFilepaths as $fullFilepath) {
-                if (!$this->staticDir->isExist($fullFilepath)) {
-                    continue;
-                }
-
-                try {
-                    $fileContents = $this->staticDir->readFile($fullFilepath);
-                    break;
-                } catch (\Exception $e) {
-                    continue;
-                }
-            }
-
-            // read directly from module sources
-            if (!$fileContents) {
-                try {
-                    $fileContents = $moduleDir->readFile($filepath);
-                } catch (\Exception $e) {
-                    continue;
-                }
-            }
-
-            return $fileContents;
-        }
-
-        return '';
+        return [
+            $module,
+            $relativePath
+        ];
     }
 }
