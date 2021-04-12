@@ -40,7 +40,12 @@
         /** Init msrp popup */
         initMsrpPopup: function () {
             var self = this,
-                popupDOM = $(self.options.popUpAttr)[0];
+                popupDOM = $(self.options.popUpAttr)[0],
+                target = $(self.options.popupId);
+
+            if (self.options.popupId.indexOf(this.element.attr('id')) > -1) {
+                target = this.element; // fix for multiple elements with the same id on the page
+            }
 
             self.$popup = $(popupDOM.innerHTML.trim());
             self.$popup.find(self.options.productIdInput).val(self.options.productId);
@@ -55,12 +60,12 @@
             self.$popup.find(self.options.paypalCheckoutButons)
                 .on('click.msrp', self.handleMsrpPaypalCheckout.bind(self));
 
-            $(self.options.popupId).on('click.msrp', self.updatePopupContent.bind(self));
+            target.on('click.msrp', self.updatePopupContent.bind(self));
 
             self.$popup.dropdownDialog($.extend(self.options.popUpOptions, {
-                triggerTarget: $(self.options.popupId),
+                triggerTarget: target,
                 position: {
-                    of: $(self.options.popupId)
+                    of: target
                 }
             }));
         },
