@@ -128,22 +128,6 @@
             });
     }
 
-    /**
-     * @param {Object} params
-     * @return {Promise}
-     */
-    function preparePostRequest(params) {
-        return prepareRequest(superagent.post(params.url).send(params.data), params);
-    }
-
-    /**
-     * @param {Object} params
-     * @return {Promise}
-     */
-    function prepareGetRequest(params) {
-        return prepareRequest(superagent.get(params.url).query(params.data), params);
-    }
-
     window.breeze = window.breeze || {};
     window.breeze.request = {
         /**
@@ -168,7 +152,7 @@
                 params.data = prepareData(params.data);
             }
 
-            return preparePostRequest(params);
+            return prepareRequest(superagent.post(params.url).send(params.data), params);
         },
 
         /**
@@ -176,7 +160,9 @@
          * @return {Promise}
          */
         get: function (params) {
-            return prepareGetRequest(prepareParams(params));
+            params = prepareParams(params);
+
+            return prepareRequest(superagent.get(params.url).query(params.data), params);
         }
     };
 })();
