@@ -1,11 +1,9 @@
 {
     "name": "swissup/module-breeze",
-    "description": "Performant Magento 2 frontend for any theme",
+    "description": "Performant Magento Frontend",
     "type": "magento2-module",
     "version": "1.0.0",
-    "license": [
-        "OSL-3.0"
-    ],
+    "license": "OSL-3.0",
     "autoload": {
         "files": [
             "registration.php"
