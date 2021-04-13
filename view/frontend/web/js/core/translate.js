@@ -21,4 +21,5 @@
     };
 
     window.$t = window.breeze.translate.translate;
+    window.__ = window.breeze.translate.translate;
 })();
