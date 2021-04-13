@@ -17,4 +17,8 @@
             </argument>
         </arguments>
     </type>
+
+    <type name="Magento\Deploy\Config\BundleConfig">
+        <plugin name="swissup_breeze" type="Swissup\Breeze\Plugin\BundleConfig" />
+    </type>
 </config>
