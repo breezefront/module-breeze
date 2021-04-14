@@ -46,8 +46,14 @@
         </div>
     <?php endif ?>
 
-    <?= /* @noEscape */ $secureRenderer->renderTag('script', [], 'window.checkout = ' .
-     /* @noEscape */ $block->getSerializedConfig(), false); ?>
+    <?php if (isset($secureRenderer)) : ?>
+        <?= /* @noEscape */ $secureRenderer->renderTag('script', [], 'window.checkout = ' .
+         /* @noEscape */ $block->getSerializedConfig(), false); ?>
+    <?php else: ?>
+        <script>
+            window.checkout = <?= /* @noEscape */ $block->getSerializedConfig() ?>;
+        </script>
+    <?php endif ?>
 
     <script type="text/x-magento-init">
     {
