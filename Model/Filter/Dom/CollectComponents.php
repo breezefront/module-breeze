@@ -30,6 +30,12 @@ class CollectComponents extends AbstractFilter
      */
     private function collect(\DOMDocument $document, \DOMXPath $xpath)
     {
+        $nodes = $xpath->query('//*[@data-mage-init-lazy]', $document);
+        foreach ($nodes as $node) {
+            $node->setAttribute('data-mage-init', $node->getAttribute('data-mage-init-lazy'));
+            $node->removeAttribute('data-mage-init-lazy');
+        }
+
         $nodes = $xpath->query('//*[@data-mage-init]', $document);
         foreach ($nodes as $node) {
             $value = $node->getAttribute('data-mage-init');
