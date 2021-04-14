@@ -116,10 +116,15 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                     if (is_array($item)) {
                         $path = $item['path'];
                         $paths = $item['deps'] ?? [];
+                        $paths += $item['import'] ?? [];
                     }
 
                     $paths[] = $path;
-                    foreach ($paths as $path) {
+                    foreach ($paths as $key => $path) {
+                        if (strpos($key, '::') !== false) {
+                            continue;
+                        }
+
                         $url = $this->jsBuildFactory->create(['name' => $path])
                             ->getAsset()
                             ->getUrl();
@@ -205,12 +210,12 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                     !empty($item['active']) ||
                     in_array($itemName, $this->activeItems)
                 ) {
-                    continue;
+                    continue; // do not check enabled state for the active items (items from dom structure)
                 }
 
                 $names = $item['names'] ?? [];
                 if ($names && array_intersect($names, $this->activeItems)) {
-                    continue;
+                    continue; // do not check enabled state for the items from dom structure
                 }
 
                 $item['enabled'] = $item['enabled'] ?? true;
@@ -220,6 +225,8 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                 }
             }
         }
+
+        $this->processImports($this->activeBundles);
 
         uasort($this->activeBundles, function ($a, $b) {
             $a = $a['sort_order'] ?? 1000;
@@ -233,5 +240,55 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         });
 
         return $this->activeBundles;
+    }
+
+    /**
+     * @param array $bundles
+     * @return void
+     */
+    private function processImports($bundles)
+    {
+        foreach ($bundles as $bundle) {
+            foreach ($bundle['items'] as $item) {
+                if (!is_array($item) || empty($item['import'])) {
+                    continue;
+                }
+
+                foreach ($item['import'] as $key => $value) {
+                    if (strpos($key, '::') === false) {
+                        continue; // file dependency will be processed later
+                    }
+
+                    if (strpos($key, 'item::') === 0) {
+                        $bundleName = $this->findBundleName($value);
+                    } else {
+                        $bundleName = $value;
+                    }
+
+                    if ($bundleName &&
+                        empty($this->activeBundles[$bundleName]) &&
+                        !empty($this->bundles[$bundleName])
+                    ) {
+                        $this->activeBundles[$bundleName] = $this->bundles[$bundleName];
+                        $this->processImports([$bundleName => $this->bundles[$bundleName]]);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * @param string $itemName
+     * @return string|false
+     */
+    private function findBundleName($itemName)
+    {
+        foreach ($this->bundles as $name => $bundle) {
+            if (isset($bundle['items'][$itemName])) {
+                return $name;
+            }
+        }
+
+        return false;
     }
 }

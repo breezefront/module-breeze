@@ -165,10 +165,15 @@ class JsBuild
             if (is_array($item)) {
                 $path = $item['path'];
                 $deps = $item['deps'] ?? [];
+                $deps += $item['import'] ?? [];
             }
 
             $deps = array_diff($deps, $loadedDeps);
-            foreach ($deps as $depPath) {
+            foreach ($deps as $key => $depPath) {
+                if (strpos($key, '::') !== false) {
+                    continue;
+                }
+
                 $build[$name] .= $this->getContents($depPath);
                 $loadedDeps[$depPath] = $depPath;
             }
