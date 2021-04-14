@@ -242,7 +242,13 @@
         },
 
         isInViewport: function (el) {
-            var rect = el.get(0).getBoundingClientRect();
+            var rect;
+
+            if (!el.length) {
+                return false;
+            }
+
+            rect = el.get(0).getBoundingClientRect();
 
             return rect.top >= 0 && rect.bottom <= $(window).height();
         }
