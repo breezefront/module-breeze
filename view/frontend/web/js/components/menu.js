@@ -5,7 +5,8 @@
     breeze.widget('menu', {
         options: {
             menus: 'ul',
-            responsive: false,
+            dropdown: 'ul',
+            responsive: true,
             expanded: false,
             showDelay: 42,
             hideDelay: 300,
@@ -78,36 +79,46 @@
 
         /** Enable desktop mode */
         toggleDesktopMode: function () {
+            var self = this;
+
             $('ul.shown', this.element).removeClass('shown').hide();
             $('li.parent', this.element)
                 .off('click.menu')
                 .on('mouseenter.menu', function () {
+                    var submenu = $(this).children(self.options.dropdown);
+
                     if (this.breezeTimeout) {
                         clearTimeout(this.breezeTimeout);
                         delete this.breezeTimeout;
                     }
 
-                    $(this).children('ul').addClass('shown').show();
+                    if (typeof self.options.position === 'function') {
+                        self.options.position(submenu);
+                    }
+
+                    submenu.addClass('shown').show();
                 })
                 .on('mouseleave.menu', function () {
                     this.breezeTimeout = setTimeout(function () {
-                        $(this).children('ul').removeClass('shown').hide();
+                        $(this).children(self.options.dropdown).removeClass('shown').hide();
                     }.bind(this), 80);
                 });
         },
 
         /** Enable mobile mode */
         toggleMobileMode: function () {
+            var self = this;
+
             $('li.parent', this.element)
                 .off('mouseenter.menu mouseleave.menu')
                 .on('click.menu', function () {
-                    var ul = $(this).children('ul');
+                    var dropdown = $(this).children(self.options.dropdown);
 
-                    if (!ul.length || ul.hasClass('shown')) {
+                    if (!dropdown.length || dropdown.hasClass('shown')) {
                         return;
                     }
 
-                    ul.addClass('shown').show();
+                    dropdown.addClass('shown').show();
 
                     return false;
                 });
