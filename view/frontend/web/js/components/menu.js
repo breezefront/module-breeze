@@ -93,7 +93,7 @@
                     }
 
                     if (typeof self.options.position === 'function') {
-                        self.options.position(submenu);
+                        self.options.position.call(self, submenu);
                     }
 
                     submenu.addClass('shown').show();
