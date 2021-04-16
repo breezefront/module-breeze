@@ -85,7 +85,7 @@
                             <item name="validation" xsi:type="string">Swissup_Breeze/js/components/validation</item>
                             <item name="quickSearch" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/quick-search</item>
-                                <item name="deps" xsi:type="array">
+                                <item name="import" xsi:type="array">
                                     <item name="keys" xsi:type="string">Swissup_Breeze/js/common/keys</item>
                                 </item>
                             </item>
@@ -147,13 +147,13 @@
                             </item>
                             <item name="upsellProducts" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/upsell-products</item>
-                                <item name="deps" xsi:type="array">
+                                <item name="import" xsi:type="array">
                                     <item name="shuffle-and-reveal" xsi:type="string">Swissup_Breeze/js/common/shuffle-and-reveal</item>
                                 </item>
                             </item>
                             <item name="relatedProducts" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/related-products</item>
-                                <item name="deps" xsi:type="array">
+                                <item name="import" xsi:type="array">
                                     <item name="shuffle-and-reveal" xsi:type="string">Swissup_Breeze/js/common/shuffle-and-reveal</item>
                                 </item>
                             </item>
