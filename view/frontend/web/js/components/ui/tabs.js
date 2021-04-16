@@ -50,10 +50,23 @@
                     content: self.contents.eq(index),
                     trigger: self.triggers.eq(index)
                 }));
+            });
 
-                $(el).on('beforeOpen', function () {
-                    self.collapsibles.not(el).collapsible('close');
-                });
+            $(this.element).on('beforeOpen', function (event, data) {
+                var prevContent = self.getActiveTab().collapsible('instance').content;
+
+                self.prevHeight = prevContent ? $(prevContent).outerHeight() : false;
+                self.collapsibles.not(data.instance.element).collapsible('close');
+            });
+
+            $(this.element).on('beforeLoad', function (event, data) {
+                if (self.prevHeight && $(window).width() > 767) {
+                    data.instance.content.css('height', self.prevHeight);
+                }
+            });
+
+            $(this.element).on('afterLoad', function (event, data) {
+                data.instance.content.css('height', 'auto');
             });
 
             // Reviews and other third-party links
@@ -82,6 +95,21 @@
 
                 element.get(0).scrollIntoView();
             });
+        },
+
+        /** [getActiveTab description] */
+        getActiveTab: function () {
+            var tab;
+
+            this.collapsibles.each(function (index, el) {
+                if ($(el).collapsible('isActive')) {
+                    tab = $(el);
+
+                    return false;
+                }
+            });
+
+            return tab;
         },
 
         /** Find active tab index */

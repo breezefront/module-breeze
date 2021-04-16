@@ -55,9 +55,16 @@
             }
         },
 
+        /** [isActive description] */
+        isActive: function () {
+            return this.content.attr('aria-hidden') === 'false';
+        },
+
         /** Open dropdown */
         open: function () {
-            this.element.trigger('beforeOpen');
+            this.element.trigger('beforeOpen', {
+                instance: this
+            });
 
             if (this.options.ajaxContent) {
                 this.loadContent();
@@ -81,6 +88,7 @@
             this.content.show();
 
             this.element.trigger('dimensionsChanged', {
+                instance: this,
                 opened: true
             });
         },
@@ -129,6 +137,10 @@
                 return;
             }
 
+            self.element.trigger('beforeLoad', {
+                instance: self
+            });
+
             if (self.options.loadingClass) {
                 self.element.addClass(self.options.loadingClass);
             }
@@ -148,6 +160,9 @@
                 complete: function () {
                     self.element.removeClass(self.options.loadingClass);
                     self.content.removeAttr('aria-busy');
+                    self.element.trigger('afterLoad', {
+                        instance: self
+                    });
                 }
             });
         }
