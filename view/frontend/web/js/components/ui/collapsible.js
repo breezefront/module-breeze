@@ -13,7 +13,10 @@
             collateral: {
                 element: null,
                 openedState: null
-            }
+            },
+            ajaxUrlElement: '[data-ajax=true]',
+            ajaxUrlAttribute: 'href',
+            ajaxContent: false
         },
 
         /** Mount widget on the element */
@@ -55,6 +58,10 @@
         /** Open dropdown */
         open: function () {
             this.element.trigger('beforeOpen');
+
+            if (this.options.ajaxContent) {
+                this.loadContent();
+            }
 
             if (this.options.openedState) {
                 this.element.addClass(this.options.openedState);
@@ -111,6 +118,38 @@
             } else {
                 this.open();
             }
+        },
+
+        /** @private */
+        loadContent: function () {
+            var url = this.element.find(this.options.ajaxUrlElement).attr(this.options.ajaxUrlAttribute),
+                self = this;
+
+            if (!url || this.element.data('loaded')) {
+                return;
+            }
+
+            if (self.options.loadingClass) {
+                self.element.addClass(self.options.loadingClass);
+            }
+            self.content.attr('aria-busy', 'true');
+
+            breeze.request.get({
+                url: url,
+                type: 'html',
+
+                /** [success description] */
+                success: function (response) {
+                    self.element.data('loaded', true);
+                    self.content.empty().append(response.text).trigger('contentUpdated');
+                },
+
+                /** [complete description] */
+                complete: function () {
+                    self.element.removeClass(self.options.loadingClass);
+                    self.content.removeAttr('aria-busy');
+                }
+            });
         }
     });
 
