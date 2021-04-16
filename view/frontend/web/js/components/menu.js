@@ -6,6 +6,7 @@
         options: {
             menus: 'ul',
             dropdown: 'ul',
+            useInlineDisplay: true,
             responsive: true,
             expanded: false,
             showDelay: 42,
@@ -15,11 +16,16 @@
 
         /** Init widget */
         create: function () {
-            var mql = window.matchMedia(this.options.mediaBreakpoint);
+            var mql;
 
             if (this.options.responsive) {
+                mql = window.matchMedia(this.options.mediaBreakpoint);
                 mql.addListener(this.toggleMode.bind(this));
                 this.toggleMode(mql);
+            } else if (this.options.mode === 'mobile') {
+                this.toggleMobileMode();
+            } else {
+                this.toggleDesktopMode();
             }
 
             this._setActiveMenu(); // varnish fix
@@ -81,26 +87,25 @@
         toggleDesktopMode: function () {
             var self = this;
 
-            $('ul.shown', this.element).removeClass('shown').hide();
+            $(self.options.dropdown + '.shown').each(function () {
+                self.close($(this));
+            });
+
             $('li.parent', this.element)
                 .off('click.menu')
                 .on('mouseenter.menu', function () {
-                    var submenu = $(this).children(self.options.dropdown);
+                    var dropdown = $(this).children(self.options.dropdown);
 
                     if (this.breezeTimeout) {
                         clearTimeout(this.breezeTimeout);
                         delete this.breezeTimeout;
                     }
 
-                    if (typeof self.options.position === 'function') {
-                        self.options.position.call(self, submenu);
-                    }
-
-                    submenu.addClass('shown').show();
+                    self.open(dropdown);
                 })
                 .on('mouseleave.menu', function () {
                     this.breezeTimeout = setTimeout(function () {
-                        $(this).children(self.options.dropdown).removeClass('shown').hide();
+                        self.close($(this).children(self.options.dropdown));
                     }.bind(this), 80);
                 });
         },
@@ -118,10 +123,40 @@
                         return;
                     }
 
-                    dropdown.addClass('shown').show();
+                    self.open(dropdown);
 
                     return false;
                 });
+        },
+
+        /** [open description] */
+        open: function (dropdown) {
+            $(this.element).trigger('beforeOpen', {
+                dropdown: dropdown
+            });
+
+            dropdown.addClass('shown')
+                .parent('li')
+                .addClass('opened');
+
+            if (this.options.useInlineDisplay) {
+                dropdown.show();
+            }
+        },
+
+        /** [open description] */
+        close: function (dropdown) {
+            $(this.element).trigger('beforeClose', {
+                dropdown: dropdown
+            });
+
+            dropdown.removeClass('shown')
+                .parent('li')
+                .removeClass('opened');
+
+            if (this.options.useInlineDisplay) {
+                dropdown.hide();
+            }
         },
 
         /** [_setActiveMenu description] */
