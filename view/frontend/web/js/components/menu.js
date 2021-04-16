@@ -131,7 +131,7 @@
 
         /** [open description] */
         open: function (dropdown) {
-            $(this.element).trigger('beforeOpen', {
+            $(this.element).trigger('menu:beforeOpen', {
                 dropdown: dropdown
             });
 
@@ -146,7 +146,7 @@
 
         /** [open description] */
         close: function (dropdown) {
-            $(this.element).trigger('beforeClose', {
+            $(this.element).trigger('menu:beforeClose', {
                 dropdown: dropdown
             });
 

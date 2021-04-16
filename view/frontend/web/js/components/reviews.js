@@ -14,7 +14,7 @@
             } else if (reviewTab.attr('role') === 'tab' && reviewTab.hasClass('active')) {
                 this.loadReviews();
             } else {
-                reviewTab.one('beforeOpen', function () {
+                reviewTab.one('collapsible:beforeOpen', function () {
                     self.loadReviews();
                 });
             }

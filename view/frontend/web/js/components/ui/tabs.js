@@ -52,20 +52,20 @@
                 }));
             });
 
-            $(this.element).on('beforeOpen', function (event, data) {
+            $(this.element).on('collapsible:beforeOpen', function (event, data) {
                 var prevContent = self.getActiveTab().collapsible('instance').content;
 
                 self.prevHeight = prevContent ? $(prevContent).outerHeight() : false;
                 self.collapsibles.not(data.instance.element).collapsible('close');
             });
 
-            $(this.element).on('beforeLoad', function (event, data) {
+            $(this.element).on('collapsible:beforeLoad', function (event, data) {
                 if (self.prevHeight && $(window).width() > 767) {
                     data.instance.content.css('height', self.prevHeight);
                 }
             });
 
-            $(this.element).on('afterLoad', function (event, data) {
+            $(this.element).on('collapsible:afterLoad', function (event, data) {
                 data.instance.content.css('height', 'auto');
             });
 

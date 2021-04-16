@@ -62,7 +62,7 @@
 
         /** Open dropdown */
         open: function () {
-            this.element.trigger('beforeOpen', {
+            this.element.trigger('collapsible:beforeOpen', {
                 instance: this
             });
 
@@ -137,7 +137,7 @@
                 return;
             }
 
-            self.element.trigger('beforeLoad', {
+            self.element.trigger('collapsible:beforeLoad', {
                 instance: self
             });
 
@@ -160,7 +160,7 @@
                 complete: function () {
                     self.element.removeClass(self.options.loadingClass);
                     self.content.removeAttr('aria-busy');
-                    self.element.trigger('afterLoad', {
+                    self.element.trigger('collapsible:afterLoad', {
                         instance: self
                     });
                 }
