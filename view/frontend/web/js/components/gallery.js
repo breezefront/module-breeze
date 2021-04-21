@@ -174,7 +174,7 @@
             }
 
             // scroll to hidden thumbnail only if we will not affect page scroll offset
-            if (fullscreen || this.isInViewport(this.thumbs)) {
+            if (fullscreen || this.thumbs.isInViewport()) {
                 this.thumbs.eq(index).focus();
             }
 
@@ -239,18 +239,6 @@
             this.stage.prepend(
                 _.template(params.template || this.options.video.template)(params)
             );
-        },
-
-        isInViewport: function (el) {
-            var rect;
-
-            if (!el.length) {
-                return false;
-            }
-
-            rect = el.get(0).getBoundingClientRect();
-
-            return rect.top >= 0 && rect.bottom <= $(window).height();
         }
     });
 
