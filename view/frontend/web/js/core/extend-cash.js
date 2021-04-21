@@ -47,6 +47,28 @@
         return this.filter(isHidden);
     };
 
+    /** [inViewport description] */
+    function inViewport(i, el) {
+        var rect = el.getBoundingClientRect();
+
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= $(window).height() &&
+            rect.right <= $(window).width()
+        );
+    }
+
+    /** Return elements that are inside viewport */
+    $.fn.inViewport = function () {
+        return this.filter(inViewport);
+    };
+
+    /** Checks if element is inside viewport */
+    $.fn.isInViewport = function () {
+        return this.inViewport().length > 0;
+    };
+
     /** Serialize object to query string */
     $.params = function (object) {
         return Object.keys(object).map(function (key) {
