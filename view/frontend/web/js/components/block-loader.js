@@ -41,17 +41,19 @@
         element.removeClass('_block-content-loading');
     }
 
-    breeze.widget('blockLoader', function (href) {
-        if (!loader && !_.isEmpty(href)) {
-            loader = $(_.template(template)({
-                loaderImageHref: href
-            }));
-        }
+    breeze.widget('blockLoader', {
+        /** [create description] */
+        create: function () {
+            var href = this.options;
 
-        return {
-            show: show, // @todo Promise
-            hide: hide
-        };
+            if (!loader && !_.isEmpty(href)) {
+                loader = $(_.template(template)({
+                    loaderImageHref: href
+                }));
+            }
+        },
+        show: show, // @todo Promise
+        hide: hide  // @todo Promise
     });
 
     $(document).on('breeze:mount:Magento_Ui/js/block-loader', function (event, data) {

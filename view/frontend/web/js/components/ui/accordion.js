@@ -2,10 +2,10 @@
 (function () {
     'use strict';
 
-    breeze.widget('accordion', function (settings) {
-        $(this).tabs($.extend({
+    breeze.widget('accordion', 'tabs', {
+        options: {
             collapsible: true
-        }, settings));
+        }
     });
 
     $(document).on('breeze:mount:accordion', function (event, data) {

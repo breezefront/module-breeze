@@ -43,12 +43,11 @@
                                 <item name="url" xsi:type="string">Swissup_Breeze::js/lib/turbo-7.0.0-beta4.min.js</item>
                                 <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Data::isTurboEnabled"/>
                             </item>
+                            <item name="class" xsi:type="string">Swissup_Breeze::js/lib/class.js</item>
                             <item name="breeze-request" xsi:type="string">Swissup_Breeze::js/core/request.js</item>
                             <item name="breeze-translate" xsi:type="string">Swissup_Breeze::js/core/translate.js</item>
                             <item name="breeze-validator" xsi:type="string">Swissup_Breeze::js/core/validator.js</item>
-                            <item name="breeze-object" xsi:type="string">Swissup_Breeze::js/core/component/component.js</item>
-                            <item name="breeze-widget" xsi:type="string">Swissup_Breeze::js/core/component/widget.js</item>
-                            <item name="breeze-view" xsi:type="string">Swissup_Breeze::js/core/component/view.js</item>
+                            <item name="breeze-object" xsi:type="string">Swissup_Breeze::js/core/component.js</item>
                             <item name="breeze-cookie" xsi:type="string">Swissup_Breeze::js/core/cookie.js</item>
                             <item name="breeze-storage" xsi:type="string">Swissup_Breeze::js/core/storage.js</item>
                             <item name="breeze-sections" xsi:type="string">Swissup_Breeze::js/core/sections.js</item>
