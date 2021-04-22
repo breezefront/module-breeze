@@ -14,8 +14,11 @@
     /**
      * @param {Object} element
      */
-    function show(element) {
-        var position = element.css('position');
+    function show(element, settings) {
+        var position = element.css('position'),
+            spinner = loader.clone();
+
+        settings = settings || {};
 
         element.find(':focus').blur();
         element.find('input:disabled, select:disabled').addClass('_disabled');
@@ -25,7 +28,11 @@
             element.addClass('_block-content-loading');
         }
 
-        element.append(loader.clone());
+        if (settings.css) {
+            spinner.css(settings.css);
+        }
+
+        element.append(spinner);
     }
 
     /**

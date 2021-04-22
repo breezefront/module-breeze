@@ -8,12 +8,10 @@ ko.bindingHandlers.blockLoader = {
     update: function (element, displayBlockLoader) {
         'use strict';
 
-        element = $(element);
-
         if (ko.unwrap(displayBlockLoader())) {
-            $.fn.blockLoader().show(element);
+            $(element).spinner(true);
         } else {
-            $.fn.blockLoader().hide(element);
+            $(element).spinner(false);
         }
     }
 };

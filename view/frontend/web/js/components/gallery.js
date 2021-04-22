@@ -57,7 +57,7 @@
             var self = this;
 
             this.image.on('load error', function () {
-                $.fn.blockLoader().hide(self.stage);
+                self.stage.spinner(false);
             });
 
             this.stage
@@ -170,7 +170,7 @@
             this.stage.toggleClass('video', data.videoUrl);
 
             if (!this.image.get(0).complete && !data.videoUrl) {
-                $.fn.blockLoader().show(this.stage);
+                this.stage.spinner(true);
             }
 
             // scroll to hidden thumbnail only if we will not affect page scroll offset

@@ -69,6 +69,17 @@
         return this.inViewport().length > 0;
     };
 
+    /** Toggle block loader on the element */
+    $.fn.spinner = function (flag, settings) {
+        return this.each(function () {
+            if (flag) {
+                $.fn.blockLoader().show($(this), settings);
+            } else {
+                $.fn.blockLoader().hide($(this));
+            }
+        });
+    };
+
     /** Serialize object to query string */
     $.params = function (object) {
         return Object.keys(object).map(function (key) {
