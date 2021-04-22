@@ -7,6 +7,9 @@
             autocomplete: 'off',
             minSearchLength: 3,
             responseFieldElements: 'ul li',
+            dropdown: '<ul role="listbox"></ul>',
+            dropdownClass: '',
+            itemClass: '',
             selectClass: 'selected',
             template:
                 '<li class="<%- data.row_class %>" id="qs-option-<%- data.index %>" role="option">' +
@@ -17,6 +20,8 @@
                         '<%- data.num_results %>' +
                     '</span>' +
                 '</li>',
+            formSelector: '#search_mini_form',
+            destinationSelector: '#search_autocomplete',
             submitBtn: 'button[type="submit"]',
             searchLabel: '[data-role=minisearch-label]',
             suggestionDelay: 300,
@@ -29,66 +34,64 @@
 
             this.responseList = {
                 indexList: null,
-                selected: null
+                selected: null,
+                selectedIndex: null
             };
             this.autoComplete = $(this.options.destinationSelector);
             this.searchForm = $(this.options.formSelector);
-            this.submitBtn = this.searchForm.find(this.options.submitBtn)[0];
+            this.submitBtn = this.searchForm.find(this.options.submitBtn);
             this.searchLabel = this.searchForm.find(this.options.searchLabel);
             this.element.attr('autocomplete', this.options.autocomplete);
+            this.debouncedRequest = _.debounce(
+                this.sendRequest.bind(this),
+                this.options.suggestionDelay
+            );
 
             if (this.element.get(0) === document.activeElement) {
                 this.setActiveState(true);
             }
 
             if (!this.element.val()) {
-                this.submitBtn.disabled = true;
+                this.submitBtn.prop('disabled', true);
             }
 
-            this.searchLabel.on('click', function (event) {
+            this.searchLabel.on('click.quickSearch', function (event) {
                 if (self.isActive()) {
                     event.preventDefault();
+                } else {
+                    // in case if element is hidden
+                    self.element.focus();
+                    self.setActiveState(true);
                 }
             });
 
             this.element
-                .on('blur', function () {
-                    if (!self.isActive()) {
-                        return;
-                    }
+                .on('focus.quickSearch', this.setActiveState.bind(this, true))
+                .on('blur.quickSearch', this._onBlur.bind(this))
+                .on('input.quickSearch propertychange.quickSearch', this.debouncedRequest);
 
-                    setTimeout(function () {
-                        if (self.autoComplete.hidden().length) {
-                            self.setActiveState(false);
-                        } else {
-                            self.element.focus();
-                        }
-
-                        self.autoComplete.hide();
-                        self._updateAriaHasPopup(false);
-                    }, 250);
-                })
-                .on('focus', this.setActiveState.bind(this, true))
-                .on('keydown', this._onKeyDown.bind(this))
-                .on('input propertychange', _.debounce(
-                    this._onPropertyChange.bind(this),
-                    this.options.suggestionDelay
-                ));
-
-            this.searchForm.on('submit', function (event) {
-                self._onSubmit(event);
-                self._updateAriaHasPopup(false);
-            });
+            this.searchForm
+                .on('keydown.quickSearch', this._onKeyDown.bind(this))
+                .on('submit.quickSearch', function (event) {
+                    self._onSubmit(event);
+                    self._updateAriaHasPopup(false);
+                });
 
             this.autoComplete
-                .on('click', 'li', function (event) {
-                    self._selectEl($(event.currentTarget));
-                    self.searchForm.submit();
-                })
-                .on('mouseenter', 'li', function (event) {
-                    self._selectEl($(event.target));
-                    self.element.attr('aria-activedescendant', $(event.target).attr('id'));
+                .on('click.quickSearch', this.options.responseFieldElements, function () {
+                    self._selectEl($(this));
+                    self.submitSelectedItem();
                 });
+
+            $(document).on('click.quickSearch', function (event) {
+                if (self.element.has(event.target).length ||
+                    self.autoComplete.has(event.target).length
+                ) {
+                    return clearTimeout(self.blurTimeout);
+                }
+
+                self.hideAutocomplete();
+            });
         },
 
         /**
@@ -102,9 +105,33 @@
          * @param {Boolean} isActive
          */
         setActiveState: function (isActive) {
+            var el = this.element.get(0);
+
+            if (!this.element.isInViewport() || !this.element.isVisible()) {
+                setTimeout(function () {
+                    el.selectionStart = 10000;
+                    el.selectionEnd = 10000;
+                }, 13);
+            }
+
             this.searchForm.toggleClass('active', isActive);
             this.searchLabel.toggleClass('active', isActive);
             this.element.attr('aria-expanded', isActive);
+
+            if (isActive) {
+                clearTimeout(this.blurTimeout);
+
+                if (this.responseList.indexList) {
+                    this.showAutocomplete();
+                } else if (this.element.val()) {
+                    this.debouncedRequest();
+                }
+            }
+        },
+
+        /** [submitSelectedItem description] */
+        submitSelectedItem: function () {
+            this.searchForm.submit();
         },
 
         /**
@@ -133,7 +160,12 @@
          * @param {Boolean} all - Controls whether to clear the suggestion list.
          */
         _resetResponseList: function (all) {
+            if (this.responseList.selected) {
+                this.responseList.selected.removeClass(this.options.selectClass);
+            }
+
             this.responseList.selected = null;
+            this.responseList.selectedIndex = null;
 
             if (all === true) {
                 this.responseList.indexList = null;
@@ -144,19 +176,38 @@
          * @param {Event} e
          */
         _onSubmit: function (e) {
-            var value = this.element.val();
+            var value = this.element.val(),
+                selected = this.dataset[this.responseList.selectedIndex];
 
             if (typeof value === 'string' && !value) {
                 e.preventDefault();
             }
 
-            if (this.responseList.selected) {
-                this.element.val(this.responseList.selected.find('.qs-option-name').text().trim());
+            if (selected && selected.title) {
+                this.element.val(selected.title);
             }
         },
 
+        /** [_onBlur description] */
+        _onBlur: function () {
+            var self = this;
+
+            if (!self.isActive()) {
+                return;
+            }
+
+            self.blurTimeout = setTimeout(function () {
+                if (self.autoComplete.is(':focus-within')) {
+                    return;
+                }
+
+                self.setActiveState(false);
+                self.hideAutocomplete();
+            }, 250);
+        },
+
         /** [_selectEl description] */
-        _selectEl: function (el) {
+        _selectEl: function (el, focus) {
             if (!el) {
                 return;
             }
@@ -166,136 +217,208 @@
             }
 
             el.addClass(this.options.selectClass);
+
+            if (focus) {
+                el.focus();
+            }
+
             this.responseList.selected = el;
+            this.responseList.selectedIndex = this.responseList.indexList.index(el);
+        },
+
+        /** [_selectNextEl description] */
+        _selectNextEl: function (focus) {
+            var index = this.responseList.selectedIndex,
+                el = this._getFirstVisibleElement();
+
+            if (index !== null && this.responseList.indexList[index + 1]) {
+                el = $(this.responseList.indexList[index + 1]);
+            }
+
+            this._selectEl(el, focus);
+        },
+
+        /** [_selectPrevEl description] */
+        _selectPrevEl: function (focus) {
+            var index = this.responseList.selectedIndex,
+                el = this._getLastElement();
+
+            if (index !== null && this.responseList.indexList[index - 1]) {
+                el = $(this.responseList.indexList[index - 1]);
+            }
+
+            this._selectEl(el, focus);
         },
 
         /**
          * @param {Event} e
          */
         _onKeyDown: function (e) {
-            var keyCode = e.keyCode || e.which,
-                el;
+            var keyCode = e.keyCode || e.which;
 
-            if (e.ctrlKey || e.shiftKey || e.altKey) {
+            if (e.ctrlKey || e.altKey || e.shiftKey && keyCode !== $.key.TAB) {
                 return;
             }
 
-            if ([$.key.HOME, $.key.END, $.key.DOWN, $.key.UP].indexOf(keyCode) !== -1) {
-                e.preventDefault();
+            if ([$.key.HOME, $.key.END, $.key.DOWN, $.key.UP, $.key.TAB].indexOf(keyCode) !== -1) {
+                if (!this.autoComplete.visible().length) {
+                    return;
+                }
+
+                e.preventDefault(); // prevent page scrolling
             }
 
             switch (keyCode) {
                 case $.key.HOME:
-                    this._selectEl(this._getFirstVisibleElement());
+                    this._selectEl(this._getFirstVisibleElement(), true);
                     break;
 
                 case $.key.END:
-                    this._selectEl(this._getLastElement());
+                    this._selectEl(this._getLastElement(), true);
                     break;
 
                 case $.key.DOWN:
-                    el = this._getFirstVisibleElement();
+                    this._selectNextEl(true);
+                    break;
 
-                    if (this.responseList.selected && this.responseList.selected.next().length) {
-                        el = this.responseList.selected.next();
+                case $.key.TAB:
+                    if (e.shiftKey) {
+                        this._selectPrevEl(true);
+                    } else {
+                        this._selectNextEl(true);
                     }
-
-                    this._selectEl(el);
-
                     break;
 
                 case $.key.UP:
-                    el = this._getLastElement();
-
-                    if (this.responseList.selected && this.responseList.selected.prev().length) {
-                        el = this.responseList.selected.prev();
-                    }
-
-                    this._selectEl(el);
-
+                    this._selectPrevEl(true);
                     break;
 
                 case $.key.ESCAPE:
-                    this._resetResponseList(true);
-                    this.autoComplete.hide();
-                    break;
-
-                case $.key.ENTER:
-                    if (this.element.val().length >= parseInt(this.options.minSearchLength, 10)) {
-                        this.searchForm.submit();
-                        e.preventDefault();
-                    }
+                    this.element.focus();
+                    this.hideAutocomplete();
                     break;
 
                 default:
-                    return;
+                    this.element.focus();
+                    break;
             }
         },
 
-        /** [_onPropertyChange description] */
-        _onPropertyChange: function () {
-            var searchField = this.element,
-                clonePosition = {
-                    position: 'absolute',
-                    width: searchField.outerWidth()
-                },
-                source = this.options.template,
-                template = _.template(source),
-                dropdown = $('<ul role="listbox"></ul>'),
-                value = this.element.val();
+        /** [sendRequest description] */
+        sendRequest: function () {
+            var value = this.element.val();
 
-            this.submitBtn.disabled = true;
+            this.submitBtn.prop('disabled', true);
 
-            if (value.length < parseInt(this.options.minSearchLength, 10)) {
-                return this._resetAutocomplete();
+            if (value.length < this.options.minSearchLength) {
+                return this.resetAutocomplete();
             }
 
-            this.submitBtn.disabled = false;
+            this.submitBtn.prop('disabled', false);
 
-            breeze.request.get({
+            return breeze.request.get({
                 url: this.options.url,
                 type: 'json',
                 data: {
                     q: value
                 }
             }).then(function (response) {
-                var data = response.body;
-
-                if (!data.length) {
-                    return this._resetAutocomplete();
-                }
-
-                $.each(data, function (index, element) {
-                    element.index = index;
-                    dropdown.append(template({
-                        data: element
-                    }));
-                });
-
-                this._resetResponseList(true);
-
-                this.responseList.indexList = this.autoComplete
-                    .empty()
-                    .append(dropdown)
-                    .css(clonePosition)
-                    .show()
-                    .find(this.options.responseFieldElements)
-                    .visible();
-
-                this.element.removeAttr('aria-activedescendant');
-
-                if (this.responseList.indexList.length) {
-                    this._updateAriaHasPopup(true);
-                } else {
-                    this._updateAriaHasPopup(false);
-                }
+                this.prepareResponse(response.body);
+                this.processResponse();
             }.bind(this));
         },
 
-        /** [_resetAutocomplete description] */
-        _resetAutocomplete: function () {
+        /** [prepareResponse description] */
+        prepareResponse: function (data) {
+            this.dataset = data;
+        },
+
+        /** [processResponse description] */
+        processResponse: function () {
+            var dropdown = $(this.options.dropdown);
+
+            if (this.options.dropdownClass) {
+                dropdown.addClass(this.options.dropdownClass);
+            }
+
+            if (!this.dataset.length) {
+                return this.resetAutocomplete();
+            }
+
+            $.each(this.dataset, function (index, item) {
+                item.index = index;
+                dropdown.append(this.renderItem(item));
+            }.bind(this));
+
+            dropdown.children().addClass(this.options.itemClass);
+
             this._resetResponseList(true);
-            this.autoComplete.hide();
+
+            this.showAutocomplete(dropdown);
+
+            this.responseList.indexList = this.autoComplete
+                .find(this.options.responseFieldElements)
+                .visible();
+
+            this.element
+                .focus()
+                .removeAttr('aria-activedescendant');
+
+            if (this.responseList.indexList.length) {
+                this._updateAriaHasPopup(true);
+            } else {
+                this._updateAriaHasPopup(false);
+            }
+        },
+
+        /** [showAutocomplete description] */
+        showAutocomplete: function (content) {
+            if (!content && this.autoComplete.visible().length) {
+                return;
+            }
+
+            if (content) {
+                this.autoComplete.empty().append(content);
+            }
+
+            this.autoComplete
+                .css({
+                    position: 'absolute',
+                    minWidth: this.element.outerWidth()
+                })
+                .show()
+                .find(this.options.responseFieldElements)
+                .attr('tabIndex', 0);
+        },
+
+        /** [showAutocomplete description] */
+        hideAutocomplete: function () {
+            this.autoComplete
+                .hide()
+                .find(this.options.responseFieldElements)
+                .removeAttr('tabIndex');
+        },
+
+        /** [renderItem description] */
+        renderItem: function (item) {
+            return this.getItemTemplate(item)({
+                data: item
+            });
+        },
+
+        /** [getItemTemplate description] */
+        getItemTemplate: function () {
+            if (!this.template) {
+                this.template = _.template(this.options.template);
+            }
+
+            return this.template;
+        },
+
+        /** [resetAutocomplete description] */
+        resetAutocomplete: function () {
+            this._resetResponseList(true);
+            this.hideAutocomplete();
             this._updateAriaHasPopup(false);
             this.element.removeAttr('aria-activedescendant');
         }
