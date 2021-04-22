@@ -42,9 +42,19 @@
         return this.filter(isVisible);
     };
 
+    /** Checks if element is visible */
+    $.fn.isVisible = function () {
+        return this.visible().length > 0;
+    };
+
     /** Return hidden elements */
     $.fn.hidden = function () {
         return this.filter(isHidden);
+    };
+
+    /** Checks if element is hidden */
+    $.fn.isHidden = function () {
+        return this.hidden().length > 0;
     };
 
     /** [inViewport description] */
