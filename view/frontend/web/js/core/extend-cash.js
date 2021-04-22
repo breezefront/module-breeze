@@ -13,7 +13,7 @@
 
         /** Native methods proxy */
         $.fn[method] = function () {
-            this.each(function () {
+            return this.each(function () {
                 var event = document.createEvent('Event');
 
                 event.initEvent(method, true, true);
