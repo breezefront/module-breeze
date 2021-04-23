@@ -13,10 +13,22 @@ class KoTemplate extends Template
      */
     protected function _toHtml()
     {
-        $html = parent::_toHtml();
+        return $this->prepareHtml(parent::_toHtml());
+    }
 
-        if ($html) {
-            $html = preg_replace("/\s{2,}/", ' ', $html);
+    /**
+     * @param string $html
+     * @return string
+     */
+    protected function prepareHtml($html)
+    {
+        if (!$html) {
+            return $html;
+        }
+
+        $html = preg_replace("/\s{2,}/", ' ', $html);
+
+        if ($this->getData('wrapper') !== false) {
             $html = sprintf(self::WRAPPER, $this->getId(), $html);
             $html .= "\n";
         }
@@ -24,6 +36,9 @@ class KoTemplate extends Template
         return $html;
     }
 
+    /**
+     * @return string
+     */
     protected function getId()
     {
         if ($this->hasData('id')) {

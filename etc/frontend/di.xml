@@ -33,4 +33,36 @@
             <argument name="minifier" xsi:type="object">jsMinificationAdapter</argument>
         </arguments>
     </type>
+
+    <!-- Ability to render templates from web/template folder -->
+    <type name="Swissup\Breeze\Model\HtmlTemplateFileResolution">
+        <arguments>
+            <argument name="resolver" xsi:type="object">Swissup\Breeze\View\FileResolver</argument>
+        </arguments>
+    </type>
+    <virtualType name="Swissup\Breeze\View\FileResolver" type="Magento\Framework\View\Design\FileResolution\Fallback\Resolver\Simple">
+        <arguments>
+            <argument name="rulePool" xsi:type="object">Swissup\Breeze\Model\HtmlTemplateFileResolutionRulePool</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Swissup\Breeze\View\FileSystem" type="Magento\Framework\View\FileSystem">
+        <arguments>
+            <argument name="fallbackTemplateFile" xsi:type="object">Swissup\Breeze\Model\HtmlTemplateFileResolution</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Swissup\Breeze\View\TemplateResolver" type="Magento\Framework\View\Element\Template\File\Resolver">
+        <arguments>
+            <argument name="viewFileSystem" xsi:type="object">Swissup\Breeze\View\FileSystem</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Swissup\Breeze\View\HtmlTemplateContext" type="Magento\Framework\View\Element\Template\Context">
+        <arguments>
+            <argument name="resolver" xsi:type="object">Swissup\Breeze\View\TemplateResolver</argument>
+        </arguments>
+    </virtualType>
+    <type name="Swissup\Breeze\Block\HtmlTemplate">
+        <arguments>
+            <argument name="context" xsi:type="object">Swissup\Breeze\View\HtmlTemplateContext</argument>
+        </arguments>
+    </type>
 </config>
