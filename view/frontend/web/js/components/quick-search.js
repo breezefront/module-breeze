@@ -66,6 +66,7 @@
             });
 
             this.element
+                .on('keydown.quickSearch', this._onEnterKeyDown.bind(this))
                 .on('focus.quickSearch', this.setActiveState.bind(this, true))
                 .on('blur.quickSearch', this._onBlur.bind(this))
                 .on('input.quickSearch propertychange.quickSearch', this.debouncedRequest);
@@ -298,16 +299,21 @@
                     this.hideAutocomplete();
                     break;
 
-                case $.key.ENTER:
-                    if (this.element.val().length >= this.options.minSearchLength) {
-                        this.searchForm.submit();
-                        e.preventDefault();
-                    }
-                    break;
-
                 default:
                     this.element.focus();
                     break;
+            }
+        },
+
+        /** [_onEnterKeyDown description] */
+        _onEnterKeyDown: function (e) {
+            var keyCode = e.keyCode || e.which;
+
+            if (keyCode === $.key.ENTER &&
+                this.element.val().length >= this.options.minSearchLength
+            ) {
+                e.preventDefault();
+                this.searchForm.submit();
             }
         },
 
