@@ -262,14 +262,15 @@
          * @param {Event} e
          */
         _onKeyDown: function (e) {
-            var keyCode = e.keyCode || e.which;
+            var keyCode = e.keyCode || e.which,
+                navKeys = [$.key.HOME, $.key.END, $.key.DOWN, $.key.UP, $.key.TAB];
 
             if (e.ctrlKey || e.altKey || e.shiftKey && keyCode !== $.key.TAB) {
                 return;
             }
 
-            if ([$.key.HOME, $.key.END, $.key.DOWN, $.key.UP, $.key.TAB].indexOf(keyCode) !== -1) {
-                if (!this.autoComplete.visible().length) {
+            if (navKeys.indexOf(keyCode) !== -1) {
+                if (!this.canUseNavKeys()) {
                     return;
                 }
 
@@ -310,6 +311,11 @@
                     this.element.focus();
                     break;
             }
+        },
+
+        /** [canUseNavKeys description] */
+        canUseNavKeys: function () {
+            return this.autoComplete.visible().length > 0;
         },
 
         /** [_onEnterKeyDown description] */
