@@ -85,12 +85,17 @@
                 });
 
             $(document).on('click.quickSearch', function (event) {
+                if (self.searchLabel.has(event.target).length) {
+                    return;
+                }
+
                 if (self.element.has(event.target).length ||
                     self.autoComplete.has(event.target).length
                 ) {
                     return clearTimeout(self.blurTimeout);
                 }
 
+                self.setActiveState(false);
                 self.hideAutocomplete();
             });
         },
@@ -108,6 +113,14 @@
         setActiveState: function (isActive) {
             var el = this.element.get(0);
 
+            this.searchForm.toggleClass('active', isActive);
+            this.searchLabel.toggleClass('active', isActive);
+            this.element.attr('aria-expanded', isActive);
+
+            if (!isActive) {
+                return;
+            }
+
             if (!this.element.isInViewport() || !this.element.isVisible()) {
                 setTimeout(function () {
                     el.selectionStart = 10000;
@@ -115,18 +128,12 @@
                 }, 13);
             }
 
-            this.searchForm.toggleClass('active', isActive);
-            this.searchLabel.toggleClass('active', isActive);
-            this.element.attr('aria-expanded', isActive);
+            clearTimeout(this.blurTimeout);
 
-            if (isActive) {
-                clearTimeout(this.blurTimeout);
-
-                if (this.responseList.indexList) {
-                    this.showAutocomplete();
-                } else if (this.element.val()) {
-                    this.debouncedRequest();
-                }
+            if (this.responseList.indexList) {
+                this.showAutocomplete();
+            } else if (this.element.val()) {
+                this.debouncedRequest();
             }
         },
 
