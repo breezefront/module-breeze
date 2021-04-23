@@ -298,6 +298,13 @@
                     this.hideAutocomplete();
                     break;
 
+                case $.key.ENTER:
+                    if (this.element.val().length >= this.options.minSearchLength) {
+                        this.searchForm.submit();
+                        e.preventDefault();
+                    }
+                    break;
+
                 default:
                     this.element.focus();
                     break;
