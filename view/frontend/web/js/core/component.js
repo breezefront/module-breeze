@@ -175,16 +175,12 @@ window.breeze.component = function (factory) {
             };
         }
 
-        if (!prototypes[name]) {
-            if (parent) {
-                parent = prototypes[parent];
-            }
-
-            prototype = factory.extend(prototype, parent);
-            prototypes[name] = prototype;
+        if (parent) {
+            parent = prototypes[parent];
         }
 
-        prototype = prototypes[name];
+        prototype = factory.extend(prototype, parent);
+        prototypes[name] = prototype;
 
         /** @param {Object|Function|String} settings */
         $.fn[name] = function (settings) {
