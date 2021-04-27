@@ -5,6 +5,7 @@
         <design>
             <breeze>
                 <enabled>theme</enabled>
+                <debug>0</debug>
                 <turbo>theme</turbo>
             </breeze>
         </design>

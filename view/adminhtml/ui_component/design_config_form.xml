@@ -23,6 +23,21 @@
                     </select>
                 </formElements>
             </field>
+            <field name="breeze_debug_mode" formElement="select">
+                <settings>
+                    <dataType>string</dataType>
+                    <label translate="true">Debug Mode</label>
+                    <notice translate="true">Allows to force breeze status via query parameter: ?breeze=1 or ?breeze=0</notice>
+                    <dataScope>breeze_debug_mode</dataScope>
+                </settings>
+                <formElements>
+                    <select>
+                        <settings>
+                            <options class="Magento\Config\Model\Config\Source\YesNo"/>
+                        </settings>
+                    </select>
+                </formElements>
+            </field>
             <!--
             <field name="breeze_turbo" component="Magento_Catalog/js/components/visible-on-option/select" formElement="select">
                 <argument name="data" xsi:type="array">

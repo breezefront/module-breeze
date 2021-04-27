@@ -8,6 +8,10 @@
                     <item name="path" xsi:type="string">design/breeze/enabled</item>
                     <item name="fieldset" xsi:type="string">other_settings/breeze</item>
                 </item>
+                <item name="breeze_debug_mode" xsi:type="array">
+                    <item name="path" xsi:type="string">design/breeze/debug</item>
+                    <item name="fieldset" xsi:type="string">other_settings/breeze</item>
+                </item>
                 <!--
                 <item name="breeze_turbo" xsi:type="array">
                     <item name="path" xsi:type="string">design/breeze/turbo</item>
