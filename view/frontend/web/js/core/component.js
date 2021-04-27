@@ -276,6 +276,17 @@ window.breeze.component = function (factory) {
          */
         path: function (path) {
             return _.get(this.options, path.split('/'));
+        },
+
+        /**
+         * @param {String} event
+         * @param {Object} data
+         * @param {Cash} element
+         */
+        event: function (event, data, element) {
+            (element || this.element).trigger(event, $.extend({
+                instance: this
+            }, data));
         }
     });
 
