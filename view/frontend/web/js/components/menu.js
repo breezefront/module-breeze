@@ -131,7 +131,7 @@
 
         /** [open description] */
         open: function (dropdown) {
-            $(this.element).trigger('menu:beforeOpen', {
+            this.event('menu:beforeOpen', {
                 dropdown: dropdown
             });
 
@@ -146,7 +146,7 @@
 
         /** [open description] */
         close: function (dropdown) {
-            $(this.element).trigger('menu:beforeClose', {
+            this.event('menu:beforeClose', {
                 dropdown: dropdown
             });
 
@@ -157,6 +157,10 @@
             if (this.options.useInlineDisplay) {
                 dropdown.hide();
             }
+
+            this.event('menu:beforeClose', {
+                dropdown: dropdown
+            });
         },
 
         /** [_setActiveMenu description] */

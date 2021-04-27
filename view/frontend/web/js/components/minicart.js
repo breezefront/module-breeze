@@ -264,10 +264,10 @@
             });
 
             minicart
-                .one('dropdowndialogopen', function () {
+                .one('dropdownDialog:open', function () {
                     self.shouldRender(true);
                 })
-                .on('dropdowndialogopen', function () {
+                .on('dropdownDialog:open', function () {
                     self.initSidebar();
                 })
                 .on('contentLoading', function () {

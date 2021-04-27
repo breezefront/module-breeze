@@ -62,9 +62,7 @@
 
         /** Open dropdown */
         open: function () {
-            this.element.trigger('collapsible:beforeOpen', {
-                instance: this
-            });
+            this.event('collapsible:beforeOpen');
 
             if (this.options.ajaxContent) {
                 this.loadContent();
@@ -87,8 +85,7 @@
             });
             this.content.show();
 
-            this.element.trigger('dimensionsChanged', {
-                instance: this,
+            this.event('dimensionsChanged', {
                 opened: true
             });
         },
@@ -112,7 +109,7 @@
             });
             this.content.hide();
 
-            this.element.trigger('dimensionsChanged', {
+            this.event('dimensionsChanged', {
                 opened: false
             });
         },
@@ -137,9 +134,7 @@
                 return;
             }
 
-            self.element.trigger('collapsible:beforeLoad', {
-                instance: self
-            });
+            self.event('collapsible:beforeLoad');
 
             if (self.options.loadingClass) {
                 self.element.addClass(self.options.loadingClass);
@@ -160,9 +155,7 @@
                 complete: function () {
                     self.element.removeClass(self.options.loadingClass);
                     self.content.removeAttr('aria-busy');
-                    self.element.trigger('collapsible:afterLoad', {
-                        instance: self
-                    });
+                    self.event('collapsible:afterLoad');
                 }
             });
         }
