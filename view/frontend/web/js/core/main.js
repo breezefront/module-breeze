@@ -87,7 +87,7 @@
                 return;
             }
 
-            $(selector).each(function () {
+            $('html').find(selector).each(function () {
                 $(this).attr(
                     'data-mage-init',
                     JSON.stringify($.extend($(this).data('mage-init') || {}, components))
