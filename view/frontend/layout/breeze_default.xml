@@ -61,6 +61,12 @@
                         <item name="sort_order" xsi:type="number">10</item>
                         <item name="items" xsi:type="array">
                             <item name="breeze-validators" xsi:type="string">Swissup_Breeze/js/components/validators/core</item>
+                            <item name="breeze-lite-youtube" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/core/lite-youtube</item>
+                                <item name="import" xsi:type="array">
+                                    <item name="lib" xsi:type="string">Swissup_Breeze/js/lib/lite-yt-embed</item>
+                                </item>
+                            </item>
 
                             <item name="dropdown" xsi:type="string">Swissup_Breeze/js/components/ui/dropdown</item>
                             <item name="dropdownDialog" xsi:type="string">Swissup_Breeze/js/components/ui/dropdown-dialog</item>

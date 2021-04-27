@@ -54,5 +54,10 @@ class CollectComponents extends AbstractFilter
                 }
             }
         }
+
+        $nodes = $xpath->query('//lite-youtube', $document);
+        if (count($nodes)) {
+            $this->addComponent('breeze-lite-youtube');
+        }
     }
 }
