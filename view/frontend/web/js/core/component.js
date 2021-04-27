@@ -218,6 +218,7 @@ window.breeze.component = function (factory) {
 
                     if (!instance) {
                         instance = factory.create(prototype, settings, el);
+                        instance.__name = name;
                         window.breeze.registry.set(name, el, instance);
                     } else {
                         instance.option(settings).init();
