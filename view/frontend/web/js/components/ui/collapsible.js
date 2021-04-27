@@ -62,7 +62,7 @@
 
         /** Open dropdown */
         open: function () {
-            this.event('collapsible:beforeOpen');
+            this._trigger('collapsible:beforeOpen');
 
             if (this.options.ajaxContent) {
                 this.loadContent();
@@ -85,7 +85,7 @@
             });
             this.content.show();
 
-            this.event('dimensionsChanged', {
+            this._trigger('dimensionsChanged', {
                 opened: true
             });
         },
@@ -109,7 +109,7 @@
             });
             this.content.hide();
 
-            this.event('dimensionsChanged', {
+            this._trigger('dimensionsChanged', {
                 opened: false
             });
         },
@@ -134,7 +134,7 @@
                 return;
             }
 
-            self.event('collapsible:beforeLoad');
+            self._trigger('collapsible:beforeLoad');
 
             if (self.options.loadingClass) {
                 self.element.addClass(self.options.loadingClass);
@@ -155,7 +155,7 @@
                 complete: function () {
                     self.element.removeClass(self.options.loadingClass);
                     self.content.removeAttr('aria-busy');
-                    self.event('collapsible:afterLoad');
+                    self._trigger('collapsible:afterLoad');
                 }
             });
         }

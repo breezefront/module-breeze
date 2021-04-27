@@ -412,7 +412,7 @@
             this.displaySubtotal = options.$root.displaySubtotal;
             $.extend(
                 this,
-                options.$root.path('children/subtotal.container/children/subtotal/children/subtotal.totals/config')
+                options.$root._option('children/subtotal.container/children/subtotal/children/subtotal.totals/config')
             );
         },
         template: {

@@ -125,7 +125,7 @@
 
             $(window).one('resize.dropdownDialog', this.closeHandler);
 
-            this.trigger('dropdownDialog:open');
+            this._trigger('dropdownDialog:open');
         },
 
         /** Close dialog */
@@ -137,7 +137,7 @@
 
             $(window).off('resize.dropdownDialog', this.closeHandler);
 
-            this.trigger('dropdownDialog:close');
+            this._trigger('dropdownDialog:close');
         },
 
         /** [toggleClasses description] */

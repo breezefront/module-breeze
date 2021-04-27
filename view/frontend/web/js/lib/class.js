@@ -52,8 +52,8 @@
 
         /** The dummy class constructor */
         function Class() {
-            if (!initializing && this.initialize) {
-                this.initialize.apply(this, arguments);
+            if (!initializing && this._initialize) {
+                this._initialize.apply(this, arguments);
             }
         }
 

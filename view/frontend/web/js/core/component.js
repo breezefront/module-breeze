@@ -109,7 +109,7 @@ window.breeze.factory = function (Root, singleton) {
             key = settings.__scope;
 
             if (singleton && key && registry[key]) {
-                registry[key].applyBindings(el);
+                registry[key]._applyBindings(el);
             } else {
                 instance = new Base(settings, el);
 
@@ -221,7 +221,7 @@ window.breeze.component = function (factory) {
                         instance.__name = name;
                         window.breeze.registry.set(name, el, instance);
                     } else {
-                        instance.option(settings).init();
+                        instance._options(settings).init();
                     }
                 });
             }
@@ -247,9 +247,9 @@ window.breeze.component = function (factory) {
          * @param {Element} element
          * @return {WidgetModel}
          */
-        initialize: function (options, element) {
+        _initialize: function (options, element) {
             this.element = $(element);
-            this.option(options);
+            this._options(options);
             this.create();
             this.init();
 
@@ -259,7 +259,7 @@ window.breeze.component = function (factory) {
         /**
          * @param {Object} options
          */
-        option: function (options) {
+        _options: function (options) {
             if (typeof options === 'string') {
                 this.options = options;
             } else {
@@ -274,7 +274,7 @@ window.breeze.component = function (factory) {
          * @param {String} path
          * @return {Mixed}
          */
-        path: function (path) {
+        _option: function (path) {
             return _.get(this.options, path.split('/'));
         },
 
@@ -283,7 +283,7 @@ window.breeze.component = function (factory) {
          * @param {Object} data
          * @param {Cash} element
          */
-        event: function (event, data, element) {
+        _trigger: function (event, data, element) {
             (element || this.element).trigger(event, $.extend({
                 instance: this
             }, data));
@@ -292,13 +292,13 @@ window.breeze.component = function (factory) {
 
     view = widget.extend({
         /** [initialize description] */
-        initialize: function (options, element) {
+        _initialize: function (options, element) {
             this._super(options, element);
-            this.applyBindings(element);
+            this._applyBindings(element);
         },
 
         /** [applyBindings description] */
-        applyBindings: function (element) {
+        _applyBindings: function (element) {
             if (!ko.dataFor(element)) {
                 ko.applyBindings(this, element);
             }
