@@ -255,6 +255,7 @@ window.breeze.component = function (factory) {
             this._options(options);
             this.create();
             this.init();
+            this._trigger('create');
 
             return this;
         },
@@ -287,7 +288,7 @@ window.breeze.component = function (factory) {
          * @param {Cash} element
          */
         _trigger: function (event, data, element) {
-            (element || this.element).trigger(event, $.extend({
+            (element || this.element).trigger(this.__name + ':' + event, $.extend({
                 instance: this
             }, data));
         },
