@@ -158,7 +158,7 @@
                 dropdown.hide();
             }
 
-            this._trigger('beforeClose', {
+            this._trigger('afterClose', {
                 dropdown: dropdown
             });
         },
