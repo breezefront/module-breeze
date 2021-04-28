@@ -71,6 +71,10 @@
                 this.options.onInvalid.call(this, result);
             }
 
+            $(this.form).trigger('validateAfter', {
+                result: result
+            });
+
             return result;
         },
 
