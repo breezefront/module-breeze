@@ -102,7 +102,7 @@ window.breeze.factory = function (Root, singleton) {
         },
 
         /** Creates a new instance of Base prototype */
-        create: function (Base, settings, el) {
+        create: function (name, Base, settings, el) {
             var instance, key;
 
             settings = settings || {};
@@ -111,7 +111,7 @@ window.breeze.factory = function (Root, singleton) {
             if (singleton && key && registry[key]) {
                 registry[key]._applyBindings(el);
             } else {
-                instance = new Base(settings, el);
+                instance = new Base(name, settings, el);
 
                 if (singleton && key) {
                     registry[key] = instance;
@@ -189,7 +189,7 @@ window.breeze.component = function (factory) {
 
             if ($.isPlainObject(this)) {
                 // object without element: $.fn.dataPost().send()
-                result = factory.create(prototype, settings, window);
+                result = factory.create(name, prototype, settings, window);
             } else if (typeof settings === 'string') {
                 // object instance or method: $(el).dropdown('open')
                 result = undefined;
@@ -217,8 +217,7 @@ window.breeze.component = function (factory) {
                         instance = window.breeze.registry.get(name, el);
 
                     if (!instance) {
-                        instance = factory.create(prototype, settings, el);
-                        instance.__name = name;
+                        instance = factory.create(name, prototype, settings, el);
                         window.breeze.registry.set(name, el, instance);
                     } else {
                         instance._options(settings).init();
@@ -243,11 +242,15 @@ window.breeze.component = function (factory) {
         init: _.noop,
 
         /**
+         * @param {String} name
          * @param {Object} options
          * @param {Element} element
          * @return {WidgetModel}
          */
-        _initialize: function (options, element) {
+        _initialize: function (name, options, element) {
+            this.__name = name;
+            this.__eventNamespace = '.' + name;
+            this.__bindings = $(); // @todo: _destroy
             this.element = $(element);
             this._options(options);
             this.create();
@@ -287,13 +290,66 @@ window.breeze.component = function (factory) {
             (element || this.element).trigger(event, $.extend({
                 instance: this
             }, data));
+        },
+
+        /**
+         * @param {Element|Object} element
+         * @param {Object} handlers
+         */
+        _on: function (element, handlers) {
+            var self = this;
+
+            if (!handlers) {
+                handlers = element;
+                element = this.element;
+            } else {
+                element = $(element);
+                this.__bindings.add(element);
+            }
+
+            $.each(handlers, function (event, handler) {
+                var match = event.match(/^([\w:-]*)\s*(.*)$/),
+                    eventName = match[1] + self.__eventNamespace,
+                    selector = match[2];
+
+                if (typeof handler === 'string') {
+                    handler = self[handler];
+                }
+
+                handler = handler.bind(self);
+
+                if (selector) {
+                    element.on(eventName, selector, handler);
+                } else {
+                    element.on(eventName, handler);
+                }
+            });
+        },
+
+        /**
+         * @param {Element} element
+         * @param {String} eventName
+         */
+        _off: function (element, eventName) {
+            if (!eventName) {
+                eventName = element;
+                element = this.element;
+            }
+
+            eventName =
+                (eventName || '').split(' ').join(this.__eventNamespace + ' ') +
+                this.__eventNamespace;
+
+            element.off(eventName);
+
+            this.__bindings = $(this.__bindings.not(element).get());
         }
     });
 
     view = widget.extend({
         /** [initialize description] */
-        _initialize: function (options, element) {
-            this._super(options, element);
+        _initialize: function (name, options, element) {
+            this._super(name, options, element);
             this._applyBindings(element);
         },
 
