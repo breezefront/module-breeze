@@ -1,4 +1,3 @@
-/* global breeze */
 (function () {
     'use strict';
 
@@ -23,11 +22,11 @@
      * @private
      */
     function initFormKey() {
-        var formKey = breeze.cookies.get('form_key');
+        var formKey = $.cookies.get('form_key');
 
         if (!formKey) {
             formKey = generateFormKeyString();
-            breeze.cookies.set('form_key', formKey, {
+            $.cookies.set('form_key', formKey, {
                 expires: 1
             });
         }

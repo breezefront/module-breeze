@@ -1,14 +1,14 @@
-/* global breeze $t */
+/* global breeze */
 (function () {
     'use strict';
 
-    breeze.widget('relatedProducts', {
+    $.widget('relatedProducts', {
         options: {
             relatedCheckbox: '.related-checkbox', // Class name for a related product's input checkbox.
             relatedProductsCheckFlag: false, // Related products checkboxes are initially unchecked.
             relatedProductsField: '#related-products-field', // Hidden input field that stores related products.
-            selectAllMessage: $t('select all'),
-            unselectAllMessage: $t('unselect all'),
+            selectAllMessage: $.__('select all'),
+            unselectAllMessage: $.__('unselect all'),
             selectAllLink: '[data-role="select-all"]',
             elementsSelector: '.item.product'
         },

@@ -1,8 +1,8 @@
-/* global breeze $t _ */
+/* global _ */
 (function () {
     'use strict';
 
-    breeze.widget('breadcrumbs', {
+    $.widget('breadcrumbs', {
         options: {
             categoryUrlSuffix: '',
             useCategoryPathInUrl: false,
@@ -15,8 +15,8 @@
         create: function () {
             this.breadcrumbs = [{
                 name: 'home',
-                label: $t('Home'),
-                title: $t('Go to Home Page'),
+                label: $.__('Home'),
+                title: $.__('Go to Home Page'),
                 link: window.BASE_URL || ''
             }];
 

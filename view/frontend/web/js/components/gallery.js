@@ -1,8 +1,8 @@
-/* global breeze _ */
+/* global _ */
 (function () {
     'use strict';
 
-    breeze.widget('gallery', {
+    $.widget('gallery', {
         options: {
             video: {
                 template: '<div class="video-wrapper"><iframe src="<%- src %>"' +

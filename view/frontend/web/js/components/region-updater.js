@@ -1,8 +1,8 @@
-/* global breeze _ */
+/* global _ */
 (function () {
     'use strict';
 
-    breeze.widget('regionUpdater', {
+    $.widget('regionUpdater', {
         options: {
             regionTemplate:
                 '<option value="<%- data.value %>" <% if (data.isSelected) { %>selected="selected"<% } %>>' +

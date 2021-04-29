@@ -1,10 +1,10 @@
-/* global breeze _ */
+/* global _ */
 (function () {
     'use strict';
 
     var customerData,
-        storage = breeze.storage.ns('mage-cache-storage'),
-        storageInvalidation = breeze.storage.ns('mage-cache-storage-section-invalidation');
+        storage = $.storage.ns('mage-cache-storage'),
+        storageInvalidation = $.storage.ns('mage-cache-storage-section-invalidation');
 
     /**
      * @param {Object} settings
@@ -23,8 +23,8 @@
      * Invalidate Cache By Close Cookie Session
      */
     function invalidateCacheByCloseCookieSession() {
-        if (!breeze.cookies.get('mage-cache-sessid')) {
-            breeze.cookies.set('mage-cache-sessid', true, {
+        if (!$.cookies.get('mage-cache-sessid')) {
+            $.cookies.set('mage-cache-sessid', true, {
                 domain: false
             });
             storage.removeAll();
@@ -47,8 +47,8 @@
             var sectionNames = this.getExpiredSectionNames();
 
             // store switcher
-            if (breeze.cookies.get('section_data_clean')) {
-                breeze.cookies.set('section_data_clean', '');
+            if ($.cookies.get('section_data_clean')) {
+                $.cookies.set('section_data_clean', '');
                 this.reload([], true);
 
                 return;
@@ -64,7 +64,7 @@
          */
         getExpiredSectionNames: function () {
             var expiredSectionNames = storageInvalidation.keys(),
-                cookieSectionTimestamps = breeze.cookies.getJson('section_data_ids') || {},
+                cookieSectionTimestamps = $.cookies.getJson('section_data_ids') || {},
                 sectionLifetime = this.options.expirableSectionLifetime * 60,
                 currentTimestamp = Math.floor(Date.now() / 1000),
                 sectionData;
@@ -88,7 +88,7 @@
             });
 
             // remove expired section names of previously installed/enable modules
-            expiredSectionNames = _.intersection(expiredSectionNames, breeze.sections.getSectionNames());
+            expiredSectionNames = _.intersection(expiredSectionNames, $.sections.getSectionNames());
 
             return _.uniq(expiredSectionNames);
         },
@@ -114,7 +114,7 @@
                 params.force_new_section_timestamp = true;
             }
 
-            breeze.request.get({
+            $.request.get({
                 url: this.options.sectionLoadUrl,
                 data: params,
                 accept: 'json',
@@ -122,7 +122,7 @@
                 /** Success callback */
                 success: function (response) {
                     var data = response.body,
-                        sectionDataIds = breeze.cookies.getJson('section_data_ids') || {};
+                        sectionDataIds = $.cookies.getJson('section_data_ids') || {};
 
                     $.each(data, function (sectionName, sectionData) {
                         // No need to store messages, but data_id must be
@@ -137,7 +137,7 @@
                         sectionDataIds[sectionName] = sectionData.data_id;
                         storage.set(sectionName, sectionData);
                         storageInvalidation.remove(sectionName);
-                        breeze.sections.set(sectionName, sectionData);
+                        $.sections.set(sectionName, sectionData);
                     });
 
                     $(document).trigger('customer-data-reload', {
@@ -145,7 +145,7 @@
                         response: data
                     });
 
-                    breeze.cookies.setJson('section_data_ids', sectionDataIds, {
+                    $.cookies.setJson('section_data_ids', sectionDataIds, {
                         domain: false
                     });
                 }
@@ -156,10 +156,10 @@
          * @param {Array} sections
          */
         invalidate: function (sections) {
-            var sectionDataIds = breeze.cookies.getJson('section_data_ids') || {};
+            var sectionDataIds = $.cookies.getJson('section_data_ids') || {};
 
             sections = _.contains(sections, '*') ?
-                breeze.sections.getSectionNames() : sections;
+                $.sections.getSectionNames() : sections;
 
             $(document).trigger('customer-data-invalidate', {
                 sections: sections
@@ -170,14 +170,14 @@
             // Invalidate section in cookie (increase version of section with 1000)
             $(sections)
                 .filter(function () {
-                    return !breeze.sections.isClientSideSection(this);
+                    return !$.sections.isClientSideSection(this);
                 })
                 .each(function () {
                     sectionDataIds[this] += 1000;
                     storageInvalidation.set(this, true);
                 });
 
-            breeze.cookies.setJson('section_data_ids', sectionDataIds, {
+            $.cookies.setJson('section_data_ids', sectionDataIds, {
                 domain: false
             });
         }

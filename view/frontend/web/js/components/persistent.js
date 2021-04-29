@@ -1,14 +1,13 @@
-/* global breeze customerData $t */
 (function () {
     'use strict';
 
-    breeze.widget('persistent', {
+    $.widget('persistent', {
         /** Initialize plugin */
         create: function () {
-            var persistent = customerData.get('persistent');
+            var persistent = $.sections.get('persistent');
 
             if (persistent().fullname === undefined) {
-                customerData.get('persistent').subscribe(this.replacePersistentWelcome);
+                $.sections.get('persistent').subscribe(this.replacePersistentWelcome);
             } else {
                 this.replacePersistentWelcome();
             }
@@ -16,7 +15,7 @@
 
         /** Replace welcome message for customer with persistent cookie. */
         replacePersistentWelcome: function () {
-            var persistent = customerData.get('persistent'),
+            var persistent = $.sections.get('persistent'),
                 welcomeElems;
 
             if (persistent().fullname !== undefined) {
@@ -24,12 +23,12 @@
 
                 if (welcomeElems.length) {
                     $(welcomeElems).each(function () {
-                        var html = $t('Welcome, %1!').replace('%1', persistent().fullname);
+                        var html = $.__('Welcome, %1!').replace('%1', persistent().fullname);
 
                         $(this).attr('data-bind', html);
                         $(this).html(html);
                     });
-                    $(welcomeElems).append(' <span><a ' + window.notYouLink + '>' + $t('Not you?') + '</a>');
+                    $(welcomeElems).append(' <span><a ' + window.notYouLink + '>' + $.__('Not you?') + '</a>');
                 }
             }
         }

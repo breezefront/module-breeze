@@ -98,13 +98,17 @@
 
             if (params.type === 'json') {
                 request.accept('json');
-
-                /** Force json parser as Magento returns text/html for some responses */
-                request.parse(function (response, text) {
-                    return JSON.parse(text);
-                });
             }
         }
+
+        // always try to parse response as json with fallback to raw text
+        request.parse(function (response, text) {
+            try {
+                return JSON.parse(text);
+            } catch (e) {
+                return text;
+            }
+        });
 
         if (params.ok) {
             request.ok(params.ok);
@@ -129,7 +133,15 @@
     }
 
     window.breeze = window.breeze || {};
-    window.breeze.request = {
+    $.request = window.breeze.request = {
+        /**
+         * @param {Object} params
+         * @return {Promise}
+         */
+        send: function (params) {
+            return this[params.method](params);
+        },
+
         /**
          * @param {Object} params
          * @return {Promise}

@@ -1,8 +1,7 @@
-/* global breeze $t */
 (function () {
     'use strict';
 
-    breeze.widget('dropdownDialog', {
+    $.widget('dropdownDialog', {
         options: {
             triggerTarget: null,
             closeOnClickOutside: true,
@@ -14,7 +13,7 @@
             defaultButtons: [
                 {
                     class: 'action close',
-                    text: $t('Close'),
+                    text: $.__('Close'),
 
                     /** Click action. */
                     click: function () {

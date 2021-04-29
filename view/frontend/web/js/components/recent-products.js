@@ -2,7 +2,7 @@
 (function () {
     'use strict';
 
-    breeze.view('recentProducts', {
+    $.view('recentProducts', {
         options: {
             limit: 5
         },
@@ -10,7 +10,7 @@
         /** [create description] */
         create: function () {
             var self = this,
-                products = breeze.storage.ns('product_data_storage');
+                products = $.storage.ns('product_data_storage');
 
             this.visible = false;
             this.items = [];
@@ -29,7 +29,7 @@
 
         /** [getIds description] */
         getIds: function () {
-            var ids = breeze.storage.ns(this.options.storage).get(),
+            var ids = $.storage.ns(this.options.storage).get(),
                 scope = this.options.productCurrentScope,
                 prefix = scope + '-' + breeze.getScopeId(scope),
                 currentTime = new Date().getTime() / 1000;

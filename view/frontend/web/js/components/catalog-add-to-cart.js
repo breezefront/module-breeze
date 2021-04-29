@@ -1,8 +1,7 @@
-/* global breeze $t */
 (function () {
     'use strict';
 
-    breeze.widget('catalogAddToCart', {
+    $.widget('catalogAddToCart', {
         options: {
             processStart: null,
             processStop: null,
@@ -59,7 +58,7 @@
                 $('body').trigger(self.options.processStart);
             }
 
-            breeze.request.post({
+            $.request.post({
                 form: form,
 
                 /** A method to run after error or success */
@@ -109,7 +108,7 @@
          * @param {String} form
          */
         disableAddToCartButton: function (form) {
-            var addToCartButtonTextWhileAdding = this.options.addToCartButtonTextWhileAdding || $t('Adding...'),
+            var addToCartButtonTextWhileAdding = this.options.addToCartButtonTextWhileAdding || $.__('Adding...'),
                 addToCartButton = $(form).find(this.options.addToCartButtonSelector);
 
             addToCartButton.addClass(this.options.addToCartButtonDisabledClass);
@@ -121,7 +120,7 @@
          * @param {String} form
          */
         enableAddToCartButton: function (form) {
-            var addToCartButtonTextAdded = this.options.addToCartButtonTextAdded || $t('Added'),
+            var addToCartButtonTextAdded = this.options.addToCartButtonTextAdded || $.__('Added'),
                 self = this,
                 addToCartButton = $(form).find(this.options.addToCartButtonSelector);
 
@@ -129,7 +128,7 @@
             addToCartButton.attr('title', addToCartButtonTextAdded);
 
             setTimeout(function () {
-                var addToCartButtonTextDefault = self.options.addToCartButtonTextDefault || $t('Add to Cart');
+                var addToCartButtonTextDefault = self.options.addToCartButtonTextDefault || $.__('Add to Cart');
 
                 addToCartButton.removeClass(self.options.addToCartButtonDisabledClass);
                 addToCartButton.find('span').text(addToCartButtonTextDefault);

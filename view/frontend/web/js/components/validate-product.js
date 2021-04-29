@@ -1,8 +1,7 @@
-/* global breeze */
 (function () {
     'use strict';
 
-    breeze.widget('productValidate', {
+    $.widget('productValidate', {
         /** Initialize plugin */
         create: function () {
             this.element.validator();

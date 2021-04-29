@@ -1,8 +1,7 @@
-/* global breeze */
 (function () {
     'use strict';
 
-    breeze.widget('paypalCheckout', {
+    $.widget('paypalCheckout', {
         options: {
             productId: 'input[type="hidden"][name="product"]',
             ppCheckoutSelector: '[data-role=pp-checkout-url]',
@@ -11,7 +10,7 @@
 
         /** Init widget */
         create: function () {
-            this.agreements = breeze.sections.get('paypal-billing-agreement');
+            this.agreements = $.sections.get('paypal-billing-agreement');
             this.onClickHandler = this.onClick.bind(this);
             this.element.on('click', '[data-action="checkout-form-submit"]', this.onClickHandler);
         },

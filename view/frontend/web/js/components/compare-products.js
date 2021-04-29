@@ -1,9 +1,8 @@
-/* global breeze */
 (function () {
     'use strict';
 
-    breeze.view('compareProducts', {
-        compareProducts: breeze.sections.get('compare-products')
+    $.view('compareProducts', {
+        compareProducts: $.sections.get('compare-products')
     });
 
     $(document).on('breeze:mount:Magento_Catalog/js/view/compare-products', function (event, data) {

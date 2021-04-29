@@ -1,8 +1,8 @@
-/* global breeze ga */
+/* global ga */
 (function () {
     'use strict';
 
-    breeze.widget('googleAnalytics', {
+    $.widget('googleAnalytics', {
         /** [create description] */
         create: function () {
             if (!this.isAllowed()) {
@@ -20,7 +20,7 @@
                 return true;
             }
 
-            cookie = breeze.cookies.getJson(this.options.cookieName);
+            cookie = $.cookies.getJson(this.options.cookieName);
 
             return cookie && cookie[this.options.currentWebsite] === 1;
         },

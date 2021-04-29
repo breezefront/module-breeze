@@ -1,8 +1,7 @@
-/* global breeze */
 (function () {
     'use strict';
 
-    breeze.widget('changeEmailPassword', {
+    $.widget('changeEmailPassword', {
         options: {
             changeEmailSelector: '[data-role=change-email]',
             changePasswordSelector: '[data-role=change-password]',

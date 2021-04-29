@@ -3,8 +3,8 @@
     'use strict';
 
     $(document).on('breeze:mount:Magento_Catalog/js/product/view/provider', function (event, data) {
-        var products = breeze.storage.ns('product_data_storage'),
-            recentlyViewed = breeze.storage.ns('recently_viewed_product'),
+        var products = $.storage.ns('product_data_storage'),
+            recentlyViewed = $.storage.ns('recently_viewed_product'),
             scope = data.settings.data.productCurrentScope,
             scopeId = breeze.getScopeId(scope);
 

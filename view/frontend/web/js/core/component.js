@@ -142,8 +142,8 @@ window.breeze.component = function (factory) {
                 /**
                  * Example:
                  *
-                 *     breeze.view('messages').invoke('removeCookieMessages');
-                 *     breeze.widget('dropdown').invoke('close');
+                 *     $.view('messages').invoke('removeCookieMessages');
+                 *     $.widget('dropdown').invoke('close');
                  *
                  * @param {String} method
                  */
@@ -164,8 +164,8 @@ window.breeze.component = function (factory) {
                 /**
                  * Example:
                  *
-                 *     breeze.view('messages').destroy();
-                 *     breeze.widget('dropdown').destroy();
+                 *     $.view('messages').destroy();
+                 *     $.widget('dropdown').destroy();
                  *
                  * Destroy objects
                  */
@@ -362,6 +362,6 @@ window.breeze.component = function (factory) {
         }
     });
 
-    window.breeze.widget = window.breeze.component(window.breeze.factory(widget, false));
-    window.breeze.view = window.breeze.component(window.breeze.factory(view, true));
+    $.widget = window.breeze.widget = window.breeze.component(window.breeze.factory(widget, false));
+    $.view = window.breeze.view = window.breeze.component(window.breeze.factory(view, true));
 })();

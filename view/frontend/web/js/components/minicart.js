@@ -1,10 +1,10 @@
-/* global breeze ko _ $t */
+/* global ko _ */
 (function () {
     'use strict';
 
     var minicart = $('[data-block="minicart"]');
 
-    breeze.widget('sidebar', {
+    $.widget('sidebar', {
         options: {
             minicart: {
                 maxItemsVisible: 3
@@ -29,12 +29,12 @@
             var self = this;
 
             this.element.on('click', this.options.button.checkout, function () {
-                var cart = breeze.sections.get('cart'),
-                    customer = breeze.sections.get('customer'),
+                var cart = $.sections.get('cart'),
+                    customer = $.sections.get('customer'),
                     element = $(self.options.button.checkout);
 
                 if (!customer().firstname && cart().isGuestCheckoutAllowed === false) {
-                    breeze.cookies.set('login_redirect', self.options.url.checkout);
+                    $.cookies.set('login_redirect', self.options.url.checkout);
 
                     // if (self.options.url.isRedirectRequired) {
                     element.prop('disabled', true);
@@ -181,7 +181,7 @@
          * @return {Object|undefined}
          */
         _getProductById: function (productId) {
-            return _.find(breeze.sections.get('cart')().items, function (item) {
+            return _.find($.sections.get('cart')().items, function (item) {
                 return productId === Number(item.item_id);
             });
         },
@@ -197,7 +197,7 @@
 
             elem.prop('disabled', true);
 
-            breeze.request.post({
+            $.request.post({
                 url: url,
                 data: data,
                 type: 'form'
@@ -240,7 +240,7 @@
         }
     });
 
-    breeze.view('minicart', {
+    $.view('minicart', {
         cart: {},
         shoppingCartUrl: window.checkout.shoppingCartUrl,
         maxItemsToDisplay: window.checkout.maxItemsToDisplay,
@@ -252,7 +252,7 @@
         /** [create description] */
         create: function () {
             var self = this,
-                cartData = breeze.sections.get('cart');
+                cartData = $.sections.get('cart');
 
             this.update(cartData());
 
@@ -278,7 +278,7 @@
             if (cartData().website_id !== window.checkout.websiteId && cartData().website_id !== undefined ||
                 cartData().storeId !== window.checkout.storeId && cartData().storeId !== undefined
             ) {
-                breeze.sections.reload(['cart'], false);
+                $.sections.reload(['cart'], false);
             }
         },
 
@@ -326,7 +326,7 @@
                     qty: '.cart-item-qty',
                     button: '.update-cart-item'
                 },
-                confirmMessage: $t('Are you sure you would like to remove this item from the shopping cart?')
+                confirmMessage: $.__('Are you sure you would like to remove this item from the shopping cart?')
             });
         },
 
@@ -408,7 +408,7 @@
     ko.components.register('subtotal.totals', {
         /** Constructor */
         viewModel: function (options) {
-            this.cart = breeze.sections.get('cart');
+            this.cart = $.sections.get('cart');
             this.displaySubtotal = options.$root.displaySubtotal;
             $.extend(
                 this,

@@ -1,8 +1,7 @@
-/* global breeze */
 (function () {
     'use strict';
 
-    breeze.widget('customerAssistance', {
+    $.widget('customerAssistance', {
         /** Initialize plugin */
         create: function () {
             var self = this;

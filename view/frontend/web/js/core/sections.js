@@ -1,6 +1,6 @@
 /* global ko _ */
 window.breeze = window.breeze || {};
-window.breeze.sections = (function () {
+$.sections = window.breeze.sections = (function () {
     'use strict';
 
     var data = {},
@@ -115,13 +115,13 @@ window.breeze.sections = (function () {
     };
 })();
 
-window.customerData = window.breeze.sections;
+window.customerData = $.sections;
 
 (function () {
     'use strict';
 
-    var sections = window.breeze.sections,
-        storage = window.breeze.storage.ns('mage-cache-storage');
+    var sections = $.sections,
+        storage = $.storage.ns('mage-cache-storage');
 
     $(document).on('ajaxComplete', function (event, data) {
         var names,
@@ -162,7 +162,7 @@ window.customerData = window.breeze.sections;
         }
 
         sections.invalidate(names);
-        window.breeze.storage.remove(names);
+        $.storage.remove(names);
     });
 
     $(document).on('breeze:load', function () {

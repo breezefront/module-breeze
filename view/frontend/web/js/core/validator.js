@@ -150,7 +150,7 @@
          */
         _validators: function (element) {
             var result = [],
-                validators = window.breeze.validator.validators,
+                validators = $.validator.validators,
                 native = ['required', 'minlength', 'maxlength', 'min', 'max', 'pattern'],
                 data = $(element).data('validate') || {};
 
@@ -323,8 +323,8 @@
     window.breeze = window.breeze || {};
 
     /** [validation description] */
-    window.breeze.validator = function (element, options) {
+    $.validator = window.breeze.validator = function (element, options) {
         return new Validator(element, options);
     };
-    window.breeze.validator.validators = {};
+    $.validator.validators = {};
 })();

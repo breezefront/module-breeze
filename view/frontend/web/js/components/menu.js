@@ -1,8 +1,7 @@
-/* global breeze */
 (function () {
     'use strict';
 
-    breeze.widget('menu', {
+    $.widget('menu', {
         options: {
             menus: 'ul',
             dropdown: 'ul',

@@ -1,9 +1,8 @@
-/* global breeze customerData $t */
 (function () {
     'use strict';
 
     // Review List
-    breeze.widget('ajaxReviews', {
+    $.widget('ajaxReviews', {
         /** Create widget */
         create: function () {
             var self = this,
@@ -29,7 +28,7 @@
 
         /** [loadReviews description] */
         loadReviews: function (href) {
-            return breeze.request.get({
+            return $.request.get({
                 url: href || this.options.productReviewUrl,
                 type: 'html'
             }).then(function (response) {
@@ -43,15 +42,15 @@
     });
 
     // Review Form
-    breeze.view('reviewForm', {
+    $.view('reviewForm', {
         /** Init component */
         create: function () {
-            this.review = customerData.get('review');
+            this.review = $.sections.get('review');
         },
 
         /** Get nickname for the customer */
         nickname: function () {
-            return this.review().nickname || customerData.get('customer')().firstname;
+            return this.review().nickname || $.sections.get('customer')().firstname;
         }
     });
 
@@ -59,11 +58,11 @@
         $(data.el).reviewForm(data.settings);
     });
 
-    breeze.validator.validators['rating-required'] = [
+    $.validator.validators['rating-required'] = [
         function (value) {
             return value !== undefined;
         },
-        $t('Please select one of each of the ratings above.')
+        $.__('Please select one of each of the ratings above.')
     ];
 
     $(document).on('breeze:mount:Magento_Review/js/validate-review', function (event, data) {

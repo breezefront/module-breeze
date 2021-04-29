@@ -1,3 +1,4 @@
+/* global ko */
 (function () {
     'use strict';
 
@@ -87,6 +88,13 @@
             } else {
                 $.fn.blockLoader().hide($(this));
             }
+        });
+    };
+
+    /** Evaluates bindings specified in each DOM element of collection. */
+    $.fn.applyBindings = function () {
+        return this.each(function () {
+            ko.applyBindings(ko.contextFor(this), this);
         });
     };
 

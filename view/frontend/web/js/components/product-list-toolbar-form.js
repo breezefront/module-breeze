@@ -1,8 +1,7 @@
-/* global breeze */
 (function () {
     'use strict';
 
-    breeze.widget('productListToolbarForm', {
+    $.widget('productListToolbarForm', {
         options: {
             modeControl: '[data-role="mode-switcher"]',
             directionControl: '[data-role="direction-switcher"]',

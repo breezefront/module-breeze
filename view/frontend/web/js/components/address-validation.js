@@ -1,4 +1,4 @@
-/* global breeze $t _ */
+/* global $t _ */
 (function () {
     'use strict';
 
@@ -35,7 +35,7 @@
         }
     };
 
-    breeze.widget('addressValidation', {
+    $.widget('addressValidation', {
         options: {
             selectors: {
                 button: '[data-action=save-address]',

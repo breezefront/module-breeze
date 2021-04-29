@@ -1,8 +1,7 @@
-/* global breeze */
 (function () {
     'use strict';
 
-    breeze.widget('dropdown', {
+    $.widget('dropdown', {
         options: {
             parent: null,
             activeClass: 'active',
@@ -86,7 +85,7 @@
             }
         }
 
-        window.breeze.widget('dropdown').invoke('close');
+        $.widget('dropdown').invoke('close');
 
         if (dropdown) {
             if (!status) {

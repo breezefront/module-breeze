@@ -4,7 +4,7 @@
     var data = window.translations || {};
 
     window.breeze = window.breeze || {};
-    window.breeze.translate = {
+    $.translation = window.breeze.translation = {
         /** Add translation phrase|phrases */
         add: function () {
             if (arguments.length > 1) {
@@ -20,6 +20,5 @@
         }
     };
 
-    window.$t = window.breeze.translate.translate;
-    window.__ = window.breeze.translate.translate;
+    $.__ = window.$t = window.__ = $.translation.translate;
 })();

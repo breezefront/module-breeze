@@ -1,8 +1,7 @@
-/* global breeze */
 (function () {
     'use strict';
 
-    breeze.widget('accordion', 'tabs', {
+    $.widget('accordion', 'tabs', {
         options: {
             collapsible: true
         }

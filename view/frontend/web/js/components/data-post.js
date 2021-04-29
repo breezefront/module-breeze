@@ -1,8 +1,8 @@
-/* global breeze _ */
+/* global _ */
 (function () {
     'use strict';
 
-    breeze.widget('dataPost', {
+    $.widget('dataPost', {
         options: {
             formTemplate: '<form action="<%- data.action %>" method="post">' +
             '<% _.each(data.data, function(value, index) { %>' +

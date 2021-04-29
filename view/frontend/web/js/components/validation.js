@@ -2,7 +2,7 @@
 (function () {
     'use strict';
 
-    breeze.widget('validator', {
+    $.widget('validator', {
         /** Init widget */
         create: function () {
             var self = this;

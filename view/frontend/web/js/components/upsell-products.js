@@ -2,7 +2,7 @@
 (function () {
     'use strict';
 
-    breeze.widget('upsellProducts', {
+    $.widget('upsellProducts', {
         options: {
             elementsSelector: '.item.product'
         },

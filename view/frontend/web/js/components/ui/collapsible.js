@@ -1,8 +1,7 @@
-/* global breeze */
 (function () {
     'use strict';
 
-    breeze.widget('collapsible', {
+    $.widget('collapsible', {
         options: {
             active: false,
             openedState: null,
@@ -141,7 +140,7 @@
             }
             self.content.attr('aria-busy', 'true');
 
-            breeze.request.get({
+            $.request.get({
                 url: url,
                 type: 'html',
 

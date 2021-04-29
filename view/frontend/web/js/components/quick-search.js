@@ -1,8 +1,8 @@
-/* global breeze _ */
+/* global _ */
 (function () {
     'use strict';
 
-    breeze.widget('quickSearch', {
+    $.widget('quickSearch', {
         options: {
             autocomplete: 'off',
             minSearchLength: 3,
@@ -342,7 +342,7 @@
 
             this.submitBtn.prop('disabled', false);
 
-            return breeze.request.get({
+            return $.request.get({
                 url: this.options.url,
                 type: 'json',
                 data: {

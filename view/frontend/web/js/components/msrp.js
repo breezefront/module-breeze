@@ -1,8 +1,8 @@
-/* global breeze _ */
+/* global _ */
 (function () {
     'use strict';
 
-    breeze.widget('addToCart', {
+    $.widget('addToCart', {
         options: {
             origin: 'msrp',
             popUpAttr: '[data-role=msrp-popup-template]',
@@ -233,7 +233,7 @@
             });
         }
 
-        breeze.sections.get('cart').subscribe(function (updatedCart) {
+        $.sections.get('cart').subscribe(function (updatedCart) {
             var view = window.breeze.registry.get('minicart')[0];
 
             if (view) {

@@ -1,8 +1,7 @@
-/* global breeze */
 (function () {
     'use strict';
 
-    breeze.widget('tabs', {
+    $.widget('tabs', {
         options: {
             active: 0,
             collapsible: false,

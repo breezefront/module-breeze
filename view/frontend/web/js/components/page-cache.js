@@ -1,8 +1,7 @@
-/* global breeze */
 (function () {
     'use strict';
 
-    breeze.widget('pageCache', {
+    $.widget('pageCache', {
         options: {
             url: '/',
             patternPlaceholderOpen: /^ BLOCK (.+) $/,
@@ -14,7 +13,7 @@
         /** Initialize plugin */
         create: function () {
             var placeholders,
-                version = breeze.cookies.get(this.options.versionCookieName);
+                version = $.cookies.get(this.options.versionCookieName);
 
             if (!version) {
                 return;
@@ -32,6 +31,7 @@
                 iterator = document.createNodeIterator(
                     document.body,
                     NodeFilter.SHOW_COMMENT,
+
                     /** [filterNone description] */
                     function filterNone() {
                         return NodeFilter.FILTER_ACCEPT;
@@ -161,7 +161,7 @@
             data.handles = JSON.stringify(data.handles);
             data.originalRequest = JSON.stringify(data.originalRequest);
 
-            breeze.request.get({
+            $.request.get({
                 url: this.options.url,
                 data: data,
                 type: 'json'

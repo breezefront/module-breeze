@@ -1,8 +1,8 @@
-/* global breeze _ */
+/* global _ */
 (function () {
     'use strict';
 
-    breeze.widget('toggleAdvanced', {
+    $.widget('toggleAdvanced', {
         options: {
             baseToggleClass: 'active',
             selectorsToggleClass: 'hidden',

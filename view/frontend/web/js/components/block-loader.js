@@ -1,4 +1,4 @@
-/* global breeze _ */
+/* global _ */
 (function () {
     'use strict';
 
@@ -48,7 +48,7 @@
         element.removeClass('_block-content-loading');
     }
 
-    breeze.widget('blockLoader', {
+    $.widget('blockLoader', {
         /** [create description] */
         create: function () {
             var href = this.options;
