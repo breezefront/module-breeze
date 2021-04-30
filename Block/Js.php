@@ -203,14 +203,11 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
             }
         }
 
-        // unset disabled component when it's not active
+        // unset disabled components
         foreach ($this->activeBundles as $bundleName => $bundle) {
             foreach ($bundle['items'] as $itemName => $item) {
-                if (!is_array($item) ||
-                    !empty($item['active']) ||
-                    in_array($itemName, $this->activeItems)
-                ) {
-                    continue; // do not check enabled state for the active items (items from dom structure)
+                if (!is_array($item)) {
+                    continue;
                 }
 
                 $names = $item['names'] ?? [];
