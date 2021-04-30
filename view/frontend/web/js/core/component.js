@@ -253,9 +253,10 @@ window.breeze.component = function (factory) {
             this.__bindings = $(); // @todo: _destroy
             this.element = $(element);
             this._options(options);
+            this._trigger('beforeCreate');
             this.create();
             this.init();
-            this._trigger('create');
+            this._trigger('afterCreate');
 
             return this;
         },
