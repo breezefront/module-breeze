@@ -49,8 +49,22 @@ class CollectComponents extends AbstractFilter
         foreach ($nodes as $node) {
             $value = json_decode($node->textContent, true);
             foreach ($value as $selector => $components) {
-                foreach (array_keys($components) as $component) {
-                    $this->addComponent($component);
+                foreach ($components as $component => $config) {
+                    if ($component === 'Magento_Ui/js/core/app') {
+                        if (!isset($config['components'])) {
+                            continue;
+                        }
+
+                        foreach ($config['components'] as $key => $settings) {
+                            if (empty($settings['component'])) {
+                                continue;
+                            }
+
+                            $this->addComponent($settings['component']);
+                        }
+                    } else {
+                        $this->addComponent($component);
+                    }
                 }
             }
         }
