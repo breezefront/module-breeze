@@ -44,7 +44,7 @@
                     };
                 })(name, prop[name]);
             } else if (propType === 'object' && superPropType === 'object') {
-                prototype[name] = $.extend(true, _super[name], prop[name]);
+                prototype[name] = $.extend(true, {}, _super[name], prop[name]);
             } else {
                 prototype[name] = prop[name];
             }
