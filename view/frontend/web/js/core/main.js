@@ -19,7 +19,7 @@
     /** Init view components */
     function mountView(scope, config) {
         var elements =  $('[data-bind*="scope:"]').filter(function () {
-            return $(this).attr('data-bind').indexOf(scope) !== -1;
+            return $(this).attr('data-bind').indexOf('\'' + scope + '\'') !== -1;
         });
 
         if (elements.length) {
