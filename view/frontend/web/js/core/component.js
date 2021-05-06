@@ -190,6 +190,7 @@ window.breeze.component = function (factory) {
                     $.fn[name](data.settings);
                 } else {
                     $(data.el)[name](data.settings);
+                    $(data.el).get(0)['breeze:' + component] = $(data.el)[name]('instance');
                 }
             });
         }
