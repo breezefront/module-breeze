@@ -15,3 +15,15 @@ ko.bindingHandlers.blockLoader = {
         }
     }
 };
+
+ko.bindingHandlers.i18n = {
+    /**
+     * @param {Object} element
+     * @param {Function} value
+     */
+    update: function (element, value) {
+        'use strict';
+
+        $(element).text($.__(ko.unwrap(value() || '')));
+    }
+};

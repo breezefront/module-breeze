@@ -1,7 +1,51 @@
-/* global _ */
+/* global _ ko */
 (function () {
     'use strict';
 
+    // Magento_Ui/js/view/messages
+    $.view('uiMessages', {
+        component: 'Magento_Ui/js/view/messages',
+        defaults: {
+            template: 'uiMessages'
+        },
+
+        create: function () {
+            this.errorMessages = ko.observableArray([]);
+            this.successMessages = ko.observableArray([]);
+            this.messageContainer = this;
+        },
+
+        isVisible: function () {
+            return this.hasMessages();
+        },
+
+        hasMessages: function () {
+            return this.errorMessages().length > 0 || this.successMessages().length > 0;
+        },
+
+        removeAll: function () {
+            this.errorMessages.removeAll();
+            this.successMessages.removeAll();
+        },
+
+        addErrorMessage: function (message) {
+            this.errorMessages.push(message);
+        },
+
+        addSuccessMessage: function (message) {
+            this.successMessages.push(message);
+        },
+
+        getErrorMessages: function () {
+            return this.errorMessages();
+        },
+
+        getSuccessMessages: function () {
+            return this.successMessages();
+        }
+    });
+
+    // Magento_Theme/js/view/messages
     $.view('messages', {
         component: 'Magento_Theme/js/view/messages',
 

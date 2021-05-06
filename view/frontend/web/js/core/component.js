@@ -1,29 +1,29 @@
 /* global WeakMap ko _ */
 window.breeze = window.breeze || {};
-window.breeze.registry = (function () {
+$.registry = window.breeze.registry = (function () {
     'use strict';
 
     var data = {};
 
     return {
         /**
-         * @param {String} type
-         * @param {Element} key
+         * @param {String} name
+         * @param {Element} element
          * @return {Mixed}
          */
-        get: function (type, key) {
+        get: function (name, element) {
             var result = [];
 
-            if (!data[type] || !data[type].objects) {
-                return;
+            if (!data[name] || !data[name].objects) {
+                return data[name];
             }
 
-            if (key) {
-                return data[type].objects.get(key);
+            if (element) {
+                return data[name].objects.get(element);
             }
 
-            $.each(data[type].elements, function (index, element) {
-                var instance = window.breeze.registry.get(type, element);
+            $.each(data[name].elements, function (index, el) {
+                var instance = $.registry.get(name, el);
 
                 if (!instance) {
                     return;
@@ -36,53 +36,57 @@ window.breeze.registry = (function () {
         },
 
         /**
-         * @param {String} type
-         * @param {Element} key
-         * @param {Object} value
+         * @param {String} name
+         * @param {Element} element
+         * @param {Object} component
          */
-        set: function (type, key, value) {
-            if (!data[type]) {
-                data[type] = {
+        set: function (name, element, component) {
+            if (!data[name] && component) {
+                data[name] = {
                     objects: new WeakMap(),
                     elements: []
                 };
             }
 
-            data[type].objects.set(key, value);
-            data[type].elements.push(key);
+            if (!component) {
+                data[name] = element; // element is a component here
+            } else {
+                data[name].objects.set(element, component);
+                data[name].elements.push(element);
+            }
         },
 
         /**
-         * @param {String} type
-         * @param {Element} key
+         * @param {String} name
+         * @param {Element} element
          */
-        delete: function (type, key) {
+        delete: function (name, element) {
             var instance, index;
 
-            if (type && key) {
-                instance = data[type].objects.get(key);
-                index = data[type].elements.indexOf(key);
+            if (name && element) {
+                instance = data[name].objects.get(element);
+                index = data[name].elements.indexOf(element);
 
                 if (index !== -1) {
-                    data[type].elements.splice(index, 1);
+                    data[name].elements.splice(index, 1);
                 }
 
                 if (instance && instance.destroy) {
                     instance.destroy();
                 }
 
-                return data[type].objects.delete(key);
+                return data[name].objects.delete(element);
             }
 
-            if (type) {
-                return $.each(data[type].elements, function (i, element) {
-                    window.breeze.registry.delete(type, element);
+            if (name) {
+                return $.each(data[name].elements, function (i, el) {
+                    $.registry.delete(name, el);
                 });
             }
 
             $.each(data, function (t) {
-                $.each(data[t].elements, function (i, element) {
-                    window.breeze.registry.delete(t, element);
+                $.each(data[t].elements, function (i, el) {
+                    $.registry.delete(t, el);
                 });
             });
         }
@@ -103,12 +107,17 @@ window.breeze.factory = function (Root, singleton) {
 
         /** Creates a new instance of Base prototype */
         create: function (name, Base, settings, el) {
-            var instance, key;
+            var instance, key, exists = false;
 
             settings = settings || {};
             key = settings.__scope;
+            instance = registry[key];
 
-            if (singleton && key && registry[key]) {
+            if (instance && instance.element) {
+                exists = $('body').has(instance.element.get(0)).length > 0;
+            }
+
+            if (singleton && instance && instance.element && exists) {
                 registry[key]._applyBindings(el);
             } else {
                 instance = new Base(name, settings, el);
@@ -209,7 +218,7 @@ window.breeze.component = function (factory) {
                 args = Array.prototype.slice.call(args, 1);
 
                 this.each(function () {
-                    var instance = window.breeze.registry.get(name, this);
+                    var instance = $.registry.get(name, this);
 
                     result = instance;
 
@@ -227,11 +236,11 @@ window.breeze.component = function (factory) {
                 // object initialization: $(el).dropdown({...})
                 this.each(function () {
                     var el = this,
-                        instance = window.breeze.registry.get(name, el);
+                        instance = $.registry.get(name, el);
 
                     if (!instance) {
                         instance = factory.create(name, prototype, settings, el);
-                        window.breeze.registry.set(name, el, instance);
+                        $.registry.set(name, el, instance);
                     } else {
                         instance._options(settings).init();
                     }
@@ -248,30 +257,34 @@ window.breeze.component = function (factory) {
 (function () {
     'use strict';
 
-    var widget, view;
+    var Base, Widget, View;
 
-    widget = Class.extend({
+    Base = Class.extend({
         create: _.noop,
         init: _.noop,
 
         /**
-         * @param {String} name
          * @param {Object} options
-         * @param {Element} element
-         * @return {WidgetModel}
+         * @return {Base}
          */
-        _initialize: function (name, options, element) {
-            this.__name = name;
-            this.__eventNamespace = '.' + name;
-            this.__bindings = $(); // @todo: _destroy
-            this.element = $(element);
+        _initialize: function (options) {
             this._options(options);
-            this._trigger('beforeCreate');
+            this._defaults(this.options);
             this.create();
             this.init();
-            this._trigger('afterCreate');
 
             return this;
+        },
+
+        /**
+         * @param {Object} values
+         */
+        _defaults: function (values) {
+            var self = this;
+
+            _.each(this.defaults || {}, function (value, key) {
+                self[key] = _.has(values, key) ? values[key] : value;
+            });
         },
 
         /**
@@ -294,6 +307,30 @@ window.breeze.component = function (factory) {
          */
         _option: function (path) {
             return _.get(this.options, path.split('/'));
+        }
+    });
+
+    Widget = Base.extend({
+        /**
+         * @param {String} name
+         * @param {Object} options
+         * @param {Element} element
+         * @return {WidgetModel}
+         */
+        _initialize: function (name, options, element) {
+            this.__name = name;
+            this.__eventNamespace = '.' + name;
+            this.__bindings = $(); // @todo: _destroy
+            this.element = $(element);
+
+            this._options(options);
+            this._defaults(options);
+            this._trigger('beforeCreate');
+            this.create();
+            this.init();
+            this._trigger('afterCreate');
+
+            return this;
         },
 
         /**
@@ -361,9 +398,13 @@ window.breeze.component = function (factory) {
         }
     });
 
-    view = widget.extend({
+    View = Widget.extend({
+        beforeRender: _.noop,
+        afterRender: _.noop,
+
         /** [initialize description] */
         _initialize: function (name, options, element) {
+            this._regions = {};
             this._super(name, options, element);
             this._applyBindings(element);
         },
@@ -371,11 +412,52 @@ window.breeze.component = function (factory) {
         /** [applyBindings description] */
         _applyBindings: function (element) {
             if (!ko.dataFor(element)) {
+                this.beforeRender();
                 ko.applyBindings(this, element);
+                $(element).trigger('contentUpdated');
+                this.afterRender();
             }
+        },
+
+        /** [getTemplate description] */
+        getTemplate: function () {
+            return this.template.replace(/\//g, '_');
+        },
+
+        /** [getRegion description] */
+        getRegion: function (code) {
+            var self = this,
+                result = ko.observableArray();
+
+            if (this._regions[code]) {
+                return this._regions[code];
+            }
+
+            _.each(this.options.children, function (config) {
+                if (config.displayArea !== code) {
+                    return;
+                }
+
+                result.push(self.mount(config));
+            });
+
+            this._regions[code] = result;
+
+            return result;
+        },
+
+        /** [mount description] */
+        mount: function (config) {
+            $(document).trigger('breeze:mount:' + config.component, {
+                el: this.element,
+                settings: config
+            });
+
+            return this.element.get(0)['breeze:' + config.component];
         }
     });
 
-    $.widget = window.breeze.widget = window.breeze.component(window.breeze.factory(widget, false));
-    $.view = window.breeze.view = window.breeze.component(window.breeze.factory(view, true));
+    $.Base = window.breeze.Base = Base;
+    $.widget = window.breeze.widget = window.breeze.component(window.breeze.factory(Widget, false));
+    $.view = window.breeze.view = window.breeze.component(window.breeze.factory(View, true));
 })();
