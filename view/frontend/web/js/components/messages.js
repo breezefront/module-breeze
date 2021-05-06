@@ -3,6 +3,8 @@
     'use strict';
 
     $.view('messages', {
+        component: 'Magento_Theme/js/view/messages',
+
         /** Init component */
         create: function () {
             this.cookieMessages = _.unique($.cookies.getJson('mage-messages') || [], 'text');
@@ -42,9 +44,5 @@
         messages.messages = messages.messages || [];
         messages.messages = messages.messages.concat(cookieMessages);
         $.sections.set('messages', messages);
-    });
-
-    $(document).on('breeze:mount:Magento_Theme/js/view/messages', function (event, data) {
-        $(data.el).messages(data.settings);
     });
 })();

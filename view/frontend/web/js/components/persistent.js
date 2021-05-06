@@ -2,6 +2,8 @@
     'use strict';
 
     $.widget('persistent', {
+        component: 'Magento_Persistent/js/view/additional-welcome',
+
         /** Initialize plugin */
         create: function () {
             var persistent = $.sections.get('persistent');
@@ -32,9 +34,5 @@
                 }
             }
         }
-    });
-
-    $(document).on('breeze:mount:Magento_Persistent/js/view/additional-welcome', function (event, data) {
-        $(data.el).persistent(data.settings);
     });
 })();

@@ -36,6 +36,7 @@
     };
 
     $.widget('addressValidation', {
+        component: 'addressValidation',
         options: {
             selectors: {
                 button: '[data-action=save-address]',
@@ -115,9 +116,5 @@
                 alertDiv.show();
             }
         }
-    });
-
-    $(document).on('breeze:mount:addressValidation', function (event, data) {
-        $(data.el).addressValidation(data.settings);
     });
 })();

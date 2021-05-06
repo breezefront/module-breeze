@@ -2,6 +2,8 @@
     'use strict';
 
     $.widget('cookieNotices', {
+        component: 'cookieNotices',
+
         /** Initialize plugin */
         create: function () {
             var self = this;
@@ -27,9 +29,5 @@
                 }
             });
         }
-    });
-
-    $(document).on('breeze:mount:cookieNotices', function (event, data) {
-        $(data.el).cookieNotices(data.settings);
     });
 })();

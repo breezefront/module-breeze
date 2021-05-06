@@ -3,6 +3,7 @@
     'use strict';
 
     $.widget('addToCart', {
+        component: 'addToCart',
         options: {
             origin: 'msrp',
             popUpAttr: '[data-role=msrp-popup-template]',
@@ -240,9 +241,5 @@
                 view.displaySubtotal(!isMsrpApplied(updatedCart.items));
             }
         }, this);
-    });
-
-    $(document).on('breeze:mount:addToCart', function (event, data) {
-        $(data.el).addToCart(data.settings);
     });
 })();

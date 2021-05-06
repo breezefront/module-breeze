@@ -2,6 +2,7 @@
     'use strict';
 
     $.widget('dropdownDialog', {
+        component: 'dropdownDialog',
         options: {
             triggerTarget: null,
             closeOnClickOutside: true,
@@ -206,9 +207,5 @@
                 top: targetCoords.top - offset.top + target.height()
             });
         }
-    });
-
-    $(document).on('breeze:mount:dropdownDialog', function (event, data) {
-        $(data.el).dropdownDialog(data.settings);
     });
 })();

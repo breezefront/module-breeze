@@ -3,6 +3,7 @@
     'use strict';
 
     $.widget('regionUpdater', {
+        component: 'regionUpdater',
         options: {
             regionTemplate:
                 '<option value="<%- data.value %>" <% if (data.isSelected) { %>selected="selected"<% } %>>' +
@@ -234,9 +235,5 @@
                 }
             });
         }
-    });
-
-    $(document).on('breeze:mount:regionUpdater', function (event, data) {
-        $(data.el).regionUpdater(data.settings);
     });
 })();

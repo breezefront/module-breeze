@@ -2,6 +2,7 @@
     'use strict';
 
     $.widget('changeEmailPassword', {
+        component: 'changeEmailPassword',
         options: {
             changeEmailSelector: '[data-role=change-email]',
             changePasswordSelector: '[data-role=change-password]',
@@ -113,9 +114,5 @@
                 '\'password-not-equal-to-user-name\':\'' + $(this.options.emailSelector).val() + '\'}'
             ).prop('disabled', false);
         }
-    });
-
-    $(document).on('breeze:mount:changeEmailPassword', function (event, data) {
-        $(data.el).changeEmailPassword(data.settings);
     });
 })();

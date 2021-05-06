@@ -2,6 +2,7 @@
     'use strict';
 
     $.widget('catalogAddToCart', {
+        component: 'catalogAddToCart',
         options: {
             processStart: null,
             processStop: null,
@@ -140,9 +141,5 @@
     $(document).on('submit', '[data-catalog-addtocart-initialized]', function (event) {
         event.preventDefault();
         $(this).catalogAddToCart('instance').ajaxSubmit($(this));
-    });
-
-    $(document).on('breeze:mount:catalogAddToCart', function (event, data) {
-        $(data.el).catalogAddToCart(data.settings);
     });
 })();

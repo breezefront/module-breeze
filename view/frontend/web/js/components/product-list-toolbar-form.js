@@ -2,6 +2,7 @@
     'use strict';
 
     $.widget('productListToolbarForm', {
+        component: 'productListToolbarForm',
         options: {
             modeControl: '[data-role="mode-switcher"]',
             directionControl: '[data-role="direction-switcher"]',
@@ -121,9 +122,5 @@
             paramData = $.params(paramData);
             location.href = baseUrl + (paramData.length ? '?' + paramData : '');
         }
-    });
-
-    $(document).on('breeze:mount:productListToolbarForm', function (event, data) {
-        $(data.el).productListToolbarForm(data.settings);
     });
 })();

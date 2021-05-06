@@ -2,6 +2,7 @@
     'use strict';
 
     $.widget('dropdown', {
+        component: 'dropdown',
         options: {
             parent: null,
             activeClass: 'active',
@@ -62,10 +63,6 @@
                 this.open();
             }
         }
-    });
-
-    $(document).on('breeze:mount:dropdown', function (event, data) {
-        $(data.el).dropdown(data.settings);
     });
 
     $(document).on('click.dropdown', function (event) {

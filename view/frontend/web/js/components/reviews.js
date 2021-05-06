@@ -3,6 +3,8 @@
 
     // Review List
     $.widget('ajaxReviews', {
+        component: 'Magento_Review/js/process-reviews',
+
         /** Create widget */
         create: function () {
             var self = this,
@@ -37,12 +39,10 @@
         }
     });
 
-    $(document).on('breeze:mount:Magento_Review/js/process-reviews', function (event, data) {
-        $(data.settings.reviewsTabSelector).ajaxReviews(data.settings);
-    });
-
     // Review Form
     $.view('reviewForm', {
+        component: 'Magento_Review/js/view/review',
+
         /** Init component */
         create: function () {
             this.review = $.sections.get('review');
@@ -52,10 +52,6 @@
         nickname: function () {
             return this.review().nickname || $.sections.get('customer')().firstname;
         }
-    });
-
-    $(document).on('breeze:mount:Magento_Review/js/view/review', function (event, data) {
-        $(data.el).reviewForm(data.settings);
     });
 
     $.validator.validators['rating-required'] = [

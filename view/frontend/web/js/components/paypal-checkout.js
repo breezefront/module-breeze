@@ -2,6 +2,7 @@
     'use strict';
 
     $.widget('paypalCheckout', {
+        component: 'paypalCheckout',
         options: {
             productId: 'input[type="hidden"][name="product"]',
             ppCheckoutSelector: '[data-role=pp-checkout-url]',
@@ -61,9 +62,5 @@
                 window.location.assign(returnUrl);
             }
         }
-    });
-
-    $(document).on('breeze:mount:paypalCheckout', function (event, data) {
-        $(data.el).paypalCheckout(data.settings);
     });
 })();

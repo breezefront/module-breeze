@@ -182,6 +182,18 @@ window.breeze.component = function (factory) {
         prototype = factory.extend(prototype, parent);
         prototypes[name] = prototype;
 
+        if (prototype.prototype.hasOwnProperty('component')) {
+            $(document).on('breeze:mount:' + prototype.prototype.component, function (event, data) {
+                var component = prototype.prototype.component;
+
+                if (!data.el) {
+                    $.fn[name](data.settings);
+                } else {
+                    $(data.el)[name](data.settings);
+                }
+            });
+        }
+
         /** @param {Object|Function|String} settings */
         $.fn[name] = function (settings) {
             var result = this,

@@ -2,12 +2,9 @@
     'use strict';
 
     $.widget('accordion', 'tabs', {
+        component: 'accordion',
         options: {
             collapsible: true
         }
-    });
-
-    $(document).on('breeze:mount:accordion', function (event, data) {
-        $(data.el).accordion(data.settings);
     });
 })();

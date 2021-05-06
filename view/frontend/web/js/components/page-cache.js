@@ -2,6 +2,7 @@
     'use strict';
 
     $.widget('pageCache', {
+        component: 'pageCache',
         options: {
             url: '/',
             patternPlaceholderOpen: /^ BLOCK (.+) $/,
@@ -171,9 +172,5 @@
                 });
             });
         }
-    });
-
-    $(document).on('breeze:mount:pageCache', function (event, data) {
-        $(data.el).pageCache(data.settings);
     });
 })();

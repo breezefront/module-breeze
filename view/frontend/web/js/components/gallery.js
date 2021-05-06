@@ -3,6 +3,7 @@
     'use strict';
 
     $.widget('gallery', {
+        component: 'mage/gallery/gallery',
         options: {
             video: {
                 template: '<div class="video-wrapper"><iframe src="<%- src %>"' +
@@ -240,9 +241,5 @@
                 _.template(params.template || this.options.video.template)(params)
             );
         }
-    });
-
-    $(document).on('breeze:mount:mage/gallery/gallery', function (event, data) {
-        $(data.el).gallery(data.settings);
     });
 })();

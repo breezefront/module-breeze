@@ -2,6 +2,8 @@
     'use strict';
 
     $.widget('customerAssistance', {
+        component: 'Magento_LoginAsCustomerAssistance/js/opt-in',
+
         /** Initialize plugin */
         create: function () {
             var self = this;
@@ -14,9 +16,5 @@
             });
             //jscs:enable requireCamelCaseOrUpperCaseIdentifiers
         }
-    });
-
-    $(document).on('breeze:mount:Magento_LoginAsCustomerAssistance/js/opt-in', function (event, data) {
-        $(data.el).customerAssistance(data.settings);
     });
 })();

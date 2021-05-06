@@ -3,6 +3,7 @@
     'use strict';
 
     $.widget('relatedProducts', {
+        component: 'relatedProducts',
         options: {
             relatedCheckbox: '.related-checkbox', // Class name for a related product's input checkbox.
             relatedProductsCheckFlag: false, // Related products checkboxes are initially unchecked.
@@ -54,9 +55,5 @@
                 }).get().join(',')
             );
         }
-    });
-
-    $(document).on('breeze:mount:relatedProducts', function (event, data) {
-        $(data.el).relatedProducts(data.settings);
     });
 })();

@@ -3,6 +3,7 @@
     'use strict';
 
     $.widget('breadcrumbs', {
+        component: 'breadcrumbs',
         options: {
             categoryUrlSuffix: '',
             useCategoryPathInUrl: false,
@@ -181,9 +182,5 @@
 
             return categoryUrl;
         }
-    });
-
-    $(document).on('breeze:mount:breadcrumbs', function (event, data) {
-        $(data.el).breadcrumbs(data.settings);
     });
 })();

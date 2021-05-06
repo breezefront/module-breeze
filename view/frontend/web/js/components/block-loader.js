@@ -49,6 +49,8 @@
     }
 
     $.widget('blockLoader', {
+        component: 'Magento_Ui/js/block-loader',
+
         /** [create description] */
         create: function () {
             var href = this.options;
@@ -61,9 +63,5 @@
         },
         show: show, // @todo Promise
         hide: hide  // @todo Promise
-    });
-
-    $(document).on('breeze:mount:Magento_Ui/js/block-loader', function (event, data) {
-        $.fn.blockLoader(data.settings);
     });
 })();

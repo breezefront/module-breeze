@@ -3,6 +3,8 @@
     'use strict';
 
     $.widget('validator', {
+        component: 'validation',
+
         /** Init widget */
         create: function () {
             var self = this;
@@ -36,10 +38,6 @@
     });
 
     $.fn.validation = $.fn.validator;
-
-    $(document).on('breeze:mount:validation', function (event, data) {
-        $(data.el).validator(data.settings);
-    });
 
     $(document).on('breeze:mount:Magento_Customer/js/block-submit-on-send', function (event, data) {
         $('#' + data.settings.formId).validator(data.settings);

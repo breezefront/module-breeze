@@ -3,6 +3,8 @@
     'use strict';
 
     $.widget('googleAnalytics', {
+        component: 'Magento_GoogleAnalytics/js/google-analytics',
+
         /** [create description] */
         create: function () {
             if (!this.isAllowed()) {
@@ -72,9 +74,5 @@
                 ga('send', 'pageview' + this.options.pageTrackingData.optPageUrl);
             }
         }
-    });
-
-    $(document).on('breeze:mount:Magento_GoogleAnalytics/js/google-analytics', function (event, data) {
-        $.fn.googleAnalytics(data.settings);
     });
 })();

@@ -3,6 +3,7 @@
     'use strict';
 
     $.widget('quickSearch', {
+        component: 'quickSearch',
         options: {
             autocomplete: 'off',
             minSearchLength: 3,
@@ -448,9 +449,5 @@
             this._updateAriaHasPopup(false);
             this.element.removeAttr('aria-activedescendant');
         }
-    });
-
-    $(document).on('breeze:mount:quickSearch', function (event, data) {
-        $(data.el).quickSearch(data.settings);
     });
 })();

@@ -2,6 +2,7 @@
     'use strict';
 
     $.widget('menu', {
+        component: 'menu',
         options: {
             menus: 'ul',
             dropdown: 'ul',
@@ -224,9 +225,5 @@
                 this._setActiveMenuForCategory(possibleCategoryUrl);
             }
         }
-    });
-
-    $(document).on('breeze:mount:menu', function (event, data) {
-        $(data.el).menu(data.settings);
     });
 })();

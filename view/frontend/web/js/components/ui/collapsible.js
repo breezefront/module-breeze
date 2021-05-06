@@ -2,6 +2,7 @@
     'use strict';
 
     $.widget('collapsible', {
+        component: 'collapsible',
         options: {
             active: false,
             openedState: null,
@@ -158,10 +159,6 @@
                 }
             });
         }
-    });
-
-    $(document).on('breeze:mount:collapsible', function (event, data) {
-        $(data.el).collapsible(data.settings);
     });
 
     $(document).on('click.collapsible', '[data-trigger]', function () {

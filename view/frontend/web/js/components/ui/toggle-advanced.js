@@ -3,6 +3,7 @@
     'use strict';
 
     $.widget('toggleAdvanced', {
+        component: 'toggleAdvanced',
         options: {
             baseToggleClass: 'active',
             selectorsToggleClass: 'hidden',
@@ -38,9 +39,5 @@
                 $(this.options.toggleContainers).toggleClass(this.options.selectorsToggleClass);
             }
         }
-    });
-
-    $(document).on('breeze:mount:toggleAdvanced', function (event, data) {
-        $(data.el).toggleAdvanced(data.settings);
     });
 })();

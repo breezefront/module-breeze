@@ -3,6 +3,7 @@
     'use strict';
 
     $.widget('upsellProducts', {
+        component: 'upsellProducts',
         options: {
             elementsSelector: '.item.product'
         },
@@ -19,9 +20,5 @@
                 this.element.data('shuffle-weighted')
             );
         }
-    });
-
-    $(document).on('breeze:mount:upsellProducts', function (event, data) {
-        $(data.el).upsellProducts(data.settings);
     });
 })();

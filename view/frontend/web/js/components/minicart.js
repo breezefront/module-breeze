@@ -241,6 +241,7 @@
     });
 
     $.view('minicart', {
+        component: 'Magento_Checkout/js/view/minicart',
         cart: {},
         shoppingCartUrl: window.checkout.shoppingCartUrl,
         maxItemsToDisplay: window.checkout.maxItemsToDisplay,
@@ -418,9 +419,5 @@
         template: {
             element: 'subtotal.totals'
         }
-    });
-
-    $(document).on('breeze:mount:Magento_Checkout/js/view/minicart', function (event, data) {
-        $(data.el).minicart(data.settings);
     });
 })();

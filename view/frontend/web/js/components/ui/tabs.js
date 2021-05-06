@@ -2,6 +2,7 @@
     'use strict';
 
     $.widget('tabs', {
+        component: 'tabs',
         options: {
             active: 0,
             collapsible: false,
@@ -140,9 +141,5 @@
 
             return index;
         }
-    });
-
-    $(document).on('breeze:mount:tabs', function (event, data) {
-        $(data.el).tabs(data.settings);
     });
 })();

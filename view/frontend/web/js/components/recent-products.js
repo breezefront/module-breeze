@@ -3,6 +3,7 @@
     'use strict';
 
     $.view('recentProducts', {
+        component: 'Swissup_Breeze/js/components/recent-products',
         options: {
             limit: 5
         },
@@ -103,9 +104,5 @@
 
             return this.processorUencPlaceholders(raw);
         }
-    });
-
-    $(document).on('breeze:mount:Swissup_Breeze/js/components/recent-products', function (event, data) {
-        $(data.el).recentProducts(data.settings);
     });
 })();
