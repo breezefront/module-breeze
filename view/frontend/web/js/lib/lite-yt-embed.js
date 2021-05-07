@@ -37,7 +37,7 @@ class LiteYTEmbed extends HTMLElement {
          * TODO: Consider using webp if supported, falling back to jpg
          */
         if (!this.style.backgroundImage) {
-          this.posterUrl = `https://i.ytimg.com/vi/${this.videoId}/hqdefault.jpg`;
+          this.posterUrl = 'https://i.ytimg.com/vi/' + this.videoId + '/hqdefault.jpg';
           // Warm the connection for the poster image
           LiteYTEmbed.addPrefetch('preload', this.posterUrl, 'image');
 
@@ -66,10 +66,6 @@ class LiteYTEmbed extends HTMLElement {
         //   We'd want to only do this for in-viewport or near-viewport ones: https://github.com/ampproject/amphtml/pull/5003
         this.addEventListener('click', e => this.addIframe());
     }
-
-    // // TODO: Support the the user changing the [videoid] attribute
-    // attributeChangedCallback() {
-    // }
 
     /**
      * Add a <link rel={preload | preconnect} ...> to the head
@@ -121,7 +117,7 @@ class LiteYTEmbed extends HTMLElement {
         iframeEl.allowFullscreen = true;
         // AFAIK, the encoding here isn't necessary for XSS, but we'll do it only because this is a URL
         // https://stackoverflow.com/q/64959723/89484
-        iframeEl.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(this.videoId)}?${params.toString()}`;
+        iframeEl.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(this.videoId) + '?' + params.toString();
         this.append(iframeEl);
 
         this.classList.add('lyt-activated');
