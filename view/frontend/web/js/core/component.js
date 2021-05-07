@@ -406,13 +406,21 @@ window.breeze.component = function (factory) {
         _initialize: function (name, options, element) {
             this._regions = {};
             this._super(name, options, element);
-            this._applyBindings(element);
+
+            if (window.requestIdleCallback) {
+                window.requestIdleCallback(this._applyBindings.bind(this, element));
+            } else {
+                window.setTimeout(this._applyBindings.bind(this, element), 1);
+            }
         },
 
         /** [applyBindings description] */
         _applyBindings: function (element) {
             if (!ko.dataFor(element)) {
-                this.beforeRender();
+                if (this.beforeRender() === false) {
+                    return;
+                }
+
                 ko.applyBindings(this, element);
                 $(element).trigger('contentUpdated');
                 this.afterRender();
