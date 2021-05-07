@@ -427,6 +427,19 @@ window.breeze.component = function (factory) {
             }
         },
 
+        /**
+         * @param {Object} values
+         */
+        _defaults: function (values) {
+            var self = this;
+
+            this._super(values);
+
+            _.each(values, function (value, key) {
+                self[key] = value;
+            });
+        },
+
         /** [getTemplate description] */
         getTemplate: function () {
             return this.template.replace(/\//g, '_');
