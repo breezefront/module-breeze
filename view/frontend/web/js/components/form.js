@@ -12,7 +12,7 @@
 
             this._super(name, options, element);
 
-            this.selector = '[data-form-part=' + this.namespace + ']';
+            this.selector = 'input, select, textarea, [data-form-part=' + this.namespace + ']';
         },
 
         /** [save description] */
