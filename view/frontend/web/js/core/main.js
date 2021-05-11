@@ -57,7 +57,7 @@
                 el = false;
 
                 if (component !== '*') {
-                    el = $(component);
+                    el = $('html').find(component);
 
                     // eslint-disable-next-line max-depth
                     if (!el.length) {
