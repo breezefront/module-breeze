@@ -267,7 +267,7 @@ class JsBuild
         foreach (['frontend/web/', 'base/web/'] as $area) {
             try {
                 return $dir->readFile($area . $path);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 continue;
             }
         }
