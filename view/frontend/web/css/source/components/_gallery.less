@@ -81,7 +81,7 @@
             align-items: center;
             position: relative;
 
-            .video-wrapper,
+            > div,
             .main-image-wrapper {
                 position: relative;
                 cursor: pointer;
@@ -98,7 +98,7 @@
                 left: 0;
                 bottom: 0;
                 align-items: center;
-                + .main-image-wrapper {
+                + div {
                     opacity: 0;
                 }
             }
@@ -176,7 +176,7 @@
                     }
                 }
 
-                .main-image-wrapper {
+                > div {
                     margin: 0 auto;
                     max-height: 100%;
                     img {
