@@ -75,4 +75,7 @@
             }
         };
     })();
+
+    $.mage = $.mage || {};
+    $.mage.cookies = $.cookies;
 })();

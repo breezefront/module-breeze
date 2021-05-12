@@ -91,6 +91,29 @@
         });
     };
 
+    /** Hide element */
+    $.fn.fadeIn = function () {
+        return this.show();
+    };
+
+    /** Show element */
+    $.fn.fadeOut = function () {
+        return this.hide();
+    };
+
+    /** Get/Set scroll top position */
+    $.fn.scrollTop = function (value) {
+        var el = this.get(0);
+
+        if (typeof value === 'undefined') {
+            return el.scrollTop;
+        }
+
+        el.scrollTop = value;
+
+        return this;
+    };
+
     /** Evaluates bindings specified in each DOM element of collection. */
     $.fn.applyBindings = function () {
         return this.each(function () {
