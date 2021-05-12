@@ -46,6 +46,10 @@
             }
 
             _.each(listeners, function (data) {
+                if (!data.ctx.contains(node) || !$(node, data.ctx).is(selector)) {
+                    return;
+                }
+
                 trigger(node, data);
             });
         });
@@ -64,7 +68,7 @@
             }
 
             result.push(node);
-            result = result.concat(node.querySelectorAll('*'));
+            result = result.concat(_.toArray(node.querySelectorAll('*')));
         });
 
         return result;
@@ -82,16 +86,29 @@
     });
 
     /**
-     * @param {String} selector
+     * @param {String|Object} selector
+     * @param {HTMLElement|Function} ctx
      * @param {Function} callback
      */
-    $.async = function (selector, callback) {
-        var data = {
+    $.async = function (selector, ctx, callback) {
+        var data;
+
+        if (_.isObject(selector)) {
+            callback = ctx;
+            ctx = selector.ctx;
+            selector = selector.selector;
+        } else if (!callback) {
+            callback = ctx;
+            ctx = document.body;
+        }
+
+        data = {
+            ctx: ctx,
             callback: callback,
             invoked: []
         };
 
-        $(selector).each(function () {
+        $(selector, data.ctx).each(function () {
             trigger(this, data);
         });
 
