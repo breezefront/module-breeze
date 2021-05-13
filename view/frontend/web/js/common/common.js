@@ -39,4 +39,7 @@
 
         return mapping[scope];
     };
+
+    /** Prevent js error in case some module calls for requirejs */
+    window.require = function () {};
 })();
