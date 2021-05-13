@@ -5,7 +5,7 @@
         component: 'collapsible',
         options: {
             active: false,
-            openedState: null,
+            openedState: 'active',
             collapsible: true,
             header: '[data-role=title]',
             content: '[data-role=content]',
@@ -48,6 +48,11 @@
             }
         },
 
+        /** [init description] */
+        init: function () {
+            this.disabled = false;
+        },
+
         /** Hide expanded widgets */
         destroy: function () {
             if (!this.options.active) {
@@ -58,6 +63,21 @@
         /** [isActive description] */
         isActive: function () {
             return this.content.attr('aria-hidden') === 'false';
+        },
+
+        /** Disable click events */
+        isEnabled: function () {
+            return !this.disabled;
+        },
+
+        /** Disable click events */
+        disable: function () {
+            this.disabled = true;
+        },
+
+        /** Enable click events */
+        enable: function () {
+            this.disabled = false;
         },
 
         /** Open dropdown */
@@ -164,7 +184,7 @@
     $(document).on('click.collapsible', '[data-trigger]', function () {
         var instance = $(this).closest('[data-collapsible]').collapsible('instance');
 
-        if (instance) {
+        if (instance && instance.isEnabled()) {
             instance.toggle();
 
             return false;
