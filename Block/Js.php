@@ -61,7 +61,14 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         $this->assetConfig = $assetConfig;
         $this->pageConfig = $pageConfig;
         $this->jsBuildFactory = $jsBuildFactory;
-        $this->bundles = $data['bundles'] ?? [];
+
+        $bundles = $data['bundles'] ?? [];
+        foreach ($bundles as $key => $bundle) {
+            if (empty($bundle['items'])) {
+                unset($bundles[$key]);
+            }
+        }
+        $this->bundles = $bundles;
 
         parent::__construct($context, $data);
     }
