@@ -34,11 +34,11 @@
                         <item name="active" xsi:type="boolean">true</item>
                         <item name="sort_order" xsi:type="number">2</item>
                         <item name="items" xsi:type="array">
+                            <item name="underscore" xsi:type="string">Swissup_Breeze::js/lib/underscore-1.12.0.min.js</item>
                             <item name="cash" xsi:type="string">Swissup_Breeze::js/lib/cash-8.1.0.min.js</item>
                             <item name="cash-extend" xsi:type="string">Swissup_Breeze::js/core/extend-cash.js</item>
                             <item name="superagent" xsi:type="string">Swissup_Breeze::js/lib/superagent-6.1.0.min.js</item>
                             <item name="cookie" xsi:type="string">Swissup_Breeze::js/lib/js.cookie-3.0.0-rc1.min.js</item>
-                            <item name="underscore" xsi:type="string">Swissup_Breeze::js/lib/underscore-1.12.0.min.js</item>
                             <item name="turbo" xsi:type="array">
                                 <item name="url" xsi:type="string">Swissup_Breeze::js/lib/turbo-7.0.0-beta4.min.js</item>
                                 <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Data::isTurboEnabled"/>

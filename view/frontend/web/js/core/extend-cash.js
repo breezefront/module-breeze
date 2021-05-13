@@ -1,4 +1,4 @@
-/* global ko */
+/* global ko _ */
 (function () {
     'use strict';
 
@@ -91,15 +91,8 @@
         });
     };
 
-    /** Hide element */
-    $.fn.fadeIn = function () {
-        return this.show();
-    };
-
-    /** Show element */
-    $.fn.fadeOut = function () {
-        return this.hide();
-    };
+    $.fn.fadeIn = $.fn.show;
+    $.fn.fadeOut = $.fn.hide;
 
     /** Get/Set scroll top position */
     $.fn.scrollTop = function (val) {
@@ -122,6 +115,18 @@
             ko.applyBindings(ko.contextFor(this), this);
         });
     };
+
+    $.fn.is = _.wrap($.fn.is, function (original, selector) {
+        switch (selector) {
+            case ':visible':
+                return this.isVisible();
+
+            case ':hidden':
+                return this.isHidden();
+        }
+
+        return original.bind(this)(selector);
+    });
 
     /** Serialize object to query string */
     $.params = function (object) {

@@ -1,4 +1,4 @@
-/* global ko */
+/* global ko _ */
 (function () {
     'use strict';
 
@@ -179,4 +179,8 @@
         // destroy all widgets and views
         window.breeze.registry.delete();
     });
+
+    $(window).on('resize', _.debounce(function () {
+        $('body').trigger('breeze:resize');
+    }, 100));
 })();
