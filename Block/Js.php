@@ -168,7 +168,10 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
      */
     public function getCacheKeyInfo()
     {
-        $info = [$this->getNameInLayout()];
+        $info = [
+            $this->getNameInLayout(),
+            $this->_design->getDesignTheme()->getId(),
+        ];
 
         foreach ($this->getActiveBundles() as $bundleName => $bundle) {
             $info[] = $bundleName;
