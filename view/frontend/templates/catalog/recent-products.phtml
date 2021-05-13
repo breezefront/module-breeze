@@ -6,8 +6,28 @@
     scope: '<?= $config['scope'] ?>',
     css: options.additionalClasses,
     visible: visible,
-    if: visible
-">
+    template: {
+        if: visible,
+        name: 'recent-products'
+    }
+"></div>
+
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Magento_Ui/js/core/app": {
+            "components": {
+                "<?= $config['scope'] ?>": {
+                    "component": "<?= $config['component'] ?>",
+                    "config": <?= json_encode($config) ?>
+                }
+            }
+        }
+    }
+}
+</script>
+
+<script id="recent-products" type="text/x-magento-template">
     <div class="block-title">
         <strong role="heading" aria-level="2" data-bind="text: options.title"></strong>
     </div>
@@ -89,19 +109,4 @@
             </ol>
         </div>
     </div>
-</div>
-
-<script type="text/x-magento-init">
-{
-    "*": {
-        "Magento_Ui/js/core/app": {
-            "components": {
-                "<?= $config['scope'] ?>": {
-                    "component": "<?= $config['component'] ?>",
-                    "config": <?= json_encode($config) ?>
-                }
-            }
-        }
-    }
-}
 </script>
