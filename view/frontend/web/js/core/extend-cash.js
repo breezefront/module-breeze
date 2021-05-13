@@ -102,14 +102,16 @@
     };
 
     /** Get/Set scroll top position */
-    $.fn.scrollTop = function (value) {
+    $.fn.scrollTop = function (val) {
         var el = this.get(0);
 
-        if (typeof value === 'undefined') {
-            return el.scrollTop;
+        if (val === undefined) {
+            return el ? el.scrollTop : null;
         }
 
-        el.scrollTop = value;
+        if (el) {
+            el.scrollTop = val;
+        }
 
         return this;
     };
