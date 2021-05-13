@@ -214,21 +214,27 @@ window.breeze.component = function (factory) {
                 result = factory.create(name, prototype, settings, window);
             } else if (typeof settings === 'string') {
                 // object instance or method: $(el).dropdown('open')
-                result = undefined;
                 args = Array.prototype.slice.call(args, 1);
 
-                this.each(function () {
-                    var instance = $.registry.get(name, this);
+                if (settings === 'instance') {
+                    result = undefined;
+                }
 
-                    result = instance;
+                this.each(function () {
+                    var tmp,
+                        instance = $.registry.get(name, this);
 
                     if (settings === 'instance') {
+                        result = instance;
+
                         return false;
                     }
 
-                    result = instance[settings].apply(instance, args);
+                    tmp = instance[settings].apply(instance, args);
 
-                    if (result !== instance && result !== undefined) {
+                    if (tmp !== instance && tmp !== undefined) {
+                        result = tmp;
+
                         return false;
                     }
                 });
