@@ -113,6 +113,8 @@
                         self.close($(this).children(self.options.dropdown));
                     }.bind(this), 80);
                 });
+
+            this._trigger('afterToggleDesktopMode');
         },
 
         /** Enable mobile mode */
@@ -132,6 +134,8 @@
 
                     return false;
                 });
+
+            this._trigger('afterToggleMobileMode');
         },
 
         /** [open description] */
