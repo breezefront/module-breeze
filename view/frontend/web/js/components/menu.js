@@ -16,7 +16,8 @@
 
         /** Init widget */
         create: function () {
-            var mql;
+            var mql,
+                self = this;
 
             if (this.options.responsive) {
                 mql = window.matchMedia(this.options.mediaBreakpoint);
@@ -38,17 +39,21 @@
                 var html = $('html');
 
                 if (html.hasClass('nav-open')) {
+                    self._trigger('navBeforeClose');
                     html.removeClass('nav-open');
                     setTimeout(function () {
                         html.removeClass('nav-before-open');
-                    }, this.options.hideDelay);
+                        self._trigger('navAfterClose');
+                    }, self.options.hideDelay);
                 } else {
+                    self._trigger('navBeforeOpen');
                     html.addClass('nav-before-open');
                     setTimeout(function () {
                         html.addClass('nav-open');
-                    }, this.options.showDelay);
+                        self._trigger('navAfterOpen');
+                    }, self.options.showDelay);
                 }
-            }.bind(this));
+            });
 
             $('li.parent > ul', this.element).hide();
             $('li.parent', this.element)
