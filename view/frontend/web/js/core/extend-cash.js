@@ -21,7 +21,7 @@
 
                 $(this).trigger(event);
 
-                if (!event.defaultPrevented) {
+                if (!event.defaultPrevented && method !== 'click') {
                     this[method]();
                 }
             });
