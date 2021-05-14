@@ -12,6 +12,10 @@ class InjectComponents extends AbstractFilter
      */
     public function process($html)
     {
+        if (!$this->getJsBlock()) {
+            return $html;
+        }
+
         return str_replace(
             '</head>',
             sprintf("\n%s\n</head>", $this->getJsBlock()->toHtml()),
