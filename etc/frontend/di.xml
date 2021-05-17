@@ -65,4 +65,9 @@
             <argument name="context" xsi:type="object">Swissup\Breeze\View\HtmlTemplateContext</argument>
         </arguments>
     </type>
+
+    <!-- swissup/pagespeed -->
+    <type name="Swissup\Pagespeed\Helper\Config">
+        <plugin name="swissup_breeze" type="Swissup\Breeze\Plugin\SwissupPagespeed" />
+    </type>
 </config>
