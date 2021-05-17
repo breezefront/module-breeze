@@ -167,6 +167,7 @@
 
             this.thumbs.eq(this.activeIndex).removeClass('active');
             this.thumbs.eq(index).addClass('active');
+            this.image.siblings('source').remove();
             this.image.removeAttr('sizes');
             this.image.removeAttr('srcset');
             this.image.attr('src', fullscreen ? data.full : data.img);

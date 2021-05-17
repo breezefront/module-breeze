@@ -82,7 +82,8 @@
             position: relative;
 
             > div,
-            .main-image-wrapper {
+            .main-image-wrapper,
+            .main-image-wrapper > picture {
                 position: relative;
                 cursor: pointer;
                 display: flex;
@@ -177,8 +178,11 @@
                 }
 
                 > div {
-                    margin: 0 auto;
-                    max-height: 100%;
+                    &,
+                    picture {
+                        margin: 0 auto;
+                        max-height: 100%;
+                    }
                     img {
                         object-fit: contain;
                     }
