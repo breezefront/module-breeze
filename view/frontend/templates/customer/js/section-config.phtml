@@ -6,7 +6,9 @@
         $block->getUrl(null, ['_secure' => true]),
         $block->getUrl(null, ['_secure' => false]),
     ]));
-    $sectionNames = $helper->jsonEncode($block->getData('sectionNamesProvider')->getSectionNames());
+    $sectionNamesProvider = $block->getData('sectionNamesProvider');
+    $sectionNames = $sectionNamesProvider ? $sectionNamesProvider->getSectionNames() : [];
+    $sectionNames = $helper->jsonEncode($sectionNames);
 ?>
 
 <script data-breeze>
