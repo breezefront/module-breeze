@@ -123,15 +123,43 @@
 
             case ':hidden':
                 return this.isHidden();
+
+            case ':selected':
+                return this.filter(function () {
+                    return this.selected;
+                }).length > 0;
         }
 
         return original.bind(this)(selector);
     });
+
+    /** Hover implementation */
+    $.fn.hover = function (mouseenter, mouseleave) {
+        this.on('mouseenter', mouseenter).on('mouseleave', mouseleave);
+    };
 
     /** Serialize object to query string */
     $.params = function (object) {
         return Object.keys(object).map(function (key) {
             return key + '=' + object[key];
         }).join('&');
+    };
+
+    /** Parse url query params */
+    $.parseQuery = function (query) {
+        var result = {};
+
+        query = query || window.location.search;
+        query = query.replace(/^\?/, '');
+
+        $.each(query.split('&'), function (i, param) {
+            var pair = param.split('='),
+                key = decodeURIComponent(pair.shift().replace('+', ' ')).toString(),
+                value = decodeURIComponent(pair.length ? pair.join('=').replace('+', ' ') : null);
+
+            result[key] = value;
+        });
+
+        return result;
     };
 })();
