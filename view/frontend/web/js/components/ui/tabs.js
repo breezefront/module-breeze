@@ -132,7 +132,11 @@
             if (activeTrigger.length) {
                 index = this.triggers.index(activeTrigger);
             } else {
-                activeContent = this.contents.has(hash);
+                try {
+                    activeContent = this.contents.has(hash);
+                } catch (e) {
+                    return -1;
+                }
 
                 if (activeContent.length) {
                     index = this.contents.index(activeContent);
