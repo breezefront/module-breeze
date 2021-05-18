@@ -225,6 +225,10 @@ window.breeze.component = function (factory) {
                         instance = $.registry.get(name, this);
 
                     if (settings === 'instance') {
+                        if (!instance) {
+                            return;
+                        }
+
                         result = instance;
 
                         return false;
@@ -246,7 +250,6 @@ window.breeze.component = function (factory) {
 
                     if (!instance) {
                         instance = factory.create(name, prototype, settings, el);
-                        $.registry.set(name, el, instance);
                     } else {
                         instance._options(settings).init();
                     }
@@ -267,7 +270,9 @@ window.breeze.component = function (factory) {
 
     Base = Class.extend({
         create: _.noop,
+        _create: _.noop,
         init: _.noop,
+        _init: _.noop,
 
         /**
          * @param {Object} options
@@ -277,7 +282,9 @@ window.breeze.component = function (factory) {
             this._options(options);
             this._defaults(this.options);
             this.create();
+            this._create();
             this.init();
+            this._init();
 
             return this;
         },
@@ -311,8 +318,20 @@ window.breeze.component = function (factory) {
          * @param {String} path
          * @return {Mixed}
          */
-        _option: function (path) {
-            return _.get(this.options, path.split('/'));
+        _option: function (path, defaults) {
+            return _.get(this.options, path.split('/'), defaults);
+        },
+
+        /**
+         * @param {String|Object} key
+         * @return {Mixed}
+         */
+        option: function (key) {
+            if (!key) {
+                return $.extend(true, {}, this.options);
+            }
+
+            return this._option(key.replace(/\./g, '/'));
         }
     });
 
@@ -329,11 +348,15 @@ window.breeze.component = function (factory) {
             this.__bindings = $(); // @todo: _destroy
             this.element = $(element);
 
+            $.registry.set(name, element, this);
+
             this._options(options);
             this._defaults(options);
             this._trigger('beforeCreate');
             this.create();
+            this._create();
             this.init();
+            this._init();
             this._trigger('afterCreate');
 
             return this;
