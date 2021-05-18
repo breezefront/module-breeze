@@ -86,3 +86,13 @@ $thumbHeight = $thumbHeight ?: $thumbWidth;
         }
     }
 </script>
+
+<script type="text/x-magento-template" id="gallery-thumbnail">
+    <a class="<%- classes %>" href="<%- full %>">
+        <img loading="lazy" alt="<%- caption %>"
+            src="<%- thumb %>"
+            width="<?= $thumbWidth ?>"
+            height="<?= $thumbHeight ?>"
+        />
+    </a>
+</script>
