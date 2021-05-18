@@ -48,26 +48,26 @@ $thumbHeight = $thumbHeight ?: $thumbWidth;
         <?php endif ?>
     </div>
 
-    <?php if (count($images) > 1) : ?>
-        <div class="thumbnails">
-        <?php foreach ($images as $image) : ?>
-            <?php
-                $classes = array_filter([
-                    'item',
-                    $block->isMainImage($image) ? 'active' : '',
-                    $image->getVideoUrl() ? 'video' : ''
-                ]);
-            ?>
-            <a class="<?= implode(' ', $classes) ?>" href="<?= $image->getLargeImageUrl() ?>">
-                <img loading="lazy" alt="<?= $image->getLabel() ?>"
-                    src="<?= $image->getSmallImageUrl() ?>"
-                    width="<?= $thumbWidth ?>"
-                    height="<?= $thumbHeight ?>"
-                />
-            </a>
-        <?php endforeach ?>
-        </div>
-    <?php endif ?>
+    <div class="thumbnails">
+        <?php if (count($images) > 1) : ?>
+            <?php foreach ($images as $image) : ?>
+                <?php
+                    $classes = array_filter([
+                        'item',
+                        $block->isMainImage($image) ? 'active' : '',
+                        $image->getVideoUrl() ? 'video' : ''
+                    ]);
+                ?>
+                <a class="<?= implode(' ', $classes) ?>" href="<?= $image->getLargeImageUrl() ?>">
+                    <img loading="lazy" alt="<?= $image->getLabel() ?>"
+                        src="<?= $image->getSmallImageUrl() ?>"
+                        width="<?= $thumbWidth ?>"
+                        height="<?= $thumbHeight ?>"
+                    />
+                </a>
+            <?php endforeach ?>
+        <?php endif ?>
+    </div>
 
     <a href="#" class="close">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
