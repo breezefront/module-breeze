@@ -144,6 +144,8 @@
                         <item name="items" xsi:type="array">
                             <item name="Magento_Catalog/js/validate-product" xsi:type="string">Swissup_Breeze/js/components/validate-product</item>
                             <item name="Magento_Catalog/js/product/view/provider" xsi:type="string">Swissup_Breeze/js/components/register-viewed-products</item>
+                            <item name="priceBox" xsi:type="string">Swissup_Breeze/js/components/price-box</item>
+                            <item name="priceOptions" xsi:type="string">Swissup_Breeze/js/components/price-options</item>
                             <item name="breadcrumbs" xsi:type="string">Swissup_Breeze/js/components/breadcrumbs</item>
                             <item name="mage/gallery/gallery" xsi:type="string">Swissup_Breeze/js/components/gallery</item>
                             <item name="reviews" xsi:type="array">
