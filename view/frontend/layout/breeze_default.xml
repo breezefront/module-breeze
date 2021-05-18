@@ -174,9 +174,8 @@
                     <item name="configurable" xsi:type="array">
                         <item name="sort_order" xsi:type="number">25</item>
                         <item name="items" xsi:type="array">
-                            <item name="Magento_Swatches/js/swatch-renderer" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/swatch-renderer</item>
-                            </item>
+                            <item name="configurable" xsi:type="string">Swissup_Breeze/js/components/configurable</item>
+                            <item name="Magento_Swatches/js/swatch-renderer" xsi:type="string">Swissup_Breeze/js/components/swatch-renderer</item>
                         </item>
                     </item>
                     <item name="customer" xsi:type="array">
