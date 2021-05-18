@@ -40,6 +40,7 @@
             this.options = _.extend(this.options, this.options.options || {});
             this.gallery = this.element.parent();
             this.parent = this.gallery.parent();
+            this.thumbsWrapper = this.gallery.find('.thumbnails');
             this.thumbs = this.gallery.find('.thumbnails a');
             this.stage = this.gallery.find('.stage');
             this.image = this.stage.find('.stage img');
@@ -51,6 +52,8 @@
 
             this.activate(this.activeIndex);
             this.addEventListeners();
+
+            this._trigger('loaded');
         },
 
         /** [addEventListeners description] */
@@ -78,7 +81,7 @@
                     }
                 });
 
-            this.thumbs.on('click', function (event) {
+            this.thumbsWrapper.on('click', 'a', function (event) {
                 var index = $(this).index();
 
                 event.preventDefault();
@@ -158,8 +161,11 @@
 
         /** Activate image by its index */
         activate: function (index) {
-            var data = this.options.data[index],
+            var data,
                 fullscreen = this.gallery.hasClass('opened');
+
+            index = this.options.data[index] ? index : 0;
+            data = this.options.data[index];
 
             if (!data) {
                 return;
@@ -178,7 +184,7 @@
             }
 
             // scroll to hidden thumbnail only if we will not affect page scroll offset
-            if (fullscreen || this.thumbs.isInViewport()) {
+            if (fullscreen || this.thumbsWrapper.isInViewport()) {
                 this.thumbs.eq(index).focus();
             }
 
@@ -243,6 +249,51 @@
             this.stage.prepend(
                 _.template(params.template || this.options.video.template)(params)
             );
+        },
+
+        /** [updateData description] */
+        updateData: function (data) {
+            var thumbnails = [],
+                index = this.activeIndex,
+                currentThumb = this.options.data[index].thumb,
+                template = $('#gallery-thumbnail').html();
+
+            this.options.data = data;
+
+            _.each(data, function (picture, i) {
+                // keep currently selected image if it's not the first (default) one
+                if (index > 0 && picture.thumb === currentThumb) {
+                    index = i;
+                }
+
+                thumbnails.push(_.template(template)($.extend({}, picture, {
+                    classes: [
+                        'item',
+                        picture.videoUrl ? 'video' : ''
+                    ].join(' ')
+                })));
+            });
+
+            this.thumbsWrapper.html(thumbnails.join(''));
+
+            this.thumbs = this.thumbsWrapper.find('a');
+
+            this.activate(index);
+        },
+
+        /**
+         * Returns current images list
+         *
+         * @returns {Array}
+         */
+        returnCurrentImages: function () {
+            var images = [];
+
+            _.each(this.options.data, function (item) {
+                images.push(item);
+            });
+
+            return images;
         }
     });
 })();
