@@ -225,7 +225,7 @@
         /** Plays active video */
         play: function () {
             var url = this.options.data[this.activeIndex].videoUrl,
-                params;
+                params = {};
 
             _.find(this.options.video.providers, function (item) {
                 return _.find(item.regexs, function (regex) {
