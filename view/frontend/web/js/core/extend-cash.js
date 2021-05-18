@@ -128,6 +128,11 @@
                 return this.filter(function () {
                     return this.selected;
                 }).length > 0;
+
+            case ':checked':
+                return this.filter(function () {
+                    return this.checked;
+                }).length > 0;
         }
 
         return original.bind(this)(selector);
