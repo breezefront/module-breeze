@@ -108,8 +108,11 @@
         }
     }
 
-    window.formatPrice = formatPrice;
-    window.deepClone = objectDeepClone;
-    window.strPad = stringPad;
-    window.findOptionId = findOptionId;
+    $.catalog = $.catalog || {};
+    $.catalog.priceUtils = {
+        formatPrice: formatPrice,
+        deepClone: objectDeepClone,
+        strPad: stringPad,
+        findOptionId: findOptionId
+    };
 })();
