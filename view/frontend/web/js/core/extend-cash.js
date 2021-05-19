@@ -4,6 +4,7 @@
 
     var methods = [
         'click',
+        'select',
         'submit',
         'blur',
         'focus'
