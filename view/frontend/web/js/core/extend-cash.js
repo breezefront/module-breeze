@@ -175,6 +175,11 @@
         this.on('mouseenter', mouseenter).on('mouseleave', mouseleave);
     };
 
+    /** Proxy implementation */
+    $.proxy = function (fn, ctx) {
+        return fn.bind(ctx);
+    };
+
     /** Serialize object to query string */
     $.params = function (object) {
         return Object.keys(object).map(function (key) {
