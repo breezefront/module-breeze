@@ -134,6 +134,11 @@
         );
     }
 
+    /** Convert data-mage-init-lazy attributes */
+    function convertLazyInitToDataMageInit(el) {
+        $(el).attr('data-mage-init', $(el).attr('data-mage-init-lazy'));
+    }
+
     /** Get event name to listen */
     function eventName() {
         var name = 'DOMContentLoaded';
@@ -153,6 +158,9 @@
 
         node.querySelectorAll('[data-bind*="mageInit:"]')
             .forEach(convertDataBindToDataMageInit);
+
+        node.querySelectorAll('[data-mage-init-lazy]')
+            .forEach(convertLazyInitToDataMageInit);
 
         node.querySelectorAll('[data-mage-init],[type="text/x-magento-init"]')
             .forEach(processElement);
