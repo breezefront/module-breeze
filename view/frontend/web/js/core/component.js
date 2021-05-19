@@ -134,11 +134,11 @@ window.breeze.factory = function (Root, singleton) {
     };
 };
 
+$.prototypes = {};
+
 /** Abstract function to create components */
 window.breeze.component = function (factory) {
     'use strict';
-
-    var prototypes = {};
 
     return function (name, parent, prototype) {
         if (!prototype) {
@@ -185,11 +185,11 @@ window.breeze.component = function (factory) {
         }
 
         if (parent) {
-            parent = prototypes[parent];
+            parent = $.prototypes[parent];
         }
 
         prototype = factory.extend(prototype, parent);
-        prototypes[name] = prototype;
+        $.prototypes[name] = prototype;
 
         if (prototype.prototype.hasOwnProperty('component')) {
             $(document).on('breeze:mount:' + prototype.prototype.component, function (event, data) {
@@ -510,4 +510,15 @@ window.breeze.component = function (factory) {
     $.Base = window.breeze.Base = Base;
     $.widget = window.breeze.widget = window.breeze.component(window.breeze.factory(Widget, false));
     $.view = window.breeze.view = window.breeze.component(window.breeze.factory(View, true));
+
+    /** Wrap prototype with mixins */
+    $.mixin = function (name, mixins) {
+        _.each(mixins, function (mixin, key) {
+            $.prototypes[name].prototype[key] = _.wrap($.prototypes[name].prototype[key], function () {
+                arguments[0] = arguments[0].bind(this);
+
+                return mixin.apply(this, _.toArray(arguments));
+            });
+        });
+    };
 })();
