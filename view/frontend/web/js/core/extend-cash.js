@@ -139,6 +139,37 @@
         return original.bind(this)(selector);
     });
 
+    $.fn.data = _.wrap($.fn.data, function (original, key) {
+        var collection = this,
+            result = original.apply(
+                this,
+                Array.prototype.slice.call(arguments, 1)
+            ),
+            cleanKey,
+            keys = [];
+
+        if (result === undefined) {
+            cleanKey = key.replace(/^[^A-Z]+/, ''); // mageSwatchRenderer => SwatchRenderer
+            keys = [
+                key,
+                cleanKey,
+                cleanKey.charAt(0).toLowerCase() + cleanKey.slice(1)
+            ];
+
+            $.each(keys, function (i, widgetName) {
+                if (typeof collection[widgetName] !== 'function') {
+                    return;
+                }
+
+                result = collection[widgetName]('instance');
+
+                return false;
+            });
+        }
+
+        return result;
+    });
+
     /** Hover implementation */
     $.fn.hover = function (mouseenter, mouseleave) {
         this.on('mouseenter', mouseenter).on('mouseleave', mouseleave);
