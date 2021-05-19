@@ -230,8 +230,14 @@
 
         /** Plays active video */
         play: function () {
-            var url = this.options.data[this.activeIndex].videoUrl,
-                params = {};
+            this.stage.prepend(
+                this.renderVideo(this.options.data[this.activeIndex].videoUrl)
+            );
+        },
+
+        /** Render video iframe */
+        renderVideo: function (url) {
+            var params = {};
 
             _.find(this.options.video.providers, function (item) {
                 return _.find(item.regexs, function (regex) {
@@ -246,9 +252,7 @@
                 });
             });
 
-            this.stage.prepend(
-                _.template(params.template || this.options.video.template)(params)
-            );
+            return _.template(params.template || this.options.video.template)(params);
         },
 
         /** [updateData description] */
