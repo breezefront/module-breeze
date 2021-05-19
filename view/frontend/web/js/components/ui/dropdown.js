@@ -35,6 +35,8 @@
 
         /** Open dropdown */
         open: function () {
+            this._trigger('beforeOpen');
+
             this.status = true;
 
             this.element.addClass(this.options.activeClass)
@@ -46,6 +48,8 @@
 
         /** Close dropdown */
         close: function () {
+            this._trigger('beforeClose');
+
             this.status = false;
 
             this.element.removeClass(this.options.activeClass)
