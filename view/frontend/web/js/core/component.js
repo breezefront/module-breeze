@@ -141,6 +141,10 @@ window.breeze.component = function (factory) {
     'use strict';
 
     return function (name, parent, prototype) {
+        var fullname = name;
+
+        name = name.split('.').shift();
+
         if (!prototype) {
             prototype = parent;
             parent = undefined;
@@ -258,6 +262,25 @@ window.breeze.component = function (factory) {
 
             return result;
         };
+
+        (function () {
+            var tmp,
+                parts = fullname.split('.'),
+                ns = parts.shift(),
+                fn = parts.pop();
+
+            $[ns] = $[ns] || {};
+            tmp = $[ns];
+
+            $.each(parts, function (key) {
+                tmp = tmp[key] || {};
+            });
+
+            /** Alternative widget access. Example: $.mage.tabs */
+            tmp[fn] = function (settings, element) {
+                return factory.create(name, $.prototypes[name], settings, element);
+            };
+        })();
 
         return $.fn[name];
     };
