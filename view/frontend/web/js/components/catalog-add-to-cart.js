@@ -71,6 +71,13 @@
                 success: function (response) {
                     var data = response.body;
 
+                    $(document).trigger('ajax:addToCart', {
+                        'sku': form.data().productSku,
+                        'productIds': [form.find('input[name=product]').val()],
+                        'form': form,
+                        'response': response
+                    });
+
                     if (self.isLoaderEnabled()) {
                         $('body').trigger(self.options.processStop);
                     }
