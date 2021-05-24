@@ -69,9 +69,9 @@
                 pane = $('<div class="ui-dialog-buttonpane">'),
                 buttonSet = $('<div class="ui-dialog-buttonset">');
 
-            if (!this.options.buttons) {
+            if (this.options.buttons === undefined) {
                 this.options.buttons = this.options.defaultButtons;
-            } else if (!this.options.buttons.length) {
+            } else if (!this.options.buttons || !this.options.buttons.length) {
                 return;
             }
 
