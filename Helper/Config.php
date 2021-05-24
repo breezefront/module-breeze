@@ -9,12 +9,21 @@ use Magento\Store\Model\ScopeInterface;
 class Config extends AbstractHelper
 {
     /**
+     * @param string $path
+     * @return string
+     */
+    public function getValue($path, $scope = ScopeInterface::SCOPE_STORE)
+    {
+        return $this->scopeConfig->getValue($path, $scope);
+    }
+
+    /**
      * @param stirng $path
      * @return boolean
      */
     public function isEnabled($path)
     {
-        return $this->scopeConfig->getValue($path, ScopeInterface::SCOPE_STORE);
+        return (bool) $this->getValue($path);
     }
 
     /**
