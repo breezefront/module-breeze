@@ -193,6 +193,7 @@
                                     <item name="password-not-equal-to-user-name" xsi:type="string">password-not-equal-to-user-name</item>
                                 </item>
                             </item>
+                            <item name="address" xsi:type="string">Swissup_Breeze/js/components/address</item>
                             <item name="changeEmailPassword" xsi:type="string">Swissup_Breeze/js/components/change-email-password</item>
                             <item name="regionUpdater" xsi:type="string">Swissup_Breeze/js/components/region-updater</item>
                             <item name="addressValidation" xsi:type="string">Swissup_Breeze/js/components/address-validation</item>
