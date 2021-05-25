@@ -1,5 +1,5 @@
 window.breeze = window.breeze || {};
-$.storage = window.breeze.storage = (function () {
+$.storage = $.localStorage = window.breeze.storage = (function () {
     'use strict';
 
     var storage = window.localStorage || window.sessionStorage;
@@ -103,3 +103,12 @@ $.storage = window.breeze.storage = (function () {
         }
     };
 })();
+
+/** Emulate jquery plugin for easier integrations */
+$.initNamespaceStorage = function (ns) {
+    'use strict';
+
+    return {
+        localStorage: $.storage.ns(ns)
+    };
+};
