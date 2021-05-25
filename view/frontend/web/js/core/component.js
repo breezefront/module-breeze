@@ -140,10 +140,8 @@ $.prototypes = {};
 window.breeze.component = function (factory) {
     'use strict';
 
-    return function (name, parent, prototype) {
-        var fullname = name;
-
-        name = name.split('.').shift();
+    return function (fullname, parent, prototype) {
+        var name = fullname.split('.').shift();
 
         if (!prototype) {
             prototype = parent;
