@@ -44,8 +44,16 @@
             }
 
             this.collapsibles.each(function (index, el) {
+                var isActive;
+
+                if (_.isArray(self.options.active)) {
+                    isActive = self.options.active.indexOf(index) !== -1;
+                } else {
+                    isActive = index === self.options.active;
+                }
+
                 $(el).collapsible($.extend({}, self.options, {
-                    active: index === self.options.active,
+                    active: isActive,
                     header: self.headers.eq(index),
                     content: self.contents.eq(index),
                     trigger: self.triggers.eq(index)
