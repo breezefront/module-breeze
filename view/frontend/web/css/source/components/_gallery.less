@@ -89,6 +89,7 @@
                 display: flex;
                 width: 100%;
                 justify-content: center;
+                align-items: flex-start;
             }
 
             .video-wrapper {
@@ -182,6 +183,11 @@
                     picture {
                         margin: 0 auto;
                         max-height: 100%;
+                    }
+                    &,
+                    picture,
+                    .main-image-wrapper {
+                        align-items: normal;
                     }
                     img {
                         object-fit: contain;
