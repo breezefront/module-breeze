@@ -11,7 +11,7 @@
             }
         },
         scrollHeight: 0,
-        shoppingCartUrl: window.checkout.shoppingCartUrl,
+        shoppingCartUrl: window.checkout ? window.checkout.shoppingCartUrl : '',
 
         /** Create sidebar. */
         create: function () {
@@ -243,8 +243,8 @@
     $.view('minicart', {
         component: 'Magento_Checkout/js/view/minicart',
         cart: {},
-        shoppingCartUrl: window.checkout.shoppingCartUrl,
-        maxItemsToDisplay: window.checkout.maxItemsToDisplay,
+        shoppingCartUrl: window.checkout ? window.checkout.shoppingCartUrl : '',
+        maxItemsToDisplay: window.checkout ? window.checkout.maxItemsToDisplay : '',
         shouldRender: ko.observable(false),
         isLoading: ko.observable(false),
         displaySubtotal: ko.observable(true),
