@@ -61,6 +61,7 @@
 
             $.request.post({
                 form: form,
+                dataType: 'json',
 
                 /** A method to run after error or success */
                 complete: function () {
@@ -108,6 +109,18 @@
                             .find('span')
                             .html(data.product.statusText);
                     }
+                },
+
+                /** [error description] */
+                error: function (response) {
+                    $(document).trigger('ajax:addToCart:error', {
+                        'sku': form.data().productSku,
+                        'productIds': [form.find('input[name=product]').val()],
+                        'form': form,
+                        'response': response
+                    });
+
+                    location.reload();
                 }
             });
         },
