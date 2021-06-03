@@ -106,18 +106,21 @@
             try {
                 return JSON.parse(text);
             } catch (e) {
-                return text;
+                if (params.dataType && params.dataType !== 'json' ||
+                    params.type && params.type !== 'json'
+                ) {
+                    return text;
+                }
+
+                // fixed bug? of missing response in superagent library
+                e.response = response;
+
+                throw e;
             }
         });
 
         if (params.ok) {
             request.ok(params.ok);
-        } else if (params.strict !== false &&
-            ['html'].indexOf(params.type) === -1
-        ) {
-            request.ok(function (response) {
-                return response.body;
-            });
         }
 
         return request
