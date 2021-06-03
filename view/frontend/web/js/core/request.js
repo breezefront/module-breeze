@@ -28,8 +28,6 @@
         if (params.complete) {
             params.complete(error.response || error.original.response);
         }
-
-        throw error;
     }
 
     /**
@@ -127,11 +125,15 @@
             .on('response', function (response) {
                 onResponse(response, params);
             })
+            .then(function (response) {
+                try {
+                    return onSuccess(response, params);
+                } catch (e) {
+                    console.error(e);
+                }
+            })
             .catch(function (error) {
                 return onError(error, params);
-            })
-            .then(function (response) {
-                return onSuccess(response, params);
             });
     }
 
