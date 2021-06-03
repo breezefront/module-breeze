@@ -22,11 +22,11 @@
      */
     function onError(error, params) {
         if (params.error) {
-            params.error(error);
+            params.error(error.response || error.original.response, error);
         }
 
         if (params.complete) {
-            params.complete(error.response);
+            params.complete(error.response || error.original.response);
         }
 
         throw error;
