@@ -50,6 +50,9 @@
         }
     });
 
+    $.mage = $.mage || {};
+    $.mage.dataPost = $.fn.dataPost;
+
     $(document).on('click.dataPost', '[data-post], [data-post-remove]', function () {
         var params = $(this).data('post') || $(this).data('post-remove');
 

@@ -138,6 +138,10 @@
                                 <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
                                     <param name="path">wishlist/general/active</param>
                                 </item>
+                                <item name="names" xsi:type="array">
+                                    <item name="Magento_Wishlist/js/view/wishlist" xsi:type="string">Magento_Wishlist/js/view/wishlist</item>
+                                    <item name="wishlist" xsi:type="string">wishlist</item>
+                                </item>
                             </item>
                             <item name="Swissup_Breeze/js/recent-products" xsi:type="string">Swissup_Breeze/js/components/recent-products</item>
                             <item name="Magento_Ui/js/form/provider" xsi:type="string">Swissup_Breeze/js/components/form-provider</item>
