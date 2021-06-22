@@ -179,7 +179,7 @@
             this.image.attr('src', fullscreen ? data.full : data.img);
             this.stage.toggleClass('video', data.videoUrl);
 
-            if (!this.image.get(0).complete) {
+            if (this.image.get(0) && !this.image.get(0).complete) {
                 this.stage.spinner(true);
             }
 
