@@ -74,6 +74,10 @@
 
             $.each(component, function (i, name) {
                 if (name === 'Magento_Ui/js/core/app') {
+                    if (!config[i].components) {
+                        return;
+                    }
+
                     // eslint-disable-next-line max-nested-callbacks
                     $.each(config[i].components, function (scope, cfg) {
                         cfg.__scope = scope;
