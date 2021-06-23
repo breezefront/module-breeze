@@ -32,13 +32,18 @@
             var self = this,
                 id = $(e.target).parent().data('address') || $(e.target).data('address');
 
-            // eslint-disable-next-line no-alert
-            if (confirm(this.options.deleteConfirmMessage)) {
-                window.location = self.options.deleteUrlPrefix +
-                    id +
-                    '/form_key/' +
-                    $.cookies.get('form_key');
-            }
+            $.confirm({
+                content: this.options.deleteConfirmMessage,
+                actions: {
+                    /** [confirm description] */
+                    confirm: function () {
+                        window.location = self.options.deleteUrlPrefix +
+                            id +
+                            '/form_key/' +
+                            $.cookies.get('form_key');
+                    }
+                }
+            });
 
             return false;
         }

@@ -40,13 +40,23 @@
 
             $form.appendTo('body').hide();
 
-            if (!params.data.confirmation || confirm(params.data.confirmationMessage)) { // eslint-disable-line
-                $form.submit();
+            if (!params.data.confirmation) {
+                return $form.submit();
                 // breeze.request.post({
                 //     form: $form,
                 //     strict: false
                 // });
             }
+
+            $.confirm({
+                content: params.data.confirmationMessage,
+                actions: {
+                    /** [confirm description] */
+                    confirm: function () {
+                        $form.submit();
+                    }
+                }
+            });
         }
     });
 

@@ -23,7 +23,8 @@
 
         /** [onClick description] */
         onClick: function (event) {
-            var target = $(event.target),
+            var self = this,
+                target = $(event.target),
                 returnUrl = target.data('checkout-url'),
                 form = target.closest('form'),
                 productId = form.find(this.options.productId).val(),
@@ -36,8 +37,21 @@
                     .has('input[name="product"][value="%1"]'.replace('%1', productId));
             }
 
-            if (this.agreements().askToCreate && confirm(this.agreements().confirmMessage)) { // eslint-disable-line
-                this.redirect(this.agreements().confirmUrl, originalForm);
+            if (this.agreements().askToCreate) {
+                $.confirm({
+                    content: this.agreements().confirmMessage,
+                    actions: {
+                        /** [confirm description] */
+                        confirm: function () {
+                            self.redirect(self.agreements().confirmUrl, originalForm);
+                        },
+
+                        /** [cancel description] */
+                        cancel: function () {
+                            self.redirect(returnUrl, originalForm);
+                        }
+                    }
+                });
             } else {
                 this.redirect(returnUrl, originalForm);
             }

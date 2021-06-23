@@ -52,10 +52,20 @@
                 event.preventDefault();
                 event.stopPropagation();
 
-                if (confirm(self.options.confirmMessage)) {
-                    self._removeItem($(event.currentTarget));
-                    event.stopImmediatePropagation();
-                }
+                $.confirm({
+                    content: self.options.confirmMessage,
+                    actions: {
+                        /** @inheritdoc */
+                        confirm: function () {
+                            self._removeItem($(event.currentTarget));
+                        },
+
+                        /** @inheritdoc */
+                        always: function (e) {
+                            e.stopImmediatePropagation();
+                        }
+                    }
+                });
             }).on('keyup change', this.options.item.qty, function (event) {
                 self._showItemButton($(event.target));
             }).on('click', this.options.item.button, function (event) {
@@ -207,7 +217,9 @@
                 if (response.body.success) {
                     callback.call(self, elem, response);
                 } else if (response.body.error_message) {
-                    alert(response.body.error_message);
+                    $.alert({
+                        content: response.body.error_message
+                    });
                 }
             });
         },

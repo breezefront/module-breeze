@@ -175,6 +175,37 @@
         this.on('mouseenter', mouseenter).on('mouseleave', mouseleave);
     };
 
+    /** Copy of magento's zIndex function */
+    $.fn.zIndex = function (zIndex) {
+        var elem = $(this[0]),
+            position,
+            value;
+
+        if (zIndex !== undefined) {
+            return this.css('zIndex', zIndex);
+        }
+
+        if (!this.length) {
+            return 0;
+        }
+
+        while (elem.length && elem[0] !== document) {
+            position = elem.css('position');
+            value = parseInt(elem.css('zIndex'), 10);
+            elem = elem.parent();
+
+            if (position === 'static') {
+                continue;
+            }
+
+            if (!isNaN(value) && value !== 0) {
+                return value;
+            }
+        }
+
+        return 0;
+    };
+
     /** Proxy implementation */
     $.proxy = function (fn, ctx) {
         return fn.bind(ctx);

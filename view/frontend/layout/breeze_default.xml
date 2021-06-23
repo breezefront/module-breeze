@@ -71,6 +71,9 @@
                             <item name="tabs" xsi:type="string">Swissup_Breeze/js/components/ui/tabs</item>
                             <item name="accordion" xsi:type="string">Swissup_Breeze/js/components/ui/accordion</item>
                             <item name="toggleAdvanced" xsi:type="string">Swissup_Breeze/js/components/ui/toggle-advanced</item>
+                            <item name="modal" xsi:type="string">Swissup_Breeze::js/components/ui/modal</item>
+                            <item name="confirm" xsi:type="string">Swissup_Breeze::js/components/ui/confirm</item>
+                            <item name="alert" xsi:type="string">Swissup_Breeze::js/components/ui/alert</item>
 
                             <item name="Magento_Customer/js/customer-data" xsi:type="string">Swissup_Breeze/js/components/customer-data</item>
                             <item name="Magento_Customer/js/view/customer" xsi:type="string">Swissup_Breeze/js/components/customer</item>
@@ -230,6 +233,9 @@
 
         <!-- Add ko templates -->
         <referenceContainer name="before.body.end">
+            <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.modal.popupTpl" template="Magento_Ui::modal/modal-popup.html"/>
+            <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.modal.slideTpl" template="Magento_Ui::modal/modal-slide.html"/>
+            <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.modal.customTpl" template="Magento_Ui::modal/modal-custom.html"/>
             <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.uiMessages" template="Magento_Ui::messages.html"/>
             <block class="Swissup\Breeze\Block\KoTemplate" name="breeze.productImage" template="Swissup_Breeze::ko/catalog/product-image.phtml"/>
             <block class="Swissup\Breeze\Block\KoTemplate" name="breeze.minicart" template="Swissup_Breeze::ko/checkout/minicart.phtml">
