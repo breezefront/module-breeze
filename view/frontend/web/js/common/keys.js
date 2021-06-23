@@ -1,3 +1,4 @@
+/* global _ */
 (function () {
     'use strict';
 
@@ -29,5 +30,7 @@
         TAB: 9,
         UP: 38
     };
+
+    $.keyCode = _.invert($.key);
 })();
 
