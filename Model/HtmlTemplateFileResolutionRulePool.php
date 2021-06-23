@@ -84,21 +84,21 @@ class HtmlTemplateFileResolutionRulePool extends \Magento\Framework\View\Design\
                     $this->themeFactory->create(
                         ['rule' => $this->simpleFactory->create(['pattern' => "<theme_dir>/<module_name>/web/template"])]
                     ),
-                    // $this->themeFactory->create(
-                    //     ['rule' => $this->simpleFactory->create(['pattern' => "<theme_dir>/<module_name>/templates"])]
-                    // ),
+                    $this->themeFactory->create(
+                        ['rule' => $this->simpleFactory->create(['pattern' => "<theme_dir>/<module_name>/web/templates"])]
+                    ),
                     $this->moduleFactory->create(
                         ['rule' => $this->simpleFactory->create(['pattern' => "<module_dir>/view/<area>/web/template"])]
                     ),
-                    // $this->moduleFactory->create(
-                    //     ['rule' => $this->simpleFactory->create(['pattern' => "<module_dir>/view/<area>/templates"])]
-                    // ),
+                    $this->moduleFactory->create(
+                        ['rule' => $this->simpleFactory->create(['pattern' => "<module_dir>/view/<area>/web/templates"])]
+                    ),
                     $this->moduleFactory->create(
                         ['rule' => $this->simpleFactory->create(['pattern' => "<module_dir>/view/base/web/template"])]
                     ),
-                    // $this->moduleFactory->create(
-                    //     ['rule' => $this->simpleFactory->create(['pattern' => "<module_dir>/view/base/templates"])]
-                    // ),
+                    $this->moduleFactory->create(
+                        ['rule' => $this->simpleFactory->create(['pattern' => "<module_dir>/view/base/web/templates"])]
+                    ),
                 ]
             )]
         );
