@@ -25,9 +25,21 @@ class LayoutLoadBefore implements ObserverInterface
         }
 
         $update = $observer->getLayout()->getUpdate();
+        $additionalHandles = [
+            'review_product_list' => [
+                'breeze_catalog_product_view',
+            ],
+            'wishlist_index_configure' => [
+                'breeze_catalog_product_view',
+            ],
+        ];
 
         foreach ($update->getHandles() as $handle) {
             $update->addHandle('breeze_' . $handle);
+
+            foreach ($additionalHandles[$handle] ?? [] as $handle) {
+                $update->addHandle($handle);
+            }
         }
 
         $update->addHandle('breeze');
