@@ -44,6 +44,10 @@
                 popupDOM = $(self.options.popUpAttr)[0],
                 target = $(self.options.popupId);
 
+            if (!popupDOM) {
+                return;
+            }
+
             if (self.options.popupId.indexOf(this.element.attr('id')) > -1) {
                 target = this.element; // fix for multiple elements with the same id on the page
             }
