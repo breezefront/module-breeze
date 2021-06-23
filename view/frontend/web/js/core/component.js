@@ -386,10 +386,9 @@ window.breeze.component = function (factory) {
         /**
          * @param {String} event
          * @param {Object} data
-         * @param {Cash} element
          */
-        _trigger: function (event, data, element) {
-            (element || this.element).trigger(this.__name + ':' + event, $.extend({
+        _trigger: function (event, data) {
+            this.element.trigger(this.__name + ':' + event, $.extend({
                 instance: this
             }, data));
         },
