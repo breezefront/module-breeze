@@ -40,6 +40,7 @@
             }
 
             $form.appendTo('body').hide();
+            $form.target = params.target;
 
             if (!params.data.confirmation) {
                 return this.submitForm($form);
@@ -60,7 +61,7 @@
         submitForm: function (form) {
             form.submit();
             // breeze.request.post({
-            //     form: $form,
+            //     form: form,
             //     strict: false
             // });
         }
@@ -70,7 +71,9 @@
     $.mage.dataPost = $.fn.dataPost;
 
     $(document).on('click.dataPost', '[data-post], [data-post-remove]', function () {
-        var params = $(this).data('post') || $(this).data('post-remove');
+        var params = $(this).data('post') || $(this).data('post-remove') || {};
+
+        params.target = $(this);
 
         $.fn.dataPost().postData(params);
 
