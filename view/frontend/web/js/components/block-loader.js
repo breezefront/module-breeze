@@ -20,10 +20,6 @@
 
         settings = settings || {};
 
-        element.find(':focus').blur();
-        element.find('input:disabled, select:disabled').addClass('_disabled');
-        element.find('input, select').prop('disabled', true);
-
         if (position !== 'absolute' && position !== 'fixed') {
             element.addClass('_block-content-loading');
         }
@@ -65,8 +61,6 @@
             return;
         }
         element.find('.loading-mask').remove();
-        element.find('input, select').not('._disabled').prop('disabled', false);
-        element.find('input:disabled, select:disabled').removeClass('_disabled');
         element.removeClass('_block-content-loading');
     }
 
