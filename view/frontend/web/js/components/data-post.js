@@ -13,7 +13,8 @@
 
         /** Send post request */
         postData: function (params) {
-            var formKey = $(this.options.formKeyInputSelector).val(),
+            var self = this,
+                formKey = $(this.options.formKeyInputSelector).val(),
                 $form;
 
             if (formKey) {
@@ -41,11 +42,7 @@
             $form.appendTo('body').hide();
 
             if (!params.data.confirmation) {
-                return $form.submit();
-                // breeze.request.post({
-                //     form: $form,
-                //     strict: false
-                // });
+                return this.submitForm($form);
             }
 
             $.confirm({
@@ -53,10 +50,19 @@
                 actions: {
                     /** [confirm description] */
                     confirm: function () {
-                        $form.submit();
+                        self.submitForm($form);
                     }
                 }
             });
+        },
+
+        /** [submitForm description] */
+        submitForm: function (form) {
+            form.submit();
+            // breeze.request.post({
+            //     form: $form,
+            //     strict: false
+            // });
         }
     });
 
