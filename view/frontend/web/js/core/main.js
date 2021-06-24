@@ -53,11 +53,14 @@
         }
 
         $.each(settings, function (component, config) {
+            var selector = false;
+
             if (isScript) {
                 el = false;
 
                 if (component !== '*') {
                     el = $('html').find(component);
+                    selector = component;
 
                     // eslint-disable-next-line max-depth
                     if (!el.length) {
@@ -84,6 +87,10 @@
                         mountView(scope, cfg);
                     });
                 } else {
+                    if (selector) {
+                        config[i].__selector = selector;
+                    }
+
                     mount(name, {
                         settings: config[i],
                         el: el
