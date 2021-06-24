@@ -37,8 +37,30 @@
 
     /**
      * @param {Object} element
+     * @param {Object} settings
+     */
+    function delayedShow(element, settings) {
+        settings = settings || {};
+
+        if (!settings.delay) {
+            return show(element, settings);
+        }
+
+        element.data('spinner-timer', setTimeout(function () {
+            show(element, settings);
+        }, settings.delay || 0));
+    }
+
+    /**
+     * @param {Object} element
      */
     function hide(element) {
+        var timerId = element.data('spinner-timer');
+
+        if (timerId) {
+            clearTimeout(timerId);
+        }
+
         if (!element.has('.loading-mask').length) {
             return;
         }
@@ -61,7 +83,7 @@
                 }));
             }
         },
-        show: show, // @todo Promise
+        show: delayedShow, // @todo Promise
         hide: hide  // @todo Promise
     });
 })();
