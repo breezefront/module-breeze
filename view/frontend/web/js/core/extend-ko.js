@@ -27,3 +27,24 @@ ko.bindingHandlers.i18n = {
         $(element).text($.__(ko.unwrap(value() || '')));
     }
 };
+
+ko.bindingHandlers.mageInit = {
+    /**
+     * Initializes components assigned to HTML elements.
+     *
+     * @param {HTMLElement} el
+     * @param {Function} valueAccessor
+     */
+    init: function (el, valueAccessor) {
+        'use strict';
+
+        var data = valueAccessor();
+
+        _.each(data, function (config, component) {
+            window.breeze.mount(component, {
+                settings: config,
+                el: el
+            });
+        });
+    }
+};

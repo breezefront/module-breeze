@@ -16,6 +16,9 @@
         }
     }
 
+    window.breeze = window.breeze || {};
+    window.breeze.mount = mount;
+
     /** Init view components */
     function mountView(scope, config) {
         var elements =  $('[data-bind*="scope:"]').filter(function () {
@@ -138,6 +141,10 @@
 
     /** Update data-mage-init attribute for all matches elements based on data-bind value */
     function convertDataBindToDataMageInit(el) {
+        if ($(el).closest('[data-bind*="scope:"]').length) {
+            return;
+        }
+
         $(el).attr(
             'data-mage-init',
             JSON.stringify($.extend(
