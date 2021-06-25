@@ -3,7 +3,7 @@
     'use strict';
 
     $.widget('alert', 'confirm', {
-        component: 'alert',
+        component: 'Magento_Ui/js/modal/alert',
         options: {
             modalClass: 'confirm',
             title: $.__('Attention'),

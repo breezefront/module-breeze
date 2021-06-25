@@ -24,7 +24,7 @@
     })();
 
     $.widget('modal', {
-        component: 'modal',
+        component: 'Magento_Ui/js/modal/modal',
         options: {
             type: 'popup',
             title: '',
