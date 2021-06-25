@@ -70,7 +70,7 @@
 
                 /** Success callback */
                 success: function (response) {
-                    var data = response.body;
+                    var data = self.getResponseData(response);
 
                     $(document).trigger('ajax:addToCart', {
                         'sku': form.data().productSku,
@@ -123,6 +123,14 @@
                     location.reload();
                 }
             });
+        },
+
+        /**
+         * @param {Object} response
+         * @return {Object}
+         */
+        getResponseData: function (response) {
+            return response.body;
         },
 
         /**
