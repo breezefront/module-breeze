@@ -27,6 +27,55 @@
         }
     };
 
+    ko.bindingHandlers.bindHtml = {
+        /**
+         * Scope binding's init method.
+         */
+        init: function () {
+            return {
+                controlsDescendantBindings: true
+            };
+        },
+
+        /**
+         * Reads params passed to binding.
+         * Set html to node element, apply bindings and call magento attributes parser.
+         *
+         * @param {HTMLElement} el - Element to apply bindings to.
+         * @param {Function} valueAccessor - Function that returns value, passed to binding.
+         */
+        update: function (el, valueAccessor) {
+            var html = ko.utils.unwrapObservable(valueAccessor());
+
+            ko.virtualElements.emptyNode(el);
+
+            if (!_.isNull(html) && !_.isUndefined(html)) {
+                if (!_.isString(html)) {
+                    html = html.toString();
+                }
+
+                el.innerHTML = html;
+            }
+
+            ko.utils.arrayForEach(el.childNodes, ko.cleanNode);
+
+            $(el).trigger('contentUpdated');
+        }
+    };
+
+    ko.bindingHandlers.afterRender = {
+        /**
+         * Binding init callback.
+         */
+        init: function (element, valueAccessor, allBindings, viewModel) {
+            var callback = valueAccessor();
+
+            if (typeof callback === 'function') {
+                callback.call(viewModel, element, viewModel);
+            }
+        }
+    };
+
     ko.bindingHandlers.mageInit = {
         /**
          * Initializes components assigned to HTML elements.
