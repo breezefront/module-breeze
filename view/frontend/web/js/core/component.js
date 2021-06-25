@@ -187,6 +187,9 @@ window.breeze.component = function (factory) {
         }
 
         if (parent) {
+            if (!$.prototypes[parent]) {
+                throw new Error(name + ': Parent component is not found: ' + parent);
+            }
             parent = $.prototypes[parent];
         }
 
