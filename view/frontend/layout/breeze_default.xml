@@ -95,6 +95,7 @@
                             <item name="productListToolbarForm" xsi:type="string">Swissup_Breeze/js/components/product-list-toolbar-form</item>
                             <item name="Magento_Catalog/js/view/compare-products" xsi:type="string">Swissup_Breeze/js/components/compare-products</item>
                             <item name="validation" xsi:type="string">Swissup_Breeze/js/components/validation</item>
+                            <item name="redirectUrl" xsi:type="string">Swissup_Breeze/js/components/redirect-url</item>
                             <item name="quickSearch" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/quick-search</item>
                                 <item name="import" xsi:type="array">
