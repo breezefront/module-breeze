@@ -144,7 +144,7 @@
          * @return {Promise}
          */
         send: function (params) {
-            return this[params.method](params);
+            return this[params.method || 'get'](params);
         },
 
         /**
