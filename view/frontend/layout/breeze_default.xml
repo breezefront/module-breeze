@@ -90,6 +90,7 @@
                             <item name="dataPost" xsi:type="string">Swissup_Breeze/js/components/data-post</item>
                             <item name="menu" xsi:type="string">Swissup_Breeze/js/components/menu</item>
                             <item name="Magento_Checkout/js/view/minicart" xsi:type="string">Swissup_Breeze/js/components/minicart</item>
+                            <item name="Magento_Checkout/js/proceed-to-checkout" xsi:type="string">Swissup_Breeze/js/components/proceed-to-checkout</item>
                             <item name="catalogAddToCart" xsi:type="string">Swissup_Breeze/js/components/catalog-add-to-cart</item>
                             <item name="productListToolbarForm" xsi:type="string">Swissup_Breeze/js/components/product-list-toolbar-form</item>
                             <item name="Magento_Catalog/js/view/compare-products" xsi:type="string">Swissup_Breeze/js/components/compare-products</item>
