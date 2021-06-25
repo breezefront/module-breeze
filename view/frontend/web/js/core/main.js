@@ -42,6 +42,8 @@
         var isScript = el.tagName === 'SCRIPT',
             settings = isScript ? el.textContent : el.dataset.mageInit;
 
+        $(el).data('breeze-processed', true);
+
         if (isScript) {
             el = false;
         }
@@ -173,8 +175,11 @@
         node.querySelectorAll('[data-mage-init-lazy]')
             .forEach(convertLazyInitToDataMageInit);
 
-        node.querySelectorAll('[data-mage-init],[type="text/x-magento-init"]')
-            .forEach(processElement);
+        $(node).find('[data-mage-init],[type="text/x-magento-init"]')
+            .not('[data-breeze-processed]')
+            .each(function () {
+                processElement(this);
+            });
     }
 
     $(document).on(eventName(), function (event) {
