@@ -149,7 +149,7 @@
                 button = $(this.options.addToCartButton);
             }
 
-            return button;
+            return button.first();
         },
 
         /** Update popup content */
@@ -180,6 +180,7 @@
 
             if (this.options.addToCartButton) {
                 this.getAddToCartButton().click();
+                this.getAddToCartButton().get(0).click();
                 this.closePopup();
             }
         },
