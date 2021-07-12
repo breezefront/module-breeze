@@ -235,4 +235,31 @@
 
         return result;
     };
+
+    /** The main difference with .extend is that arrays are overriden instead of inherited */
+    $.extendProps = function (own, inherited) {
+        var destination = {};
+
+        $.each(own, function (key, value) {
+            if ($.isPlainObject(value)) {
+                destination[key] = $.extendProps(own[key], inherited[key] || {});
+            } else {
+                destination[key] = value;
+            }
+        });
+
+        $.each(inherited, function (key, value) {
+            if (typeof own[key] !== 'undefined') {
+                return;
+            }
+
+            if ($.isPlainObject(value)) {
+                destination[key] = $.extendProps(own[key] || {}, inherited[key]);
+            } else {
+                destination[key] = value;
+            }
+        });
+
+        return destination;
+    };
 })();

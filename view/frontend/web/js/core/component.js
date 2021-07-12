@@ -331,8 +331,8 @@ window.breeze.component = function (factory) {
             if (typeof options === 'string') {
                 this.options = options;
             } else {
-                this.options = $.extend(true, {}, this.options || {}, options || {});
-                this.options = $.extend(true, this.options, this.options.config || {});
+                this.options = $.extendProps(options || {}, this.options || {});
+                this.options = $.extendProps(this.options.config || {}, this.options);
             }
 
             return this;

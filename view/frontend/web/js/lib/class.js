@@ -3,46 +3,11 @@
  * Inspired by base2 and Prototype
  * MIT Licensed.
  */
-/* global _ */
 // eslint-disable-next-line strict
 (function () {
     var initializing = false,
         // eslint-disable-next-line no-undef
         fnTest = /xyz/.test(function () {xyz;}) ? /\b_super\b/ : /.*/;
-
-    /**
-     * Create new object with extended props.
-     * Objects are extended, arrays are overwritten.
-     *
-     * @param {Object} parent
-     * @param {Object} self
-     * @return {Object}
-     */
-    function recursiveExtend(parent, self) {
-        var destination = {};
-
-        $.each(self, function (key, value) {
-            if (_.isObject(value) && !_.isArray(value) && !_.isFunction(value)) {
-                destination[key] = recursiveExtend(parent[key] || {}, self[key]);
-            } else {
-                destination[key] = value;
-            }
-        });
-
-        $.each(parent, function (key, value) {
-            if (typeof self[key] !== 'undefined') {
-                return;
-            }
-
-            if (_.isObject(value) && !_.isArray(value) && !_.isFunction(value)) {
-                destination[key] = recursiveExtend(parent[key], self[key] || {});
-            } else {
-                destination[key] = value;
-            }
-        });
-
-        return destination;
-    }
 
     this.Class = function () {};
 
@@ -82,7 +47,7 @@
                     };
                 })(name, prop[name]);
             } else if (propType === 'object' && superPropType === 'object') {
-                prototype[name] = recursiveExtend(_super[name], prop[name]);
+                prototype[name] = $.extendProps(prop[name], _super[name]);
             } else {
                 prototype[name] = prop[name];
             }
