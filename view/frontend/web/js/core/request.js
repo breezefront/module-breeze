@@ -2,6 +2,8 @@
 (function () {
     'use strict';
 
+    $.active = 0;
+
     /**
      * @param {Object} response
      * @param {Object} params
@@ -121,8 +123,11 @@
             request.ok(params.ok);
         }
 
+        $.active++;
+
         return request
             .on('response', function (response) {
+                $.active--;
                 onResponse(response, params);
             })
             .then(function (response) {
