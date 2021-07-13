@@ -94,4 +94,13 @@ class Config extends AbstractHelper
 
         return true;
     }
+
+    public function isEqual($pathAndValue)
+    {
+        list($path, $expected) = explode(':', $pathAndValue, 2);
+
+        $actual = $this->getValue($path);
+
+        return $actual == $expected;
+    }
 }
