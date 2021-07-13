@@ -106,6 +106,7 @@
                 'closeModal'
             );
 
+            this.options.id = $.guid++;
             this.options.transitionEvent = transitionEvent;
             this._createWrapper();
             this._renderModal();
