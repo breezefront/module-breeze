@@ -2,8 +2,6 @@
 (function () {
     'use strict';
 
-    var minicart = $('[data-block="minicart"]');
-
     $.widget('sidebar', {
         options: {
             minicart: {
@@ -261,6 +259,7 @@
         isLoading: ko.observable(false),
         displaySubtotal: ko.observable(true),
         addToCartCalls: 0,
+        minicartSelector: '[data-block="minicart"]',
 
         /** [create description] */
         create: function () {
@@ -276,7 +275,7 @@
                 self.initSidebar();
             });
 
-            minicart
+            this.minicart()
                 .one('dropdownDialog:open', function () {
                     self.shouldRender(true);
                 })
@@ -295,9 +294,15 @@
             }
         },
 
+        /** [minicart description] */
+        minicart: function () {
+            return $(this.minicartSelector);
+        },
+
         /** init sidebar widget */
         initSidebar: function () {
-            var sidebar = minicart.sidebar('instance');
+            var minicart = this.minicart(),
+                sidebar = minicart.sidebar('instance');
 
             minicart.trigger('contentUpdated');
 
@@ -345,7 +350,7 @@
 
         /** Close mini shopping cart. */
         closeMinicart: function () {
-            minicart.find('[data-role="dropdownDialog"]').dropdownDialog('close');
+            this.minicart().find('[data-role="dropdownDialog"]').dropdownDialog('close');
         },
 
         /**
