@@ -95,6 +95,10 @@ class Config extends AbstractHelper
         return true;
     }
 
+    /**
+     * @param string $pathAndValue - Example: config/option/path:expectedValue
+     * @return boolean
+     */
     public function isEqual($pathAndValue)
     {
         list($path, $expected) = explode(':', $pathAndValue, 2);
