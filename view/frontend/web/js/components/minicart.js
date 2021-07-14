@@ -28,14 +28,13 @@
 
             this.element.on('click', this.options.button.checkout, function () {
                 var cart = $.sections.get('cart'),
-                    customer = $.sections.get('customer'),
-                    element = $(self.options.button.checkout);
+                    customer = $.sections.get('customer');
 
                 if (!customer().firstname && cart().isGuestCheckoutAllowed === false) {
                     $.cookies.set('login_redirect', self.options.url.checkout);
 
                     // if (self.options.url.isRedirectRequired) {
-                    element.prop('disabled', true);
+                    $(this).prop('disabled', true);
                     location.href = self.options.url.loginUrl;
                     // } else {
                     //     authenticationPopup.showModal();
@@ -44,7 +43,7 @@
                     return false;
                 }
 
-                element.prop('disabled', true);
+                $(this).prop('disabled', true);
                 location.href = self.options.url.checkout;
             }).on('click', this.options.button.remove, function (event) {
                 event.preventDefault();
@@ -82,7 +81,7 @@
                 itemQty = elem.data('item-qty');
 
             if (this._isValidQty(itemQty, elem.val())) {
-                $('#update-cart-item-' + itemId).show('fade', 300);
+                this.element.find('#update-cart-item-' + itemId).show('fade', 300);
             } else if (elem.val() == 0) { //eslint-disable-line eqeqeq
                 this._hideItemButton(elem);
             } else {
@@ -117,7 +116,7 @@
          * @param {HTMLElement} elem
          */
         _hideItemButton: function (elem) {
-            $('#update-cart-item-' + elem.data('cart-item')).hide();
+            this.element.find('#update-cart-item-' + elem.data('cart-item')).hide();
         },
 
         /**
@@ -128,7 +127,7 @@
 
             this._ajax(this.options.url.update, {
                 'item_id': itemId,
-                'item_qty': $('#cart-item-' + itemId + '-qty').val()
+                'item_qty': this.element.find('#cart-item-' + itemId + '-qty').val()
             }, elem, this._updateItemQtyAfter);
         },
 
@@ -230,8 +229,12 @@
             var self = this,
                 height = 0,
                 counter = this.options.minicart.maxItemsVisible,
-                target = $(this.options.minicart.list),
+                target = this.element.find(this.options.minicart.list),
                 outerHeight;
+
+            if (this.options.calcHeight === false) {
+                return;
+            }
 
             self.scrollHeight = 0;
             target.children().each(function () {
@@ -314,8 +317,12 @@
                 return false;
             }
 
-            minicart.sidebar({
-                targetElement: 'div.block.block-minicart',
+            minicart.sidebar(this.getSidebarSettings());
+        },
+
+        /** [getSidebarSettings description] */
+        getSidebarSettings: function () {
+            return {
                 url: {
                     checkout: window.checkout.checkoutUrl,
                     update: window.checkout.updateItemQtyUrl,
@@ -324,9 +331,9 @@
                     isRedirectRequired: window.checkout.isRedirectRequired
                 },
                 button: {
-                    checkout: '#top-cart-btn-checkout',
-                    remove: '#mini-cart a.action.delete',
-                    close: '#btn-minicart-close'
+                    checkout: '.action.checkout',
+                    remove: '.action.delete',
+                    close: '.action.close'
                 },
                 showcart: {
                     parent: 'span.counter',
@@ -334,7 +341,7 @@
                     label: 'span.counter-label'
                 },
                 minicart: {
-                    list: '#mini-cart',
+                    list: '.minicart-items',
                     content: '#minicart-content-wrapper',
                     qty: 'div.items-total',
                     subtotal: 'div.subtotal span.price',
@@ -345,7 +352,7 @@
                     button: '.update-cart-item'
                 },
                 confirmMessage: $.__('Are you sure you would like to remove this item from the shopping cart?')
-            });
+            };
         },
 
         /** Close mini shopping cart. */
