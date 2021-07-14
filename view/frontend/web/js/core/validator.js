@@ -127,14 +127,23 @@
 
         /**
          * @param {Element} element
-         * @return {Mixed}
+         * @return {String}
          */
         _getElementValue: function (element) {
             var type = $(element).attr('type'),
-                value = $(element).val();
+                value = $(element).val(),
+                elements;
 
             if (type === 'radio' || type === 'checkbox') {
-                return $('input[name="' + $(element).attr('name') + '"]:checked').val();
+                elements = $('input[name="' + $(element).attr('name') + '"]:checked');
+                value = elements.val();
+
+                // checkbox without a value
+                if (elements.length && !value) {
+                    return '*';
+                }
+
+                return value;
             }
 
             if (typeof value === 'string') {
