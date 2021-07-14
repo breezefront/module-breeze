@@ -162,6 +162,20 @@
                                     <param name="module">customer/captcha/enable</param>
                                 </item>
                             </item>
+                            <item name="Magento_ReCaptchaFrontendUi/js/reCaptcha" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/google-recaptcha</item>
+                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isAnyEnabled">
+                                    <param name="customer_login">recaptcha_frontend/type_for/customer_login</param>
+                                    <param name="forgot_password">recaptcha_frontend/type_for/forgot_password</param>
+                                    <param name="customer_create">recaptcha_frontend/type_for/customer_create</param>
+                                    <param name="customer_edit">recaptcha_frontend/type_for/customer_edit</param>
+                                    <param name="contact">recaptcha_frontend/type_for/contact</param>
+                                    <param name="product_review">recaptcha_frontend/type_for/product_review</param>
+                                    <param name="newsletter">recaptcha_frontend/type_for/newsletter</param>
+                                    <param name="send_friend">recaptcha_frontend/type_for/send_friend</param>
+                                    <param name="paypal_payflowpro">recaptcha_frontend/type_for/paypal_payflowpro</param>
+                                </item>
+                            </item>
                         </item>
                     </item>
                     <item name="product" xsi:type="array">
@@ -271,6 +285,7 @@
                     <block class="Magento\Framework\View\Element\Template" template="Swissup_Breeze::ko/checkout/minicart/item/price.phtml"/>
                 </container>
             </block>
+            <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.Magento_ReCaptchaFrontendUi_reCaptcha" template="Magento_ReCaptchaFrontendUi::reCaptcha.html"/>
         </referenceContainer>
     </body>
 </page>
