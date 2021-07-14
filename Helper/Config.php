@@ -9,6 +9,15 @@ use Magento\Store\Model\ScopeInterface;
 class Config extends AbstractHelper
 {
     /**
+     * @param string $module
+     * @return boolean
+     */
+    public function isModuleEnabled($module)
+    {
+        return $this->_moduleManager->isEnabled($module);
+    }
+
+    /**
      * @param string $path
      * @return string
      */
