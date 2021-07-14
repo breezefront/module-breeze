@@ -70,4 +70,7 @@
     <type name="Swissup\Pagespeed\Helper\Config">
         <plugin name="swissup_breeze" type="Swissup\Breeze\Plugin\SwissupPagespeed" />
     </type>
+    <type name="Swissup\Ajaxpro\Helper\Config">
+        <plugin name="swissup_breeze" type="Swissup\Breeze\Plugin\SwissupAjaxpro" />
+    </type>
 </config>
