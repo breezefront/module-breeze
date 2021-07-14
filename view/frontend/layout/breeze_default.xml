@@ -156,6 +156,12 @@
                                     <param name="module">Magento_LoginAsCustomerFrontendUi</param>
                                 </item>
                             </item>
+                            <item name="captcha" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/captcha</item>
+                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
+                                    <param name="module">customer/captcha/enable</param>
+                                </item>
+                            </item>
                         </item>
                     </item>
                     <item name="product" xsi:type="array">
