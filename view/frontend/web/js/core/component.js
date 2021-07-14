@@ -537,6 +537,10 @@ window.breeze.component = function (factory) {
     /** Wrap prototype with mixins */
     $.mixin = function (name, mixins) {
         _.each(mixins, function (mixin, key) {
+            if (!$.prototypes[name]) {
+                return;
+            }
+
             $.prototypes[name].prototype[key] = _.wrap($.prototypes[name].prototype[key], function () {
                 arguments[0] = arguments[0].bind(this);
 
