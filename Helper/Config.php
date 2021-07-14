@@ -104,7 +104,13 @@ class Config extends AbstractHelper
         list($path, $expected) = explode(':', $pathAndValue, 2);
 
         $actual = $this->getValue($path);
+        $result = $actual == $expected;
 
-        return $actual == $expected;
+        if (!$result && strpos($expected, ',') !== false) {
+            $expected = array_flip(explode(',', $expected));
+            $result = isset($expected[$actual]);
+        }
+
+        return $result;
     }
 }
