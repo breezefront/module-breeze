@@ -494,7 +494,7 @@ window.breeze.component = function (factory) {
 
         /** [getTemplate description] */
         getTemplate: function () {
-            return this.template.replace(/\//g, '_');
+            return (this.template || this.options.template).replace(/\//g, '_');
         },
 
         /** [getRegion description] */
