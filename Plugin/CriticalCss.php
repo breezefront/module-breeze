@@ -35,7 +35,7 @@ class CriticalCss
         $subject,
         $result
     ) {
-        if (empty($result)) {
+        if (empty($result) || !$this->helper->isEnabled()) {
             return $result;
         }
 
