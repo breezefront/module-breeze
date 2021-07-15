@@ -27,7 +27,7 @@
                 <settings>
                     <dataType>string</dataType>
                     <label translate="true">Disable Breeze for specified URLs</label>
-                    <notice translate="true">One url or url part per line. Example: /helpdesk or ?param=1</notice>
+                    <notice translate="true">One url per line. Example: /helpdesk or ?param=1</notice>
                     <dataScope>breeze_excluded_urls</dataScope>
                 </settings>
             </field>
