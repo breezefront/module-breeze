@@ -44,13 +44,6 @@ class Data extends AbstractHelper
                 $this->isEnabled = $this->getThemeConfig('enabled');
             }
 
-            if ($this->getConfig('design/breeze/debug')) {
-                $flag = $this->_getRequest()->getParam('breeze');
-                if ($flag !== null) {
-                    $this->isEnabled = $flag;
-                }
-            }
-
             $this->isEnabled = (bool) $this->isEnabled;
         }
 
@@ -58,6 +51,12 @@ class Data extends AbstractHelper
             $this->isEnabled = $this->isCurrentPageSupported();
         }
 
+        if ($this->getConfig('design/breeze/debug')) {
+            $flag = $this->_getRequest()->getParam('breeze');
+            if ($flag !== null) {
+                $this->isEnabled = (bool) $flag;
+            }
+        }
 
         return $this->isEnabled;
     }
