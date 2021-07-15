@@ -35,7 +35,7 @@ class Data extends AbstractHelper
             return $this->isEnabled;
         }
 
-        if ($this->_getRequest()->getParam('amp')) {
+        if ($this->_getRequest()->getParam('amp') || $this->isUrlExcluded()) {
             $this->isEnabled = false;
         } else {
             $this->isEnabled = $this->getConfig('design/breeze/enabled');
@@ -58,7 +58,35 @@ class Data extends AbstractHelper
             $this->isEnabled = $this->isCurrentPageSupported();
         }
 
+
         return $this->isEnabled;
+    }
+
+    /**
+     * @param string $url
+     * @return boolean
+     */
+    protected function isUrlExcluded($url = null)
+    {
+        $excludedUrls = trim($this->getConfig('design/breeze/excluded_urls'));
+        if (!$excludedUrls) {
+            return false;
+        }
+
+        if (!$url) {
+            $url = $this->_getRequest()->getRequestUri();
+        }
+
+        $excludedUrls = array_filter(explode("\n", $excludedUrls));
+        foreach ($excludedUrls as $excludedUrl) {
+            if (strpos($url, trim($excludedUrl)) === false) {
+                continue;
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     protected function isCurrentPageSupported()
