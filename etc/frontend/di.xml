@@ -76,4 +76,7 @@
     <type name="Swissup\Ajaxpro\Helper\Config">
         <plugin name="swissup_breeze" type="Swissup\Breeze\Plugin\SwissupAjaxpro" />
     </type>
+    <type name="Swissup\ProLabels\Block\Product\Labels">
+        <plugin name="swissup_breeze" type="Swissup\Breeze\Plugin\SwissupProLabels" />
+    </type>
 </config>
