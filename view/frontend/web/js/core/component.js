@@ -141,7 +141,7 @@ window.breeze.component = function (factory) {
     'use strict';
 
     return function (fullname, parent, prototype) {
-        var name = fullname.split('.').shift();
+        var name = fullname.split('.').pop();
 
         if (!prototype) {
             prototype = parent;
