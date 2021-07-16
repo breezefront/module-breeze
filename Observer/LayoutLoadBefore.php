@@ -35,6 +35,10 @@ class LayoutLoadBefore implements ObserverInterface
         ];
 
         foreach ($update->getHandles() as $handle) {
+            if (strpos($handle, 'breeze_') === 0) {
+                continue;
+            }
+
             $update->addHandle('breeze_' . $handle);
 
             foreach ($additionalHandles[$handle] ?? [] as $handle) {
