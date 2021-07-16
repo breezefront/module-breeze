@@ -31,6 +31,12 @@ class HtmlTemplate extends KoTemplate
      */
     protected function _toHtml()
     {
-        return $this->prepareHtml($this->file->fileGetContents($this->getTemplateFile()));
+        try {
+            $html = $this->file->fileGetContents($this->getTemplateFile());
+        } catch (\Exception $e) {
+            $html = '';
+        }
+
+        return $this->prepareHtml($html);
     }
 }
