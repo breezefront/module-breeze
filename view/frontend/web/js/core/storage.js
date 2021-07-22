@@ -2,7 +2,8 @@ window.breeze = window.breeze || {};
 $.storage = $.localStorage = window.breeze.storage = (function () {
     'use strict';
 
-    var storage = window.localStorage || window.sessionStorage;
+    var storage = window.localStorage || window.sessionStorage,
+        data = {};
 
     return {
         /**
@@ -39,11 +40,13 @@ $.storage = $.localStorage = window.breeze.storage = (function () {
          * @return {Object}
          */
         ns: function (namespace) {
-            var data = {};
+            if (!data[namespace]) {
+                data[namespace] = {};
+            }
 
             if (storage.getItem(namespace)) {
                 try {
-                    data = JSON.parse(storage.getItem(namespace));
+                    data[namespace] = JSON.parse(storage.getItem(namespace));
                 } catch (e) {
                     console.error(e);
                 }
@@ -56,10 +59,10 @@ $.storage = $.localStorage = window.breeze.storage = (function () {
                  */
                 get: function (key) {
                     if (!key) {
-                        return data;
+                        return data[namespace];
                     }
 
-                    return data[key];
+                    return data[namespace][key];
                 },
 
                 /**
@@ -67,16 +70,16 @@ $.storage = $.localStorage = window.breeze.storage = (function () {
                  * @param {Mixed} value
                  */
                 set: function (key, value) {
-                    data[key] = value;
+                    data[namespace][key] = value;
 
-                    storage.setItem(namespace, JSON.stringify(data));
+                    storage.setItem(namespace, JSON.stringify(data[namespace]));
                 },
 
                 /**
                  * @return {Array}
                  */
                 keys: function () {
-                    return Object.keys(data);
+                    return Object.keys(data[namespace]);
                 },
 
                 /**
@@ -88,15 +91,15 @@ $.storage = $.localStorage = window.breeze.storage = (function () {
                     }
 
                     keys.forEach(function (key) {
-                        delete data[key];
+                        delete data[namespace][key];
                     });
 
-                    storage.setItem(namespace, JSON.stringify(data));
+                    storage.setItem(namespace, JSON.stringify(data[namespace]));
                 },
 
                 /** Remove all data */
                 removeAll: function () {
-                    data = {};
+                    data[namespace] = {};
                     storage.removeItem(namespace);
                 }
             };

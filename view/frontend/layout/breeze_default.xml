@@ -256,6 +256,7 @@
         <!-- Change templates -->
         <referenceBlock name="cookie_config" template="Swissup_Breeze::theme/js/cookie.phtml"/>
         <referenceBlock name="customer.section.config" template="Swissup_Breeze::customer/js/section-config.phtml"/>
+        <referenceBlock name="customer.customer.data" template="Swissup_Breeze::customer/js/customer-data.phtml"/>
         <referenceBlock name="wishlist_sidebar" template="Swissup_Breeze::wishlist/sidebar.phtml"/>
         <referenceBlock name="minicart" template="Swissup_Breeze::checkout/minicart.phtml"/>
 
