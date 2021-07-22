@@ -48,6 +48,7 @@
         $(el).data('breeze-processed', true);
 
         if (isScript) {
+            el.parentNode.removeChild(el);
             el = false;
         }
 
