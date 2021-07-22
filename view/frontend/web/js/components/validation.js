@@ -39,6 +39,13 @@
 
     $.fn.validation = $.fn.validator;
 
+    /** [valid description] */
+    $.fn.valid = function () {
+        $(this).validator();
+
+        return $(this).validator('instance').isValid();
+    };
+
     $(document).on('breeze:mount:Magento_Customer/js/block-submit-on-send', function (event, data) {
         $('#' + data.settings.formId).validator(data.settings);
     });
