@@ -115,9 +115,15 @@ window.breeze.factory = function (Root, singleton) {
 
             if (instance && instance.element) {
                 exists = $('body').has(instance.element.get(0)).length > 0;
+
+                if (!exists) {
+                    instance.destroy();
+                    instance = false;
+                    delete registry[key];
+                }
             }
 
-            if (singleton && instance && instance.element && exists) {
+            if (singleton && instance && instance.element) {
                 registry[key]._applyBindings(el);
             } else {
                 instance = new Base(name, settings, el);
