@@ -271,7 +271,7 @@
 
             this.update(cartData());
 
-            cartData.subscribe(function (updatedCart) {
+            this.cartSubscription = cartData.subscribe(function (updatedCart) {
                 self.addToCartCalls--;
                 self.isLoading(self.addToCartCalls > 0);
                 self.update(updatedCart);
@@ -295,6 +295,11 @@
             ) {
                 $.sections.reload(['cart'], false);
             }
+        },
+
+        /** [destroy description] */
+        destroy: function () {
+            this.cartSubscription.dispose();
         },
 
         /** [minicart description] */
