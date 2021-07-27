@@ -178,6 +178,10 @@ class JsBuild
                 $loadedDeps[$depPath] = $depPath;
             }
 
+            if (isset($loadedDeps[$path])) {
+                continue;
+            }
+
             $build[$name] .= $this->getContents($path);
         }
 
