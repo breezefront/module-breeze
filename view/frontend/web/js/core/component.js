@@ -464,6 +464,7 @@ window.breeze.component = function (factory) {
         /** [initialize description] */
         _initialize: function (name, options, element) {
             this._regions = {};
+            this._markup = $(element).html();
             this._super(name, options, element);
 
             if (window.requestIdleCallback) {
@@ -484,6 +485,12 @@ window.breeze.component = function (factory) {
                 $(element).trigger('contentUpdated');
                 this.afterRender();
             }
+        },
+
+        /** destroy implementation */
+        destroy: function () {
+            // Restore initial markup that is used as a template in knockout
+            this.element.html(this._markup);
         },
 
         /**
