@@ -48,7 +48,9 @@
         $(el).data('breeze-processed', true);
 
         if (isScript) {
-            el.parentNode.removeChild(el);
+            // Move script to the bottom so it will not break :nth-child, and ~ selectors
+            // and still will be accessible for reinitialization when using turbo cache.
+            $(document.body).append(el);
             el = false;
         }
 
