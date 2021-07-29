@@ -303,6 +303,7 @@ window.breeze.component = function (factory) {
         _create: _.noop,
         init: _.noop,
         _init: _.noop,
+        destroy: _.noop,
 
         /**
          * @param {Object} options
