@@ -546,7 +546,7 @@ window.breeze.component = function (factory) {
 
     $.Base = window.breeze.Base = Base;
     $.widget = window.breeze.widget = window.breeze.component(window.breeze.factory(Widget, false));
-    $.view = window.breeze.view = window.breeze.component(window.breeze.factory(View, true));
+    $.view = window.breeze.view = window.breeze.component(window.breeze.factory(View, false));
 
     /** Wrap prototype with mixins */
     $.mixin = function (name, mixins) {
