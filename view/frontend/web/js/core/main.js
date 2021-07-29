@@ -210,6 +210,14 @@
     $(document).on('turbo:before-cache', function () {
         // destroy all widgets and views
         window.breeze.registry.delete();
+
+        $(document)
+            .find('[data-breeze-temporary]')
+            .remove();
+
+        $(document)
+            .find('[data-breeze-processed]')
+            .removeAttr('data-breeze-processed');
     });
 
     $(window).on('resize', _.debounce(function () {
