@@ -83,7 +83,7 @@
             });
 
             // Reviews and other third-party links
-            $(document).on('click', 'a[href*="#"]', function (event) {
+            $(document).on('click.tabs', 'a[href*="#"]', function (event) {
                 var anchor = $(this).attr('href').split('#')[1],
                     element,
                     index;
@@ -108,6 +108,10 @@
 
                 element.get(0).scrollIntoView();
             });
+        },
+
+        destroy: function () {
+            $(document).off('click.tabs');
         },
 
         /** [getActiveTab description] */
