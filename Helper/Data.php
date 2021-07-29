@@ -101,8 +101,6 @@ class Data extends AbstractHelper
      */
     public function isTurboEnabled()
     {
-        return false;
-
         $result = $this->getConfig('design/breeze/turbo');
 
         if ($result === 'theme') {

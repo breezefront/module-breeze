@@ -6,7 +6,7 @@
         <remove src="mage/gallery/gallery.css"/>
 
         <!-- disable turbo cache since it's not working with knockout (compare sidebar) -->
-        <meta name="turbo-cache-control" content="no-cache"/>
+        <!-- <meta name="turbo-cache-control" content="no-cache"/> -->
     </head>
     <body>
         <!-- <referenceContainer name="head.additional"> -->
