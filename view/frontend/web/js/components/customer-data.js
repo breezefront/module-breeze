@@ -191,5 +191,7 @@
         customerData.invalidate(data.sections);
     });
 
-    customerData.initialize(window.customerDataConfig);
+    $(document).on('breeze:load', function () {
+        customerData.initialize(window.customerDataConfig);
+    });
 })();
