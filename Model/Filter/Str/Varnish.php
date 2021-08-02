@@ -28,10 +28,6 @@ class Varnish
      */
     public function process($html)
     {
-        if ($this->pageCacheConfig->getType() != PageCacheConfig::VARNISH) {
-            return $html;
-        }
-
         $replaceMapping = [
             '<include src=' => '<esi:include src=',
             '</include>' => '</esi:include>'
