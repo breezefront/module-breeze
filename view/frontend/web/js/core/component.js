@@ -85,7 +85,7 @@ $.registry = window.breeze.registry = (function () {
             }
 
             $.each(data, function (t) {
-                $.each(data[t].elements, function (i, el) {
+                $.each(data[t].elements || [], function (i, el) {
                     $.registry.delete(t, el);
                 });
             });
