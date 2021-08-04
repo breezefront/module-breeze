@@ -119,6 +119,13 @@
                 literal = ko.expressionRewriting.parseObjectLiteral(string);
 
             if (literal[0].unknown) {
+                if (literal[0].unknown.indexOf &&
+                    (literal[0].unknown.indexOf('[') === 0 ||
+                     literal[0].unknown.indexOf('function') > -1)
+                ) {
+                    throw 'Unable to parse complex literal';
+                }
+
                 return literal[0].unknown;
             }
 
@@ -144,16 +151,21 @@
 
     /** Update data-mage-init attribute for all matches elements based on data-bind value */
     function convertDataBindToDataMageInit(el) {
+        var json;
+
         if ($(el).closest('[data-bind*="scope:"]').length) {
+            return;
+        }
+
+        try {
+            json = extractJsonFromDataBind('mageInit', $(el).data('bind'))
+        } catch (e) {
             return;
         }
 
         $(el).attr(
             'data-mage-init',
-            JSON.stringify($.extend(
-                $(el).data('mage-init') || {},
-                extractJsonFromDataBind('mageInit', $(el).data('bind'))
-            ))
+            JSON.stringify($.extend($(el).data('mage-init') || {}, json))
         );
     }
 
