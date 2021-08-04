@@ -173,7 +173,7 @@
                     this.options.categoryUrlSuffix;
             } else {
                 // In other case - try to resolve it from referrer (without parameters).
-                categoryUrl = document.referrer;
+                categoryUrl = breeze.referrer;
 
                 if (categoryUrl.indexOf('?') > 0) {
                     categoryUrl = categoryUrl.substr(0, categoryUrl.indexOf('?'));

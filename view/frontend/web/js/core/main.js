@@ -174,14 +174,22 @@
         $(el).attr('data-mage-init', $(el).attr('data-mage-init-lazy'));
     }
 
+    function turboEventName(name) {
+        var prefix = 'turbo:';
+
+        if (typeof Turbolinks !== 'undefined') {
+            prefix = 'turbolinks:';
+        }
+
+        return prefix + name;
+    }
+
     /** Get event name to listen */
-    function eventName() {
+    function loadEventName() {
         var name = 'DOMContentLoaded';
 
-        if (typeof Turbo !== 'undefined') {
-            name = 'turbo:load';
-        } else if (typeof Turbolinks !== 'undefined') {
-            name = 'turbolinks:load';
+        if (typeof Turbo !== 'undefined' || typeof Turbolinks !== 'undefined') {
+            name = turboEventName('load');
         }
 
         return name;
@@ -206,15 +214,11 @@
             });
     }
 
-    $(document).on(eventName(), function (event) {
+    $(document).on(loadEventName(), function (event) {
         // destroy all widgets and views if turbo cache is disabled
         window.breeze.registry.delete();
 
-        document.dispatchEvent(new CustomEvent('breeze:load', {
-            detail: event.detail ? event.detail : {
-                url: window.location.href
-            }
-        }));
+        $(document).trigger('breeze:load');
 
         walk(document);
     });
@@ -223,7 +227,7 @@
         walk(event.target);
     });
 
-    $(document).on('turbo:before-cache turbolinks:before-cache', function () {
+    $(document).on(turboEventName('before-cache'), function () {
         // destroy all widgets and views
         window.breeze.registry.delete();
 
@@ -239,4 +243,28 @@
     $(window).on('resize', _.debounce(function () {
         $('body').trigger('breeze:resize');
     }, 100));
+
+    // Fix for document.referrer when using turbo.
+    // Since it's readonly - use breeze.referrer instead.
+    (function () {
+        var previous,
+            referrers = {};
+
+        if (typeof Turbolinks !== 'undefined' || typeof Turbo !== 'undefined') {
+            breeze.referrer = $.storage.ns('breeze').get('referrer') || document.referrer
+        } else {
+            breeze.referrer = document.referrer
+        }
+
+        // Since this event doesn't work when using back/forward buttons we use it to update referrers
+        // $.on is not used because it's overwrite event.data property
+        document.addEventListener(turboEventName('before-visit'), function (event) {
+            referrers[event.data.url] = window.location.href;
+        });
+
+        $(document).on(turboEventName('visit'), function () {
+            breeze.referrer = referrers[window.location.href] || document.referrer;
+            $.storage.ns('breeze').set('referrer', breeze.referrer);
+        });
+    })();
 })();
