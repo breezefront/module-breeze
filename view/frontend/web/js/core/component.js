@@ -245,6 +245,10 @@ window.breeze.component = function (factory) {
                         return false;
                     }
 
+                    if (!instance) {
+                        return;
+                    }
+
                     tmp = instance[settings].apply(instance, args);
 
                     if (tmp !== instance && tmp !== undefined) {
