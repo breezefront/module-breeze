@@ -168,6 +168,8 @@
 
         if (typeof Turbo !== 'undefined') {
             name = 'turbo:load';
+        } else if (typeof Turbolinks !== 'undefined') {
+            name = 'turbolinks:load';
         }
 
         return name;
@@ -209,7 +211,7 @@
         walk(event.target);
     });
 
-    $(document).on('turbo:before-cache', function () {
+    $(document).on('turbo:before-cache turbolinks:before-cache', function () {
         // destroy all widgets and views
         window.breeze.registry.delete();
 
