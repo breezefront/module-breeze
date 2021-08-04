@@ -45,7 +45,7 @@
             $(self.element).show().prependTo(self.dialog);
 
             if (self.options.closeOnClickOutside) {
-                $(document.body).on('click', function (event) {
+                $(document.body).on('click.dropdownDialog', function (event) {
                     if (!self.status) {
                         return;
                     }
@@ -108,6 +108,8 @@
         /** Hide expanded menu's, remove event listeneres */
         destroy: function () {
             this.close();
+            $(document).off('click.dropdownDialog');
+            this._super();
         },
 
         /** Open dialog */

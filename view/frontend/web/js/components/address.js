@@ -14,12 +14,17 @@
                 deleteAddress   = options.deleteAddress;
 
             if (addAddress) {
-                $(document).on('click', addAddress, this._addAddress.bind(this));
+                $(document).on('click.address', addAddress, this._addAddress.bind(this));
             }
 
             if (deleteAddress) {
-                $(document).on('click', deleteAddress, this._deleteAddress.bind(this));
+                $(document).on('click.address', deleteAddress, this._deleteAddress.bind(this));
             }
+        },
+
+        destroy: function () {
+            $(document).off('click.address');
+            this._super();
         },
 
         /** [_addAddress description] */

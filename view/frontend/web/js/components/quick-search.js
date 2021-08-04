@@ -101,6 +101,11 @@
             });
         },
 
+        destroy: function () {
+            $(document).off('click.quickSearch');
+            this._super();
+        },
+
         /**
          * @returns {Boolean}
          */

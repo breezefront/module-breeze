@@ -20,12 +20,17 @@
                 });
             }
 
-            $(document).on('click', '[data-role="product-review"] .pages a', function (event) {
+            $(document).on('click.ajaxReviews', '[data-role="product-review"] .pages a', function (event) {
                 event.preventDefault();
                 self.loadReviews(this.href).then(function () {
                     $('#reviews').get(0).scrollIntoView();
                 });
             });
+        },
+
+        destroy: function () {
+            $(document).off('click.ajaxReviews');
+            this._super();
         },
 
         /** [loadReviews description] */

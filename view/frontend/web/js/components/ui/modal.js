@@ -113,7 +113,7 @@
             this._createButtons();
 
             if (this.options.trigger) {
-                $(document).on('click', this.options.trigger, _.bind(this.toggleModal, this));
+                $(document).on('click.modal', this.options.trigger, _.bind(this.toggleModal, this));
             }
             this._on(this.modal.find(this.options.modalCloseBtn), {
                 'click': this.options.modalCloseBtnHandler ? this.options.modalCloseBtnHandler : this.closeModal
@@ -126,6 +126,11 @@
             if (this.options.autoOpen) {
                 this.openModal();
             }
+        },
+
+        destroy: function () {
+            $(document).off('click.modal');
+            this._super();
         },
 
         /**

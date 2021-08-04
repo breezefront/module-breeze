@@ -103,7 +103,7 @@
                 clearTimeout(timer);
             });
 
-            $(document).on('tap', function () {
+            $(document).on('tap.SwatchRendererTooltip', function () {
                 $element.hide();
                 clearTimeout(timer);
             });
@@ -111,6 +111,11 @@
             $this.on('tap', function (event) {
                 event.stopPropagation();
             });
+        },
+
+        destroy: function () {
+            $(document).off('tap.SwatchRendererTooltip');
+            this._super();
         }
     });
 
@@ -229,6 +234,7 @@
                 return;
             }
 
+            this._markup = this.element.html();
             $(this.element).attr('data-rendered', true);
 
             if (_.isEmpty(this.options.jsonConfig.images)) {
@@ -247,6 +253,11 @@
             } else {
                 console.log('SwatchRenderer: No input data received');
             }
+        },
+
+        destroy: function () {
+            $(this.element).removeAttr('data-rendered').html(this._markup);
+            this._super();
         },
 
         /**

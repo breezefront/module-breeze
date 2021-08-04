@@ -108,7 +108,7 @@
                     self.close();
                 });
 
-            $(document).on('keydown', function (event) {
+            $(document).on('keydown.gallery', function (event) {
                 if (self.options.keyboard === false) {
                     return;
                 }
@@ -135,6 +135,11 @@
                         break;
                 }
             });
+        },
+
+        destroy: function () {
+            $(document).off('keydown.gallery');
+            this._super();
         },
 
         /** Activate prev image */
