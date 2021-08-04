@@ -3,7 +3,7 @@
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
         <!-- disable turbo since form submit response with 404 code doesn't precessed properly -->
-        <!-- <meta name="turbo-visit-control" content="reload"/> -->
-        <!-- <meta name="turbolinks-visit-control" content="reload"/> -->
+        <meta name="turbo-visit-control" content="reload"/>
+        <meta name="turbolinks-visit-control" content="reload"/>
     </head>
 </page>
