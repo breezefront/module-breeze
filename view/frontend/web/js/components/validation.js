@@ -21,6 +21,11 @@
             }
         },
 
+        /** [destoy description] */
+        destroy: function () {
+            this.element.removeAttr('data-validator');
+        },
+
         /** Validate form */
         isValid: function (inputs, silent) {
             return this.validator.isValid(inputs, silent);
