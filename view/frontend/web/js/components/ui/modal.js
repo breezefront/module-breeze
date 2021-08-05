@@ -130,6 +130,7 @@
 
         destroy: function () {
             $(document).off('click.modal');
+            this.modalWrapper.remove();
             this._super();
         },
 
