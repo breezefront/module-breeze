@@ -44,15 +44,23 @@
 
         /** Init component */
         create: function () {
-            var sectionNames = this.getExpiredSectionNames();
+            var sectionNames;
 
             // store switcher
             if ($.cookies.get('section_data_clean')) {
                 $.cookies.set('section_data_clean', '');
-                this.reload([], true);
 
-                return;
+                return this.reload([], true);
             }
+
+            // magento bugfix for deprecated/removed cookie
+            if (this.options.expirableSectionNames &&
+                _.isEmpty($.cookies.getJson('section_data_ids') || {})
+            ) {
+                return this.reload([], true);
+            }
+
+            sectionNames = this.getExpiredSectionNames();
 
             if (sectionNames.length > 0) {
                 this.reload(sectionNames);
