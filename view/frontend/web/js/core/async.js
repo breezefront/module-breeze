@@ -85,6 +85,10 @@
         childList: true
     });
 
+    $(document).on('turbo:visit turbolinks:visit', function () {
+        mapping = {};
+    });
+
     /**
      * @param {String|Object} selector
      * @param {HTMLElement|Function} ctx
