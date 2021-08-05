@@ -174,6 +174,7 @@
         $(el).attr('data-mage-init', $(el).attr('data-mage-init-lazy'));
     }
 
+    /** Get correctly prefixed event name for turbo library */
     function turboEventName(name) {
         var prefix = 'turbo:';
 
@@ -214,7 +215,7 @@
             });
     }
 
-    $(document).on(loadEventName(), function (event) {
+    $(document).on(loadEventName(), function () {
         // destroy all widgets and views if turbo cache is disabled
         window.breeze.registry.delete();
 
@@ -247,13 +248,12 @@
     // Fix for document.referrer when using turbo.
     // Since it's readonly - use breeze.referrer instead.
     (function () {
-        var previous,
-            referrers = {};
+        var referrers = {};
 
         if (typeof Turbolinks !== 'undefined' || typeof Turbo !== 'undefined') {
-            breeze.referrer = $.storage.ns('breeze').get('referrer') || document.referrer
+            window.breeze.referrer = $.storage.ns('breeze').get('referrer') || document.referrer;
         } else {
-            breeze.referrer = document.referrer
+            window.breeze.referrer = document.referrer;
         }
 
         // Since this event doesn't work when using back/forward buttons we use it to update referrers
@@ -263,8 +263,8 @@
         });
 
         $(document).on(turboEventName('visit'), function () {
-            breeze.referrer = referrers[window.location.href] || document.referrer;
-            $.storage.ns('breeze').set('referrer', breeze.referrer);
+            window.breeze.referrer = referrers[window.location.href] || document.referrer;
+            $.storage.ns('breeze').set('referrer', window.breeze.referrer);
         });
     })();
 })();

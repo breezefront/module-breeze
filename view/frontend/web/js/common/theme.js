@@ -6,5 +6,5 @@
             .clone()
             .data('breeze-temporary', true)
             .appendTo(document.getElementById('store.links'));
-    })
+    });
 })();
