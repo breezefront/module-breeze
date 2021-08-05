@@ -80,13 +80,15 @@
         });
     });
 
-    observer.observe(document.body, {
-        subtree: true,
-        childList: true
-    });
-
-    $(document).on('turbo:visit turbolinks:visit', function () {
+    $(document).on('breeze:load', function () {
         mapping = {};
+        counter = 1;
+
+        observer.disconnect();
+        observer.observe(document.body, {
+            subtree: true,
+            childList: true
+        });
     });
 
     /**
