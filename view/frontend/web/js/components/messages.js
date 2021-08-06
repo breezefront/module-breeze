@@ -78,7 +78,7 @@
          * @return {String}
          */
         prepareMessageForHtml: function (message) {
-            return message;
+            return message.replace(/\+/g, ' ');
         },
 
         /** Hide all messages */
