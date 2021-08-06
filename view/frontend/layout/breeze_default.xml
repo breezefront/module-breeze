@@ -299,6 +299,8 @@
                 </container>
             </block>
             <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.Magento_ReCaptchaFrontendUi_reCaptcha" template="Magento_ReCaptchaFrontendUi::reCaptcha.html"/>
+
+            <block class="Swissup\Breeze\Block\Turbo" name="breeze.turbo"/>
         </referenceContainer>
     </body>
 </page>

@@ -62,22 +62,35 @@ class Data extends AbstractHelper
     }
 
     /**
+     * @return array
+     */
+    public function getExcludedUrls()
+    {
+        $excludedUrls = trim($this->getConfig('design/breeze/excluded_urls'));
+        $excludedUrls = array_filter(explode("\n", $excludedUrls));
+
+        foreach ($excludedUrls as $i => $url) {
+            $excludedUrls[$i] = trim($url);
+        }
+
+        $excludedUrls[] = '/redirect/';
+        $excludedUrls[] = '/checkout/';
+        $excludedUrls[] = '/multishipping/';
+
+        return $excludedUrls;
+    }
+
+    /**
      * @param string $url
      * @return boolean
      */
     protected function isUrlExcluded($url = null)
     {
-        $excludedUrls = trim($this->getConfig('design/breeze/excluded_urls'));
-        if (!$excludedUrls) {
-            return false;
-        }
-
         if (!$url) {
             $url = $this->_getRequest()->getRequestUri();
         }
 
-        $excludedUrls = array_filter(explode("\n", $excludedUrls));
-        foreach ($excludedUrls as $excludedUrl) {
+        foreach ($this->getExcludedUrls() as $excludedUrl) {
             if (strpos($url, trim($excludedUrl)) === false) {
                 continue;
             }

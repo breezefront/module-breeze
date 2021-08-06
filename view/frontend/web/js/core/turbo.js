@@ -1,5 +1,8 @@
+/* global _ */
 (function () {
     'use strict';
+
+    var config = $('#breeze-turbo').data('config');
 
     /** Get correctly prefixed event name for turbo library */
     function turboEventName(name) {
@@ -11,6 +14,16 @@
 
         return prefix + name;
     }
+
+    // refresh the page if store was changed or breeze was disabled during visit
+    document.addEventListener(turboEventName('before-render'), function (event) {
+        var newConfig = $(event.data.newBody).find('#breeze-turbo').data('config');
+
+        if (!newConfig || config.store !== newConfig.store) {
+            event.preventDefault();
+            window.location.reload();
+        }
+    });
 
     $(document).on(turboEventName('before-cache'), function () {
         // destroy all widgets and views
@@ -25,11 +38,16 @@
             .removeAttr('data-breeze-processed');
     });
 
-    // disable turbo for certain urls
+    // disable turbo for certain urls before trying to load then
     document.addEventListener(turboEventName('before-visit'), function (event) {
-        var url = event.data.url;
+        var url = event.data.url,
+            excluded = false;
 
-        if (url.indexOf('/redirect/') !== -1) {
+        excluded = _.some(config.excludedUrls, function (excludedUrl) {
+            return url.indexOf(excludedUrl) !== -1;
+        });
+
+        if (excluded) {
             event.preventDefault();
             window.location.href = url;
         }
