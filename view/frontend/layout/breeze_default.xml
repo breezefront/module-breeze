@@ -61,6 +61,10 @@
                             <item name="breeze-storage" xsi:type="string">Swissup_Breeze::js/core/storage.js</item>
                             <item name="breeze-sections" xsi:type="string">Swissup_Breeze::js/core/sections.js</item>
                             <item name="breeze-main" xsi:type="string">Swissup_Breeze::js/core/main.js</item>
+                            <item name="breeze-turbo" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze::js/core/turbo.js</item>
+                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Data::isTurboEnabled"/>
+                            </item>
                             <item name="breeze-common" xsi:type="string">Swissup_Breeze::js/common/common.js</item>
                             <item name="breeze-theme" xsi:type="string">Swissup_Breeze::js/common/theme.js</item>
                         </item>

@@ -174,23 +174,12 @@
         $(el).attr('data-mage-init', $(el).attr('data-mage-init-lazy'));
     }
 
-    /** Get correctly prefixed event name for turbo library */
-    function turboEventName(name) {
-        var prefix = 'turbo:';
-
-        if (typeof Turbolinks !== 'undefined') {
-            prefix = 'turbolinks:';
-        }
-
-        return prefix + name;
-    }
-
     /** Get event name to listen */
     function loadEventName() {
         var name = 'DOMContentLoaded';
 
         if (typeof Turbo !== 'undefined' || typeof Turbolinks !== 'undefined') {
-            name = turboEventName('load');
+            name = 'turbo:load turbolinks:load';
         }
 
         return name;
@@ -228,43 +217,9 @@
         walk(event.target);
     });
 
-    $(document).on(turboEventName('before-cache'), function () {
-        // destroy all widgets and views
-        window.breeze.registry.delete();
-
-        $(document)
-            .find('[data-breeze-temporary]')
-            .remove();
-
-        $(document)
-            .find('[data-breeze-processed]')
-            .removeAttr('data-breeze-processed');
-    });
-
     $(window).on('resize', _.debounce(function () {
         $('body').trigger('breeze:resize');
     }, 100));
 
-    // Fix for document.referrer when using turbo.
-    // Since it's readonly - use breeze.referrer instead.
-    (function () {
-        var referrers = {};
-
-        if (typeof Turbolinks !== 'undefined' || typeof Turbo !== 'undefined') {
-            window.breeze.referrer = $.storage.ns('breeze').get('referrer') || document.referrer;
-        } else {
-            window.breeze.referrer = document.referrer;
-        }
-
-        // Since this event doesn't work when using back/forward buttons we use it to update referrers
-        // $.on is not used because it's overwrite event.data property
-        document.addEventListener(turboEventName('before-visit'), function (event) {
-            referrers[event.data.url] = window.location.href;
-        });
-
-        $(document).on(turboEventName('visit'), function () {
-            window.breeze.referrer = referrers[window.location.href] || document.referrer;
-            $.storage.ns('breeze').set('referrer', window.breeze.referrer);
-        });
-    })();
+    window.breeze.referrer = document.referrer;
 })();
