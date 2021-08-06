@@ -15,6 +15,14 @@
         return prefix + name;
     }
 
+    // fixed not working scripts on 404 page
+    document.addEventListener(turboEventName('request-end'), function (event) {
+        if (event.data.xhr.status !== 200) {
+            event.preventDefault();
+            window.location.reload();
+        }
+    });
+
     // refresh the page if store was changed or breeze was disabled during visit
     document.addEventListener(turboEventName('before-render'), function (event) {
         var newConfig = $(event.data.newBody).find('#breeze-turbo').data('config');
