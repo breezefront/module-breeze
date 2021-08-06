@@ -31,31 +31,12 @@
                     <dataScope>breeze_excluded_urls</dataScope>
                 </settings>
             </field>
-            <field name="breeze_debug_mode" formElement="select">
-                <settings>
-                    <dataType>string</dataType>
-                    <label translate="true">Debug Mode</label>
-                    <notice translate="true">Allows to force breeze status via query parameter: ?breeze=1 or ?breeze=0</notice>
-                    <dataScope>breeze_debug_mode</dataScope>
-                </settings>
-                <formElements>
-                    <select>
-                        <settings>
-                            <options class="Magento\Config\Model\Config\Source\YesNo"/>
-                        </settings>
-                    </select>
-                </formElements>
-            </field>
-            <!--
             <field name="breeze_turbo" component="Magento_Catalog/js/components/visible-on-option/select" formElement="select">
                 <argument name="data" xsi:type="array">
                     <item name="config" xsi:type="array">
                         <item name="valuesForOptions" xsi:type="array">
                             <item name="theme" xsi:type="string">theme</item>
                             <item name="1" xsi:type="number">1</item>
-                        </item>
-                        <item name="imports" xsi:type="array">
-                            <item name="toggleVisibility" xsi:type="string">${$.parentName}.breeze_enabled:value</item>
                         </item>
                     </item>
                 </argument>
@@ -73,7 +54,21 @@
                     </select>
                 </formElements>
             </field>
-            -->
+            <field name="breeze_debug_mode" formElement="select">
+                <settings>
+                    <dataType>string</dataType>
+                    <label translate="true">Debug Mode</label>
+                    <notice translate="true">Allows to force breeze status via query parameter: ?breeze=1 or ?breeze=0</notice>
+                    <dataScope>breeze_debug_mode</dataScope>
+                </settings>
+                <formElements>
+                    <select>
+                        <settings>
+                            <options class="Magento\Config\Model\Config\Source\YesNo"/>
+                        </settings>
+                    </select>
+                </formElements>
+            </field>
         </fieldset>
     </fieldset>
 </form>
