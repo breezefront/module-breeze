@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    $.view('view.wishlist', {
+    $.view('wishlistView', {
         component: 'Magento_Wishlist/js/view/wishlist',
         wishlist: $.sections.get('wishlist')
     });
