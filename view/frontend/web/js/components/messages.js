@@ -48,9 +48,6 @@
     // Magento_Theme/js/view/messages
     $.view('messages', {
         component: 'Magento_Theme/js/view/messages',
-        defaults: {
-            allowedTags: ['div', 'span', 'b', 'strong', 'i', 'em', 'u', 'a']
-        },
 
         /** Init component */
         create: function () {
@@ -81,7 +78,7 @@
          * @return {String}
          */
         prepareMessageForHtml: function (message) {
-            return $.escaper.escapeHtml(message, this.allowedTags);
+            return message;
         },
 
         /** Hide all messages */

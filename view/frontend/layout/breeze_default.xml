@@ -54,7 +54,6 @@
                             <item name="class" xsi:type="string">Swissup_Breeze::js/lib/class.js</item>
                             <item name="breeze-async" xsi:type="string">Swissup_Breeze::js/core/async.js</item>
                             <item name="breeze-request" xsi:type="string">Swissup_Breeze::js/core/request.js</item>
-                            <item name="breeze-escaper" xsi:type="string">Swissup_Breeze::js/core/escaper.js</item>
                             <item name="breeze-translate" xsi:type="string">Swissup_Breeze::js/core/translate.js</item>
                             <item name="breeze-validator" xsi:type="string">Swissup_Breeze::js/core/validator.js</item>
                             <item name="breeze-object" xsi:type="string">Swissup_Breeze::js/core/component.js</item>
