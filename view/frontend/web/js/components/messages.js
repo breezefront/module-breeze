@@ -51,8 +51,18 @@
 
         /** Init component */
         create: function () {
+            var self = this;
+
             this.cookieMessages = _.unique($.cookies.getJson('mage-messages') || [], 'text');
             this.messages = $.sections.get('messages');
+
+            // cleanup possible duplicates
+            this.cookieMessages = _.reject(this.cookieMessages, function (cookieMessage) {
+                return _.some(self.messages().messages, function (sectionMessage) {
+                    return sectionMessage.text === cookieMessage.text;
+                });
+            });
+
             this.removeCookieMessages();
         },
 
