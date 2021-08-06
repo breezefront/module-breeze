@@ -38,7 +38,7 @@
             .removeAttr('data-breeze-processed');
     });
 
-    // disable turbo for certain urls before trying to load then
+    // disable turbo for certain urls before trying to load them
     document.addEventListener(turboEventName('before-visit'), function (event) {
         var url = event.data.url,
             excluded = false;
