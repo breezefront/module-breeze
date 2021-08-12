@@ -361,12 +361,12 @@ window.breeze.component = function (factory) {
          * @param {String|Object} key
          * @return {Mixed}
          */
-        option: function (key) {
+        option: function (key, defaults) {
             if (!key) {
                 return $.extend(true, {}, this.options);
             }
 
-            return this._option(key.replace(/\./g, '/'));
+            return this._option(key.replace(/\./g, '/'), defaults);
         }
     });
 
