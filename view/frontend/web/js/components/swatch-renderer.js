@@ -1264,7 +1264,7 @@
                 params = $.parseQuery(window.location.href.substr(hashIndex + 1));
 
                 selectedAttributes = _.invert(_.mapObject(_.invert(params), function (attributeId) {
-                    return this._option('jsonConfig.mappedAttributes.' + attributeId, attributeId);
+                    return this.option('jsonConfig.mappedAttributes.' + attributeId, {}).code || attributeId;
                 }.bind(this)));
             }
 
