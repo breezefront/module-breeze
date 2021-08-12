@@ -92,7 +92,6 @@
 
             events['change ' + options.customOptionsInfo] = dataUpdateFunc;
             events['change ' + options.qtyInfo] = dataUpdateFunc;
-            events['click ' + options.actionElement] = this._validateWishlistQty;
 
             $(options.productType).each(function (i, type) {
                 var key = type + 'Info';
@@ -205,29 +204,6 @@
         },
 
         /**
-         * @param {Object} array1
-         * @param {Object} array2
-         * @return {Object}
-         * @private
-         * @deprecated
-         */
-        _arrayDiffByKeys: function (array1, array2) {
-            var result = {};
-
-            $.each(array1, function (key, value) {
-                if (key.indexOf('option') === -1) {
-                    return;
-                }
-
-                if (!array2[key]) {
-                    result[key] = value;
-                }
-            });
-
-            return result;
-        },
-
-        /**
          * @param {HTMLElement} element
          * @return {Object}
          * @private
@@ -256,20 +232,6 @@
             }
 
             return data;
-        },
-
-        /**
-         * @param {Object} params
-         * @param {Object} dataToAdd
-         * @private
-         * @deprecated
-         */
-        _removeExcessiveData: function (params, dataToAdd) {
-            var dataToRemove = this._arrayDiffByKeys(params.data, dataToAdd);
-
-            $.each(dataToRemove, function (key) {
-                delete params.data[key];
-            });
         },
 
         /**
@@ -303,23 +265,6 @@
 
                 $(form).attr('action', action).trigger('submit');
             });
-        },
-
-        /**
-         * Validate product quantity before updating Wish List
-         *
-         * @param {jQuery.Event} event
-         * @private
-         */
-        _validateWishlistQty: function (event) {
-            var element = $(this.options.qtyInfo);
-
-            if (!(element.validation() && element.validation('isValid'))) {
-                event.preventDefault();
-                event.stopPropagation();
-
-                return;
-            }
         }
     });
 })();
