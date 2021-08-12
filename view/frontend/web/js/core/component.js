@@ -434,7 +434,13 @@ window.breeze.component = function (factory) {
                 handler = handler.bind(self);
 
                 if (selector) {
-                    element.on(eventName, selector, handler);
+                    element.on(eventName, selector, function (e) {
+                        e.handleObj = {
+                            selector: selector
+                        };
+
+                        handler(e);
+                    });
                 } else {
                     element.on(eventName, handler);
                 }
