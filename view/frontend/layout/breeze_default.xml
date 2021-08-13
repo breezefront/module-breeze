@@ -228,7 +228,18 @@
                             <item name="validate-item-quantity" xsi:type="string">Swissup_Breeze/js/components/validators/cart</item>
                         </item>
                     </item>
-                    <item name="configurable" xsi:type="array">
+                    <item name="product-bundle" xsi:type="array">
+                        <item name="sort_order" xsi:type="number">22</item>
+                        <item name="items" xsi:type="array">
+                            <item name="bundle" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/bundle</item>
+                                <item name="names" xsi:type="array">
+                                    <item name="slide" xsi:type="string">slide</item>
+                                </item>
+                            </item>
+                        </item>
+                    </item>
+                    <item name="product-configurable" xsi:type="array">
                         <item name="sort_order" xsi:type="number">25</item>
                         <item name="items" xsi:type="array">
                             <item name="configurable" xsi:type="string">Swissup_Breeze/js/components/configurable</item>

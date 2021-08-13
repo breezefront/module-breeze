@@ -141,6 +141,12 @@
             }, this);
         },
 
+        /** [setDefault description] */
+        setDefault: function (prices) {
+            this.cache.displayPrices = $.catalog.priceUtils.deepClone(prices);
+            this.options.prices = $.catalog.priceUtils.deepClone(prices);
+        },
+
         /** setDefaultsFromDataSet */
         _setDefaultsFromDataSet: function () {
             var box = this.element,
