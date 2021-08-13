@@ -38,7 +38,7 @@
     //     initFormKey();
     // });
 
-    $(function () {
+    $(document).on('breeze:load', function () {
         initFormKey();
     });
 })();
