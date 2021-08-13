@@ -367,6 +367,16 @@ window.breeze.component = function (factory) {
             }
 
             return this._option(key.replace(/\./g, '/'), defaults);
+        },
+
+        /**
+         * @param {String} key
+         * @param {Mixed} value
+         */
+        _setOption: function (key, value) {
+            this.options[key] = value;
+
+            return this;
         }
     });
 
