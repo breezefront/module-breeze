@@ -133,7 +133,7 @@
                     $(element).is('input[type=checkbox]:checked') ||
                     $(element).is('input[type=radio]:checked') ||
                     $(element).is('textarea') ||
-                    $('#' + element.id + ' option:selected').length
+                    $('#' + element.id + ' option:checked').length
                 ) {
                     if ($(element).data('selector') || $(element).attr('name')) {
                         dataToAdd = $.extend({}, dataToAdd, self._getElementData(element));
