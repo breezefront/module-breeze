@@ -2,6 +2,8 @@
 (function () {
     'use strict';
 
+    var scripts = {};
+
     /** Init 'data-mage-init' and 'text/x-magento-init' scripts */
     function mount(component, data) {
         /** Callback to run while browser is resting */
@@ -204,13 +206,48 @@
             });
     }
 
-    $(document).on(loadEventName(), function () {
-        // destroy all widgets and views if turbo cache is disabled
-        window.breeze.registry.delete();
-
+    /** [onBreezeLoad description] */
+    function onBreezeLoad() {
         $(document).trigger('breeze:load');
 
         walk(document);
+
+        $('script[src]').each(function () {
+            scripts[this.src] = true;
+        });
+    }
+
+    $(document).on(loadEventName(), function () {
+        var newScripts = _.isEmpty(scripts) ? [] : $('script[src]').filter(function () {
+                return !scripts[this.src];
+            }),
+            spinnerTimeout,
+            i = 0;
+
+        // destroy all widgets and views
+        window.breeze.registry.delete();
+
+        if (!newScripts.length) {
+            return onBreezeLoad();
+        }
+
+        // wait for dynamic scripts when turbo is used (fixes product page/account scripts)
+        spinnerTimeout = setTimeout(function () {
+            $('body').spinner(true);
+        }, 200);
+
+        newScripts.each(function () {
+            // eslint-disable-next-line max-nested-callbacks
+            $(this).on('load', function () {
+                if (++i < newScripts.length) {
+                    return;
+                }
+
+                clearTimeout(spinnerTimeout);
+                $('body').spinner(false);
+                onBreezeLoad();
+            });
+        });
     });
 
     $(document).on('contentUpdated', function (event) {
