@@ -139,14 +139,35 @@
         return original.bind(this)(selector);
     });
 
-    $.fn.data = _.wrap($.fn.data, function (original, key) {
+    $.fn.data = _.wrap($.fn.data, function (original, key, value) {
         var collection = this,
-            result = original.apply(
-                this,
-                Array.prototype.slice.call(arguments, 1)
-            ),
+            result,
             cleanKey,
             keys = [];
+
+        if (value === undefined) {
+            this.each(function () {
+                if (this.__breeze && this.__breeze[key]) {
+                    result = this.__breeze[key];
+
+                    return false;
+                }
+            });
+
+            if (result !== undefined) {
+                return result;
+            }
+        } else if (value instanceof Node || value instanceof $) {
+            return this.each(function () {
+                this.__breeze = this.__breeze || {};
+                this.__breeze[key] = value;
+            });
+        }
+
+        result = original.apply(
+            this,
+            Array.prototype.slice.call(arguments, 1)
+        );
 
         if (result === undefined) {
             cleanKey = key.replace(/^[^A-Z]+/, ''); // mageSwatchRenderer => SwatchRenderer
