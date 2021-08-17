@@ -236,17 +236,23 @@
             $('body').spinner(true);
         }, 200);
 
-        newScripts.each(function () {
-            // eslint-disable-next-line max-nested-callbacks
-            $(this).on('load', function () {
-                if (++i < newScripts.length) {
-                    return;
-                }
+        /** [onScriptLoad description] */
+        function onScriptLoad() {
+            if (++i < newScripts.length) {
+                return;
+            }
 
-                clearTimeout(spinnerTimeout);
-                $('body').spinner(false);
-                onBreezeLoad();
-            });
+            clearTimeout(spinnerTimeout);
+            $('body').spinner(false);
+            onBreezeLoad();
+        }
+
+        newScripts.each(function () {
+            if (this.async) {
+                return onScriptLoad();
+            }
+
+            $(this).on('load error', onScriptLoad);
         });
     });
 
