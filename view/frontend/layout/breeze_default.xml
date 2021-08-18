@@ -267,6 +267,7 @@
                                     <param name="path">login_as_customer/general/enabled</param>
                                 </item>
                             </item>
+                            <item name="Magento_Sales/js/view/last-ordered-items" xsi:type="string">Swissup_Breeze/js/components/last-ordered-items</item>
                         </item>
                     </item>
                 </argument>

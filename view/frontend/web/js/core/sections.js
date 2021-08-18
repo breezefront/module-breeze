@@ -1,6 +1,6 @@
 /* global ko _ */
 window.breeze = window.breeze || {};
-$.sections = window.breeze.sections = (function () {
+$.sections = $.customerData = window.customerData = window.breeze.sections = (function () {
     'use strict';
 
     var data = {},
@@ -114,8 +114,6 @@ $.sections = window.breeze.sections = (function () {
         }
     };
 })();
-
-window.customerData = $.sections;
 
 (function () {
     'use strict';
