@@ -42,6 +42,19 @@
         return mapping[scope];
     };
 
+    /** [visit description] */
+    breeze.visit = function (url) {
+        if (typeof Turbo !== 'undefined') {
+            // eslint-disable-next-line no-undef
+            Turbo.visit(url);
+        } else if (typeof Turbolinks !== 'undefined') {
+            // eslint-disable-next-line no-undef
+            Turbolinks.visit(url);
+        } else {
+            location.href = url;
+        }
+    };
+
     /** Prevent js error in case some module calls for requirejs */
     window.require = function () {};
     window.require.toUrl = function (path) {

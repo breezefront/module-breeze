@@ -22,6 +22,7 @@
             }
         },
 
+        /** [destroy description] */
         destroy: function () {
             $(document).off('click.address');
             this._super();
@@ -29,7 +30,7 @@
 
         /** [_addAddress description] */
         _addAddress: function () {
-            window.location = this.options.addAddressLocation;
+            window.breeze.visit(this.options.addAddressLocation);
         },
 
         /** [_deleteAddress description] */
@@ -42,10 +43,12 @@
                 actions: {
                     /** [confirm description] */
                     confirm: function () {
-                        window.location = self.options.deleteUrlPrefix +
+                        window.breeze.visit(
+                            self.options.deleteUrlPrefix +
                             id +
                             '/form_key/' +
-                            $.cookies.get('form_key');
+                            $.cookies.get('form_key')
+                        );
                     }
                 }
             });

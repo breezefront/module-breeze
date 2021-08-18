@@ -25,11 +25,7 @@
          * @private
          */
         _onEvent: function () {
-            if (this.options.url) {
-                location.href = this.options.url;
-            } else {
-                location.href = this.element.val();
-            }
+            window.breeze.visit(this.options.url || this.element.val());
         }
     });
 })();

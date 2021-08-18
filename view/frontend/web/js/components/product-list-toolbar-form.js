@@ -120,7 +120,7 @@
             }
 
             paramData = $.params(paramData);
-            location.href = baseUrl + (paramData.length ? '?' + paramData : '');
+            window.breeze.visit(baseUrl + (paramData.length ? '?' + paramData : ''));
         }
     });
 })();

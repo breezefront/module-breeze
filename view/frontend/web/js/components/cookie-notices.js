@@ -25,7 +25,7 @@
                     $(self.element).hide();
                     $(document).trigger('user:allowed:save:cookie');
                 } else {
-                    window.location.href = self.options.noCookiesUrl;
+                    window.breeze.visit(self.options.noCookiesUrl);
                 }
             });
         }
