@@ -218,6 +218,7 @@
 
             // Add defaultvalue attribute to state/province select element
             regionList.attr('defaultvalue', this.options.defaultRegion);
+            this.options.form.find('[type="submit"]').removeAttr('disabled').show();
         },
 
         /**
