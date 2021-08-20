@@ -64,6 +64,10 @@
                 var activeTab = self.getActiveTab(),
                     prevContent;
 
+                if (self.collapsibles.index(data.instance.element.get(0)) === -1) {
+                    return; // nested tabs
+                }
+
                 if (activeTab) {
                     prevContent = activeTab.collapsible('instance').content;
                 }
