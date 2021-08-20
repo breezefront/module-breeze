@@ -20,6 +20,8 @@ $thumbWidth = (int) $block->getImageAttribute('product_page_image_small', 'width
 $thumbHeight = (int) $block->getImageAttribute('product_page_image_small', 'height');
 $thumbHeight = $thumbHeight ?: $thumbWidth;
 
+$navType = $block->getGalleryOptions()->getVar('gallery/nav');
+
 ?>
 
 <div class="breeze-gallery <?= $block->getGalleryOptions()->getVar('gallery/navdir') ?>" tabindex="0">
@@ -48,7 +50,7 @@ $thumbHeight = $thumbHeight ?: $thumbWidth;
         <?php endif ?>
     </div>
 
-    <div class="thumbnails">
+    <div class="thumbnails <?php echo $navType ? '' : 'hidden' ?>">
         <?php if (count($images) > 1) : ?>
             <?php foreach ($images as $image) : ?>
                 <?php

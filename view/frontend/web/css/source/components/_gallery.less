@@ -127,6 +127,10 @@
             margin: 5px 0 0;
             padding-bottom: 4px;
 
+            &.hidden {
+                display: none;
+            }
+
             img {
                 filter: contrast(97%);
             }
@@ -197,6 +201,9 @@
 
             .thumbnails {
                 margin: 20px auto 0;
+                &.hidden {
+                    display: flex;
+                }
             }
         }
     }
