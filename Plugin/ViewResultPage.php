@@ -47,7 +47,7 @@ class ViewResultPage
         }
 
         $html = $httpResponse->getBody();
-        if (empty($html)) {
+        if (empty($html) || strpos($html, '<html') === false) {
             return $result;
         }
 
