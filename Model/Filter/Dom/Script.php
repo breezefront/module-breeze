@@ -26,6 +26,7 @@ class Script
 
             if ($node->textContent &&
                 strpos($node->textContent, 'require(') === false &&
+                strpos($node->textContent, 'requirejs(') === false &&
                 // strpos($node->textContent, 'require =') === false &&
                 strpos($node->textContent, 'require.') === false
             ) {
