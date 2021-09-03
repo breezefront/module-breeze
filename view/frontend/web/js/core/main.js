@@ -52,7 +52,7 @@
         if (isScript) {
             // Move script to the bottom so it will not break :nth-child, and ~ selectors
             // and still will be accessible for reinitialization when using turbo cache.
-            $(document.body).append(el);
+            $('.breeze-container').append(el);
             el = false;
         }
 

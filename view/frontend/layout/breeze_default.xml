@@ -287,33 +287,35 @@
 
         <!-- Add ko templates -->
         <referenceContainer name="before.body.end">
-            <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.modal.popupTpl" template="Magento_Ui::modal/modal-popup.html"/>
-            <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.modal.slideTpl" template="Magento_Ui::modal/modal-slide.html"/>
-            <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.modal.customTpl" template="Magento_Ui::modal/modal-custom.html"/>
-            <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.uiMessages" template="Magento_Ui::messages.html"/>
-            <block class="Swissup\Breeze\Block\KoTemplate" name="breeze.productImage" template="Swissup_Breeze::ko/catalog/product-image.phtml"/>
-            <block class="Swissup\Breeze\Block\KoTemplate" name="breeze.minicart" template="Swissup_Breeze::ko/checkout/minicart.phtml">
-                <container name="subtotalContainer">
-                    <block class="Magento\Framework\View\Element\Template" name="subtotal" template="Swissup_Breeze::ko/checkout/minicart/subtotal.phtml">
-                        <block class="Magento\Framework\View\Element\Template" name="subtotal.totals" template="Swissup_Breeze::ko/checkout/minicart/subtotal/totals.phtml">
-                            <container name="minicart-subtotal-hidden">
-                                <block class="Magento\Framework\View\Element\Template" template="Swissup_Breeze::ko/checkout/minicart/subtotal/msrp.phtml"/>
-                            </container>
+            <container name="breeze.container" htmlTag="div" htmlClass="breeze-container">
+                <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.modal.popupTpl" template="Magento_Ui::modal/modal-popup.html"/>
+                <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.modal.slideTpl" template="Magento_Ui::modal/modal-slide.html"/>
+                <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.modal.customTpl" template="Magento_Ui::modal/modal-custom.html"/>
+                <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.uiMessages" template="Magento_Ui::messages.html"/>
+                <block class="Swissup\Breeze\Block\KoTemplate" name="breeze.productImage" template="Swissup_Breeze::ko/catalog/product-image.phtml"/>
+                <block class="Swissup\Breeze\Block\KoTemplate" name="breeze.minicart" template="Swissup_Breeze::ko/checkout/minicart.phtml">
+                    <container name="subtotalContainer">
+                        <block class="Magento\Framework\View\Element\Template" name="subtotal" template="Swissup_Breeze::ko/checkout/minicart/subtotal.phtml">
+                            <block class="Magento\Framework\View\Element\Template" name="subtotal.totals" template="Swissup_Breeze::ko/checkout/minicart/subtotal/totals.phtml">
+                                <container name="minicart-subtotal-hidden">
+                                    <block class="Magento\Framework\View\Element\Template" template="Swissup_Breeze::ko/checkout/minicart/subtotal/msrp.phtml"/>
+                                </container>
+                            </block>
                         </block>
-                    </block>
-                </container>
-                <container name="extraInfo"></container>
-                <container name="promotion"></container>
-                <container name="signInPopup"></container>
-            </block>
-            <block class="Swissup\Breeze\Block\KoTemplate" name="breeze.minicart.defaultRenderer" template="Swissup_Breeze::ko/checkout/minicart/item/default.phtml">
-                <container name="priceSidebar">
-                    <block class="Magento\Framework\View\Element\Template" template="Swissup_Breeze::ko/checkout/minicart/item/price.phtml"/>
-                </container>
-            </block>
-            <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.Magento_ReCaptchaFrontendUi_reCaptcha" template="Magento_ReCaptchaFrontendUi::reCaptcha.html"/>
+                    </container>
+                    <container name="extraInfo"></container>
+                    <container name="promotion"></container>
+                    <container name="signInPopup"></container>
+                </block>
+                <block class="Swissup\Breeze\Block\KoTemplate" name="breeze.minicart.defaultRenderer" template="Swissup_Breeze::ko/checkout/minicart/item/default.phtml">
+                    <container name="priceSidebar">
+                        <block class="Magento\Framework\View\Element\Template" template="Swissup_Breeze::ko/checkout/minicart/item/price.phtml"/>
+                    </container>
+                </block>
+                <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.Magento_ReCaptchaFrontendUi_reCaptcha" template="Magento_ReCaptchaFrontendUi::reCaptcha.html"/>
 
-            <block class="Swissup\Breeze\Block\Turbo" name="breeze.turbo"/>
+                <block class="Swissup\Breeze\Block\Turbo" name="breeze.turbo"/>
+            </container>
         </referenceContainer>
     </body>
 </page>
