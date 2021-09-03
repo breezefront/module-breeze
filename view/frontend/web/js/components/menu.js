@@ -155,9 +155,16 @@
 
         /** [open description] */
         close: function (dropdown) {
-            this._trigger('beforeClose', {
-                dropdown: dropdown
-            });
+            var eventData = {
+                dropdown: dropdown,
+                preventDefault: false
+            };
+
+            this._trigger('beforeClose', eventData);
+
+            if (eventData.preventDefault === true) {
+                return;
+            }
 
             dropdown.removeClass('shown')
                 .parent('li')
