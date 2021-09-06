@@ -65,6 +65,10 @@
             });
 
             this.stage
+                .on('swiped-left swiped-right', function (event) {
+                    // timeout is used to fix scroll to active thumbnail (when it's out of screen bounds)
+                    setTimeout(self[event.type === 'swiped-right' ? 'prev' : 'next'].bind(self), 50);
+                })
                 .on('click', '.next', function (event) {
                     event.preventDefault();
                     self.next();
