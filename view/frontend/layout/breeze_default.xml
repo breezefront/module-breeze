@@ -36,7 +36,6 @@
                         <item name="sort_order" xsi:type="number">1</item>
                         <item name="items" xsi:type="array">
                             <item name="turbo" xsi:type="array">
-                                <!-- <item name="path" xsi:type="string">Swissup_Breeze::js/lib/turbo-7.0.0-rc1.min.js</item> -->
                                 <item name="path" xsi:type="string">Swissup_Breeze::js/lib/turbolinks-5.2.0.min.js</item>
                                 <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Data::isTurboEnabled"/>
                             </item>
