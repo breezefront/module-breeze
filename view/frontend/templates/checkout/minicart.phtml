@@ -39,7 +39,7 @@
                 scope: 'minicart_content',
                 template: {
                     if: shouldRender,
-                    name: 'minicart'
+                    name: getTemplate()
                 }
             "></div>
             <?= $block->getChildHtml('minicart.addons') ?>
