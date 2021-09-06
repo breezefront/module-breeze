@@ -27,19 +27,16 @@
             return $(this).attr('data-bind').indexOf('\'' + scope + '\'') !== -1;
         });
 
-        if (elements.length) {
-            elements.each(function () {
-                mount(config.component, {
-                    settings: config,
-                    el: this
-                });
-            });
-        } else {
+        if (!elements.length) {
+            elements = $([false]);
+        }
+
+        elements.each(function () {
             mount(config.component, {
                 settings: config,
-                el: false
+                el: this
             });
-        }
+        });
     }
 
     /** Process 'data-mage-init' and 'text/x-magento-init' scripts */
