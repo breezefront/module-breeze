@@ -201,9 +201,13 @@ $.breeze.component = function (factory) {
         prototype = factory.extend(prototype, parent);
         $.prototypes[name] = prototype;
 
-        if (prototype.prototype.hasOwnProperty('component')) {
+        if (prototype.prototype.hasOwnProperty('component') && prototype.prototype.component) {
             $(document).on('breeze:mount:' + prototype.prototype.component, function (event, data) {
                 var component = prototype.prototype.component;
+
+                if (component === false) {
+                    return;
+                }
 
                 if (!data.el) {
                     $.fn[name](data.settings);
@@ -568,11 +572,15 @@ $.breeze.component = function (factory) {
                 return;
             }
 
-            $.prototypes[name].prototype[key] = _.wrap($.prototypes[name].prototype[key], function () {
-                arguments[0] = arguments[0].bind(this);
+            if (typeof mixin === 'function' && typeof $.prototypes[name].prototype[key] === 'function') {
+                $.prototypes[name].prototype[key] = _.wrap($.prototypes[name].prototype[key], function () {
+                    arguments[0] = arguments[0].bind(this);
 
-                return mixin.apply(this, _.toArray(arguments));
-            });
+                    return mixin.apply(this, _.toArray(arguments));
+                });
+            } else {
+                $.prototypes[name].prototype[key] = mixin;
+            }
         });
     };
 })();
