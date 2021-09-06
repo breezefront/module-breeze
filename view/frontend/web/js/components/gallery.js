@@ -68,13 +68,9 @@
                 .on('swiped-left swiped-right', function (event) {
                     self[event.type === 'swiped-right' ? 'prev' : 'next']();
                 })
-                .on('click', '.next', function (event) {
+                .on('click', '.next, .prev', function (event) {
                     event.preventDefault();
-                    self.next();
-                })
-                .on('click', '.prev', function (event) {
-                    event.preventDefault();
-                    self.prev();
+                    self[$(this).hasClass('prev') ? 'prev' : 'next']();
                 })
                 .on('click', '.main-image-wrapper', function () {
                     if (self.options.data[self.activeIndex].videoUrl) {
