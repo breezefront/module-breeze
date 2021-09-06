@@ -49,7 +49,7 @@
                             <item name="cash" xsi:type="string">Swissup_Breeze::js/lib/cash-8.1.0.min.js</item>
                             <item name="cash-extend" xsi:type="string">Swissup_Breeze::js/core/extend-cash.js</item>
                             <item name="superagent" xsi:type="string">Swissup_Breeze::js/lib/superagent-6.1.0.min.js</item>
-                            <item name="cookie" xsi:type="string">Swissup_Breeze::js/lib/js.cookie-3.0.0-rc1.min.js</item>
+                            <item name="cookie" xsi:type="string">Swissup_Breeze::js/lib/js.cookie-3.0.1.min.js</item>
                             <item name="class" xsi:type="string">Swissup_Breeze::js/lib/class.js</item>
                             <item name="breeze-globals" xsi:type="string">Swissup_Breeze::js/core/globals.js</item>
                             <item name="breeze-async" xsi:type="string">Swissup_Breeze::js/core/async.js</item>
