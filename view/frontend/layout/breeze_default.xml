@@ -6,7 +6,6 @@
         <remove src="mage/gallery/gallery.css"/>
     </head>
     <body>
-        <!-- <referenceContainer name="head.additional"> -->
         <referenceContainer name="before.body.end">
             <block class="Swissup\Breeze\Block\JsTranslations" name="breeze.translations">
                 <arguments>
