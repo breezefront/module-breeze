@@ -304,10 +304,11 @@ window.breeze.component = function (factory) {
 
     Base = Class.extend({
         create: _.noop,
-        _create: _.noop,
         init: _.noop,
-        _init: _.noop,
         destroy: _.noop,
+        _create: _.noop,
+        _init: _.noop,
+        _trigger: _.noop,
 
         /**
          * @param {Object} options
@@ -316,10 +317,12 @@ window.breeze.component = function (factory) {
         _initialize: function (options) {
             this._options(options);
             this._defaults(this.options);
+            this._trigger('beforeCreate');
             this.create();
             this._create();
             this.init();
             this._init();
+            this._trigger('afterCreate');
 
             return this;
         },
@@ -395,16 +398,7 @@ window.breeze.component = function (factory) {
 
             $.registry.set(name, element, this);
 
-            this._options(options);
-            this._defaults(options);
-            this._trigger('beforeCreate');
-            this.create();
-            this._create();
-            this.init();
-            this._init();
-            this._trigger('afterCreate');
-
-            return this;
+            return this._super(options);
         },
 
         /**
