@@ -144,7 +144,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                         'name' => 'Swissup_Breeze/bundles/' . $name,
                         'items' => $bundle['items']
                     ])
-                    ->publishIfNotExist()
+                    ->publishIfNotExist($this->getCacheKey())
                     ->getAsset()
                     ->getUrl();
 

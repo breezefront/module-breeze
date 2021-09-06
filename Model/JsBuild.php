@@ -125,10 +125,10 @@ class JsBuild
     /**
      * @return $this
      */
-    public function publishIfNotExist()
+    public function publishIfNotExist($version)
     {
-        if (!$this->staticDir->isExist($this->getPath())) {
-            $this->publish();
+        if (!$this->staticDir->isExist($this->getPath()) || !$this->versionMatches($version)) {
+            $this->publish($version);
         }
 
         return $this;
@@ -152,7 +152,7 @@ class JsBuild
     /**
      * @return $this
      */
-    public function publish()
+    public function publish($version = null)
     {
         $build = [];
         $loadedDeps = [];
@@ -196,7 +196,34 @@ class JsBuild
             ->getDirectoryWrite(DirectoryList::STATIC_VIEW)
             ->writeFile($this->getPath(), $content);
 
+        if ($version) {
+            $this->publishVersion($version);
+        }
+
         return $this;
+    }
+
+    private function versionMatches($hash)
+    {
+        $deployedVersion = (string) $this->readFileFromPubStatic($this->getPathToVersionFile());
+        $deployedVersion = trim($deployedVersion);
+
+        return strcmp($deployedVersion, $hash) === 0;
+    }
+
+    private function publishVersion($hash)
+    {
+        $this->filesystem
+            ->getDirectoryWrite(DirectoryList::STATIC_VIEW)
+            ->writeFile($this->staticContext->getConfigPath() . '/' . $this->getPathToVersionFile(), $hash);
+    }
+
+    private function getPathToVersionFile()
+    {
+        $path = str_replace('::', '/', $this->name);
+        $path = str_replace(['.min.js', '.js'], '', $path);
+
+        return $path . '.txt';
     }
 
     /**
@@ -289,9 +316,13 @@ class JsBuild
 
         $fullFilepaths = [];
         $fullFilepath = $staticPath . '/' . $path;
-        if (strpos($fullFilepath, '.min.js') === false && $this->minification->isEnabled('js')) {
+        if (strpos($fullFilepath, '.min.js') === false &&
+            strpos($fullFilepath, '.js') !== false &&
+            $this->minification->isEnabled('js')
+        ) {
             $fullFilepaths[] = substr($fullFilepath, 0, -2) . 'min.js';
         }
+
         $fullFilepaths[] = $fullFilepath;
 
         foreach ($fullFilepaths as $fullFilepath) {
