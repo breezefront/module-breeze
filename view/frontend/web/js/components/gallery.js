@@ -66,8 +66,7 @@
 
             this.stage
                 .on('swiped-left swiped-right', function (event) {
-                    // timeout is used to fix scroll to active thumbnail (when it's out of screen bounds)
-                    setTimeout(self[event.type === 'swiped-right' ? 'prev' : 'next'].bind(self), 50);
+                    self[event.type === 'swiped-right' ? 'prev' : 'next']();
                 })
                 .on('click', '.next', function (event) {
                     event.preventDefault();
@@ -194,7 +193,10 @@
 
             // scroll to hidden thumbnail only if we will not affect page scroll offset
             if (fullscreen || this.thumbsWrapper.isInViewport()) {
-                this.thumbs.eq(index).focus();
+                // timeout is used to fix scroll when swipe is used
+                setTimeout(function () {
+                    this.thumbs.eq(index).focus();
+                }.bind(this), 50);
             }
 
             if (this.activeIndex !== index) {
