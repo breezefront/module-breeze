@@ -2,6 +2,28 @@
 (function () {
     'use strict';
 
+    /** [isVirtualElement description] */
+    function isVirtualElement(node) {
+        return node.nodeType === 8;
+    }
+
+    /**
+    * @param {Object} el
+    * @param {bool} isUpdate
+    * @return {Object} el
+    */
+    function getRealElement(el, isUpdate) {
+        if (isVirtualElement(el)) {
+            if (isUpdate) {
+                return $(el).next('span');
+            }
+
+            return $('<span/>').insertAfter(el);
+        }
+
+        return $(el);
+    }
+
     ko.bindingHandlers.blockLoader = {
         /**
          * Process loader for block
@@ -23,9 +45,11 @@
          * @param {Function} value
          */
         update: function (element, value) {
-            $(element).text($.__(ko.unwrap(value() || '')));
+            getRealElement(element, true).text($.__(ko.unwrap(value() || '')));
         }
     };
+
+    ko.virtualElements.allowedBindings.i18n = true;
 
     ko.bindingHandlers.bindHtml = {
         /**
