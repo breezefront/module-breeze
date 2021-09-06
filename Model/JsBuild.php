@@ -317,7 +317,7 @@ class JsBuild
         $fullFilepaths = [];
         $fullFilepath = $staticPath . '/' . $path;
         if (strpos($fullFilepath, '.min.js') === false &&
-            strpos($fullFilepath, '.js') !== false &&
+            strpos($fullFilepath, '.txt') === false &&
             $this->minification->isEnabled('js')
         ) {
             $fullFilepaths[] = substr($fullFilepath, 0, -2) . 'min.js';
