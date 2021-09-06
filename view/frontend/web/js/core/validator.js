@@ -329,10 +329,8 @@
         }
     };
 
-    window.breeze = window.breeze || {};
-
     /** [validation description] */
-    $.validator = window.breeze.validator = function (element, options) {
+    $.validator = $.breeze.validator = function (element, options) {
         return new Validator(element, options);
     };
     $.validator.validators = {};

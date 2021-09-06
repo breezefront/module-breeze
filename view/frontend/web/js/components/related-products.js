@@ -1,4 +1,3 @@
-/* global breeze */
 (function () {
     'use strict';
 
@@ -20,10 +19,10 @@
             $(this.options.relatedCheckbox, this.element).on('click', this._addRelatedToProduct.bind(this));
 
             if (this.element.data('shuffle')) {
-                breeze.shuffleElements(this.element.find(this.options.elementsSelector));
+                $.breeze.shuffleElements(this.element.find(this.options.elementsSelector));
             }
 
-            breeze.revealElements(
+            $.breeze.revealElements(
                 this.element.find(this.options.elementsSelector),
                 this.element.data('limit'),
                 this.element.data('shuffle-weighted')

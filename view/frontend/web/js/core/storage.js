@@ -1,5 +1,4 @@
-window.breeze = window.breeze || {};
-$.storage = $.localStorage = window.breeze.storage = (function () {
+$.storage = $.localStorage = $.breeze.storage = (function () {
     'use strict';
 
     var storage = window.localStorage || window.sessionStorage,

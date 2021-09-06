@@ -1,4 +1,3 @@
-/* global breeze */
 (function () {
     'use strict';
 
@@ -11,10 +10,10 @@
         /** Initialize plugin */
         create: function () {
             if (this.element.data('shuffle')) {
-                breeze.shuffleElements(this.element.find(this.options.elementsSelector));
+                $.breeze.shuffleElements(this.element.find(this.options.elementsSelector));
             }
 
-            breeze.revealElements(
+            $.breeze.revealElements(
                 this.element.find(this.options.elementsSelector),
                 this.element.data('limit'),
                 this.element.data('shuffle-weighted')

@@ -240,7 +240,7 @@
         }
 
         $.sections.get('cart').subscribe(function (updatedCart) {
-            var view = window.breeze.registry.get('minicart')[0];
+            var view = $.breeze.registry.get('minicart')[0];
 
             if (view) {
                 view.displaySubtotal(!isMsrpApplied(updatedCart.items));

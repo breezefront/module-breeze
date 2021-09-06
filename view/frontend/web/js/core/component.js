@@ -1,6 +1,5 @@
 /* global WeakMap ko _ */
-window.breeze = window.breeze || {};
-$.registry = window.breeze.registry = (function () {
+$.registry = $.breeze.registry = (function () {
     'use strict';
 
     var data = {};
@@ -94,7 +93,7 @@ $.registry = window.breeze.registry = (function () {
 })();
 
 /** Class factory */
-window.breeze.factory = function (Root, singleton) {
+$.breeze.factory = function (Root, singleton) {
     'use strict';
 
     var registry = {};
@@ -143,7 +142,7 @@ window.breeze.factory = function (Root, singleton) {
 $.prototypes = {};
 
 /** Abstract function to create components */
-window.breeze.component = function (factory) {
+$.breeze.component = function (factory) {
     'use strict';
 
     return function (fullname, parent, prototype) {
@@ -165,7 +164,7 @@ window.breeze.component = function (factory) {
                  * @param {String} method
                  */
                 invoke: function (method) {
-                    var collection = window.breeze.registry.get(name);
+                    var collection = $.breeze.registry.get(name);
 
                     if (!collection) {
                         return;
@@ -187,7 +186,7 @@ window.breeze.component = function (factory) {
                  * Destroy objects
                  */
                 destroy: function () {
-                    window.breeze.registry.delete(name);
+                    $.breeze.registry.delete(name);
                 }
             };
         }
@@ -558,9 +557,9 @@ window.breeze.component = function (factory) {
         }
     });
 
-    $.Base = window.breeze.Base = Base;
-    $.widget = window.breeze.widget = window.breeze.component(window.breeze.factory(Widget, false));
-    $.view = window.breeze.view = window.breeze.component(window.breeze.factory(View, false));
+    $.Base = $.breeze.Base = Base;
+    $.widget = $.breeze.widget = $.breeze.component($.breeze.factory(Widget, false));
+    $.view = $.breeze.view = $.breeze.component($.breeze.factory(View, false));
 
     /** Wrap prototype with mixins */
     $.mixin = function (name, mixins) {

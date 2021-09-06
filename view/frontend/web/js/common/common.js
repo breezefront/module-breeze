@@ -1,4 +1,4 @@
-/* global breeze _ ko */
+/* global _ ko */
 (function () {
     'use strict';
 
@@ -28,7 +28,7 @@
     });
 
     /** [getScopeId description] */
-    breeze.getScopeId = function (scope) {
+    $.breeze.getScopeId = function (scope) {
         var mapping = {
             'store': window.checkout ? window.checkout.storeId : '',
             'group': window.checkout ? window.checkout.storeGroupId : '',
@@ -43,7 +43,7 @@
     };
 
     /** [visit description] */
-    breeze.visit = function (url) {
+    $.breeze.visit = function (url) {
         if (typeof Turbo !== 'undefined') {
             // eslint-disable-next-line no-undef
             Turbo.visit(url);

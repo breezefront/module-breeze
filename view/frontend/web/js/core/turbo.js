@@ -45,7 +45,7 @@
 
     $(document).on(turboEventName('before-cache'), function () {
         // destroy all widgets and views
-        window.breeze.registry.delete();
+        $.breeze.registry.delete();
 
         $(document)
             .find('[data-breeze-temporary]')
@@ -72,11 +72,11 @@
     });
 
     // Fix for document.referrer when using turbo.
-    // Since it's readonly - use breeze.referrer instead.
+    // Since it's readonly - use $.breeze.referrer instead.
     (function () {
         var referrers = {};
 
-        window.breeze.referrer = $.storage.ns('breeze').get('referrer') || document.referrer;
+        $.breeze.referrer = $.storage.ns('breeze').get('referrer') || document.referrer;
 
         // Since this event doesn't work when using back/forward buttons we use it to update referrers
         // $.on is not used because it's overwrite event.data property
@@ -85,8 +85,8 @@
         });
 
         $(document).on(turboEventName('visit'), function () {
-            window.breeze.referrer = referrers[window.location.href] || document.referrer;
-            $.storage.ns('breeze').set('referrer', window.breeze.referrer);
+            $.breeze.referrer = referrers[window.location.href] || document.referrer;
+            $.storage.ns('breeze').set('referrer', $.breeze.referrer);
         });
     })();
 })();

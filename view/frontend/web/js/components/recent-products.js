@@ -1,4 +1,4 @@
-/* global breeze _ */
+/* global _ */
 (function () {
     'use strict';
 
@@ -32,7 +32,7 @@
         getIds: function () {
             var ids = $.storage.ns(this.options.storage).get(),
                 scope = this.options.productCurrentScope,
-                prefix = scope + '-' + breeze.getScopeId(scope),
+                prefix = scope + '-' + $.breeze.getScopeId(scope),
                 currentTime = new Date().getTime() / 1000;
 
             // jscs:disable requireCamelCaseOrUpperCaseIdentifiers

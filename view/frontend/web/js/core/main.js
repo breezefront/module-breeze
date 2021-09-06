@@ -18,8 +18,7 @@
         }
     }
 
-    window.breeze = window.breeze || {};
-    window.breeze.mount = mount;
+    $.breeze.mount = mount;
 
     /** Init view components */
     function mountView(scope, config) {
@@ -222,7 +221,7 @@
             i = 0;
 
         // destroy all widgets and views
-        window.breeze.registry.delete();
+        $.breeze.registry.delete();
 
         if (!newScripts.length) {
             return onBreezeLoad();
@@ -261,5 +260,5 @@
         $('body').trigger('breeze:resize');
     }, 100));
 
-    window.breeze.referrer = document.referrer;
+    $.breeze.referrer = document.referrer;
 })();

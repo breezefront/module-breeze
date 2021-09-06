@@ -1,11 +1,10 @@
-/* global breeze */
 (function () {
     'use strict';
 
     /**
      * @param {Cash} elements
      */
-    breeze.shuffleElements = function (elements) {
+    $.breeze.shuffleElements = function (elements) {
         var parent, child, lastSibling;
 
         if (elements.length) {
@@ -23,7 +22,7 @@
      * @param {Cash} elements
      * @param {Number} limit
      */
-    breeze.revealElements = function (elements, limit) {
+    $.breeze.revealElements = function (elements, limit) {
         limit = limit || elements.length;
 
         // Let's wait for the first feedback about not working `shuffle-group` logic

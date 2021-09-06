@@ -87,7 +87,7 @@
             var data = valueAccessor();
 
             _.each(data, function (config, component) {
-                window.breeze.mount(component, {
+                $.breeze.mount(component, {
                     settings: config,
                     el: el
                 });

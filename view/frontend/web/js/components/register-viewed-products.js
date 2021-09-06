@@ -1,4 +1,4 @@
-/* global breeze _ */
+/* global _ */
 (function () {
     'use strict';
 
@@ -6,7 +6,7 @@
         var products = $.storage.ns('product_data_storage'),
             recentlyViewed = $.storage.ns('recently_viewed_product'),
             scope = data.settings.data.productCurrentScope,
-            scopeId = breeze.getScopeId(scope);
+            scopeId = $.breeze.getScopeId(scope);
 
         _.each(data.settings.data.items, function (item, key) {
             products.set(key, item);

@@ -3,8 +3,7 @@
 
     var data = window.translations || {};
 
-    window.breeze = window.breeze || {};
-    $.translation = window.breeze.translation = {
+    $.translation = $.breeze.translation = {
         /** Add translation phrase|phrases */
         add: function () {
             if (arguments.length > 1) {

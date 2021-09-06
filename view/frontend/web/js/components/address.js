@@ -30,7 +30,7 @@
 
         /** [_addAddress description] */
         _addAddress: function () {
-            window.breeze.visit(this.options.addAddressLocation);
+            $.breeze.visit(this.options.addAddressLocation);
         },
 
         /** [_deleteAddress description] */
@@ -43,7 +43,7 @@
                 actions: {
                     /** [confirm description] */
                     confirm: function () {
-                        window.breeze.visit(
+                        $.breeze.visit(
                             self.options.deleteUrlPrefix +
                             id +
                             '/form_key/' +

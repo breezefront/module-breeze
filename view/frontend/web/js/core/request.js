@@ -1,4 +1,4 @@
-/* global superagent breeze */
+/* global superagent */
 (function () {
     'use strict';
 
@@ -67,7 +67,7 @@
      * @return {Object}
      */
     function prepareData(data) {
-        var formKey = breeze.cookies.get('form_key');
+        var formKey = $.breeze.cookies.get('form_key');
 
         if (data.each && data.get) {
             data = data.get(0);
@@ -142,8 +142,7 @@
             });
     }
 
-    window.breeze = window.breeze || {};
-    $.request = window.breeze.request = {
+    $.request = $.breeze.request = {
         /**
          * @param {Object} params
          * @return {Promise}

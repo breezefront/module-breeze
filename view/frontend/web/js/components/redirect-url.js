@@ -25,7 +25,7 @@
          * @private
          */
         _onEvent: function () {
-            window.breeze.visit(this.options.url || this.element.val());
+            $.breeze.visit(this.options.url || this.element.val());
         }
     });
 })();
