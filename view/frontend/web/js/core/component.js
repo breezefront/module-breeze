@@ -95,7 +95,12 @@ $.registry = $.breeze.registry = (function () {
 (function () {
     'use strict';
 
-    var Base, Widget, View, prototypes = {};
+    var Base, Widget, View,
+        prototypes = {},
+        pending = {
+            mixins: {},
+            components: {}
+        };
 
     /** Class factory */
     function createFactory(Root, singleton) {
@@ -142,9 +147,119 @@ $.registry = $.breeze.registry = (function () {
         };
     }
 
+    /** [registerComponent description] */
+    function registerComponent(factory, fullname, prototype) {
+        var name = fullname.split('.').pop();
+
+        /** @param {Object|Function|String} settings */
+        $.fn[name] = function (settings) {
+            var result = this,
+                args = arguments;
+
+            if ($.isPlainObject(this)) {
+                // object without element: $.fn.dataPost().send()
+                result = factory.create(name, prototype, settings, window);
+            } else if (typeof settings === 'string') {
+                // object instance or method: $(el).dropdown('open')
+                args = Array.prototype.slice.call(args, 1);
+
+                if (settings === 'instance') {
+                    result = undefined;
+                }
+
+                this.each(function () {
+                    var tmp,
+                        instance = $.registry.get(name, this);
+
+                    if (settings === 'instance') {
+                        if (!instance) {
+                            return;
+                        }
+
+                        result = instance;
+
+                        return false;
+                    }
+
+                    if (!instance) {
+                        return;
+                    }
+
+                    tmp = instance[settings].apply(instance, args);
+
+                    if (tmp !== instance && tmp !== undefined) {
+                        result = tmp;
+
+                        return false;
+                    }
+                });
+            } else {
+                // object initialization: $(el).dropdown({...})
+                this.each(function () {
+                    var el = this,
+                        instance = $.registry.get(name, el);
+
+                    if (!instance) {
+                        instance = factory.create(name, prototype, settings, el);
+                    } else {
+                        instance._options(settings).init();
+                    }
+                });
+            }
+
+            return result;
+        };
+
+        /** Alternative widget access. Example: $.mage.tabs accessible via mageTabs */
+        (function () {
+            var tmp,
+                parts = fullname.split('.'),
+                ns = parts.shift(),
+                fn = parts.pop();
+
+            $[ns] = $[ns] || {};
+            tmp = $[ns];
+
+            $.each(parts, function (key) {
+                tmp = tmp[key] || {};
+            });
+
+            /** Alternative widget access. Example: $.mage.tabs */
+            tmp[fn] = function (settings, element) {
+                return factory.create(name, prototypes[name], settings, element);
+            };
+        })();
+
+        // automatically mount component
+        if (prototype.prototype.hasOwnProperty('component') && prototype.prototype.component) {
+            $(document).on('breeze:mount:' + prototype.prototype.component, function (event, data) {
+                var componentName = prototype.prototype.component;
+
+                if (componentName === false) {
+                    return;
+                }
+
+                if (!data.el) {
+                    $.fn[name](data.settings);
+                } else {
+                    $(data.el)[name](data.settings);
+                    $(data.el).get(0)['breeze:' + componentName] = $(data.el)[name]('instance');
+                }
+            });
+        }
+
+        return $.fn[name];
+    }
+
     /** Abstract function to create components */
     function createComponent(factory) {
-        return function (fullname, parent, prototype) {
+        /**
+         * @param {String} fullname
+         * @param {String} parent
+         * @param {Object} prototype
+         * @return {Object}
+         */
+        function invoke(fullname, parent, prototype) {
             var name = fullname.split('.').pop();
 
             if (!prototype) {
@@ -192,111 +307,47 @@ $.registry = $.breeze.registry = (function () {
 
             if (parent) {
                 if (!prototypes[parent]) {
-                    throw new Error(name + ': Parent component is not found: ' + parent);
+                    // eslint-disable-next-line max-depth
+                    if (!pending.components[parent]) {
+                        pending.components[parent] = [];
+                    }
+
+                    // delay component creation until parent will be created too
+                    pending.components[parent].push({
+                        fullname: fullname,
+                        parent: parent,
+                        prototype: prototype
+                    });
+
+                    return;
                 }
+
                 parent = prototypes[parent];
             }
 
             prototype = factory.extend(prototype, parent);
             prototypes[name] = prototype;
 
-            if (prototype.prototype.hasOwnProperty('component') && prototype.prototype.component) {
-                $(document).on('breeze:mount:' + prototype.prototype.component, function (event, data) {
-                    var componentName = prototype.prototype.component;
-
-                    if (componentName === false) {
-                        return;
-                    }
-
-                    if (!data.el) {
-                        $.fn[name](data.settings);
-                    } else {
-                        $(data.el)[name](data.settings);
-                        $(data.el).get(0)['breeze:' + componentName] = $(data.el)[name]('instance');
-                    }
+            // apply pending mixins
+            if (pending.mixins[name]) {
+                $.each(pending.mixins[name], function () {
+                    $.mixin(name, this);
                 });
+                delete pending.mixins[name];
             }
 
-            /** @param {Object|Function|String} settings */
-            $.fn[name] = function (settings) {
-                var result = this,
-                    args = arguments;
-
-                if ($.isPlainObject(this)) {
-                    // object without element: $.fn.dataPost().send()
-                    result = factory.create(name, prototype, settings, window);
-                } else if (typeof settings === 'string') {
-                    // object instance or method: $(el).dropdown('open')
-                    args = Array.prototype.slice.call(args, 1);
-
-                    if (settings === 'instance') {
-                        result = undefined;
-                    }
-
-                    this.each(function () {
-                        var tmp,
-                            instance = $.registry.get(name, this);
-
-                        if (settings === 'instance') {
-                            if (!instance) {
-                                return;
-                            }
-
-                            result = instance;
-
-                            return false;
-                        }
-
-                        if (!instance) {
-                            return;
-                        }
-
-                        tmp = instance[settings].apply(instance, args);
-
-                        if (tmp !== instance && tmp !== undefined) {
-                            result = tmp;
-
-                            return false;
-                        }
-                    });
-                } else {
-                    // object initialization: $(el).dropdown({...})
-                    this.each(function () {
-                        var el = this,
-                            instance = $.registry.get(name, el);
-
-                        if (!instance) {
-                            instance = factory.create(name, prototype, settings, el);
-                        } else {
-                            instance._options(settings).init();
-                        }
-                    });
-                }
-
-                return result;
-            };
-
-            (function () {
-                var tmp,
-                    parts = fullname.split('.'),
-                    ns = parts.shift(),
-                    fn = parts.pop();
-
-                $[ns] = $[ns] || {};
-                tmp = $[ns];
-
-                $.each(parts, function (key) {
-                    tmp = tmp[key] || {};
+            // create pending components
+            if (pending.components[name]) {
+                $.each(pending.components[name], function () {
+                    invoke(this.fullname, this.parent, this.prototype);
                 });
+                delete pending.components[name];
+            }
 
-                /** Alternative widget access. Example: $.mage.tabs */
-                tmp[fn] = function (settings, element) {
-                    return factory.create(name, prototypes[name], settings, element);
-                };
-            })();
+            return registerComponent(factory, fullname, prototype);
+        }
 
-            return $.fn[name];
-        };
+        return invoke;
     }
 
     Base = Class.extend({
@@ -562,17 +613,18 @@ $.registry = $.breeze.registry = (function () {
 
     /** Wrap prototype with mixins */
     $.mixin = function (name, mixins) {
-        _.each(mixins, function (mixin, key) {
-            var mixinType = typeof mixin,
-                originalType,
-                proto;
-
-            if (!prototypes[name] || !prototypes[name].prototype) {
-                return;
+        if (!prototypes[name]) {
+            if (!pending.mixins[name]) {
+                pending.mixins[name] = [];
             }
 
-            proto = prototypes[name].prototype;
-            originalType = typeof proto[key];
+            return pending.mixins[name].push(mixins);
+        }
+
+        _.each(mixins, function (mixin, key) {
+            var proto = prototypes[name].prototype,
+                mixinType = typeof mixin,
+                originalType = typeof proto[key];
 
             if (mixinType === 'function' && originalType === 'function') {
                 proto[key] = _.wrap(proto[key], function () {
