@@ -5,13 +5,15 @@
     var scripts = {};
 
     /** Init 'data-mage-init' and 'text/x-magento-init' scripts */
-    function mount(component, data) {
+    function mount(component, data, now) {
         /** Callback to run while browser is resting */
         function callback() {
             $(document).trigger('breeze:mount:' + component, data);
         }
 
-        if (window.requestIdleCallback) {
+        if (now) {
+            callback();
+        } else if (window.requestIdleCallback) {
             window.requestIdleCallback(callback);
         } else {
             window.setTimeout(callback, 1);

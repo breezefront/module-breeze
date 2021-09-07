@@ -546,10 +546,11 @@ $.registry = $.breeze.registry = (function () {
 
         /** [mount description] */
         mount: function (config) {
-            $(document).trigger('breeze:mount:' + config.component, {
+            // @see main.js
+            $.breeze.mount(config.component, {
                 el: this.element,
                 settings: config
-            });
+            }, true);
 
             return this.element.get(0)['breeze:' + config.component];
         }
