@@ -563,24 +563,26 @@ $.registry = $.breeze.registry = (function () {
     $.mixin = function (name, mixins) {
         _.each(mixins, function (mixin, key) {
             var mixinType = typeof mixin,
-                originalType;
+                originalType,
+                proto;
 
             if (!prototypes[name] || !prototypes[name].prototype) {
                 return;
             }
 
-            originalType = typeof prototypes[name].prototype[key];
+            proto = prototypes[name].prototype;
+            originalType = typeof proto[key];
 
             if (mixinType === 'function' && originalType === 'function') {
-                prototypes[name].prototype[key] = _.wrap(prototypes[name].prototype[key], function () {
+                proto[key] = _.wrap(proto[key], function () {
                     arguments[0] = arguments[0].bind(this);
 
                     return mixin.apply(this, _.toArray(arguments));
                 });
             } else if (mixinType === 'object' && originalType === 'object') {
-                prototypes[name].prototype[key] = _.extend({}, prototypes[name].prototype[key], mixin);
+                proto[key] = _.extend({}, proto[key], mixin);
             } else {
-                prototypes[name].prototype[key] = mixin;
+                proto[key] = mixin;
             }
         });
     };
