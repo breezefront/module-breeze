@@ -92,218 +92,212 @@ $.registry = $.breeze.registry = (function () {
     };
 })();
 
-/** Class factory */
-$.breeze.factory = function (Root, singleton) {
+(function () {
     'use strict';
 
-    var registry = {};
+    var Base, Widget, View, prototypes = {};
 
-    return {
-        /** Extends Base prototype with Parent or Root */
-        extend: function (Base, Parent) {
-            return (Parent || Root).extend(Base);
-        },
+    /** Class factory */
+    function createFactory(Root, singleton) {
+        var registry = {};
 
-        /** Creates a new instance of Base prototype */
-        create: function (name, Base, settings, el) {
-            var instance, key, exists = false;
+        return {
+            /** Extends Base prototype with Parent or Root */
+            extend: function (BasePrototype, Parent) {
+                return (Parent || Root).extend(BasePrototype);
+            },
 
-            settings = settings || {};
-            key = settings.__scope;
-            instance = registry[key];
+            /** Creates a new instance of Base prototype */
+            create: function (name, BasePrototype, settings, el) {
+                var instance, key, exists = false;
 
-            if (instance && instance.element) {
-                exists = $('body').has(instance.element.get(0)).length > 0;
+                settings = settings || {};
+                key = settings.__scope;
+                instance = registry[key];
 
-                if (!exists) {
-                    instance.destroy();
-                    instance = false;
-                    delete registry[key];
+                if (instance && instance.element) {
+                    exists = $('body').has(instance.element.get(0)).length > 0;
+
+                    if (!exists) {
+                        instance.destroy();
+                        instance = false;
+                        delete registry[key];
+                    }
                 }
-            }
 
-            if (singleton && instance && instance.element) {
-                registry[key]._applyBindings(el);
-            } else {
-                instance = new Base(name, settings, el);
-
-                if (singleton && key) {
-                    registry[key] = instance;
+                if (singleton && instance && instance.element) {
+                    registry[key]._applyBindings(el);
                 } else {
-                    return instance;
+                    instance = new BasePrototype(name, settings, el);
+
+                    if (singleton && key) {
+                        registry[key] = instance;
+                    } else {
+                        return instance;
+                    }
                 }
+
+                return registry[key];
+            }
+        };
+    }
+
+    /** Abstract function to create components */
+    function createComponent(factory) {
+        return function (fullname, parent, prototype) {
+            var name = fullname.split('.').pop();
+
+            if (!prototype) {
+                prototype = parent;
+                parent = undefined;
             }
 
-            return registry[key];
-        }
-    };
-};
+            if (typeof prototype === 'undefined') {
+                return {
+                    /**
+                     * Example:
+                     *
+                     *     $.view('messages').invoke('removeCookieMessages');
+                     *     $.widget('dropdown').invoke('close');
+                     *
+                     * @param {String} method
+                     */
+                    invoke: function (method) {
+                        var collection = $.breeze.registry.get(name);
 
-$.prototypes = {};
+                        if (!collection) {
+                            return;
+                        }
 
-/** Abstract function to create components */
-$.breeze.component = function (factory) {
-    'use strict';
+                        collection.forEach(function (instance) {
+                            if (instance[method]) {
+                                instance[method]();
+                            }
+                        });
+                    },
 
-    return function (fullname, parent, prototype) {
-        var name = fullname.split('.').pop();
+                    /**
+                     * Example:
+                     *
+                     *     $.view('messages').destroy();
+                     *     $.widget('dropdown').destroy();
+                     *
+                     * Destroy objects
+                     */
+                    destroy: function () {
+                        $.breeze.registry.delete(name);
+                    }
+                };
+            }
 
-        if (!prototype) {
-            prototype = parent;
-            parent = undefined;
-        }
+            if (parent) {
+                if (!prototypes[parent]) {
+                    throw new Error(name + ': Parent component is not found: ' + parent);
+                }
+                parent = prototypes[parent];
+            }
 
-        if (typeof prototype === 'undefined') {
-            return {
-                /**
-                 * Example:
-                 *
-                 *     $.view('messages').invoke('removeCookieMessages');
-                 *     $.widget('dropdown').invoke('close');
-                 *
-                 * @param {String} method
-                 */
-                invoke: function (method) {
-                    var collection = $.breeze.registry.get(name);
+            prototype = factory.extend(prototype, parent);
+            prototypes[name] = prototype;
 
-                    if (!collection) {
+            if (prototype.prototype.hasOwnProperty('component') && prototype.prototype.component) {
+                $(document).on('breeze:mount:' + prototype.prototype.component, function (event, data) {
+                    var componentName = prototype.prototype.component;
+
+                    if (componentName === false) {
                         return;
                     }
 
-                    collection.forEach(function (instance) {
-                        if (instance[method]) {
-                            instance[method]();
-                        }
-                    });
-                },
-
-                /**
-                 * Example:
-                 *
-                 *     $.view('messages').destroy();
-                 *     $.widget('dropdown').destroy();
-                 *
-                 * Destroy objects
-                 */
-                destroy: function () {
-                    $.breeze.registry.delete(name);
-                }
-            };
-        }
-
-        if (parent) {
-            if (!$.prototypes[parent]) {
-                throw new Error(name + ': Parent component is not found: ' + parent);
+                    if (!data.el) {
+                        $.fn[name](data.settings);
+                    } else {
+                        $(data.el)[name](data.settings);
+                        $(data.el).get(0)['breeze:' + componentName] = $(data.el)[name]('instance');
+                    }
+                });
             }
-            parent = $.prototypes[parent];
-        }
 
-        prototype = factory.extend(prototype, parent);
-        $.prototypes[name] = prototype;
+            /** @param {Object|Function|String} settings */
+            $.fn[name] = function (settings) {
+                var result = this,
+                    args = arguments;
 
-        if (prototype.prototype.hasOwnProperty('component') && prototype.prototype.component) {
-            $(document).on('breeze:mount:' + prototype.prototype.component, function (event, data) {
-                var component = prototype.prototype.component;
-
-                if (component === false) {
-                    return;
-                }
-
-                if (!data.el) {
-                    $.fn[name](data.settings);
-                } else {
-                    $(data.el)[name](data.settings);
-                    $(data.el).get(0)['breeze:' + component] = $(data.el)[name]('instance');
-                }
-            });
-        }
-
-        /** @param {Object|Function|String} settings */
-        $.fn[name] = function (settings) {
-            var result = this,
-                args = arguments;
-
-            if ($.isPlainObject(this)) {
-                // object without element: $.fn.dataPost().send()
-                result = factory.create(name, prototype, settings, window);
-            } else if (typeof settings === 'string') {
-                // object instance or method: $(el).dropdown('open')
-                args = Array.prototype.slice.call(args, 1);
-
-                if (settings === 'instance') {
-                    result = undefined;
-                }
-
-                this.each(function () {
-                    var tmp,
-                        instance = $.registry.get(name, this);
+                if ($.isPlainObject(this)) {
+                    // object without element: $.fn.dataPost().send()
+                    result = factory.create(name, prototype, settings, window);
+                } else if (typeof settings === 'string') {
+                    // object instance or method: $(el).dropdown('open')
+                    args = Array.prototype.slice.call(args, 1);
 
                     if (settings === 'instance') {
+                        result = undefined;
+                    }
+
+                    this.each(function () {
+                        var tmp,
+                            instance = $.registry.get(name, this);
+
+                        if (settings === 'instance') {
+                            if (!instance) {
+                                return;
+                            }
+
+                            result = instance;
+
+                            return false;
+                        }
+
                         if (!instance) {
                             return;
                         }
 
-                        result = instance;
+                        tmp = instance[settings].apply(instance, args);
 
-                        return false;
-                    }
+                        if (tmp !== instance && tmp !== undefined) {
+                            result = tmp;
 
-                    if (!instance) {
-                        return;
-                    }
+                            return false;
+                        }
+                    });
+                } else {
+                    // object initialization: $(el).dropdown({...})
+                    this.each(function () {
+                        var el = this,
+                            instance = $.registry.get(name, el);
 
-                    tmp = instance[settings].apply(instance, args);
+                        if (!instance) {
+                            instance = factory.create(name, prototype, settings, el);
+                        } else {
+                            instance._options(settings).init();
+                        }
+                    });
+                }
 
-                    if (tmp !== instance && tmp !== undefined) {
-                        result = tmp;
-
-                        return false;
-                    }
-                });
-            } else {
-                // object initialization: $(el).dropdown({...})
-                this.each(function () {
-                    var el = this,
-                        instance = $.registry.get(name, el);
-
-                    if (!instance) {
-                        instance = factory.create(name, prototype, settings, el);
-                    } else {
-                        instance._options(settings).init();
-                    }
-                });
-            }
-
-            return result;
-        };
-
-        (function () {
-            var tmp,
-                parts = fullname.split('.'),
-                ns = parts.shift(),
-                fn = parts.pop();
-
-            $[ns] = $[ns] || {};
-            tmp = $[ns];
-
-            $.each(parts, function (key) {
-                tmp = tmp[key] || {};
-            });
-
-            /** Alternative widget access. Example: $.mage.tabs */
-            tmp[fn] = function (settings, element) {
-                return factory.create(name, $.prototypes[name], settings, element);
+                return result;
             };
-        })();
 
-        return $.fn[name];
-    };
-};
+            (function () {
+                var tmp,
+                    parts = fullname.split('.'),
+                    ns = parts.shift(),
+                    fn = parts.pop();
 
-(function () {
-    'use strict';
+                $[ns] = $[ns] || {};
+                tmp = $[ns];
 
-    var Base, Widget, View;
+                $.each(parts, function (key) {
+                    tmp = tmp[key] || {};
+                });
+
+                /** Alternative widget access. Example: $.mage.tabs */
+                tmp[fn] = function (settings, element) {
+                    return factory.create(name, prototypes[name], settings, element);
+                };
+            })();
+
+            return $.fn[name];
+        };
+    }
 
     Base = Class.extend({
         create: _.noop,
@@ -562,8 +556,8 @@ $.breeze.component = function (factory) {
     });
 
     $.Base = $.breeze.Base = Base;
-    $.widget = $.breeze.widget = $.breeze.component($.breeze.factory(Widget, false));
-    $.view = $.breeze.view = $.breeze.component($.breeze.factory(View, false));
+    $.widget = $.breeze.widget = createComponent(createFactory(Widget));
+    $.view = $.breeze.view = createComponent(createFactory(View));
 
     /** Wrap prototype with mixins */
     $.mixin = function (name, mixins) {
@@ -571,22 +565,22 @@ $.breeze.component = function (factory) {
             var mixinType = typeof mixin,
                 originalType;
 
-            if (!$.prototypes[name] || !$.prototypes[name].prototype) {
+            if (!prototypes[name] || !prototypes[name].prototype) {
                 return;
             }
 
-            originalType = typeof $.prototypes[name].prototype[key];
+            originalType = typeof prototypes[name].prototype[key];
 
             if (mixinType === 'function' && originalType === 'function') {
-                $.prototypes[name].prototype[key] = _.wrap($.prototypes[name].prototype[key], function () {
+                prototypes[name].prototype[key] = _.wrap(prototypes[name].prototype[key], function () {
                     arguments[0] = arguments[0].bind(this);
 
                     return mixin.apply(this, _.toArray(arguments));
                 });
             } else if (mixinType === 'object' && originalType === 'object') {
-                $.prototypes[name].prototype[key] = _.extend({}, $.prototypes[name].prototype[key], mixin);
+                prototypes[name].prototype[key] = _.extend({}, prototypes[name].prototype[key], mixin);
             } else {
-                $.prototypes[name].prototype[key] = mixin;
+                prototypes[name].prototype[key] = mixin;
             }
         });
     };
