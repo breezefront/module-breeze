@@ -568,16 +568,23 @@ $.breeze.component = function (factory) {
     /** Wrap prototype with mixins */
     $.mixin = function (name, mixins) {
         _.each(mixins, function (mixin, key) {
-            if (!$.prototypes[name]) {
+            var mixinType = typeof mixin,
+                originalType;
+
+            if (!$.prototypes[name] || !$.prototypes[name].prototype) {
                 return;
             }
 
-            if (typeof mixin === 'function' && typeof $.prototypes[name].prototype[key] === 'function') {
+            originalType = typeof $.prototypes[name].prototype[key];
+
+            if (mixinType === 'function' && originalType === 'function') {
                 $.prototypes[name].prototype[key] = _.wrap($.prototypes[name].prototype[key], function () {
                     arguments[0] = arguments[0].bind(this);
 
                     return mixin.apply(this, _.toArray(arguments));
                 });
+            } else if (mixinType === 'object' && originalType === 'object') {
+                $.prototypes[name].prototype[key] = _.extend({}, $.prototypes[name].prototype[key], mixin);
             } else {
                 $.prototypes[name].prototype[key] = mixin;
             }
