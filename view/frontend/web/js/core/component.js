@@ -210,22 +210,25 @@ $.registry = $.breeze.registry = (function () {
             return result;
         };
 
-        /** Alternative widget access. Example: $.mage.tabs accessible via mageTabs */
+        /**
+         * Alternative widget access. Example:
+         *
+         * $.widget('mage.tabs') accessible via $(selector).tabs
+         * $.widget('argento.argentoTabs') accessible via $(selector).argentoTabs
+         */
         (function () {
-            var tmp,
-                parts = fullname.split('.'),
+            var parts = fullname.split('.'),
                 ns = parts.shift(),
                 fn = parts.pop();
 
-            $[ns] = $[ns] || {};
-            tmp = $[ns];
+            if (!ns || !fn) {
+                return;
+            }
 
-            $.each(parts, function (key) {
-                tmp = tmp[key] || {};
-            });
+            $[ns] = $[ns] || {};
 
             /** Alternative widget access. Example: $.mage.tabs */
-            tmp[fn] = function (settings, element) {
+            $[ns][fn] = function (settings, element) {
                 return factory.create(name, prototypes[name], settings, element);
             };
         })();
