@@ -8,6 +8,9 @@
     function mount(component, data, now) {
         /** Callback to run while browser is resting */
         function callback() {
+            $(document).trigger('breeze:mount', $.extend({}, data, {
+                __component: component
+            }));
             $(document).trigger('breeze:mount:' + component, data);
         }
 

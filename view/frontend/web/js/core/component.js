@@ -96,6 +96,7 @@ $.registry = $.breeze.registry = (function () {
     'use strict';
 
     var Base, Widget, View,
+        mapping = {},
         prototypes = {},
         pending = {
             mixins: {},
@@ -203,26 +204,35 @@ $.registry = $.breeze.registry = (function () {
             };
         })();
 
-        // automatically mount component
         if (prototype.prototype.hasOwnProperty('component') && prototype.prototype.component) {
-            $(document).on('breeze:mount:' + prototype.prototype.component, function (event, data) {
-                var componentName = prototype.prototype.component;
-
-                if (componentName === false) {
-                    return;
-                }
-
-                if (!data.el) {
-                    $.fn[name](data.settings);
-                } else {
-                    $(data.el)[name](data.settings);
-                    $(data.el).get(0)['breeze:' + componentName] = $(data.el)[name]('instance');
-                }
-            });
+            mapping[prototype.prototype.component] = name;
         }
 
         return $.fn[name];
     }
+
+    // automatically mount components
+    $(document).on('breeze:mount', function (event, data) {
+        var alias = mapping[data.__component],
+            component;
+
+        if (!alias) {
+            return;
+        }
+
+        component = prototypes[alias].prototype.component;
+
+        if (component === false) {
+            return;
+        }
+
+        if (!data.el) {
+            $.fn[alias](data.settings);
+        } else {
+            $(data.el)[alias](data.settings);
+            $(data.el).get(0)['breeze:' + component] = $(data.el)[alias]('instance');
+        }
+    });
 
     /** Abstract function to create components */
     function createComponent(factory) {
