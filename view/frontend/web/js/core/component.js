@@ -103,9 +103,7 @@ $.registry = $.breeze.registry = (function () {
         };
 
     /** Class factory */
-    function createFactory(Root, singleton) {
-        var registry = {};
-
+    function createFactory(Root) {
         return {
             /** Extends Base prototype with Parent or Root */
             extend: function (BasePrototype, Parent) {
@@ -114,35 +112,7 @@ $.registry = $.breeze.registry = (function () {
 
             /** Creates a new instance of Base prototype */
             create: function (name, BasePrototype, settings, el) {
-                var instance, key, exists = false;
-
-                settings = settings || {};
-                key = settings.__scope;
-                instance = registry[key];
-
-                if (instance && instance.element) {
-                    exists = $('body').has(instance.element.get(0)).length > 0;
-
-                    if (!exists) {
-                        instance.destroy();
-                        instance = false;
-                        delete registry[key];
-                    }
-                }
-
-                if (singleton && instance && instance.element) {
-                    registry[key]._applyBindings(el);
-                } else {
-                    instance = new BasePrototype(name, settings, el);
-
-                    if (singleton && key) {
-                        registry[key] = instance;
-                    } else {
-                        return instance;
-                    }
-                }
-
-                return registry[key];
+                return new BasePrototype(name, settings || {}, el);
             }
         };
     }
