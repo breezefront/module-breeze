@@ -184,8 +184,8 @@ $.registry = $.breeze.registry = (function () {
         /**
          * Alternative widget access. Example:
          *
-         * $.widget('mage.tabs') accessible via $(selector).tabs
-         * $.widget('argento.argentoTabs') accessible via $(selector).argentoTabs
+         * $.widget('mage.tabs') accessible via $(selector).tabs and $.mage.tabs
+         * $.widget('argento.argentoTabs') accessible via $(selector).argentoTabs and $.argento.argentoTabs
          */
         (function () {
             var parts = fullname.split('.'),
