@@ -6,12 +6,16 @@ use Magento\Framework\Event\ObserverInterface;
 
 class LayoutLoadBefore implements ObserverInterface
 {
-    protected $helper;
+    private $helper;
+
+    private $pageConfig;
 
     public function __construct(
-        \Swissup\Breeze\Helper\Data $helper
+        \Swissup\Breeze\Helper\Data $helper,
+        \Magento\Framework\View\Page\Config $pageConfig
     ) {
         $this->helper = $helper;
+        $this->pageConfig = $pageConfig;
     }
 
     /**
@@ -23,6 +27,8 @@ class LayoutLoadBefore implements ObserverInterface
         if (!$this->helper->isEnabled()) {
             return;
         }
+
+        $this->pageConfig->addBodyClass('breeze');
 
         $update = $observer->getLayout()->getUpdate();
         $additionalHandles = [
