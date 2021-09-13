@@ -1,0 +1,21 @@
+.bz-scrollbar(
+    @size: @bz-scrollbar__size,
+    @border-radius: @bz-scrollbar__border-radius,
+    @track-background-color: @bz-scrollbar__background-color,
+    @thumb-background-color: @bz-scrollbar-thumb__background-color
+) {
+    -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar {
+        width: @size;
+        height: @size;
+    }
+    &::-webkit-scrollbar-track {
+        background-color: @track-background-color;
+        border-radius: @border-radius;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: @thumb-background-color;
+        border-radius: @border-radius;
+    }
+}

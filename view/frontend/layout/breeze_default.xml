@@ -266,6 +266,18 @@
                             <item name="Magento_Sales/js/view/last-ordered-items" xsi:type="string">Swissup_Breeze/js/components/last-ordered-items</item>
                         </item>
                     </item>
+                    <item name="cms" xsi:type="array">
+                        <item name="sort_order" xsi:type="number">35</item>
+                        <item name="items" xsi:type="array">
+                            <item name="Magento_PageBuilder/js/widget-initializer" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/initializer</item>
+                                <item name="import" xsi:type="array">
+                                    <item name="slider" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/slider</item>
+                                    <item name="carousel" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/carousel</item>
+                                </item>
+                            </item>
+                        </item>
+                    </item>
                 </argument>
             </arguments>
         </block>

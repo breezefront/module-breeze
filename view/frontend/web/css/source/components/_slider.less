@@ -1,0 +1,49 @@
+& when (@media-common = true) {
+    .breeze {
+        // reset default styles
+        div[data-content-type='slider'] {
+            visibility: visible;
+            [data-content-type='slide'] + [data-content-type='slide'] {
+                height: initial;
+                min-height: inherit;
+            }
+        }
+
+        // add some new styles
+        div[data-content-type='slider'] {
+            display: flex;
+            position: relative;
+            overflow-x: scroll;
+            margin-bottom: 10px;
+            &.slick-initialized {
+                display: block;
+                overflow: hidden;
+                padding-bottom: 0;
+            }
+            [data-content-type='slide'] {
+                width: 100%;
+                flex: none;
+                scroll-snap-align: start;
+            }
+        }
+        .pagebuilder-slider,
+        .slick-list {
+            .bz-scrollbar();
+            padding-bottom: 10px;
+        }
+        .slick-list {
+            display: flex;
+            width: 100%;
+            overflow-x: scroll;
+            scroll-behavior: smooth;
+            scroll-snap-type: x mandatory;
+        }
+        .slick-dots {
+            position: absolute;
+            bottom: 6px;
+            li {
+                z-index: 5;
+            }
+        }
+    }
+}

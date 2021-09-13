@@ -1,0 +1,24 @@
+& when (@media-common = true) {
+    .breeze {
+        [data-content-type='products'][data-appearance='carousel'] {
+            position: relative;
+            margin-bottom: 10px;
+
+            .product-items {
+                display: flex;
+                overflow-x: scroll;
+                scroll-behavior: smooth;
+                scroll-snap-type: x mandatory;
+                margin-bottom: 0;
+                padding-bottom: 10px;
+                .bz-scrollbar();
+            }
+
+            li.product-item {
+                display: block;
+                visibility: visible;
+                scroll-snap-align: start;
+            }
+        }
+    }
+}
