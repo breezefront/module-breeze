@@ -87,9 +87,12 @@
 
             this.element
                 .on('click', this.stop.bind(this))
-                .on('click', '.slick-next', this.next.bind(this))
-                .on('click', '.slick-prev', this.prev.bind(this))
-                .on('click', '.slick-dots li', function () {
+                .on('click', '.slick-next, .slick-prev', function () {
+                    event.preventDefault();
+                    self[$(this).hasClass('slick-prev') ? 'prev' : 'next']();
+                })
+                .on('click', '.slick-dots li', function (event) {
+                    event.preventDefault();
                     self.scrollToPage($(this).index());
                 })
                 .hover(this.pause.bind(this), this.start.bind(this));
