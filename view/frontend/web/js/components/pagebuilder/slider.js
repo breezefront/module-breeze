@@ -45,6 +45,7 @@
             });
 
             this.prepareMarkup();
+            this.updateArrows();
             this.addEventListeners();
             this.element.addClass('slick-initialized');
 
@@ -58,14 +59,12 @@
             var arrowTpl = _.template(this.options.templates.arrow);
 
             if (this.options.slider) {
-                this.slides = this.options.slider.children();
                 this.options.slider.addClass('slick-list');
-            } else {
-                this.slides = this.element.children();
+            } else if (!this.element.find('.slick-list').length) {
                 this.element.wrapInner('<div class="slick-list"/>');
             }
 
-            if (this.options.arrows) {
+            if (this.options.arrows && !this.element.find('.slick-next').length) {
                 this.element.prepend(arrowTpl({
                     css: 'slick-prev',
                     label: $.__('Previous')
@@ -77,6 +76,7 @@
             }
 
             this.slider = this.element.find('.slick-list');
+            this.slides = this.slider.children();
             this.nextEl = this.element.find('.slick-next');
             this.prevEl = this.element.find('.slick-prev');
         },
@@ -187,23 +187,30 @@
                 .eq(this.page)
                 .addClass('slick-active');
 
-            if (!this.options.infinite) {
-                this.nextEl.add(this.prevEl)
-                    .prop('disabled', false)
-                    .attr('aria-disabled', false)
-                    .removeClass('slick-disabled');
+            this.updateArrows();
+        },
 
-                if (this.page === 0) {
-                    this.prevEl
-                        .prop('disabled', true)
-                        .attr('aria-disabled', true)
-                        .addClass('slick-disabled');
-                } else if (this.page === this.pages.length - 1) {
-                    this.nextEl
-                        .prop('disabled', true)
-                        .attr('aria-disabled', true)
-                        .addClass('slick-disabled');
-                }
+        /** [updateArrows description] */
+        updateArrows: function () {
+            if (this.options.infinite) {
+                return;
+            }
+
+            this.nextEl.add(this.prevEl)
+                .prop('disabled', false)
+                .attr('aria-disabled', false)
+                .removeClass('slick-disabled');
+
+            if (this.page === 0) {
+                this.prevEl
+                    .prop('disabled', true)
+                    .attr('aria-disabled', true)
+                    .addClass('slick-disabled');
+            } else if (this.page === this.pages.length - 1) {
+                this.nextEl
+                    .prop('disabled', true)
+                    .attr('aria-disabled', true)
+                    .addClass('slick-disabled');
             }
         },
 

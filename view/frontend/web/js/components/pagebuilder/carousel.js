@@ -6,8 +6,10 @@
 
         /** [create description] */
         create: function () {
+            var slider = this.element.find('.slick-list');
+
             this.element.pagebuilderSlider($.extend({}, this.options, {
-                slider: this.element.children()
+                slider: slider.length ? slider : this.element.children()
             }));
         }
     });
