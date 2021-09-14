@@ -167,15 +167,16 @@
             var pageNum = this.page,
                 page = this.pages[pageNum],
                 offset = this.slider.get(0).scrollLeft,
+                delta = 2,
                 width = this.slider.outerWidth(),
                 diffStart = Math.abs(page.start - offset);
 
-            if (diffStart > 2) { // rounding issues
+            if (diffStart > delta) { // rounding issues
                 $.each(this.pages, function (i) {
                     var diffTmp = Math.abs(this.start - offset);
 
                     // if whole page is visible (last page with less slides per view)
-                    if (this.start >= offset && this.end <= offset + width) {
+                    if (this.start >= offset && this.end <= offset + width + delta) {
                         pageNum = i;
 
                         return false;
