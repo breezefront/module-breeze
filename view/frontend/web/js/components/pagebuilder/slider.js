@@ -45,7 +45,6 @@
             });
 
             this.prepareMarkup();
-            this.updateArrows();
             this.addEventListeners();
             this.element.addClass('slick-initialized');
 
@@ -143,19 +142,24 @@
 
             if (this.options.dots) {
                 this.element.find('.slick-dots').remove();
-                $.each(this.pages, function (i) {
-                    dots.push({
-                        css: i === self.page ? 'slick-active' : '',
-                        label: i + 1,
-                        ariaLabel: i + 1 + '/' + self.pages.length
+
+                if (this.pages.length > 1) {
+                    $.each(this.pages, function (i) {
+                        dots.push({
+                            css: i === self.page ? 'slick-active' : '',
+                            label: i + 1,
+                            ariaLabel: i + 1 + '/' + self.pages.length
+                        });
                     });
-                });
-                this.element.append(dotsTpl({
-                    dots: dots
-                }));
+                    this.element.append(dotsTpl({
+                        dots: dots
+                    }));
+                }
             }
 
             this.dots = this.element.find('.slick-dots').children();
+
+            this.updateArrows();
         },
 
         /** [updateCurrentPage description] */
@@ -195,12 +199,19 @@
 
         /** [updateArrows description] */
         updateArrows: function () {
+            var arrows = this.nextEl.add(this.prevEl);
+
+            if (this.pages.length < 2) {
+                return arrows.hide();
+            }
+
+            arrows.show();
+
             if (this.options.infinite) {
                 return;
             }
 
-            this.nextEl.add(this.prevEl)
-                .prop('disabled', false)
+            arrows.prop('disabled', false)
                 .attr('aria-disabled', false)
                 .removeClass('slick-disabled');
 
