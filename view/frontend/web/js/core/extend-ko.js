@@ -44,6 +44,14 @@
          * @param {Object} element
          * @param {Function} value
          */
+        init: function (element, value) {
+            getRealElement(element).text($.__(ko.unwrap(value() || '')));
+        },
+
+        /**
+         * @param {Object} element
+         * @param {Function} value
+         */
         update: function (element, value) {
             getRealElement(element, true).text($.__(ko.unwrap(value() || '')));
         }
