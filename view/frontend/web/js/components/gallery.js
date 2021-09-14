@@ -60,9 +60,13 @@
         addEventListeners: function () {
             var self = this;
 
-            this.image.on('load error', function () {
-                self.stage.spinner(false);
-            });
+            this.image
+                .on('load error', function () {
+                    self.stage.spinner(false);
+                })
+                .on('click', function (event) {
+                    event.preventDefault();
+                });
 
             this.stage
                 .on('swiped-left swiped-right', function (event) {
