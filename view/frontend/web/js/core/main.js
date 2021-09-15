@@ -2,7 +2,10 @@
 (function () {
     'use strict';
 
-    var scripts = {};
+    var scripts = {},
+        html,
+        scriptsContainer,
+        scopedElements;
 
     /** Init 'data-mage-init' and 'text/x-magento-init' scripts */
     function mount(component, data, now) {
@@ -27,7 +30,7 @@
 
     /** Init view components */
     function mountView(scope, config) {
-        var elements =  $('[data-bind*="scope:"]').filter(function () {
+        var elements = scopedElements.filter(function () {
             return $(this).attr('data-bind').indexOf('\'' + scope + '\'') !== -1;
         });
 
@@ -53,7 +56,7 @@
         if (isScript) {
             // Move script to the bottom so it will not break :nth-child, and ~ selectors
             // and still will be accessible for reinitialization when using turbo cache.
-            $('.breeze-container').append(el);
+            scriptsContainer.append(el);
             el = false;
         }
 
@@ -70,7 +73,7 @@
                 el = false;
 
                 if (component !== '*') {
-                    el = $('html').find(component);
+                    el = html.find(component);
                     selector = component;
 
                     // eslint-disable-next-line max-depth
@@ -209,6 +212,10 @@
 
     /** [onBreezeLoad description] */
     function onBreezeLoad() {
+        html = $('html');
+        scriptsContainer = $('.breeze-container');
+        scopedElements = $('[data-bind*="scope:"]');
+
         $(document).trigger('breeze:load');
 
         walk(document);
