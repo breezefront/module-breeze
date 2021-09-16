@@ -265,6 +265,7 @@
     });
 
     $(document).on('contentUpdated', function (event) {
+        scopedElements = $('[data-bind*="scope:"]');
         walk(event.target);
     });
 
