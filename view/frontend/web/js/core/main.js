@@ -164,7 +164,7 @@
         }
 
         try {
-            json = extractJsonFromDataBind('mageInit', $(el).data('bind'))
+            json = extractJsonFromDataBind('mageInit', $(el).data('bind'));
         } catch (e) {
             return;
         }
