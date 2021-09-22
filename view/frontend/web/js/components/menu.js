@@ -16,8 +16,7 @@
 
         /** Init widget */
         create: function () {
-            var mql,
-                self = this;
+            var mql;
 
             if (this.options.responsive) {
                 mql = window.matchMedia(this.options.mediaBreakpoint);
@@ -34,6 +33,33 @@
             if (this.options.expanded) {
                 this.expand();
             }
+
+            if (this.element.closest('.nav-sections').length) {
+                this.addToggleListener();
+            }
+
+            $('li.parent > ul', this.element).hide();
+            $('li.parent', this.element)
+                .children('a')
+                .filter(function () {
+                    return $(this).children('.ui-icon').length === 0;
+                })
+                .prepend('<span class="ui-menu-icon ui-icon"></span>');
+        },
+
+        /** Hide expanded menu's, remove event listeneres */
+        destroy: function () {
+            $('ul.shown', this.element).removeClass('shown').hide();
+            $('html').removeClass('nav-open').removeClass('nav-before-open');
+
+            if (this.element.closest('.nav-sections').length) {
+                $(document).off('click.menu');
+            }
+        },
+
+        /** [addToggleListener description] */
+        addToggleListener: function () {
+            var self = this;
 
             $(document).on('click.menu', '[data-action="toggle-nav"]', function () {
                 var html = $('html');
@@ -54,21 +80,6 @@
                     }, self.options.showDelay);
                 }
             });
-
-            $('li.parent > ul', this.element).hide();
-            $('li.parent', this.element)
-                .children('a')
-                .filter(function () {
-                    return $(this).children('.ui-icon').length === 0;
-                })
-                .prepend('<span class="ui-menu-icon ui-icon"></span>');
-        },
-
-        /** Hide expanded menu's, remove event listeneres */
-        destroy: function () {
-            $('ul.shown', this.element).removeClass('shown').hide();
-            $('html').removeClass('nav-open').removeClass('nav-before-open');
-            $(document).off('click.menu');
         },
 
         /** Expand nested menus */
