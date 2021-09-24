@@ -97,12 +97,14 @@
                                 </div>
                             <?php endif ?>
 
-                            <?php if (!empty($config['attributes']['learn_more'])) : ?>
-                                <div class="product-item-description">
+                            <div class="product-item-description">
+                                <div data-bind="html: $parent.getAdditionalContent($data, $element)"></div>
+
+                                <?php if (!empty($config['attributes']['learn_more'])) : ?>
                                     <a class="product-item-link" data-bind="attr: {href: $data.url}"
                                     ><?= $block->escapeHtml(__('Learn More')) ?></a>
-                                </div>
-                            <?php endif ?>
+                                <?php endif ?>
+                            </div>
                         </div>
                     </div>
                 </li>

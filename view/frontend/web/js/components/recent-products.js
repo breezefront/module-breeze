@@ -75,6 +75,11 @@
             return this.getItemValue(item, 'price_info.formatted_prices.final_price');
         },
 
+        /** [getAdditionalContent description] */
+        getAdditionalContent: function (item, element) {
+            return '';
+        },
+
         /** [getItemValue description] */
         getItemValue: function (item, path) {
             return _.get(item, path.split('.'));
