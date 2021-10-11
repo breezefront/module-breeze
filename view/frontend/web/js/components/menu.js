@@ -16,7 +16,8 @@
 
         /** Init widget */
         create: function () {
-            var mql;
+            var mql,
+                self = this;
 
             if (this.options.responsive) {
                 mql = window.matchMedia(this.options.mediaBreakpoint);
@@ -41,6 +42,22 @@
                     return $(this).children('.ui-icon').length === 0;
                 })
                 .prepend('<span class="ui-menu-icon ui-icon"></span>');
+
+            $('a', this.element).on('click.menu', '.ui-icon', function () {
+                var dropdown = $(this).closest('a').siblings(self.options.dropdown);
+
+                if (!dropdown.length) {
+                    return;
+                }
+
+                if (dropdown.hasClass('shown')) {
+                    self.close(dropdown);
+                } else {
+                    self.open(dropdown);
+                }
+
+                return false;
+            });
         },
 
         /** Hide expanded menu's, remove event listeneres */
