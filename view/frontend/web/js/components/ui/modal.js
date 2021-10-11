@@ -425,6 +425,8 @@
             this.overlay = $('.' + this.options.overlayClass);
 
             if (!this.overlay.length) {
+                $.breeze.scrollbar.hide();
+
                 $(this.options.appendTo).addClass(this.options.parentModalClass);
 
                 this.overlay = $('<div></div>')
@@ -444,6 +446,7 @@
             if (!this._getVisibleCount()) {
                 $(this.options.appendTo).removeClass(this.options.parentModalClass);
                 this.overlay.remove();
+                $.breeze.scrollbar.reset();
                 this.overlay = null;
             }
         }

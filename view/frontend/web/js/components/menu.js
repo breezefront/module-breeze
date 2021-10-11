@@ -68,10 +68,12 @@
                     self._trigger('navBeforeClose');
                     html.removeClass('nav-open');
                     setTimeout(function () {
+                        $.breeze.scrollbar.reset();
                         html.removeClass('nav-before-open');
                         self._trigger('navAfterClose');
                     }, self.options.hideDelay);
                 } else {
+                    $.breeze.scrollbar.hide();
                     self._trigger('navBeforeOpen');
                     html.addClass('nav-before-open');
                     setTimeout(function () {

@@ -55,6 +55,28 @@
         }
     };
 
+    /** [visit description] */
+    $.breeze.scrollbar = {
+        /** [hide description] */
+        hide: function () {
+            var padding = parseFloat($('body').css('padding-right')),
+                scrollbar = Math.abs(window.innerWidth - document.documentElement.clientWidth);
+
+            $('body')
+                .css('box-sizing', 'border-box')
+                .css('padding-right', padding + scrollbar)
+                .css('overflow', 'hidden');
+        },
+
+        /** [show description] */
+        reset: function () {
+            $('body')
+                .css('box-sizing', '')
+                .css('padding-right', '')
+                .css('overflow', '');
+        }
+    };
+
     /** Prevent js error in case some module calls for requirejs */
     window.require = function () {};
     window.require.toUrl = function (path) {
