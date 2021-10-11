@@ -57,6 +57,8 @@
         addToggleListener: function () {
             var self = this;
 
+            $('[data-action="toggle-nav"]').attr('tabindex', 0);
+
             $(document).on('click.menu', '[data-action="toggle-nav"]', function () {
                 var html = $('html');
 
