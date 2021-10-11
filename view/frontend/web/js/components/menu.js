@@ -30,8 +30,7 @@
 
             this._setActiveMenu(); // varnish fix
 
-
-            if (this.element.closest('.nav-sections').length) {
+            if (this.element.closest('.nav-sections, .page-header').length) {
                 this.addToggleListener();
             }
 
@@ -49,7 +48,7 @@
             $('ul.shown', this.element).removeClass('shown').hide();
             $('html').removeClass('nav-open').removeClass('nav-before-open');
 
-            if (this.element.closest('.nav-sections').length) {
+            if (this.element.closest('.nav-sections, .page-header').length) {
                 $(document).off('click.menu');
             }
         },
