@@ -30,9 +30,6 @@
 
             this._setActiveMenu(); // varnish fix
 
-            if (this.options.expanded) {
-                this.expand();
-            }
 
             if (this.element.closest('.nav-sections').length) {
                 this.addToggleListener();
@@ -82,14 +79,6 @@
                     }, self.options.showDelay);
                 }
             });
-        },
-
-        /** Expand nested menus */
-        expand: function () {
-            var subMenus = this.element.find(this.options.menus),
-                expandedMenus = subMenus.find(this.options.menus);
-
-            expandedMenus.addClass('shown').addClass('expanded');
         },
 
         /** Toggles between mobile and desktop modes */
