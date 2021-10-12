@@ -169,6 +169,8 @@
         keyEventSwitcher: function (event) {
             var key = $.keyCode[event.keyCode];
 
+            key = key.toLowerCase() + 'Key';
+
             if (this.options.keyEventHandlers.hasOwnProperty(key)) {
                 this.options.keyEventHandlers[key].apply(this, arguments);
             }

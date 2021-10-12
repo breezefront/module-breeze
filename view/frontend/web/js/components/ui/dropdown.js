@@ -20,10 +20,35 @@
                 this.parent = this.element.parent();
             }
 
+            if (!this.element.is('a, button')) {
+                this.element.attr('role', 'button');
+                this.element.attr('tabindex', 0);
+            }
+
             this.element.attr('data-dropdown', true);
             this.element.attr('aria-haspopup', true);
             this.parent.attr('data-trigger', true);
             this.parent.attr('data-dropdown-parent', true);
+
+            if (this.element.attr('data-trigger-keypress-button')) {
+                this._on({
+                    keydown: function (e) {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            this.toggle();
+                        }
+                    }.bind(this)
+                });
+            }
+
+            this._on(document, {
+                keydown: function (e) {
+                    if (e.key === 'Escape') {
+                        e.preventDefault();
+                        this.close();
+                    }
+                }.bind(this)
+            });
 
             this.close();
         },
@@ -31,6 +56,7 @@
         /** Hide expanded menu's, remove event listeneres */
         destroy: function () {
             this.close();
+            this._super();
         },
 
         /** Open dropdown */
@@ -48,6 +74,10 @@
 
         /** Close dropdown */
         close: function () {
+            if (!this.status) {
+                return;
+            }
+
             this._trigger('beforeClose');
 
             this.status = false;

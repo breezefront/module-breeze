@@ -62,16 +62,14 @@
                 });
             }
 
-            $(document).on('keydown.dropdown', function (e) {
-                if (!this.status) {
-                    return;
-                }
-
-                if (e.key === 'Escape') {
-                    e.preventDefault();
-                    this.close();
-                }
-            }.bind(this));
+            this._on(document, {
+                keydown: function (e) {
+                    if (e.key === 'Escape') {
+                        e.preventDefault();
+                        this.close();
+                    }
+                }.bind(this)
+            });
         },
 
         /** Add buttons panel */
