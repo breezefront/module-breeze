@@ -61,6 +61,17 @@
                     self.close();
                 });
             }
+
+            $(document).on('keydown.dropdown', function (e) {
+                if (!this.status) {
+                    return;
+                }
+
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    this.close();
+                }
+            }.bind(this));
         },
 
         /** Add buttons panel */

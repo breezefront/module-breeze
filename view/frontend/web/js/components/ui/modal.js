@@ -87,7 +87,7 @@
                  * @param {Object} event - event
                  */
                 escapeKey: function (event) {
-                    if (this.options.isOpen && this.modal.find(document.activeElement).length ||
+                    if (this.options.isOpen && this.modal.has(document.activeElement).length ||
                         this.options.isOpen && this.modal[0] === document.activeElement) {
                         this.closeModal(event);
                     }
@@ -257,7 +257,8 @@
                 infelicity = 2; //Constant for find last focusable element
                 focusableElements = this.modal
                     .find('a[href], area[href], input, select, textarea, button, iframe, object, embed, [tabindex]')
-                    .not('[tabindex=-1], [disabled]')
+                    .not('[disabled]')
+                    .not('[tabindex="-1"]')
                     .visible();
                 focusableElements.eq(focusableElements.length - infelicity).focus();
             }
