@@ -423,8 +423,9 @@ $.registry = $.breeze.registry = (function () {
          */
         _initialize: function (name, options, element) {
             this.__name = name;
-            this.__eventNamespace = '.' + name;
-            this.__bindings = $(); // @todo: _destroy
+            this.__uuid = $.guid++;
+            this.__eventNamespace = '.' + name + this.__uuid;
+            this.__bindings = $();
             this.element = $(element);
 
             $.registry.set(name, element, this);
@@ -454,7 +455,7 @@ $.registry = $.breeze.registry = (function () {
                 element = this.element;
             } else {
                 element = $(element);
-                this.__bindings.add(element);
+                this.__bindings = this.__bindings.add(element);
             }
 
             $.each(handlers, function (event, handler) {
@@ -499,6 +500,13 @@ $.registry = $.breeze.registry = (function () {
             element.off(eventName);
 
             this.__bindings = $(this.__bindings.not(element).get());
+        },
+
+        /** Destroy all event listeners */
+        destroy: function () {
+            this.element.off(this.__eventNamespace);
+            this.__bindings.off(this.__eventNamespace);
+            this._super();
         }
     });
 
@@ -536,6 +544,7 @@ $.registry = $.breeze.registry = (function () {
         destroy: function () {
             // Restore initial markup that is used as a template in knockout
             this.element.html(this._markup);
+            this._super();
         },
 
         /**
