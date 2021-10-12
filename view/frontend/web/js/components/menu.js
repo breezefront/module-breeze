@@ -66,37 +66,47 @@
             $('html').removeClass('nav-open').removeClass('nav-before-open');
 
             if (this.element.closest('.nav-sections, .page-header').length) {
-                $(document).off('click.menu');
+                $(document).off('click.menu').off('keydown.menu');
             }
         },
 
         /** [addToggleListener description] */
         addToggleListener: function () {
-            var self = this;
-
             $('[data-action="toggle-nav"]').attr('tabindex', 0);
 
-            $(document).on('click.menu', '[data-action="toggle-nav"]', function () {
-                var html = $('html');
+            $(document)
+                .on('click.menu', '[data-action="toggle-nav"]', this.toggleNavbar.bind(this))
+                .on('keydown.menu', '[data-action="toggle-nav"]', function (e) {
+                    if (e.key === 'Enter') {
+                        this.toggleNavbar();
+                    } else if (e.key === 'Escape') {
+                        this.toggleNavbar(false);
+                    }
+                }.bind(this));
+        },
 
-                if (html.hasClass('nav-open')) {
-                    self._trigger('navBeforeClose');
-                    html.removeClass('nav-open');
-                    setTimeout(function () {
-                        $.breeze.scrollbar.reset();
-                        html.removeClass('nav-before-open');
-                        self._trigger('navAfterClose');
-                    }, self.options.hideDelay);
-                } else {
-                    $.breeze.scrollbar.hide();
-                    self._trigger('navBeforeOpen');
-                    html.addClass('nav-before-open');
-                    setTimeout(function () {
-                        html.addClass('nav-open');
-                        self._trigger('navAfterOpen');
-                    }, self.options.showDelay);
-                }
-            });
+        /** [toggleNavbar description] */
+        toggleNavbar: function (flag) {
+            var self = this,
+                html = $('html');
+
+            if (flag === false || html.hasClass('nav-open')) {
+                self._trigger('navBeforeClose');
+                html.removeClass('nav-open');
+                setTimeout(function () {
+                    $.breeze.scrollbar.reset();
+                    html.removeClass('nav-before-open');
+                    self._trigger('navAfterClose');
+                }, self.options.hideDelay);
+            } else {
+                $.breeze.scrollbar.hide();
+                self._trigger('navBeforeOpen');
+                html.addClass('nav-before-open');
+                setTimeout(function () {
+                    html.addClass('nav-open');
+                    self._trigger('navAfterOpen');
+                }, self.options.showDelay);
+            }
         },
 
         /** Toggles between mobile and desktop modes */
