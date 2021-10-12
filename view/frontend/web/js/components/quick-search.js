@@ -321,7 +321,7 @@
 
         /** [canUseNavKeys description] */
         canUseNavKeys: function () {
-            return this.autoComplete.visible().length > 0;
+            return this.autoComplete.not(':empty').visible().length > 0;
         },
 
         /** [_onEnterKeyDown description] */
