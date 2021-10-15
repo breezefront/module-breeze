@@ -197,7 +197,7 @@
          */
         openModal: function () {
             if (this.options.isOpen) {
-                return;
+                return this.element;
             }
 
             this.options.isOpen = true;
@@ -286,7 +286,7 @@
             var that = this;
 
             if (!this.options.isOpen) {
-                return;
+                return this.element;
             }
 
             this._removeKeyListener();
