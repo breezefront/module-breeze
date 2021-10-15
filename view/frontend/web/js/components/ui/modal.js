@@ -2,27 +2,6 @@
 (function () {
     'use strict';
 
-    /**
-     * Detect browser transition end event.
-     * @return {String|undefined} - transition event.
-     */
-    var transitionEvent = (function () {
-        var transition,
-            elementStyle = document.createElement('div').style,
-            transitions = {
-                'transition': 'transitionend',
-                'OTransition': 'oTransitionEnd',
-                'MozTransition': 'transitionend',
-                'WebkitTransition': 'webkitTransitionEnd'
-            };
-
-        for (transition in transitions) {
-            if (elementStyle[transition] !== undefined && transitions.hasOwnProperty(transition)) {
-                return transitions[transition];
-            }
-        }
-    })();
-
     $.widget('modal', {
         component: 'Magento_Ui/js/modal/modal',
         options: {
@@ -99,6 +78,8 @@
          * Creates modal widget.
          */
         _create: function () {
+            var listeners = {};
+
             _.bindAll(
                 this,
                 'keyEventSwitcher',
@@ -107,21 +88,23 @@
             );
 
             this.options.id = $.guid++;
-            this.options.transitionEvent = transitionEvent;
             this._createWrapper();
             this._renderModal();
             this._createButtons();
 
             if (this.options.trigger) {
-                $(document).on('click.modal', this.options.trigger, _.bind(this.toggleModal, this));
+                listeners['click ' + this.options.trigger] = this.toggleModal.bind(this);
+                this._on(document, listeners);
             }
-            this._on(this.modal.find(this.options.modalCloseBtn), {
-                'click': this.options.modalCloseBtnHandler ? this.options.modalCloseBtnHandler : this.closeModal
-            });
-            this._on(this.element, {
+
+            listeners = {
                 'openModal': this.openModal,
                 'closeModal': this.closeModal
-            });
+            }
+            listeners['click ' + this.options.modalCloseBtn] =
+                this.options.modalCloseBtnHandler ? this.options.modalCloseBtnHandler : this.closeModal;
+
+            this._on(this.modal, listeners);
 
             if (this.options.autoOpen) {
                 this.openModal();
@@ -129,7 +112,6 @@
         },
 
         destroy: function () {
-            $(document).off('click.modal');
             this.modalWrapper.remove();
             this._super();
         },
@@ -167,9 +149,7 @@
          * Call handler function if it exists
          */
         keyEventSwitcher: function (event) {
-            var key = $.keyCode[event.keyCode];
-
-            key = key.toLowerCase() + 'Key';
+            var key = event.key.toLowerCase() + 'Key';
 
             if (this.options.keyEventHandlers.hasOwnProperty(key)) {
                 this.options.keyEventHandlers[key].apply(this, arguments);
@@ -216,18 +196,18 @@
          * * @return {Element} - current element.
          */
         openModal: function () {
+            if (this.options.isOpen) {
+                return;
+            }
+
             this.options.isOpen = true;
             this.focussedElement = document.activeElement;
             this._createOverlay();
             this._setActive();
             this._setKeyListener();
-            this.modal.one(this.options.transitionEvent, _.bind(this._setFocus, this, 'end', 'opened'));
-            this.modal.one(this.options.transitionEvent, _.bind(this._trigger, this, 'opened'));
+            this.modal.one('transitionend', _.bind(this._setFocus, this, 'end', 'opened'));
+            this.modal.one('transitionend', _.bind(this._trigger, this, 'opened'));
             this.modal.addClass(this.options.modalVisibleClass);
-
-            if (!this.options.transitionEvent) {
-                this._trigger('opened');
-            }
 
             return this.element;
         },
@@ -305,16 +285,16 @@
         closeModal: function () {
             var that = this;
 
+            if (!this.options.isOpen) {
+                return;
+            }
+
             this._removeKeyListener();
             this.options.isOpen = false;
-            this.modal.one(this.options.transitionEvent, function () {
+            this.modal.one('transitionend', function () {
                 that._close();
             });
             this.modal.removeClass(this.options.modalVisibleClass);
-
-            if (!this.options.transitionEvent) {
-                that._close();
-            }
 
             return this.element;
         },
