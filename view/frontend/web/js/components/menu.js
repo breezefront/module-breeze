@@ -77,7 +77,7 @@
             $(document)
                 .on('click.menu', '[data-action="toggle-nav"]', this.toggleNavbar.bind(this))
                 .on('keydown.menu', '[data-action="toggle-nav"]', function (e) {
-                    if (e.key === 'Enter') {
+                    if (e.key === 'Enter' || e.key === ' ') {
                         this.toggleNavbar();
                     } else if (e.key === 'Escape') {
                         this.toggleNavbar(false);

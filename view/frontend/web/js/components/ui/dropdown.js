@@ -33,7 +33,7 @@
             if (this.element.attr('data-trigger-keypress-button')) {
                 this._on({
                     keydown: function (e) {
-                        if (e.key === 'Enter') {
+                        if (e.key === 'Enter' || e.key === ' ') {
                             e.preventDefault();
                             this.toggle();
                         }
