@@ -1,0 +1,20 @@
+<div class="actions dropdown options switcher-options">
+    <div class="action toggle switcher-trigger"
+         data-uid="switcher-customer-trigger"
+         data-mage-init='{"dropdown":{}}'
+         data-toggle="dropdown"
+         data-trigger-keypress-button="true">
+        <a class="link"
+           href="<?= $block->escapeUrl($block->getUrl($block->getData('url'))) ?>"
+           title="<?= $block->escapeHtml(__($block->getTitle())) ?>">
+            <?php if ($block->getIcon()) : ?>
+                <?= $block->getIcon() ?>
+            <?php else : ?>
+                <span class="text"><?= $block->escapeHtml(__($block->getTitle())) ?></span>
+            <?php endif ?>
+        </a>
+    </div>
+    <div class="dropdown switcher-dropdown" data-target="dropdown">
+        <?= $block->getContent() ?>
+    </div>
+</div>
