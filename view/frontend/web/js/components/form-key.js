@@ -1,6 +1,17 @@
 (function () {
     'use strict';
 
+    $.widget('formKey', {
+        options: {
+            inputSelector: 'input[name="form_key"]'
+        },
+
+        /** Fill input with valid form key */
+        _create: function () {
+            $(this.options.inputSelector).val($.cookies.get('form_key'));
+        }
+    });
+
     /**
      * Generate form key string
      * @private
