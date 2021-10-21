@@ -111,6 +111,14 @@
                     event.preventDefault();
                     self.toggle();
                 });
+                this._on(this.trigger, {
+                    keydown: function (e) {
+                        if (e.key === ' ') {
+                            e.preventDefault();
+                            self.toggle();
+                        }
+                    }
+                });
             }
         },
 
