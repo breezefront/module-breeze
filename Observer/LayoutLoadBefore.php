@@ -10,12 +10,16 @@ class LayoutLoadBefore implements ObserverInterface
 
     private $pageConfig;
 
+    private $customerSession;
+
     public function __construct(
         \Swissup\Breeze\Helper\Data $helper,
-        \Magento\Framework\View\Page\Config $pageConfig
+        \Magento\Framework\View\Page\Config $pageConfig,
+        \Magento\Customer\Model\Session $customerSession
     ) {
         $this->helper = $helper;
         $this->pageConfig = $pageConfig;
+        $this->customerSession = $customerSession;
     }
 
     /**
@@ -53,5 +57,12 @@ class LayoutLoadBefore implements ObserverInterface
         }
 
         $update->addHandle('breeze');
+
+        // Add additional handles for breeze theme
+        if ($this->customerSession->isLoggedIn()) {
+            $update->addHandle('customer_logged_in');
+        } else {
+            $update->addHandle('customer_logged_out');
+        }
     }
 }
