@@ -1,20 +1,28 @@
-<div class="actions dropdown options switcher-options">
-    <div class="action toggle switcher-trigger"
-         data-uid="switcher-customer-trigger"
-         data-mage-init='{"dropdown":{}}'
-         data-toggle="dropdown"
-         data-trigger-keypress-button="true">
-        <a class="link"
-           href="<?= $block->escapeUrl($block->getUrl($block->getData('url'))) ?>"
-           title="<?= $block->escapeHtml(__($block->getTitle())) ?>">
-            <?php if ($block->getIcon()) : ?>
-                <?= $block->getIcon() ?>
-            <?php else : ?>
-                <span class="text"><?= $block->escapeHtml(__($block->getTitle())) ?></span>
-            <?php endif ?>
-        </a>
-    </div>
-    <div class="dropdown switcher-dropdown" data-target="dropdown">
-        <?= $block->getContent() ?>
-    </div>
+<?php
+    $childHtml = $block->getChildHtml();
+?>
+
+<div class="<?= $block->getCssClass() ?>">
+    <a class="action toggle switcher-trigger"
+        href="<?= $block->escapeUrl($block->getHref()) ?>"
+        title="<?= $block->escapeHtml($block->getTitle()) ?>"
+        <?php if ($childHtml) : ?>
+            data-mage-init='{"dropdown":{}}'
+            data-toggle="dropdown"
+            data-trigger-keypress-button="true"
+        <?php endif ?>
+    >
+        <?php if ($block->getIcon()) : ?>
+            <?= $block->getIcon() ?>
+            <span class="sr-only"><?= $block->escapeHtml($block->getTitle()) ?></span>
+        <?php else : ?>
+            <?= $block->escapeHtml($block->getTitle()) ?>
+        <?php endif ?>
+    </a>
+
+    <?php if ($childHtml) : ?>
+        <div class="dropdown switcher-dropdown" data-target="dropdown">
+            <?= $childHtml ?>
+        </div>
+    <?php endif ?>
 </div>

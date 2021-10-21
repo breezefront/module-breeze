@@ -23,27 +23,25 @@ class Dropdown extends Template
 
     protected function _toHtml()
     {
-        if (!$this->getData('url') && !$this->getContent()) {
+        if (!$this->getHref() && !$this->getChildHtml()) {
             return '';
         }
 
         return parent::_toHtml();
     }
 
-    public function getContent()
+    public function getCssClass(): string
     {
-        if ($this->content !== null) {
-            return $this->content;
+        $class = 'actions dropdown options switcher-options';
+
+        if ($this->getData('chevron') === false || !$this->getChildHtml()) {
+            $class .= ' no-chevron';
         }
 
-        $content = $this->getData('content');
-
-        if (strpos($content, 'block::') === 0) {
-            $block = str_replace('block::', '', $content);
-            $block = $this->getLayout()->getBlock($block);
-            $content = $block ? $block->toHtml() : '';
+        if ($this->getData('css_class')) {
+            $class .= ' ' . $this->getData('css_class');
         }
 
-        return $content;
+        return $class;
     }
 }
