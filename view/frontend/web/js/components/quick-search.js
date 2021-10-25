@@ -268,14 +268,13 @@
          * @param {Event} e
          */
         _onKeyDown: function (e) {
-            var keyCode = e.keyCode || e.which,
-                navKeys = [$.key.HOME, $.key.END, $.key.DOWN, $.key.UP, $.key.TAB];
+            var navKeys = ['Home', 'End', 'ArrowDown', 'ArrowUp', 'Tab'];
 
-            if (e.ctrlKey || e.altKey || e.shiftKey && keyCode !== $.key.TAB) {
+            if (e.ctrlKey || e.altKey || e.shiftKey && e.key !== 'Tab') {
                 return;
             }
 
-            if (navKeys.indexOf(keyCode) !== -1) {
+            if (navKeys.indexOf(e.key) !== -1) {
                 if (!this.canUseNavKeys()) {
                     return;
                 }
@@ -283,20 +282,20 @@
                 e.preventDefault(); // prevent page scrolling
             }
 
-            switch (keyCode) {
-                case $.key.HOME:
+            switch (e.key) {
+                case 'Home':
                     this._selectEl(this._getFirstVisibleElement(), true);
                     break;
 
-                case $.key.END:
+                case 'End':
                     this._selectEl(this._getLastElement(), true);
                     break;
 
-                case $.key.DOWN:
+                case 'ArrowDown':
                     this._selectNextEl(true);
                     break;
 
-                case $.key.TAB:
+                case 'Tab':
                     if (e.shiftKey) {
                         this._selectPrevEl(true);
                     } else {
@@ -304,11 +303,11 @@
                     }
                     break;
 
-                case $.key.UP:
+                case 'ArrowUp':
                     this._selectPrevEl(true);
                     break;
 
-                case $.key.ESCAPE:
+                case 'Escape':
                     this.element.focus();
                     this.hideAutocomplete();
                     break;
@@ -326,9 +325,7 @@
 
         /** [_onEnterKeyDown description] */
         _onEnterKeyDown: function (e) {
-            var keyCode = e.keyCode || e.which;
-
-            if (keyCode === $.key.ENTER &&
+            if (e.key === 'Enter' &&
                 this.element.val().length >= this.options.minSearchLength
             ) {
                 e.preventDefault();
