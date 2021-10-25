@@ -14,10 +14,6 @@
             </block>
         </referenceContainer>
 
-        <referenceBlock name="head.additional">
-            <block class="Swissup\Breeze\Block\Css" name="breeze.css"/>
-        </referenceBlock>
-
         <block class="Swissup\Breeze\Block\Js" name="breeze.js">
             <arguments>
                 <argument name="cache_lifetime" xsi:type="number">864000</argument> <!-- 10 days -->
