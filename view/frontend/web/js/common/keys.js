@@ -2,6 +2,7 @@
 (function () {
     'use strict';
 
+    // Deprecated. Use event.key === 'Enter', 'Escape', 'ArrowDown', etc.
     $.key = {
         ALT: 18,
         BACKSPACE: 8,
