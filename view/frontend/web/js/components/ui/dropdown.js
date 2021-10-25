@@ -30,16 +30,14 @@
             this.parent.attr('data-trigger', true);
             this.parent.attr('data-dropdown-parent', true);
 
-            if (this.element.attr('data-trigger-keypress-button')) {
-                this._on({
-                    keydown: function (e) {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            this.toggle();
-                        }
-                    }.bind(this)
-                });
-            }
+            this._on({
+                keydown: function (e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.toggle();
+                    }
+                }.bind(this)
+            });
 
             this._on(document, {
                 keydown: function (e) {
