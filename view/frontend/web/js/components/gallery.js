@@ -122,17 +122,17 @@
                     return;
                 }
 
-                switch (event.keyCode || event.which) {
-                    case $.key.ESCAPE:
+                switch (event.key) {
+                    case 'Escape':
                         self.close();
                         break;
 
-                    case $.key.LEFT:
+                    case 'ArrowLeft':
                         event.preventDefault();
                         self.prev();
                         break;
 
-                    case $.key.RIGHT:
+                    case 'ArrowRight':
                         event.preventDefault();
                         self.next();
                         break;
