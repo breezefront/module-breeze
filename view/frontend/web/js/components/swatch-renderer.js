@@ -371,7 +371,6 @@
                          'data-attribute-id="' + item.id + '">' +
                         label +
                         '<div aria-activedescendant="" ' +
-                             'tabindex="0" ' +
                              'aria-invalid="false" ' +
                              'aria-required="true" ' +
                              'role="listbox" ' + listLabel +
