@@ -34,6 +34,7 @@
 
             this.header.attr('role', 'tab');
             this.trigger.attr('data-trigger', true);
+            this.trigger.attr('tabindex', 0);
             this.element.attr('data-collapsible', true);
             this.content.attr('role', 'tabpanel');
 
@@ -46,6 +47,15 @@
             } else {
                 this.close();
             }
+
+            this._on({
+                'keydown [data-trigger]': function (e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.toggle();
+                    }
+                }.bind(this)
+            });
         },
 
         /** [init description] */
