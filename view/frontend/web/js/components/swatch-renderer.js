@@ -1070,29 +1070,27 @@
         /**
          * Enable loader
          *
-         * @param {Object} $this
+         * @param {Object} element
          * @private
          */
-        _EnableProductMediaLoader: function ($this) {
-            var $widget = this;
-
-            $this.parents('.product-item-info')
+        _EnableProductMediaLoader: function (element) {
+            element.parents('.product-item-info')
+                .addClass('product-item-info-image-loading')
                 .find('.product-image-photo')
-                .addClass($widget.options.classes.loader);
+                .addClass(this.options.classes.loader);
         },
 
         /**
          * Disable loader
          *
-         * @param {Object} $this
+         * @param {Object} element
          * @private
          */
-        _DisableProductMediaLoader: function ($this) {
-            var $widget = this;
-
-            $this.parents('.product-item-info')
+        _DisableProductMediaLoader: function (element) {
+            element.parents('.product-item-info')
+                .removeClass('product-item-info-image-loading')
                 .find('.product-image-photo')
-                .removeClass($widget.options.classes.loader);
+                .removeClass(this.options.classes.loader);
         },
 
         /**
