@@ -253,6 +253,19 @@ $.registry = $.breeze.registry = (function () {
             if (typeof prototype === 'undefined') {
                 return {
                     /**
+                     * @param {Function} callback
+                     */
+                    each: function (callback) {
+                        var collection = $.breeze.registry.get(name);
+
+                        if (!collection) {
+                            return;
+                        }
+
+                        collection.forEach(callback);
+                    },
+
+                    /**
                      * Example:
                      *
                      *     $.view('messages').invoke('removeCookieMessages');

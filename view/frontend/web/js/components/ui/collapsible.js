@@ -80,6 +80,11 @@
             return !this.disabled;
         },
 
+        /** Checks if collapsible is behaved like dropdown (layered for one-column layout) */
+        isDropdown: function () {
+            return this.content.css('position') === 'absolute';
+        },
+
         /** Disable click events */
         disable: function () {
             this.disabled = true;
@@ -191,13 +196,25 @@
         }
     });
 
-    $(document).on('click.collapsible', '[data-trigger]', function () {
-        var instance = $(this).closest('[data-collapsible]').collapsible('instance');
+    $(document).on('click.collapsible', function (event) {
+        var instance = $(event.target).closest('[data-collapsible]').collapsible('instance');
 
-        if (instance && instance.isEnabled()) {
-            instance.toggle();
+        $.widget('collapsible').each(function (widget) {
+            if (widget === instance) {
+                return;
+            }
 
-            return false;
+            if (widget.isDropdown() && widget.isEnabled()) {
+                widget.close();
+            }
+        });
+
+        if (!instance || !instance.isEnabled()) {
+            return;
         }
+
+        instance.toggle();
+
+        return false;
     });
 })();
