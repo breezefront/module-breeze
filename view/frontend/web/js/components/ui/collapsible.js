@@ -197,7 +197,7 @@
     });
 
     $(document).on('click.collapsible', function (event) {
-        var instance = $(event.target).closest('[data-collapsible]').collapsible('instance');
+        var instance = $(event.target).closest('[data-trigger]').closest('[data-collapsible]').collapsible('instance');
 
         $.widget('collapsible').each(function (widget) {
             if (widget === instance) {
