@@ -142,7 +142,7 @@
 
             this.closeHandler = this.close.bind(this);
 
-            $(window).one('resize.dropdownDialog', this.closeHandler);
+            $(window).one('breeze:resize-x.dropdownDialog', this.closeHandler);
 
             this._trigger('open');
         },
@@ -154,7 +154,7 @@
             this.dialog.hide();
             this.toggleClasses(false);
 
-            $(window).off('resize.dropdownDialog', this.closeHandler);
+            $(window).off('breeze:resize-x.dropdownDialog', this.closeHandler);
 
             this._trigger('close');
         },

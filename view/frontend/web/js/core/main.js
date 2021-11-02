@@ -5,7 +5,11 @@
     var scripts = {},
         html,
         scriptsContainer,
-        scopedElements;
+        scopedElements,
+        oldDimensions = {
+            width: $(window).width(),
+            height: $(window).height()
+        };
 
     /** Init 'data-mage-init' and 'text/x-magento-init' scripts */
     function mount(component, data, now) {
@@ -270,7 +274,28 @@
     });
 
     $(window).on('resize', _.debounce(function () {
-        $('body').trigger('breeze:resize');
+        var events = ['breeze:resize'],
+            newDimensions = {
+                width: $(window).width(),
+                height: $(window).height()
+            };
+
+        if (oldDimensions.width !== newDimensions.width) {
+            events.push('breeze:resize-x');
+        }
+
+        if (oldDimensions.height !== newDimensions.height) {
+            events.push('breeze:resize-y');
+        }
+
+        events.forEach(function (event) {
+            $('body').trigger(event, {
+                oldDimensions: oldDimensions,
+                newDimensions: newDimensions
+            });
+        });
+
+        oldDimensions = newDimensions;
     }, 100));
 
     $.breeze.referrer = document.referrer;
