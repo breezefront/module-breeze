@@ -29,6 +29,7 @@
                 this.toggleDesktopMode();
             }
 
+            this.focusTrap = this.createFocusTrap(this.element.closest('.navigation-wrapper,.nav-sections'));
             this._setActiveMenu(); // varnish fix
 
             if (this.element.closest('.nav-sections, .page-header').length) {
@@ -68,6 +69,8 @@
             if (this.element.closest('.nav-sections, .page-header').length) {
                 $(document).off('click.menu').off('keydown.menu');
             }
+
+            this._super();
         },
 
         /** [addToggleListener description] */
@@ -80,33 +83,56 @@
                     if (e.key === 'Enter' || e.key === ' ') {
                         this.toggleNavbar();
                     } else if (e.key === 'Escape') {
-                        this.toggleNavbar(false);
+                        this.closeNavbar();
                     }
                 }.bind(this));
+
+            this._on(document, {
+                'keydown .navigation-wrapper': function (e) {
+                    if (e.key === 'Escape' && $('html').hasClass('nav-open')) {
+                        this.closeNavbar();
+                    }
+                }.bind(this)
+            });
         },
 
         /** [toggleNavbar description] */
         toggleNavbar: function (flag) {
+            if (flag === false || $('html').hasClass('nav-open')) {
+                this.closeNavbar();
+            } else {
+                this.openNavbar();
+            }
+        },
+
+        /** Show mobile navbar */
+        openNavbar: function () {
             var self = this,
                 html = $('html');
 
-            if (flag === false || html.hasClass('nav-open')) {
-                self._trigger('navBeforeClose');
-                html.removeClass('nav-open');
-                setTimeout(function () {
-                    $.breeze.scrollbar.reset();
-                    html.removeClass('nav-before-open');
-                    self._trigger('navAfterClose');
-                }, self.options.hideDelay);
-            } else {
-                $.breeze.scrollbar.hide();
-                self._trigger('navBeforeOpen');
-                html.addClass('nav-before-open');
-                setTimeout(function () {
-                    html.addClass('nav-open');
-                    self._trigger('navAfterOpen');
-                }, self.options.showDelay);
-            }
+            $.breeze.scrollbar.hide();
+            self._trigger('navBeforeOpen');
+            html.addClass('nav-before-open');
+            setTimeout(function () {
+                html.addClass('nav-open');
+                self._trigger('navAfterOpen');
+            }, self.options.showDelay);
+            setTimeout(self.focusTrap.activate, 300); // wait till css animation is over
+        },
+
+        /** Hide mobile navbar  */
+        closeNavbar: function () {
+            var self = this,
+                html = $('html');
+
+            self._trigger('navBeforeClose');
+            self.focusTrap.deactivate();
+            html.removeClass('nav-open');
+            setTimeout(function () {
+                $.breeze.scrollbar.reset();
+                html.removeClass('nav-before-open');
+                self._trigger('navAfterClose');
+            }, self.options.hideDelay);
         },
 
         /** Toggles between mobile and desktop modes */
