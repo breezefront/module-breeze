@@ -14,7 +14,7 @@
     >
         <?php if ($block->getIcon()) : ?>
             <?= $block->getIcon() ?>
-            <span class="sr-only"><?= $block->escapeHtml($block->getTitle()) ?></span>
+            <span class="abs-visually-hidden"><?= $block->escapeHtml($block->getTitle()) ?></span>
         <?php else : ?>
             <?= $block->escapeHtml($block->getTitle()) ?>
         <?php endif ?>
