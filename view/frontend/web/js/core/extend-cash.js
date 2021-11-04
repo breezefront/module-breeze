@@ -1,4 +1,4 @@
-/* global ko _ */
+/* global ko _ focusTrap */
 (function () {
     'use strict';
 
@@ -283,4 +283,6 @@
 
         return destination;
     };
+
+    $.focusTrap = focusTrap;
 })();

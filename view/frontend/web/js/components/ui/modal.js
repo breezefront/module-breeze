@@ -49,17 +49,6 @@
                 }
             }],
             keyEventHandlers: {
-
-                /**
-                 * Tab key press handler,
-                 * set focus to elements
-                 */
-                tabKey: function () {
-                    if (document.activeElement === this.modal[0]) {
-                        this._setFocus('start');
-                    }
-                },
-
                 /**
                  * Escape key press handler,
                  * close modal window
@@ -83,7 +72,6 @@
             _.bindAll(
                 this,
                 'keyEventSwitcher',
-                '_tabSwitcher',
                 'closeModal'
             );
 
@@ -91,6 +79,7 @@
             this._createWrapper();
             this._renderModal();
             this._createButtons();
+            this.focusTrap = $.focusTrap.createFocusTrap(this.modal.get(0));
 
             if (this.options.trigger) {
                 listeners['click ' + this.options.trigger] = this.toggleModal.bind(this);
@@ -103,7 +92,7 @@
                 click: function (e) {
                     e.stopPropagation();
                 }
-            }
+            };
             listeners['click ' + this.options.modalCloseBtn] =
                 this.options.modalCloseBtnHandler ? this.options.modalCloseBtnHandler : this.closeModal;
 
@@ -204,11 +193,10 @@
             }
 
             this.options.isOpen = true;
-            this.focussedElement = document.activeElement;
             this._createOverlay();
             this._setActive();
             this._setKeyListener();
-            this.modal.one('transitionend', _.bind(this._setFocus, this, 'end', 'opened'));
+            this.modal.one('transitionend', this.focusTrap.activate);
             this.modal.one('transitionend', _.bind(this._trigger, this, 'opened'));
             this.modal.addClass(this.options.modalVisibleClass);
 
@@ -216,45 +204,9 @@
         },
 
         /**
-         * Set focus to element.
-         * @param {String} position - can be "start" and "end"
-         *      positions.
-         *      If position is "end" - sets focus to first
-         *      focusable element in modal window scope.
-         *      If position is "start" - sets focus to last
-         *      focusable element in modal window scope
-         *
-         *  @param {String} type - can be "opened" or false
-         *      If type is "opened" - looks to "this.options.focus"
-         *      property and sets focus
-         */
-        _setFocus: function (position, type) {
-            var focusableElements,
-                infelicity;
-
-            if (type === 'opened' && this.options.focus) {
-                this.modal.find(this.options.focus).focus();
-            } else if (type === 'opened' && !this.options.focus) {
-                this.modal.find(this.options.focusableScope).focus();
-            } else if (position === 'end') {
-                this.modal.find(this.options.modalCloseBtn).focus();
-            } else if (position === 'start') {
-                infelicity = 2; //Constant for find last focusable element
-                focusableElements = this.modal
-                    .find('a[href], area[href], input, select, textarea, button, iframe, object, embed, [tabindex]')
-                    .not('[disabled]')
-                    .not('[tabindex="-1"]')
-                    .visible();
-                focusableElements.eq(focusableElements.length - infelicity).focus();
-            }
-        },
-
-        /**
          * Set events listener when modal is opened.
          */
         _setKeyListener: function () {
-            this.modal.find(this.options.focusableStart).on('focusin', this._tabSwitcher);
-            this.modal.find(this.options.focusableEnd).on('focusin', this._tabSwitcher);
             this.modal.on('keydown', this.keyEventSwitcher);
         },
 
@@ -262,23 +214,7 @@
          * Remove events listener when modal is closed.
          */
         _removeKeyListener: function () {
-            this.modal.find(this.options.focusableStart).off('focusin', this._tabSwitcher);
-            this.modal.find(this.options.focusableEnd).off('focusin', this._tabSwitcher);
             this.modal.off('keydown', this.keyEventSwitcher);
-        },
-
-        /**
-         * Switcher for focus event.
-         * @param {Object} e - event
-         */
-        _tabSwitcher: function (e) {
-            var target = $(e.target);
-
-            if (target.is(this.options.focusableStart)) {
-                this._setFocus('start');
-            } else if (target.is(this.options.focusableEnd)) {
-                this._setFocus('end');
-            }
         },
 
         /**
@@ -308,7 +244,7 @@
         _close: function () {
             var trigger = _.bind(this._trigger, this, 'closed', this.modal);
 
-            $(this.focussedElement).focus();
+            this.focusTrap.deactivate();
             this._destroyOverlay();
             this._unsetActive();
             _.defer(trigger, this);
@@ -371,6 +307,8 @@
                 })
             ).appendTo(this.modalWrapper);
 
+            this.modalWrapper.find(this.options.focusableStart).removeAttr('tabindex');
+            this.modalWrapper.find(this.options.focusableEnd).removeAttr('tabindex');
             this.modal = this.modalWrapper.find(this.options.modalBlock).last();
             this.element.appendTo(this._getElem(this.options.modalContent));
 
