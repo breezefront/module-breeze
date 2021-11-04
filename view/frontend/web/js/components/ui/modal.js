@@ -79,7 +79,7 @@
             this._createWrapper();
             this._renderModal();
             this._createButtons();
-            this.focusTrap = $.focusTrap.createFocusTrap(this.modal.get(0));
+            this.focusTrap = this.createFocusTrap(this.modal);
 
             if (this.options.trigger) {
                 listeners['click ' + this.options.trigger] = this.toggleModal.bind(this);

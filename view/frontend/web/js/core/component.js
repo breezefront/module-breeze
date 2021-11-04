@@ -447,6 +447,22 @@ $.registry = $.breeze.registry = (function () {
         },
 
         /**
+         * @param {Cash} element
+         * @param {Object} options
+         * @return {Object} https://github.com/focus-trap/focus-trap
+         */
+        createFocusTrap: function (element, options) {
+            if (!element) {
+                element = this.element;
+            }
+
+            return $.focusTrap.createFocusTrap(element.get(0), $.extend({
+                allowOutsideClick: true,
+                escapeDeactivates: false
+            }, options || {}));
+        },
+
+        /**
          * @param {String} event
          * @param {Object} data
          */
