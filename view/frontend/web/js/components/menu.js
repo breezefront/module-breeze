@@ -88,7 +88,7 @@
                 }.bind(this));
 
             this._on(document, {
-                'keydown .navigation-wrapper': function (e) {
+                keydown: function (e) {
                     if (e.key === 'Escape' && $('html').hasClass('nav-open')) {
                         this.closeNavbar();
                     }
