@@ -320,7 +320,9 @@
 
         /** [canUseNavKeys description] */
         canUseNavKeys: function () {
-            return this.autoComplete.not(':empty').visible().length > 0;
+            var autocomplete = this.autoComplete.not(':empty').visible();
+
+            return autocomplete.length > 0 && autocomplete.css('visibility') !== 'hidden';
         },
 
         /** [_onEnterKeyDown description] */
