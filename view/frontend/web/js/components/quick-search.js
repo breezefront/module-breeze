@@ -268,10 +268,22 @@
          * @param {Event} e
          */
         _onKeyDown: function (e) {
-            var navKeys = ['Home', 'End', 'ArrowDown', 'ArrowUp', 'Tab'];
+            var navKeys = ['Home', 'End', 'ArrowDown', 'ArrowUp', 'Tab'],
+                selected = this.responseList.selected,
+                first = this._getFirstVisibleElement(),
+                last = this._getLastElement();
 
             if (e.ctrlKey || e.altKey || e.shiftKey && e.key !== 'Tab') {
                 return;
+            }
+
+            // disable focus-trap
+            if (e.key === 'Tab' && selected) {
+                if (e.shiftKey && first && selected.has(first.get(0)).length ||
+                    !e.shiftKey && last && selected.has(last.get(0)).length
+                ) {
+                    return;
+                }
             }
 
             if (navKeys.indexOf(e.key) !== -1) {
@@ -284,11 +296,11 @@
 
             switch (e.key) {
                 case 'Home':
-                    this._selectEl(this._getFirstVisibleElement(), true);
+                    this._selectEl(first, true);
                     break;
 
                 case 'End':
-                    this._selectEl(this._getLastElement(), true);
+                    this._selectEl(last, true);
                     break;
 
                 case 'ArrowDown':
@@ -409,7 +421,7 @@
 
         /** [showAutocomplete description] */
         showAutocomplete: function (content) {
-            if (!content && this.autoComplete.visible().length) {
+            if (!content && this.isVisibleAutocomplete()) {
                 return;
             }
 
