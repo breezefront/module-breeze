@@ -197,7 +197,7 @@
                 e.preventDefault();
             }
 
-            if (selected && selected.title) {
+            if (selected && selected.title && this.isVisibleAutocomplete()) {
                 this.element.val(selected.title);
             }
         },
@@ -320,6 +320,11 @@
 
         /** [canUseNavKeys description] */
         canUseNavKeys: function () {
+            return this.isVisibleAutocomplete();
+        },
+
+        /** [isVisibleAutocomplete description] */
+        isVisibleAutocomplete: function () {
             var autocomplete = this.autoComplete.not(':empty').visible();
 
             return autocomplete.length > 0 && autocomplete.css('visibility') !== 'hidden';
