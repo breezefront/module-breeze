@@ -120,6 +120,11 @@
             });
             this.content.show();
 
+            // constraint dropdown into the visible viewport
+            if (this.isDropdown()) {
+                this.content.contstraint();
+            }
+
             this.element.trigger('dimensionsChanged', {
                 opened: true
             });

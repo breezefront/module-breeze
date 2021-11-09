@@ -67,7 +67,8 @@
                 .attr('aria-expanded', true);
             this.parent.addClass(this.options.activeClass)
                 .find(this.options.menu)
-                .attr('aria-hidden', false);
+                .attr('aria-hidden', false)
+                .contstraint();
         },
 
         /** Close dropdown */

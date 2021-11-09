@@ -227,6 +227,30 @@
         return 0;
     };
 
+    /**
+     * Constraint element inside visible viewport
+     * @return {Cash}
+     */
+    $.fn.contstraint = function () {
+        var left = this.offset().left;
+
+        if (left < 0) {
+            this.css({
+                margin: 0,
+                left: 0,
+                right: 'auto'
+            });
+        } else if (left + this.width() > $(window).width()) {
+            this.css({
+                margin: 0,
+                left: 'auto',
+                right: 0
+            });
+        }
+
+        return this;
+    };
+
     /** Proxy implementation */
     $.proxy = function (fn, ctx) {
         return fn.bind(ctx);
