@@ -83,7 +83,19 @@
                 .on('click.quickSearch', this.options.responseFieldElements, function () {
                     self._selectEl($(this));
                     self.submitSelectedItem();
+                })
+                .on('focus.quickSearch', this.options.responseFieldElements, function () {
+                    self._selectEl($(this));
                 });
+
+            this._on(document, {
+                /** [keydown description] */
+                keydown: function (e) {
+                    if (e.key === 'Escape') {
+                        self.hideAutocomplete();
+                    }
+                }
+            });
 
             $(document).on('click.quickSearch', function (event) {
                 if (self.searchLabel.has(event.target).length) {
@@ -412,9 +424,7 @@
                 .find(this.options.responseFieldElements)
                 .visible();
 
-            this.element
-                .focus()
-                .removeAttr('aria-activedescendant');
+            this.element.removeAttr('aria-activedescendant');
 
             if (this.responseList.indexList.length) {
                 this._updateAriaHasPopup(true);
