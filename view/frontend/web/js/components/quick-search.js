@@ -278,9 +278,13 @@
             }
 
             // disable focus-trap
-            if (e.key === 'Tab' && selected) {
-                if (e.shiftKey && first && selected.has(first.get(0)).length ||
-                    !e.shiftKey && last && selected.has(last.get(0)).length
+            if (e.key === 'Tab') {
+                if (e.shiftKey && this.element.is(':focus')) {
+                    return;
+                }
+
+                if (selected && e.shiftKey && first && selected.has(first.get(0)).length ||
+                    selected && !e.shiftKey && last && selected.has(last.get(0)).length
                 ) {
                     return;
                 }
