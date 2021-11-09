@@ -38,6 +38,7 @@
                 selected: null,
                 selectedIndex: null
             };
+            this.dataset = [];
             this.autoComplete = $(this.options.destinationSelector);
             this.searchForm = $(this.options.formSelector);
             this.submitBtn = this.searchForm.find(this.options.submitBtn);
