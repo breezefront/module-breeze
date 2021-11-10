@@ -136,15 +136,13 @@
         /** Fixed not working seletor with :has token */
         getAddToCartButton: function () {
             var productId = this.options.productId,
-                button,
-                context;
+                button;
 
             if (this.options.addToCartButton && this.options.addToCartButton.indexOf(':has') !== -1) {
-                context = $('form[action*="/"]')
+                button = $('form[action*="/"]')
                     .has('input[type="hidden"][name="product"][value="%1"]'.replace('%1', productId))
-                    .add('.block.widget .price-box[data-product-id="%1"]+.product-item-actions'.replace('%1', productId));
-
-                button = $('button[type="submit"], button.tocart', context);
+                    .add('.block.widget .price-box[data-product-id="%1"]+.product-item-actions'.replace('%1', productId))
+                    .find('button[type="submit"], button.tocart');
             } else {
                 button = $(this.options.addToCartButton);
             }
@@ -178,7 +176,7 @@
         handleMsrpAddToCart: function (ev) {
             ev.preventDefault();
 
-            if (this.options.addToCartButton) {
+            if (this.options.addToCartButton && this.getAddToCartButton().length) {
                 this.getAddToCartButton().click();
                 this.getAddToCartButton().get(0).click();
                 this.closePopup();
