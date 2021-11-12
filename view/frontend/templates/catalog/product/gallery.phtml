@@ -51,7 +51,7 @@ $navType = $block->getGalleryOptions()->getVar('gallery/nav');
     </div>
 
     <div class="thumbnails <?php echo $navType ? '' : 'hidden' ?>">
-        <?php if (count($images) > 1) : ?>
+        <?php if (count($images) > 1) : // empty parent wrapper may be used at configurable product page ?>
             <?php foreach ($images as $image) : ?>
                 <?php
                     $classes = array_filter([
