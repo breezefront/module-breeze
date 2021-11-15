@@ -63,6 +63,8 @@
 
         /** Hide expanded menu's, remove event listeneres */
         destroy: function () {
+            $.breeze.scrollbar.reset();
+
             $('ul.shown', this.element).removeClass('shown').hide();
             $('html').removeClass('nav-open').removeClass('nav-before-open');
 
