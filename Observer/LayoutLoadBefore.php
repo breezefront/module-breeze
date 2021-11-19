@@ -28,13 +28,21 @@ class LayoutLoadBefore implements ObserverInterface
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
+        $update = $observer->getLayout()->getUpdate();
+
+        // Add additional handles for breeze theme
+        if ($this->customerSession->isLoggedIn()) {
+            $update->addHandle('customer_logged_in');
+        } else {
+            $update->addHandle('customer_logged_out');
+        }
+
         if (!$this->helper->isEnabled()) {
             return;
         }
 
         $this->pageConfig->addBodyClass('breeze');
 
-        $update = $observer->getLayout()->getUpdate();
         $additionalHandles = [
             'review_product_list' => [
                 'breeze_catalog_product_view',
@@ -57,12 +65,5 @@ class LayoutLoadBefore implements ObserverInterface
         }
 
         $update->addHandle('breeze');
-
-        // Add additional handles for breeze theme
-        if ($this->customerSession->isLoggedIn()) {
-            $update->addHandle('customer_logged_in');
-        } else {
-            $update->addHandle('customer_logged_out');
-        }
     }
 }
