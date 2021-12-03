@@ -188,7 +188,9 @@
             this.stage.toggleClass('video', data.videoUrl);
 
             if (this.image.get(0) && !this.image.get(0).complete) {
-                this.stage.spinner(true);
+                this.stage.spinner(true, {
+                    delay: 200
+                });
             }
 
             // scroll to hidden thumbnail only if we will not affect page scroll offset
