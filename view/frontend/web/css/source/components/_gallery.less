@@ -8,9 +8,9 @@
         .next,
         .close {
             position: absolute;
-            color: #999;
+            color: ~"rgba(var(--base-color, 119, 119, 119), .6)";
             &:hover {
-                color: #777;
+                color: ~"rgba(var(--base-color, 119, 119, 119), 1)";
             }
             svg {
                 width: 24px;
@@ -34,7 +34,7 @@
             width: 40px;
             height: 80px;
             margin-top: -40px;
-            background: rgba(255,255,255,0.6);
+            background: ~"rgba(var(--muted-bg, 255, 255, 255), .6)";
             z-index: 11;
             transition: all 150ms ease-in;
             &:hover {
@@ -141,7 +141,7 @@
                 position: relative;
                 flex-shrink: 0;
                 margin: 0 5px 5px 0;
-                background: #f4f4f4;
+                background: ~"rgba(var(--muted-bg, 244, 244, 244))";
                 &.active::after {
                     content: '';
                     box-shadow: inset 0 0 0 2px @active__color;
@@ -170,7 +170,7 @@
             height: 100%;
             padding: 30px;
             box-sizing: border-box;
-            background: #fff;
+            background: ~"rgb(var(--base-bg, #fff))";
 
             .close {
                 display: block;
