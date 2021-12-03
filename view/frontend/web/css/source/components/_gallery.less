@@ -82,7 +82,7 @@
             align-items: center;
             position: relative;
 
-            > div,
+            > div:not(.loading-mask),
             .main-image-wrapper,
             .main-image-wrapper > picture {
                 position: relative;
@@ -190,7 +190,7 @@
                     }
                 }
 
-                > div {
+                > div:not(.loading-mask) {
                     &,
                     picture {
                         margin: 0 auto;
