@@ -2,33 +2,39 @@
 (function () {
     'use strict';
 
-    var productId,
-        itemId,
-        cartData,
-        Updater;
+    $.widget('abstractConfigurableUpdater', {
+        /** [create description] */
+        create: function () {
+            this.productOptions = {};
 
-    if (window.location.href.indexOf('checkout/cart/configure') === -1) {
-        return;
-    }
+            this.cartSubscription = $.sections.get('cart').subscribe(function (updateCartData) {
+                if (this.setProductOptions(updateCartData)) {
+                    this.updateOptions();
+                }
+            }.bind(this));
 
-    productId = $('#product_addtocart_form [name="product"]').val();
-    itemId = $('#product_addtocart_form [name="item"]').val();
-    cartData = $.sections.get('cart');
+            $('#product_addtocart_form').on(this.eventName, function () {
+                this.setProductOptions($.sections.get('cart')());
+                this.updateOptions();
+            }.bind(this));
+        },
 
-    /** [Updater description] */
-    Updater = function (eventName, updateOptionsCallback) {
-        this.eventName = eventName;
-        this.updateOptions = updateOptionsCallback;
-        this.productOptions = {};
-    };
+        /** [destroy description] */
+        destroy: function () {
+            this.cartSubscription.dispose();
+            this._super();
+        },
 
-    Updater.prototype = {
+        updateOptions: _.noop,
+
         /** [setProductOptions description] */
         setProductOptions: function (data) {
             var product,
-                changedProductOptions;
+                changedProductOptions,
+                productId = $('#product_addtocart_form [name="product"]').val(),
+                itemId = $('#product_addtocart_form [name="item"]').val();
 
-            if (!data || !data.items || !data.items.length || !productId) {
+            if (!data || !data.items || !data.items.length || !productId || !itemId) {
                 return;
             }
 
@@ -53,46 +59,49 @@
             this.productOptions = changedProductOptions;
 
             return true;
-        },
-
-        /** [listen description] */
-        listen: function () {
-            cartData.subscribe(function (updateCartData) {
-                if (this.setProductOptions(updateCartData)) {
-                    this.updateOptions();
-                }
-            }.bind(this));
-
-            $('#product_addtocart_form').on(this.eventName, function () {
-                this.setProductOptions(cartData());
-                this.updateOptions();
-            }.bind(this));
         }
-    };
+    });
 
-    // colorswatches
-    new Updater('swatch.initialized', function () {
-        var swatchWidget = $('.swatch-opt').data('mageSwatchRenderer');
+    $.widget('swatchUpdater', 'abstractConfigurableUpdater', {
+        eventName: 'swatch.initialized',
 
-        if (!swatchWidget || !swatchWidget._EmulateSelectedByAttributeId) {
+        /** [updateOptions description] */
+        updateOptions: function () {
+            var swatchWidget = $('.swatch-opt').data('mageSwatchRenderer');
+
+            if (!swatchWidget || !swatchWidget._EmulateSelectedByAttributeId) {
+                return;
+            }
+
+            // timout is used to wait until price-box widget will be mounted
+            setTimeout(function () {
+                swatchWidget._EmulateSelectedByAttributeId(this.productOptions);
+            }.bind(this), 80);
+        }
+    });
+
+    $.widget('configurableUpdater', 'abstractConfigurableUpdater', {
+        eventName: 'configurable.initialized',
+
+        /** [updateOptions description] */
+        updateOptions: function () {
+            var configurableWidget = $('#product_addtocart_form').data('mageConfigurable');
+
+            if (!configurableWidget) {
+                return;
+            }
+
+            configurableWidget.options.values = this.productOptions || {};
+            configurableWidget._configureForValues();
+        }
+    });
+
+    $(document).on('breeze:load', function () {
+        if (window.location.href.indexOf('checkout/cart/configure') === -1) {
             return;
         }
 
-        // timout is used to wait until price-box widget will be mounted
-        setTimeout(function () {
-            swatchWidget._EmulateSelectedByAttributeId(this.productOptions);
-        }.bind(this), 80);
-    }).listen();
-
-    // configurable options
-    new Updater('configurable.initialized', function () {
-        var configurableWidget = $('#product_addtocart_form').data('mageConfigurable');
-
-        if (!configurableWidget) {
-            return;
-        }
-
-        configurableWidget.options.values = this.productOptions || {};
-        configurableWidget._configureForValues();
-    }).listen();
+        $.fn.swatchUpdater();
+        $.fn.configurableUpdater();
+    });
 })();

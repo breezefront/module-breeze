@@ -2,38 +2,45 @@
 (function () {
     'use strict';
 
-    var productId,
-        itemId,
-        qtyField,
-        cartData;
+    $.widget('productConfigure', {
+        /** [create description] */
+        create: function () {
+            this.cartSubscription = $.sections.get('cart').subscribe(function (data) {
+                this.syncQuantity(data);
+            }.bind(this));
 
-    if (window.location.href.indexOf('checkout/cart/configure') === -1) {
-        return;
-    }
+            this.syncQuantity($.sections.get('cart')());
+        },
 
-    productId = $('#product_addtocart_form [name="product"]').val();
-    itemId = $('#product_addtocart_form [name="item"]').val();
-    qtyField = $('#product_addtocart_form [name="qty"]');
-    cartData = $.sections.get('cart');
+        /** [destroy description] */
+        destroy: function () {
+            this.cartSubscription.dispose();
+            this._super();
+        },
 
-    /** Sync qty field value with data */
-    function syncQuantity(data) {
-        var product;
+        /** [syncQuantity description] */
+        syncQuantity: function (data) {
+            var product,
+                itemId = $('#product_addtocart_form [name="item"]').val(),
+                productId = $('#product_addtocart_form [name="product"]').val();
 
-        if (!data || !data.items || !data.items.length || !productId) {
+            if (!data || !data.items || !data.items.length || !productId) {
+                return;
+            }
+
+            product = _.find(data.items, function (item) {
+                return item.item_id === itemId && item.product_id === productId;
+            });
+
+            $('#product_addtocart_form [name="qty"]').val(product.qty);
+        }
+    });
+
+    $(document).on('breeze:load', function () {
+        if (window.location.href.indexOf('checkout/cart/configure') === -1) {
             return;
         }
 
-        product = _.find(data.items, function (item) {
-            return item.item_id === itemId && item.product_id === productId;
-        });
-
-        qtyField.val(product.qty);
-    }
-
-    cartData.subscribe(function (data) {
-        syncQuantity(data);
+        $.fn.productConfigure();
     });
-
-    syncQuantity(cartData());
 })();
