@@ -81,6 +81,16 @@ class Data extends AbstractHelper
     }
 
     /**
+     * @return array
+     */
+    public function getExcludeExceptionUrls()
+    {
+        return [
+            'checkout/cart/configure',
+        ];
+    }
+
+    /**
      * @param string $url
      * @return boolean
      */
@@ -88,6 +98,14 @@ class Data extends AbstractHelper
     {
         if (!$url) {
             $url = $this->_getRequest()->getRequestUri();
+        }
+
+        foreach ($this->getExcludeExceptionUrls() as $exceptionUrl) {
+            if (strpos($url, trim($exceptionUrl)) === false) {
+                continue;
+            }
+
+            return false;
         }
 
         foreach ($this->getExcludedUrls() as $excludedUrl) {
@@ -104,6 +122,11 @@ class Data extends AbstractHelper
     protected function isCurrentPageSupported()
     {
         $page = $this->_request->getFullActionName();
+        $handle = str_replace('_', '/', $page);
+
+        if (in_array($handle, $this->getExcludeExceptionUrls())) {
+            return true;
+        }
 
         return strpos($page, 'checkout_') === false
             && strpos($page, 'multishipping_') === false;

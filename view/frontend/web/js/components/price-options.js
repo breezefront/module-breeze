@@ -77,7 +77,10 @@
          * @private
          */
         _init: function () {
-            $(this.options.optionsSelector, this.element).trigger('change');
+            // timout is used to wait until price-box widget will be mounted
+            setTimeout(function () {
+                $(this.options.optionsSelector, this.element).trigger('change');
+            }.bind(this), 80);
         },
 
         /**

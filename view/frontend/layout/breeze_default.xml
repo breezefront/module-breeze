@@ -224,6 +224,7 @@
                                 </item>
                             </item>
                             <item name="validate-item-quantity" xsi:type="string">Swissup_Breeze/js/components/validators/cart</item>
+                            <item name="product-configure" xsi:type="string">Swissup_Breeze/js/components/product-configure</item>
                         </item>
                     </item>
                     <item name="product-bundle" xsi:type="array">
@@ -242,6 +243,7 @@
                         <item name="items" xsi:type="array">
                             <item name="configurable" xsi:type="string">Swissup_Breeze/js/components/configurable</item>
                             <item name="Magento_Swatches/js/swatch-renderer" xsi:type="string">Swissup_Breeze/js/components/swatch-renderer</item>
+                            <item name="configurable-configure" xsi:type="string">Swissup_Breeze/js/components/configurable-configure</item>
                         </item>
                     </item>
                     <item name="customer" xsi:type="array">
