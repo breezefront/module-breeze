@@ -35,7 +35,9 @@
 
         /** Remove event listeners and dom elements */
         destroy: function () {
-            this.$popup.remove();
+            if (this.$popup) {
+                this.$popup.remove();
+            }
         },
 
         /** Init msrp popup */
