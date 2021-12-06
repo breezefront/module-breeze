@@ -42,6 +42,10 @@
             return show(element, settings);
         }
 
+        if (element.data('spinner-timer')) {
+            return;
+        }
+
         element.data('spinner-timer', setTimeout(function () {
             show(element, settings);
         }, settings.delay || 0));
