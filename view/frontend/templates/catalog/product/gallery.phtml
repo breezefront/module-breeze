@@ -24,7 +24,7 @@ $navType = $block->getGalleryOptions()->getVar('gallery/nav');
 
 ?>
 
-<div class="breeze-gallery <?= $block->getGalleryOptions()->getVar('gallery/navdir') ?>" tabindex="0">
+<div class="breeze-gallery <?= $block->getGalleryOptions()->getVar('gallery/navdir') ?>">
     <div class="stage <?= $mainImage && $mainImage->getVideoUrl() ? 'video' : '' ?>"
         data-gallery-role="gallery-placeholder">
         <div class="main-image-wrapper">

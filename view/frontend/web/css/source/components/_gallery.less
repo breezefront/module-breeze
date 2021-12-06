@@ -28,6 +28,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            visibility: hidden;
             opacity: 0;
             left: 0;
             top: 50%;
@@ -48,6 +49,7 @@
         .stage:hover {
             .prev,
             .next {
+                visibility: visible;
                 opacity: .8;
             }
         }
@@ -142,6 +144,10 @@
                 flex-shrink: 0;
                 margin: 0 5px 5px 0;
                 background: ~"rgba(var(--muted-bg, 244, 244, 244))";
+                &:focus {
+                    outline: none;
+                }
+                &:focus::after,
                 &.active::after {
                     content: '';
                     box-shadow: inset 0 0 0 2px @active__color;
