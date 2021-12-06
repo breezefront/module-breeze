@@ -5,7 +5,7 @@
     $.widget('addToCart', {
         component: 'addToCart',
         options: {
-            origin: 'msrp',
+            origin: '',
             popUpAttr: '[data-role=msrp-popup-template]',
             popupCartButtonId: '#map-popup-button',
             paypalCheckoutButons: '[data-action=checkout-form-submit]',
