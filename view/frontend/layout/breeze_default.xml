@@ -278,6 +278,7 @@
                                 <item name="import" xsi:type="array">
                                     <item name="slider" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/slider</item>
                                     <item name="carousel" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/carousel</item>
+                                    <item name="tabs" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/tabs</item>
                                 </item>
                             </item>
                         </item>
