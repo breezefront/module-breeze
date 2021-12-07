@@ -3,22 +3,36 @@
     .breeze {
         [data-content-type='products'][data-appearance='carousel'] {
             position: relative;
-            margin-bottom: 10px;
+
+            &[data-show-dots="true"] {
+                padding-bottom: 55px;
+            }
 
             .product-items {
                 display: flex;
+                flex-wrap: nowrap;
                 overflow-x: auto;
                 scroll-behavior: smooth;
                 scroll-snap-type: x mandatory;
                 margin-bottom: 0;
-                padding-bottom: 40px;
-                .bz-scrollbar();
+
+                // hide scrollbar
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+                &::-webkit-scrollbar {
+                    display: none;
+                }
             }
 
             li.product-item {
+                flex-shrink: 0;
                 display: block;
                 visibility: visible;
                 scroll-snap-align: start;
+            }
+
+            .slick-arrow {
+                margin-top: -80px;
             }
         }
     }

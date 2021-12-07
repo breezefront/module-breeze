@@ -15,7 +15,6 @@
             display: flex;
             position: relative;
             overflow-x: auto;
-            margin-bottom: 10px;
             &.slick-initialized {
                 display: block;
                 overflow: hidden;
@@ -29,8 +28,12 @@
         }
         .pagebuilder-slider,
         .slick-list {
-            .bz-scrollbar();
-            padding-bottom: 10px;
+            // hide scrollbar
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            &::-webkit-scrollbar {
+                display: none;
+            }
         }
         .slick-list {
             display: flex;
