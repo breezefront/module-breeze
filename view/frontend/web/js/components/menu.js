@@ -44,6 +44,39 @@
                 })
                 .prepend('<span class="ui-menu-icon ui-icon"></span>');
 
+            $('li.parent', this.element).on('keydown.menu', function (e) {
+                var dropdown = $(this).children(self.options.dropdown),
+                    visibleDropdowns = $(self.options.dropdown + '.shown');
+
+                if (['Enter', 'Escape', ' '].indexOf(e.key) === -1) {
+                    return;
+                }
+
+                if (e.key === 'Enter' && dropdown.hasClass('shown')) {
+                    return;
+                }
+
+                e.stopPropagation();
+
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+
+                    visibleDropdowns.not(dropdown).each(function () {
+                        if (!$(this).has(dropdown.get(0)).length) {
+                            self.close($(this));
+                        }
+                    });
+
+                    if (dropdown.hasClass('shown')) {
+                        self.close(dropdown);
+                    } else {
+                        self.open(dropdown);
+                    }
+                } else if (e.key === 'Escape' && visibleDropdowns.length) {
+                    self.close(visibleDropdowns.last());
+                }
+            });
+
             $('a', this.element).on('click.menu', '.ui-icon', function () {
                 var dropdown = $(this).closest('a').siblings(self.options.dropdown);
 
