@@ -7,7 +7,7 @@
         href="<?= $block->escapeUrl($block->getHref()) ?>"
         title="<?= $block->escapeHtml($block->getTitle()) ?>"
         <?php if ($childHtml) : ?>
-            data-mage-init='{"dropdown":{}}'
+            data-mage-init='<?php echo $this->getJsonConfig() ?>'
             data-toggle="dropdown"
             data-trigger-keypress-button="true"
         <?php endif ?>

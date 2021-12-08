@@ -8,6 +8,11 @@ class Dropdown extends Template
 {
     protected $_template = 'Swissup_Breeze::theme/dropdown.phtml';
 
+    /**
+     * @var \Magento\Framework\Serialize\Serializer\Json
+     */
+    private $json;
+
     private $content;
 
     /**
@@ -16,8 +21,11 @@ class Dropdown extends Template
      */
     public function __construct(
         Template\Context $context,
+        \Magento\Framework\Serialize\Serializer\Json $json,
         array $data = []
     ) {
+        $this->json = $json;
+
         parent::__construct($context, $data);
     }
 
@@ -43,5 +51,14 @@ class Dropdown extends Template
         }
 
         return $class;
+    }
+
+    public function getJsonConfig()
+    {
+        return $this->json->serialize([
+            'dropdown' => [
+                'dialog' => $this->getIsDialog(),
+            ],
+        ]);
     }
 }
