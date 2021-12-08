@@ -239,10 +239,12 @@
 
         if (left < 0) {
             this.css({
+                left: 'auto',
                 right: parseFloat(this.css('right')) + (left - 10)
             });
         } else if (left > 0 && right > viewportWidth) {
             this.css({
+                left: 'auto',
                 right: Math.min(parseFloat(this.css('right')) + left, 0)
             });
         }
