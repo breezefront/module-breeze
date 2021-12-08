@@ -232,19 +232,18 @@
      * @return {Cash}
      */
     $.fn.contstraint = function () {
-        var left = this.offset().left;
+        var viewportWidth = $(window).width(),
+            width = this.outerWidth(),
+            left = Math.round(this.offset().left),
+            right = left + width;
 
         if (left < 0) {
             this.css({
-                margin: 0,
-                left: 0,
-                right: 'auto'
+                right: parseFloat(this.css('right')) + (left - 10)
             });
-        } else if (left + this.width() > $(window).width()) {
+        } else if (left > 0 && right > viewportWidth) {
             this.css({
-                margin: 0,
-                left: 'auto',
-                right: 0
+                right: Math.min(parseFloat(this.css('right')) + left, 0)
             });
         }
 
