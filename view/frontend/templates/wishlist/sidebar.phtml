@@ -21,8 +21,8 @@
         <!-- /ko -->
     </div>
     <div class="block-content">
-        <strong class="subtitle"><?= $block->escapeHtml(__('Last Added Items')) ?></strong>
         <!-- ko if: wishlist().counter -->
+            <strong class="subtitle"><?= $block->escapeHtml(__('Last Added Items')) ?></strong>
             <ol class="product-items no-display"
                 id="wishlist-sidebar"
                 data-bind="foreach: wishlist().items, css: {'no-display': null}">
