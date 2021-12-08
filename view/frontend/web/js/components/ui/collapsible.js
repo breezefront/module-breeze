@@ -202,7 +202,19 @@
     });
 
     $(document).on('click.collapsible', function (event) {
-        var instance = $(event.target).closest('[data-trigger]').closest('[data-collapsible]').collapsible('instance');
+        var instance = $(event.target).closest('[data-trigger]').closest('[data-collapsible]').collapsible('instance'),
+            tmpInstance;
+
+        if (!instance) {
+            // Do not close collapsible when click inside its content
+            tmpInstance = $(event.target)
+                .closest('[data-collapsible]')
+                .collapsible('instance');
+
+            if (tmpInstance && tmpInstance.options.dialog) {
+                return;
+            }
+        }
 
         $.widget('collapsible').each(function (widget) {
             if (widget === instance) {
