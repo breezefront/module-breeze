@@ -28,7 +28,7 @@ $navType = $block->getGalleryOptions()->getVar('gallery/nav');
     <div class="stage <?= $mainImage && $mainImage->getVideoUrl() ? 'video' : '' ?>"
         data-gallery-role="gallery-placeholder">
         <div class="main-image-wrapper">
-            <img loading="lazy" alt="<?= $mainImage ? $mainImage->getLabel() : '' ?>"
+            <img alt="<?= $mainImage ? $mainImage->getLabel() : '' ?>"
                 class="main-image"
                 src="<?= $mainImageUrl ?>"
                 width="<?= $width ?>"
