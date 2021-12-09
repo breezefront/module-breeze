@@ -60,7 +60,7 @@ $navType = $block->getGalleryOptions()->getVar('gallery/nav');
                         $image->getVideoUrl() ? 'video' : ''
                     ]);
                 ?>
-                <a class="<?= implode(' ', $classes) ?>" href="<?= $image->getLargeImageUrl() ?>" title="<?= $image->getLabel() ?? __('View Image') ?>">
+                <a class="<?= implode(' ', $classes) ?>" href="<?= $image->getLargeImageUrl() ?>" title="<?= $image->getLabel() ?: __('View Image') ?>">
                     <img loading="lazy" alt="<?= $image->getLabel() ?>"
                         src="<?= $image->getSmallImageUrl() ?>"
                         width="<?= $thumbWidth ?>"
