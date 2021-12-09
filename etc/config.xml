@@ -7,6 +7,12 @@
                 <enabled>theme</enabled>
                 <debug>0</debug>
                 <turbo>theme</turbo>
+                <sizes>
+                    <category_page_grid>(min-width: 1280px) 215px, (min-width: 1024px) 165px, (min-width: 768px) 175px, (min-width: 640px) 190px, 50vw</category_page_grid>
+                    <category_page_grid-1column>(min-width: 1280px) 240px, (min-width: 1024px) 185px, (min-width: 768px) 175px, (min-width: 640px) 190px, 50vw</category_page_grid-1column>
+                    <category_page_grid-3columns>(min-width: 1280px) 225px, (min-width: 1024px) 175px, (min-width: 768px) 210px, (min-width: 640px) 190px, 50vw</category_page_grid-3columns>
+                    <category_page_list>(min-width: 640px) 240px, 30vw</category_page_list>
+                </sizes>
             </breeze>
         </design>
     </default>

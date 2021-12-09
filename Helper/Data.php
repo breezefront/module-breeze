@@ -152,9 +152,7 @@ class Data extends AbstractHelper
      */
     public function getThemeConfig($key)
     {
-        return $this->viewConfig
-            ->getViewConfig()
-            ->getVarValue('Swissup_Breeze', $key);
+        return $this->getViewConfig()->getVarValue('Swissup_Breeze', $key);
     }
 
     /**
@@ -165,5 +163,15 @@ class Data extends AbstractHelper
     public function getConfig($path, $scope = ScopeInterface::SCOPE_STORE)
     {
         return $this->scopeConfig->getValue($path, $scope);
+    }
+
+    /**
+     * @param  string $path
+     * @param  string $scope
+     * @return string
+     */
+    public function getViewConfig()
+    {
+        return $this->viewConfig->getViewConfig();
     }
 }
