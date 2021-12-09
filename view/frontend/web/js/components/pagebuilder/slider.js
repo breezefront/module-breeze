@@ -19,9 +19,9 @@
                 dots: [
                     '<ul class="slick-dots" role="tablist">',
                         '<% _.each(dots, function(dot) { %>',
-                            '<li class="<%- dot.css %>" role="presentation">',
+                            '<li class="<%- dot.css %>" role="tab">',
                                 // eslint-disable-next-line max-len
-                                '<button type="button" role="tab" aria-label="<%- dot.ariaLabel %>" tabindex="-1">',
+                                '<button type="button" aria-label="<%- dot.ariaLabel %>" tabindex="-1">',
                                     '<%- dot.label %>',
                                 '</button>',
                             '</li>',
