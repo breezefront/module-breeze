@@ -40,7 +40,7 @@
                         <item name="active" xsi:type="boolean">true</item>
                         <item name="sort_order" xsi:type="number">2</item>
                         <item name="items" xsi:type="array">
-                            <item name="underscore" xsi:type="string">Swissup_Breeze::js/lib/underscore-1.12.0.min.js</item>
+                            <item name="underscore" xsi:type="string">Swissup_Breeze::js/lib/underscore-1.13.1.min.js</item>
                             <item name="tabbable" xsi:type="string">Swissup_Breeze::js/lib/tabbable-5.2.1.min.js</item>
                             <item name="focus-trap" xsi:type="string">Swissup_Breeze::js/lib/focus-trap-6.7.1.min.js</item>
                             <item name="cash" xsi:type="string">Swissup_Breeze::js/lib/cash-8.1.0.min.js</item>
