@@ -472,7 +472,7 @@
                 height = _.has(sizeConfig, 'swatchThumb') ? sizeConfig.swatchThumb.height : 90;
                 label = this.label ? $('<i></i>').text(this.label).html() : '';
                 attr =
-                    ' id="' + controlId + '-item-' + id + '"' +
+                    // ' id="' + controlId + '-item-' + id + '"' +
                     ' index="' + index + '"' +
                     ' aria-checked="false"' +
                     ' aria-describedby="' + controlId + '"' +
