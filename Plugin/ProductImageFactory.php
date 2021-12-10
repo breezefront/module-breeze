@@ -59,7 +59,9 @@ class ProductImageFactory
         }
 
         $attributes['srcset'] = $srcset;
-        $attributes['sizes'] = $this->imageHelper->getSizes($imageId);
+        if ($sizes = $this->imageHelper->getSizes($imageId)) {
+            $attributes['sizes'] = $sizes;
+        }
 
         return $result->setCustomAttributes($attributes);
     }
