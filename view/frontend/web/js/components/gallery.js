@@ -192,7 +192,7 @@
                 }
             }
 
-            if (fullscreen) {
+            if (fullscreen || !data.srcset) {
                 this.image.attr('data-sizes', this.image.attr('sizes'));
                 this.image.removeAttr('sizes');
                 this.image.removeAttr('srcset');
