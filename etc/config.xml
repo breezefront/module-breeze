@@ -15,6 +15,7 @@
                     <category_page_list>(min-width: 640px) 240px, 30vw</category_page_list>
                     <product_page_image_medium>(min-width: 1280px) 700px, (min-width: 1024px) 550px, (min-width: 768px) 405px, 100vw</product_page_image_medium>
                     <product_page_image_small>88px</product_page_image_small>
+                    <cart_page_product_thumbnail>(min-width: 768px) 165px, 65px</cart_page_product_thumbnail>
                 </sizes>
             </breeze>
         </design>
