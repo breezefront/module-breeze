@@ -53,10 +53,11 @@ class Image extends AbstractHelper
     public function getSrcset(Product $product, $id)
     {
         $srcset = [];
+        $srcsetId = $id . '-srcset';
         $images = $this->helper->getViewConfig()->getMediaEntities('Magento_Catalog', 'images');
 
         foreach ($images as $imageId => $params) {
-            if (strpos($imageId, $id) !== 0) {
+            if ($imageId === $id || strpos($imageId, $srcsetId) !== 0) {
                 continue;
             }
 
