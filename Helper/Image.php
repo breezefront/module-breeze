@@ -155,7 +155,7 @@ class Image extends AbstractHelper
         foreach ($fallbacks as $fallbackId) {
             $fallbackParams = $images[$fallbackId] ?? false;
 
-            if (!$fallbackParams) {
+            if (!$fallbackParams || !isset($params[0]['width']) || !isset($params[0]['height'])) {
                 continue;
             }
 
