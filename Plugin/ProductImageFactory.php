@@ -41,10 +41,10 @@ class ProductImageFactory
         \Magento\Catalog\Model\Product $product,
         string $imageId
     ) {
-        // commented to keep working on shopping cart page
-        // if (!$this->helper->isEnabled()) {
-        //     return $result;
-        // }
+        // do not check enabled status to keep working on shopping cart page
+        if (!$this->helper->isResponsiveImagesEnabled()) {
+            return $result;
+        }
 
         $attributes = $result->getCustomAttributes();
 

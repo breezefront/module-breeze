@@ -147,6 +147,20 @@ class Data extends AbstractHelper
     }
 
     /**
+     * @return boolean
+     */
+    public function isResponsiveImagesEnabled()
+    {
+        $result = $this->getConfig('design/breeze/responsive_images');
+
+        if ($result === 'theme') {
+            $result = $this->getThemeConfig('responsive_images');
+        }
+
+        return (bool) $result;
+    }
+
+    /**
      * @param string $key
      * @return string
      */

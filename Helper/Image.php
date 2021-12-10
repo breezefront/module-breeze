@@ -52,6 +52,10 @@ class Image extends AbstractHelper
      */
     public function getSrcset($object, $id)
     {
+        if (!$this->helper->isResponsiveImagesEnabled()) {
+            return '';
+        }
+
         $srcset = [];
         $srcsetParams = $this->getSrcsetParams($id);
 

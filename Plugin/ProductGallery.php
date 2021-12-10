@@ -37,7 +37,7 @@ class ProductGallery
         \Magento\Catalog\Block\Product\View\Gallery $subject,
         $result
     ) {
-        if (!$result || !$this->helper->isEnabled()) {
+        if (!$result || !$this->helper->isEnabled() || !$this->helper->isResponsiveImagesEnabled()) {
             return $result;
         }
 
