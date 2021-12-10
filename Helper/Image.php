@@ -53,14 +53,9 @@ class Image extends AbstractHelper
     public function getSrcset($object, $id)
     {
         $srcset = [];
-        $srcsetId = $id . '-srcset';
-        $images = $this->helper->getViewConfig()->getMediaEntities('Magento_Catalog', 'images');
+        $srcsetParams = $this->getSrcsetParams($id);
 
-        foreach ($images as $imageId => $params) {
-            if ($imageId !== $id && strpos($imageId, $srcsetId) !== 0) {
-                continue;
-            }
-
+        foreach ($srcsetParams as $params) {
             $params = $this->imageParamsBuilder->build($params);
             if (isset($srcset[$params['image_width']])) {
                 continue;
@@ -124,5 +119,56 @@ class Image extends AbstractHelper
         }
 
         return $currentPageLayout;
+    }
+
+    /**
+     * @param string $id
+     * @return array
+     */
+    private function getSrcsetParams($id)
+    {
+        $images = $this->helper->getViewConfig()->getMediaEntities('Magento_Catalog', 'images');
+        $params = $this->filterMediaEntities($images, $id);
+
+        if (!$params || count($params) > 1) {
+            return $params;
+        }
+
+        $params = array_values($params);
+        $fallbacks = [
+            'category_page_grid',
+            'category_page_list',
+        ];
+
+        foreach ($fallbacks as $fallbackId) {
+            $fallbackParams = $images[$fallbackId] ?? false;
+
+            if (!$fallbackParams) {
+                continue;
+            }
+
+            if ($params[0]['width'] === $fallbackParams['width'] &&
+                $params[0]['height'] === $fallbackParams['height']
+            ) {
+                $params = $this->filterMediaEntities($images, $fallbackId);
+                break;
+            }
+        }
+
+        return $params;
+    }
+
+    /**
+     * @param array $images
+     * @param string $id
+     * @return array
+     */
+    private function filterMediaEntities($images, $id)
+    {
+        return array_filter(
+            $images,
+            fn ($key) => ($key === $id || strpos($key . '-srcset', $id) === 0),
+            ARRAY_FILTER_USE_KEY
+        );
     }
 }
