@@ -104,7 +104,14 @@ class Image extends AbstractHelper
             return $sizes[$idWithLayout];
         }
 
-        return $sizes[$id] ?? '';
+        if (isset($sizes[$id])) {
+            return $sizes[$id];
+        }
+
+        // fallback for images without defines sizes (compare page, etc.)
+        $params = $this->helper->getViewConfig()->getMediaAttributes('Magento_Catalog', 'images', $id);
+
+        return isset($params['width']) ? $params['width'] . 'px' : '';
     }
 
     /**
@@ -138,6 +145,7 @@ class Image extends AbstractHelper
         $fallbacks = [
             'category_page_grid',
             'category_page_list',
+            'product_small_image',
         ];
 
         foreach ($fallbacks as $fallbackId) {

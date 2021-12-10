@@ -41,9 +41,10 @@ class ProductImageFactory
         \Magento\Catalog\Model\Product $product,
         string $imageId
     ) {
-        if (!$this->helper->isEnabled()) {
-            return $result;
-        }
+        // commented to keep working on shopping cart page
+        // if (!$this->helper->isEnabled()) {
+        //     return $result;
+        // }
 
         $attributes = $result->getCustomAttributes();
 
