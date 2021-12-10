@@ -58,7 +58,7 @@ class RecentlyViewedAndCompared
             $displayMode = 'list';
             $imageCode .= 'list_content_widget';
         } elseif (strpos($template, 'sidebar') !== false) {
-            $displayMode = 'grid';
+            $displayMode = 'list';
             $imageCode .= 'images_names_widget';
         } else {
             $displayMode = 'grid';
