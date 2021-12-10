@@ -46,18 +46,18 @@ class Image extends AbstractHelper
     }
 
     /**
-     * @param Product $product
+     * @param Product|\Magento\Framework\DataObject $object
      * @param string $id
      * @return string
      */
-    public function getSrcset(Product $product, $id)
+    public function getSrcset($object, $id)
     {
         $srcset = [];
         $srcsetId = $id . '-srcset';
         $images = $this->helper->getViewConfig()->getMediaEntities('Magento_Catalog', 'images');
 
         foreach ($images as $imageId => $params) {
-            if ($imageId === $id || strpos($imageId, $srcsetId) !== 0) {
+            if ($imageId !== $id && strpos($imageId, $srcsetId) !== 0) {
                 continue;
             }
 
@@ -66,9 +66,13 @@ class Image extends AbstractHelper
                 continue;
             }
 
-            $path = $product->getData($params['image_type']);
+            if ($object instanceof Product) {
+                $path = $object->getData($params['image_type']);
+            } else {
+                $path = $object->getData('file');
+            }
 
-            if ($path === null || $path === 'no_selection') {
+            if (!$path || $path === 'no_selection') {
                 continue;
             }
 

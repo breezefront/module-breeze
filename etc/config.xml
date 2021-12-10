@@ -12,6 +12,8 @@
                     <category_page_grid-1column>(min-width: 1280px) 240px, (min-width: 1024px) 185px, (min-width: 768px) 175px, (min-width: 640px) 190px, 50vw</category_page_grid-1column>
                     <category_page_grid-3columns>(min-width: 1280px) 225px, (min-width: 1024px) 175px, (min-width: 768px) 210px, (min-width: 640px) 190px, 50vw</category_page_grid-3columns>
                     <category_page_list>(min-width: 640px) 240px, 30vw</category_page_list>
+                    <product_page_image_medium>(min-width: 1280px) 700px, (min-width: 1024px) 550px, (min-width: 768px) 405px, 100vw</product_page_image_medium>
+                    <product_page_image_small>88px</product_page_image_small>
                 </sizes>
             </breeze>
         </design>

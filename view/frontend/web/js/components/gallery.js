@@ -182,8 +182,22 @@
             this.thumbs.eq(this.activeIndex).removeClass('active');
             this.thumbs.eq(index).addClass('active');
             this.image.siblings('source').remove();
-            this.image.removeAttr('sizes');
-            this.image.removeAttr('srcset');
+
+            if (data.srcset) {
+                this.image.attr('srcset', data.srcset);
+
+                if (!this.image.attr('sizes')) {
+                    this.image.attr('sizes', this.image.attr('data-sizes'));
+                    this.image.removeAttr('data-sizes');
+                }
+            }
+
+            if (fullscreen) {
+                this.image.attr('data-sizes', this.image.attr('sizes'));
+                this.image.removeAttr('sizes');
+                this.image.removeAttr('srcset');
+            }
+
             this.image.attr('src', fullscreen ? data.full : data.img);
             this.stage.toggleClass('video', data.videoUrl);
 
