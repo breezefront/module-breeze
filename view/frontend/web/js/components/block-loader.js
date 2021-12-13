@@ -47,8 +47,9 @@
         }
 
         element.data('spinner-timer', setTimeout(function () {
+            element.data('spinner-timer', 0);
             show(element, settings);
-        }, settings.delay || 0));
+        }, settings.delay));
     }
 
     /**
@@ -59,6 +60,7 @@
 
         if (timerId) {
             clearTimeout(timerId);
+            element.data('spinner-timer', 0);
         }
 
         if (!element.has('.loading-mask').length) {
