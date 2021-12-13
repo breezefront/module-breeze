@@ -1037,9 +1037,6 @@
                         $widget.options.mediaCache[mediaCacheKey] = data;
                     }
                     $widget._ProductMediaCallback($this, data, productData.isInProductView);
-                    setTimeout(function () {
-                        $widget._DisableProductMediaLoader($this);
-                    }, 300);
                 };
 
             if (!$widget.options.mediaCallback) {
@@ -1126,6 +1123,7 @@
                 full: response.large,
                 img: response.medium,
                 thumb: response.small,
+                srcset: response.srcset,
                 isMain: true
             });
 
@@ -1137,7 +1135,8 @@
                     images.push({
                         full: this.large,
                         img: this.medium,
-                        thumb: this.small
+                        thumb: this.small,
+                        srcset: this.srcset
                     });
                 });
             }
@@ -1172,10 +1171,12 @@
          * @param {Boolean} isInProductView
          */
         updateBaseImage: function (images, context, isInProductView) {
-            var justAnImage = images[0],
+            var self = this,
+                justAnImage = images[0],
                 initialImages = this.options.mediaGalleryInitial,
                 imagesToUpdate,
                 gallery = context.find(this.options.mediaGallerySelector).gallery('instance'),
+                photo = context.find('.product-image-photo'),
                 isInitial;
 
             if (isInProductView) {
@@ -1196,7 +1197,25 @@
 
                 gallery.updateData(imagesToUpdate);
             } else if (justAnImage && justAnImage.img) {
-                context.find('.product-image-photo').attr('src', justAnImage.img);
+                photo.on('load', function () {
+                    setTimeout(function () {
+                        self._DisableProductMediaLoader(self.element);
+                    }, 100);
+                });
+
+                photo.attr('src', justAnImage.img);
+
+                if (justAnImage.srcset && justAnImage.srcset.medium) {
+                    photo.attr('srcset', justAnImage.srcset.medium);
+
+                    // eslint-disable-next-line max-depth
+                    if (!photo.attr('sizes')) {
+                        photo.attr('sizes', photo.attr('data-sizes'));
+                    }
+                } else {
+                    photo.attr('data-sizes', photo.attr('sizes'));
+                    photo.removeAttr('sizes');
+                }
             }
         },
 

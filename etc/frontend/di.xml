@@ -19,6 +19,12 @@
     <type name="Magento\Catalog\Block\Product\View\Gallery">
         <plugin name="swissup_breeze" type="Swissup\Breeze\Plugin\ProductGallery" />
     </type>
+    <type name="Magento\Swatches\Helper\Data">
+        <plugin name="swissup_breeze" type="Swissup\Breeze\Plugin\SwatchesHelper" />
+    </type>
+    <type name="Magento\Swatches\Block\Product\Renderer\Configurable">
+        <plugin name="swissup_breeze" type="Swissup\Breeze\Plugin\ConfigurableProductRenderer" />
+    </type>
 
     <type name="Swissup\Breeze\Model\Filter">
         <arguments>

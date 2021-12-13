@@ -184,7 +184,7 @@
             this.image.siblings('source').remove();
 
             if (data.srcset) {
-                this.image.attr('srcset', data.srcset);
+                this.image.attr('srcset', data.srcset.medium);
 
                 if (!this.image.attr('sizes')) {
                     this.image.attr('sizes', this.image.attr('data-sizes'));

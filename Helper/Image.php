@@ -149,7 +149,8 @@ class Image extends AbstractHelper
         $fallbacks = [
             'category_page_grid',
             'category_page_list',
-            'product_small_image',
+            'product_small_image', // compare list
+            'product_page_image_small', // thumbnails at product page
         ];
 
         foreach ($fallbacks as $fallbackId) {

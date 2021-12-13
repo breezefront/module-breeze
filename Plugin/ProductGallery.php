@@ -57,11 +57,10 @@ class ProductGallery
                 continue;
             }
 
-            $srcset = $this->imageHelper->getSrcset($image, 'product_page_image_medium');
-
-            if ($srcset) {
-                $data[$i]['srcset'] = $srcset;
-            }
+            $data[$i]['srcset'] = [
+                'medium' => $this->imageHelper->getSrcset($image, 'product_page_image_medium'),
+                'small' => $this->imageHelper->getSrcset($image, 'product_page_image_small'),
+            ];
         }
 
         return json_encode($data);

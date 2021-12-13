@@ -25,6 +25,7 @@ $navType = $block->getGalleryOptions()->getVar('gallery/nav');
 $responsiveImageHelper = $this->helper(\Swissup\Breeze\Helper\Image::class);
 $srcset = $responsiveImageHelper->getSrcset($block->getProduct(), 'product_page_image_medium');
 $sizes = $responsiveImageHelper->getSizes('product_page_image_medium');
+$thumbSizes = $responsiveImageHelper->getSizes('product_page_image_small');
 ?>
 
 <div class="breeze-gallery <?= $block->getGalleryOptions()->getVar('gallery/navdir') ?>">
@@ -68,14 +69,13 @@ $sizes = $responsiveImageHelper->getSizes('product_page_image_medium');
                     ]);
 
                     $srcset = $responsiveImageHelper->getSrcset($image, 'product_page_image_small');
-                    $sizes = $responsiveImageHelper->getSizes('product_page_image_small');
                 ?>
                 <a class="<?= implode(' ', $classes) ?>" href="<?= $image->getLargeImageUrl() ?>" title="<?= $image->getLabel() ?: __('View Image') ?>">
                     <img loading="lazy" alt="<?= $image->getLabel() ?>"
                         src="<?= $image->getSmallImageUrl() ?>"
                         <?php if ($srcset) : ?>
                             srcset="<?= $srcset ?>"
-                            sizes="<?= $sizes ?>"
+                            sizes="<?= $thumbSizes ?>"
                         <?php endif ?>
                         width="<?= $thumbWidth ?>"
                         height="<?= $thumbHeight ?>"
@@ -107,6 +107,8 @@ $sizes = $responsiveImageHelper->getSizes('product_page_image_medium');
     <a class="<%- classes %>" href="<%- full %>">
         <img loading="lazy" alt="<%- caption %>"
             src="<%- thumb %>"
+            srcset="<%- srcset ? srcset.small : '' %>"
+            sizes="<?= $thumbSizes ?>"
             width="<?= $thumbWidth ?>"
             height="<?= $thumbHeight ?>"
         />
