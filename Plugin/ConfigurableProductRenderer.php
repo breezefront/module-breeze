@@ -46,7 +46,7 @@ class ConfigurableProductRenderer
         \Magento\Swatches\Block\Product\Renderer\Configurable $renderer,
         $result
     ) {
-        if (!$result) {
+        if (!$result || !$this->helper->isResponsiveImagesEnabled()) {
             return $result;
         }
 
