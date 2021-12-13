@@ -84,6 +84,10 @@
         addEventListeners: function () {
             var self = this;
 
+            if (!this.slider.length) {
+                return;
+            }
+
             this.element
                 .on('click', this.stop.bind(this))
                 .on('click', '.slick-next, .slick-prev', function () {
