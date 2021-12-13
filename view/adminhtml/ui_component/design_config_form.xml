@@ -66,7 +66,7 @@
                 <settings>
                     <dataType>string</dataType>
                     <label translate="true">Enable Responsive Images</label>
-                    <notice translate="true">This feature allows to serve most suitable image size per device.</notice>
+                    <notice translate="true">This feature allows to serve most suitable image size per device. Theme developer must describe srcset property in view.xml file in order to enable this feature.</notice>
                     <dataScope>breeze_responsive_images</dataScope>
                 </settings>
                 <formElements>
