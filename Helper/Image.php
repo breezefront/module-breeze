@@ -14,6 +14,8 @@ use Swissup\Breeze\Helper\Data;
 
 class Image extends AbstractHelper
 {
+    private $sizesConfig;
+
     private $helper;
 
     private $imageParamsBuilder;
@@ -98,18 +100,30 @@ class Image extends AbstractHelper
      */
     public function getSizes($id)
     {
-        $sizes = array_merge(
-            $this->helper->getConfig('design/breeze/sizes'),
-            $this->helper->getThemeConfig('sizes') ?: []
-        );
-
-        $idWithLayout = $id . '-' . $this->getCurrentPageLayout();
-        if (isset($sizes[$idWithLayout])) {
-            return $sizes[$idWithLayout];
+        if (!$this->sizesConfig) {
+            $this->sizesConfig = array_merge(
+                $this->helper->getConfig('design/breeze/sizes'),
+                $this->helper->getThemeConfig('sizes') ?: []
+            );
         }
 
-        if (isset($sizes[$id])) {
-            return $sizes[$id];
+        $keys = [
+            $id . '-' . $this->getCurrentPageLayout(),
+            $id,
+        ];
+
+        foreach ($keys as $key) {
+            if (!isset($this->sizesConfig[$key])) {
+                continue;
+            }
+
+            $result = $this->sizesConfig[$key];
+
+            if (strpos($result, 'use:') === 0) {
+                return $this->getSizes(substr($result, 4));
+            }
+
+            return $result;
         }
 
         // fallback for images without defines sizes (compare page, etc.)
