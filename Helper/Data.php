@@ -14,6 +14,11 @@ class Data extends AbstractHelper
     private $isEnabled = null;
 
     /**
+     * @var boolean
+     */
+    private $isResponsiveImagesEnabled = null;
+
+    /**
      * @param Context $context
      * @param \Magento\Framework\View\ConfigInterface $viewConfig
      */
@@ -151,13 +156,19 @@ class Data extends AbstractHelper
      */
     public function isResponsiveImagesEnabled()
     {
+        if ($this->isResponsiveImagesEnabled !== null) {
+            return $this->isResponsiveImagesEnabled;
+        }
+
         $result = $this->getConfig('design/breeze/responsive_images');
 
         if ($result === 'theme') {
             $result = $this->getThemeConfig('responsive_images');
         }
 
-        return (bool) $result;
+        $this->isResponsiveImagesEnabled = (bool) $result;
+
+        return $this->isResponsiveImagesEnabled;
     }
 
     /**

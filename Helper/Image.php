@@ -16,6 +16,10 @@ class Image extends AbstractHelper
 {
     private $sizesConfig;
 
+    private $sizesMemo;
+
+    private $srcsetParamsMemo;
+
     private $helper;
 
     private $imageParamsBuilder;
@@ -100,6 +104,10 @@ class Image extends AbstractHelper
      */
     public function getSizes($id)
     {
+        if (isset($this->sizesMemo[$id])) {
+            return $this->sizesMemo[$id];
+        }
+
         if (!$this->sizesConfig) {
             $this->sizesConfig = array_merge(
                 $this->helper->getConfig('design/breeze/sizes'),
@@ -123,13 +131,17 @@ class Image extends AbstractHelper
                 return $this->getSizes(substr($result, 4));
             }
 
+            $this->sizesMemo[$id] = $result;
+
             return $result;
         }
 
         // fallback for images without defines sizes (compare page, etc.)
         $params = $this->helper->getViewConfig()->getMediaAttributes('Magento_Catalog', 'images', $id);
+        $params = isset($params['width']) ? $params['width'] . 'px' : '';
+        $this->sizesMemo[$id] = $params;
 
-        return isset($params['width']) ? $params['width'] . 'px' : '';
+        return $params;
     }
 
     /**
@@ -152,10 +164,15 @@ class Image extends AbstractHelper
      */
     private function getSrcsetParams($id)
     {
+        if (isset($this->srcsetParamsMemo[$id])) {
+            return $this->srcsetParamsMemo[$id];
+        }
+
         $images = $this->helper->getViewConfig()->getMediaEntities('Magento_Catalog', 'images');
         $params = $this->filterMediaEntities($images, $id);
 
         if (!$params || count($params) > 1) {
+            $this->srcsetParamsMemo[$id] = $params;
             return $params;
         }
 
@@ -181,6 +198,8 @@ class Image extends AbstractHelper
                 break;
             }
         }
+
+        $this->srcsetParamsMemo[$id] = $params;
 
         return $params;
     }
