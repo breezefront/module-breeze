@@ -9,6 +9,10 @@
      */
     function initializeWidget(el, data, breakpoints, currentViewport) {
         $.each(data, function (component, config) {
+            if (typeof config === 'string') {
+                config = {};
+            }
+
             config = config || {};
             config.breakpoints = breakpoints;
             config.currentViewport = currentViewport;
