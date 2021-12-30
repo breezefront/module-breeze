@@ -14,6 +14,7 @@
                     name: 'youtube',
                     regexs: [
                         /youtube\.com\/watch\?v=([a-zA-Z0-9]+)/,
+                        /youtube\.com\/embed\/([a-zA-Z0-9]+)/,
                         /youtu\.be\/([a-zA-Z0-9]+)/
                     ],
                     params: {
