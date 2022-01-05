@@ -665,8 +665,7 @@
                 attributeId = $parent.data('attribute-id'),
                 $input = $parent.find('.' + $widget.options.classes.attributeInput),
                 checkAdditionalData = JSON.parse(this.options.jsonSwatchConfig[attributeId]['additional_data']),
-                $priceBox = $widget.element.parents($widget.options.selectorProduct)
-                    .find(this.options.selectorProductPrice);
+                $priceBox = $widget._getProductWrapper().find(this.options.selectorProductPrice);
 
             if ($widget.inProductList) {
                 $input = $widget.productForm.find(
@@ -898,7 +897,7 @@
          */
         _UpdatePrice: function () {
             var $widget = this,
-                $product = $widget.element.parents($widget.options.selectorProduct),
+                $product = $widget._getProductWrapper(),
                 $productPrice = $product.find(this.options.selectorProductPrice),
                 result = $widget._getNewPrices(),
                 tierPriceHtml,
@@ -946,6 +945,18 @@
                     }
                 }
             }.bind(this));
+        },
+
+        /** [_getProductWrapper description] */
+        _getProductWrapper: function () {
+            var selector = this.options.selectorProduct,
+                wrapper = this.element.closest(selector);
+
+            if (!wrapper.length) {
+                wrapper = this.element.closest('.column.main').find(selector);
+            }
+
+            return wrapper;
         },
 
         /**
