@@ -234,8 +234,15 @@
     $.fn.contstraint = function () {
         var viewportWidth = $(window).width(),
             width = this.outerWidth(),
-            left = Math.round(this.offset().left),
-            right = left + width;
+            left,
+            right;
+
+        if (!this.length) {
+            return this;
+        }
+
+        left = Math.round(this.offset().left);
+        right = left + width;
 
         if (left < 0) {
             this.css({
