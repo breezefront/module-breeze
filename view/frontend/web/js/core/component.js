@@ -473,13 +473,19 @@ $.registry = $.breeze.registry = (function () {
         },
 
         /**
-         * @param {Element|Object} element
-         * @param {Object} handlers
+         * @param {Element|Object|String} element
+         * @param {Object|Function} handlers
          */
         _on: function (element, handlers) {
-            var self = this;
+            var self = this,
+                callback;
 
-            if (!handlers) {
+            if (_.isString(element)) {
+                callback = handlers;
+                handlers = {};
+                handlers[element] = callback;
+                element = this.element;
+            } else if (!handlers) {
                 handlers = element;
                 element = this.element;
             } else {
