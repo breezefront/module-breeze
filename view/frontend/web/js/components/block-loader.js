@@ -6,7 +6,9 @@
         template = [
             '<div data-role="loader" class="loading-mask" style="position: absolute;">',
                 '<div class="loader">',
-                    '<img src="<%= loaderImageHref %>" alt="Loading..." style="position: absolute;">',
+                    '<% if (loaderImageHref) { %>',
+                        '<img src="<%= loaderImageHref %>" alt="Loading..." style="position: absolute;">',
+                    '<% } %>',
                 '</div>',
             '</div>'
         ].join('');
@@ -77,7 +79,7 @@
         create: function () {
             var href = this.options;
 
-            if (!loader && !_.isEmpty(href)) {
+            if (!loader) {
                 loader = $(_.template(template)({
                     loaderImageHref: href
                 }));
