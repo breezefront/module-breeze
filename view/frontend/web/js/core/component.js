@@ -533,8 +533,6 @@ $.registry = $.breeze.registry = (function () {
                 this.__eventNamespace;
 
             element.off(eventName);
-
-            this.__bindings = $(this.__bindings.not(element).get());
         },
 
         /** Destroy all event listeners */
