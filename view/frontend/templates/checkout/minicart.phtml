@@ -36,12 +36,8 @@
                 "parentClass":"active",
                 "buttons":[]}}'>
             <div id="minicart-content-wrapper" data-bind="
-                scope: 'minicart_content',
-                template: {
-                    if: shouldRender,
-                    name: getTemplate()
-                }
-            "></div>
+                scope: 'minicart_content'
+            "><!-- ko template: { if: shouldRender, name: getTemplate() } --><!-- /ko --></div>
             <?= $block->getChildHtml('minicart.addons') ?>
         </div>
     <?php endif ?>

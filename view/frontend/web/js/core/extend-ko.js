@@ -59,6 +59,19 @@
 
     ko.virtualElements.allowedBindings.i18n = true;
 
+    ko.bindingHandlers.scope = {
+        /**
+         * Scope binding's init method.
+         */
+        init: function () {
+            return {
+                controlsDescendantBindings: true
+            };
+        }
+    };
+
+    ko.virtualElements.allowedBindings.scope = true;
+
     ko.bindingHandlers.bindHtml = {
         /**
          * Scope binding's init method.

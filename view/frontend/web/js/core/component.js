@@ -566,12 +566,12 @@ $.registry = $.breeze.registry = (function () {
 
         /** [applyBindings description] */
         _applyBindings: function (element) {
-            if (!ko.dataFor(element)) {
+            if (!element.children.length || !ko.dataFor(element.children[0])) {
                 if (this.beforeRender() === false) {
                     return;
                 }
 
-                ko.applyBindings(this, element);
+                ko.applyBindingsToDescendants(this, element);
                 $(element).trigger('contentUpdated');
                 this.afterRender();
             }
