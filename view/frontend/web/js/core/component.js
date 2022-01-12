@@ -612,11 +612,17 @@ $.registry = $.breeze.registry = (function () {
             }
 
             _.each(this.options.children, function (config) {
+                var cmp;
+
                 if (config.displayArea !== code) {
                     return;
                 }
 
-                result.push(self.mount(config));
+                cmp = self.mount(config);
+
+                if (cmp) {
+                    result.push(cmp);
+                }
             });
 
             this._regions[code] = result;
