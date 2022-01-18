@@ -28,14 +28,28 @@
     // or main merged css was changed
     document.addEventListener(turboEventName('before-render'), function (event) {
         var newConfig = $(event.data.newBody).find('#breeze-turbo').data('config'),
-            newMergedCss = $(event.data.newBody).find('link[href*="/merged/"]')[0],
             shouldReload;
 
         shouldReload = !newConfig || config.store !== newConfig.store;
 
-        if (!shouldReload) {
-            shouldReload = mergedCss && (!newMergedCss || mergedCss.href !== newMergedCss.href);
+        if (shouldReload) {
+            event.preventDefault();
+            window.location.reload();
         }
+    });
+
+    document.addEventListener(turboEventName('request-end'), function (event) {
+        var hashRegex = /\/_cache\/merged\/([a-z0-9]+)/,
+            newMergedCss = event.data.xhr.responseText.match(hashRegex),
+            oldMergedCss,
+            shouldReload;
+
+        if (!mergedCss) {
+            return;
+        }
+
+        oldMergedCss = mergedCss.href.match(hashRegex);
+        shouldReload = !newMergedCss || oldMergedCss[1] !== newMergedCss[1];
 
         if (shouldReload) {
             event.preventDefault();
