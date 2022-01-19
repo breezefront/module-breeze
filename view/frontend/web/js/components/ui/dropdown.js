@@ -101,6 +101,7 @@
     $(document).on('click.dropdown', function (event) {
         var dialog,
             dropdown = $(event.target).closest('[data-dropdown]').dropdown('instance'),
+            modalContext = $(event.target).closest('.modal-popup'),
             status = dropdown && dropdown.status;
 
         if (!dropdown) {
@@ -115,7 +116,15 @@
             }
         }
 
-        $.widget('dropdown').invoke('close');
+        if (modalContext.length) {
+            $.widget('dropdown').each(function (widget) {
+                if (modalContext.has(widget.element.get(0)).length) {
+                    widget.close();
+                }
+            });
+        } else {
+            $.widget('dropdown').invoke('close');
+        }
 
         if (dropdown) {
             if (!status) {

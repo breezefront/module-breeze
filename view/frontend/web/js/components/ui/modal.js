@@ -88,10 +88,7 @@
 
             listeners = {
                 'openModal': this.openModal,
-                'closeModal': this.closeModal,
-                click: function (e) {
-                    e.stopPropagation();
-                }
+                'closeModal': this.closeModal
             };
             listeners['click ' + this.options.modalCloseBtn] =
                 this.options.modalCloseBtnHandler ? this.options.modalCloseBtnHandler : this.closeModal;

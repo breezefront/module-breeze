@@ -44,24 +44,6 @@
 
             $(self.element).show().prependTo(self.dialog);
 
-            if (self.options.closeOnClickOutside) {
-                $(document.body).on('click.dropdownDialog', function (event) {
-                    if (!self.status) {
-                        return;
-                    }
-
-                    if ($(self.trigger).has(event.target).length) {
-                        return;
-                    }
-
-                    if (self.dialog.has(event.target).length && !$(event.target).hasClass('close')) {
-                        return;
-                    }
-
-                    self.close();
-                });
-            }
-
             this._on(document, {
                 keydown: function (e) {
                     if (e.key === 'Escape') {
@@ -226,5 +208,27 @@
                 top: targetCoords.top - offset.top + target.height()
             });
         }
+    });
+
+    $(document).on('click.dropdownDialog', function (event) {
+        var dropdown = $(event.target)
+                .closest('[role="dialog"]')
+                .find('[data-role="dropdownDialog"]')
+                .dropdownDialog('instance'),
+            modalContext = $(event.target).closest('.modal-popup');
+
+        $.widget('dropdownDialog').each(function (widget) {
+            if (!widget.status || $(widget.trigger).has(event.target).length) {
+                return;
+            }
+
+            if (modalContext.length && !modalContext.has(widget.element.get(0)).length) {
+                return;
+            }
+
+            if (widget.options.closeOnClickOutside && dropdown !== widget) {
+                widget.close();
+            }
+        });
     });
 })();
