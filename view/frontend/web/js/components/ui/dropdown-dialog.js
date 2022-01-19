@@ -211,10 +211,7 @@
     });
 
     $(document).on('click.dropdownDialog', function (event) {
-        var dropdown = $(event.target)
-                .closest('[role="dialog"]')
-                .find('[data-role="dropdownDialog"]')
-                .dropdownDialog('instance'),
+        var dropdown = $(event.target).closest('[role="dialog"]').children().dropdownDialog('instance'),
             modalContext = $(event.target).closest('.modal-popup');
 
         $.widget('dropdownDialog').each(function (widget) {
@@ -222,7 +219,10 @@
                 return;
             }
 
-            if (modalContext.length && !modalContext.has(widget.element.get(0)).length) {
+            if (modalContext.length &&
+                !modalContext.has(widget.element.get(0)).length &&
+                (!widget.trigger || !modalContext.has(widget.trigger.get(0)).length)
+            ) {
                 return;
             }
 
