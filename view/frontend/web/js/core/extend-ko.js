@@ -18,7 +18,7 @@
                 return $(el).next('span');
             }
 
-            return $('<span/>').insertAfter(el);
+            return $('<span>').insertAfter(el);
         }
 
         return $(el);

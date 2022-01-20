@@ -60,7 +60,7 @@
             if (this.options.slider) {
                 this.options.slider.addClass('slick-list');
             } else if (!this.element.find('.slick-list').length) {
-                this.element.wrapInner('<div class="slick-list"/>');
+                this.element.wrapInner('<div class="slick-list">');
             }
 
             if (this.options.arrows && !this.element.find('.slick-next').length) {
