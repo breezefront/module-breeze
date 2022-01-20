@@ -299,6 +299,10 @@
                     index = i;
                 }
 
+                if (!template) {
+                    return;
+                }
+
                 thumbnails.push(_.template(template)($.extend({}, picture, {
                     classes: [
                         'item',
