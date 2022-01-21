@@ -1,5 +1,5 @@
 /* global ko _ */
-$.sections = $.customerData = window.customerData = $.breeze.sections = (function () {
+$.sections = $.customerData = window.customerData = (function () {
     'use strict';
 
     var data = {},

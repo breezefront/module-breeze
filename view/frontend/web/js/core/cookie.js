@@ -17,7 +17,7 @@
         delete settings.lifetime;
     }
 
-    $.cookies = $.cookieStorage = $.breeze.cookies = (function () {
+    $.cookies = $.cookieStorage = (function () {
         var cookies = Cookies.withAttributes($.extend(defaults, settings));
 
         return {

@@ -67,7 +67,7 @@
      * @return {Object}
      */
     function prepareData(data) {
-        var formKey = $.breeze.cookies.get('form_key');
+        var formKey = $.cookies.get('form_key');
 
         if (data.each && data.get) {
             data = data.get(0);
@@ -142,7 +142,7 @@
             });
     }
 
-    $.request = $.breeze.request = {
+    $.request = {
         /**
          * @param {Object} params
          * @return {Promise}

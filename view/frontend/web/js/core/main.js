@@ -237,7 +237,7 @@
             i = 0;
 
         // destroy all widgets and views
-        $.breeze.registry.delete();
+        $.registry.delete();
 
         if (!newScripts.length) {
             return onBreezeLoad();

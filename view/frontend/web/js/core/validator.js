@@ -330,7 +330,7 @@
     };
 
     /** [validation description] */
-    $.validator = $.breeze.validator = function (element, options) {
+    $.validator = function (element, options) {
         return new Validator(element, options);
     };
     $.validator.validators = {};

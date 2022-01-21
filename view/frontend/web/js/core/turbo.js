@@ -59,7 +59,7 @@
 
     $(document).on(turboEventName('before-cache'), function () {
         // destroy all widgets and views
-        $.breeze.registry.delete();
+        $.registry.delete();
 
         $(document)
             .find('[data-breeze-temporary]')

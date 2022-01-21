@@ -8,7 +8,7 @@
         create: function () {
             var self = this;
 
-            this.validator = $.breeze.validator(this.element, this.options);
+            this.validator = $.validator(this.element, this.options);
 
             // do not use event delegation because this callback should be first
             if (!this.element.attr('data-validator')) {

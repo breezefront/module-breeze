@@ -60,7 +60,7 @@
         /** [submitForm description] */
         submitForm: function (form) {
             form.submit();
-            // $.breeze.request.post({
+            // $.request.post({
             //     form: form,
             //     strict: false
             // });

@@ -1,5 +1,5 @@
 /* global WeakMap ko _ */
-$.registry = $.breeze.registry = (function () {
+$.registry = (function () {
     'use strict';
 
     var data = {};
@@ -256,7 +256,7 @@ $.registry = $.breeze.registry = (function () {
                      * @param {Function} callback
                      */
                     each: function (callback) {
-                        var collection = $.breeze.registry.get(name);
+                        var collection = $.registry.get(name);
 
                         if (!collection) {
                             return;
@@ -274,7 +274,7 @@ $.registry = $.breeze.registry = (function () {
                      * @param {String} method
                      */
                     invoke: function (method) {
-                        var collection = $.breeze.registry.get(name);
+                        var collection = $.registry.get(name);
 
                         if (!collection) {
                             return;
@@ -296,7 +296,7 @@ $.registry = $.breeze.registry = (function () {
                      * Destroy objects
                      */
                     destroy: function () {
-                        $.breeze.registry.delete(name);
+                        $.registry.delete(name);
                     }
                 };
             }
@@ -642,9 +642,9 @@ $.registry = $.breeze.registry = (function () {
         }
     });
 
-    $.Base = $.breeze.Base = Base;
-    $.widget = $.breeze.widget = createComponent(createFactory(Widget));
-    $.view = $.breeze.view = createComponent(createFactory(View));
+    $.Base = Base;
+    $.widget = createComponent(createFactory(Widget));
+    $.view = createComponent(createFactory(View));
 
     /** Wrap prototype with mixins */
     $.mixin = function (name, mixins) {
