@@ -107,7 +107,6 @@
         /** Hide expanded menu's, remove event listeneres */
         destroy: function () {
             this.close();
-            $(document).off('click.dropdownDialog');
             this._super();
         },
 
