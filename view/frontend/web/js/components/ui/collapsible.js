@@ -180,6 +180,7 @@
             if (self.options.loadingClass) {
                 self.element.addClass(self.options.loadingClass);
             }
+            self.content.spinner(true);
             self.content.attr('aria-busy', 'true');
 
             $.request.get({
@@ -195,6 +196,7 @@
                 /** [complete description] */
                 complete: function () {
                     self.element.removeClass(self.options.loadingClass);
+                    self.content.spinner(false);
                     self.content.removeAttr('aria-busy');
                     self._trigger('afterLoad');
                 }
