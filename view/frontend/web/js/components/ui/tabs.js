@@ -72,6 +72,10 @@
                     prevContent = activeTab.collapsible('instance').content;
                 }
 
+                if (data.instance.options.multipleCollapsible) {
+                    return;
+                }
+
                 self.prevHeight = prevContent ? $(prevContent).outerHeight() : false;
                 self.collapsibles.not(data.instance.element).collapsible('close');
             });
