@@ -188,9 +188,9 @@
                 type: 'html',
 
                 /** [success description] */
-                success: function (response) {
+                success: function (data) {
                     self.element.data('loaded', true);
-                    self.content.empty().append(response.text).trigger('contentUpdated');
+                    self.content.empty().append(data).trigger('contentUpdated');
                 },
 
                 /** [complete description] */

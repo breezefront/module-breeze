@@ -38,7 +38,7 @@
      */
     function onSuccess(response, params) {
         if (params.success) {
-            params.success(response);
+            params.success(response.body || response.text, response);
         }
 
         if (params.complete) {

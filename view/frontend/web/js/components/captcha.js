@@ -41,11 +41,11 @@
                 },
 
                 /**
-                 * @param {Object} response
+                 * @param {Object} data
                  */
-                success: function (response) {
-                    if (response.body.imgSrc) {
-                        self.element.find(self.options.imageSelector).attr('src', response.body.imgSrc);
+                success: function (data) {
+                    if (data.imgSrc) {
+                        self.element.find(self.options.imageSelector).attr('src', data.imgSrc);
                     }
                 },
 

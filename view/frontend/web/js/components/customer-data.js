@@ -128,9 +128,8 @@
                 accept: 'json',
 
                 /** Success callback */
-                success: function (response) {
-                    var data = response.body,
-                        sectionDataIds = $.cookies.getJson('section_data_ids') || {};
+                success: function (data) {
+                    var sectionDataIds = $.cookies.getJson('section_data_ids') || {};
 
                     $.each(data, function (sectionName, sectionData) {
                         // No need to store messages, but data_id must be

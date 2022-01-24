@@ -66,8 +66,8 @@
                 },
 
                 /** Success callback */
-                success: function (response) {
-                    var data = self.getResponseData(response);
+                success: function (data, response) {
+                    data = self.getResponseData(response);
 
                     $(document).trigger('ajax:addToCart', {
                         'sku': form.data().productSku,
