@@ -186,4 +186,19 @@
             return prepareRequest(superagent.get(params.url).query(params.data), params);
         }
     };
+
+    /** [get description] */
+    $.ajax = function (params) {
+        return $.request.send(params);
+    };
+
+    /** [get description] */
+    $.get = function (params) {
+        return $.request.get(params);
+    };
+
+    /** [get description] */
+    $.post = function (params) {
+        return $.request.post(params);
+    };
 })();
