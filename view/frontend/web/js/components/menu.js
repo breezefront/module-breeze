@@ -32,7 +32,7 @@
             this.focusTrap = this.createFocusTrap(this.element.closest('.navigation-wrapper,.nav-sections'));
             this._setActiveMenu(); // varnish fix
 
-            if (this.element.closest('.nav-sections, .page-header').length) {
+            if (this.element.closest('.nav-sections, .page-header, .navigation-wrapper').length) {
                 this.addToggleListener();
             }
 
