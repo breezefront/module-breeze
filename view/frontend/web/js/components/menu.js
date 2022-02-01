@@ -101,7 +101,7 @@
             $('ul.shown', this.element).removeClass('shown').hide();
             $('html').removeClass('nav-open').removeClass('nav-before-open');
 
-            if (this.element.closest('.nav-sections, .page-header').length) {
+            if (this.element.closest('.nav-sections, .navigation-wrapper, .page-header').length) {
                 $(document).off('click.menu').off('keydown.menu');
             }
 
