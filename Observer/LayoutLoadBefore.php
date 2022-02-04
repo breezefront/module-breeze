@@ -43,28 +43,12 @@ class LayoutLoadBefore implements ObserverInterface
 
         $this->pageConfig->addBodyClass('breeze');
 
-        $additionalHandles = [
-            'checkout_cart_configure' => [
-                'breeze_catalog_product_view',
-            ],
-            'review_product_list' => [
-                'breeze_catalog_product_view',
-            ],
-            'wishlist_index_configure' => [
-                'breeze_catalog_product_view',
-            ],
-        ];
-
         foreach ($update->getHandles() as $handle) {
             if (strpos($handle, 'breeze_') === 0) {
                 continue;
             }
 
             $update->addHandle('breeze_' . $handle);
-
-            foreach ($additionalHandles[$handle] ?? [] as $handle) {
-                $update->addHandle($handle);
-            }
         }
 
         $update->addHandle('breeze');
