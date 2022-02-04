@@ -654,12 +654,12 @@
 
             }
 
-            productLink = $(eventBlock + ' .item:nth(' + listPosition + ') a');
+            productLink = $(eventBlock + ' .item:nth-child(' + listPosition + ') a');
 
             if (type === 'configurable' || type === 'bundle' || type === 'grouped') {
                 productLink = $(
-                    eventBlock + ' .item:nth(' + listPosition + ') .tocart',
-                    eventBlock + ' .item:nth(' + listPosition + ') a'
+                    eventBlock + ' .item:nth-child(' + listPosition + ') .tocart',
+                    eventBlock + ' .item:nth-child(' + listPosition + ') a'
                 );
             }
 
