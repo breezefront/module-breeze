@@ -1,4 +1,4 @@
-/* global _ customerData */
+/* global _ */
 (function () {
     'use strict';
 
@@ -51,7 +51,7 @@
             // Collect and send data about order and items
             if (this.options.ordersData.length > 0) {
                 $.each(this.options.ordersData, function (index, value) {
-                    dataLayer.push(value);
+                    window.dataLayer.push(value);
                 });
             }
 
@@ -158,7 +158,7 @@
                     return item['product_id'] === productId;
                 },
                 productFromCache = _.find(this.cartItemsCache, searchCriteria),
-                productFromCart = _.find(customerData.get('cart')().items, searchCriteria);
+                productFromCart = _.find($.customerData.get('cart')().items, searchCriteria);
 
             if (!productFromCache && !productFromCart) {
                 return _.extend({}, productFromCart, {
@@ -197,7 +197,7 @@
          * @private
          */
         _setCartDataListener: function () {
-            customerData.get('cart').subscribe(function (data) {
+            $.customerData.get('cart').subscribe(function (data) {
                 if (this.options.temporaryEventStorage.length) {
                     this._executeEvents();
                 }
