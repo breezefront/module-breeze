@@ -85,7 +85,7 @@
             options.tierPriceTemplate = $(this.options.tierPriceTemplateSelector).html();
 
             options.settings = options.spConfig.containerId ?
-                $(options.spConfig.containerId).find(options.superSelector) :
+                $('body').find(options.spConfig.containerId).find(options.superSelector) :
                 $(options.superSelector);
 
             options.values = options.spConfig.defaultValues || {};
