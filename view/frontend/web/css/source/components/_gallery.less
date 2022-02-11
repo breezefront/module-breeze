@@ -126,6 +126,9 @@
             flex-grow: 0;
             flex-shrink: 0;
             margin: 5px 0 0;
+            overflow: auto;
+            scroll-behavior: smooth;
+            .bz-scrollbar();
 
             & when (@bz-gallery-thumb__wrap) {
                 flex-wrap: wrap;
@@ -133,9 +136,6 @@
 
             & when not (@bz-gallery-thumb__wrap) {
                 padding-bottom: 4px;
-                overflow: auto;
-                scroll-behavior: smooth;
-                .bz-scrollbar();
             }
 
             &.hidden {
@@ -237,6 +237,7 @@
             flex-direction: row;
             .thumbnails {
                 flex-direction: column;
+                flex-wrap: nowrap;
                 order: -1;
                 max-height: 550px;
                 margin: 0 5px 0 0;
