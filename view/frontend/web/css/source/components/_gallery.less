@@ -125,12 +125,18 @@
             display: flex;
             flex-grow: 0;
             flex-shrink: 0;
-            flex-wrap: nowrap;
-            overflow: auto;
-            scroll-behavior: smooth;
             margin: 5px 0 0;
-            padding-bottom: 4px;
-            .bz-scrollbar();
+
+            & when (@bz-gallery-thumb__wrap) {
+                flex-wrap: wrap;
+            }
+
+            & when not (@bz-gallery-thumb__wrap) {
+                padding-bottom: 4px;
+                overflow: auto;
+                scroll-behavior: smooth;
+                .bz-scrollbar();
+            }
 
             &.hidden {
                 display: none;
