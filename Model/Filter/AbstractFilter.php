@@ -29,10 +29,28 @@ class AbstractFilter
     }
 
     /**
+     * @param array $attributes
+     */
+    protected function addPreloadLink($attributes)
+    {
+        if ($block = $this->getPreloadBlock()) {
+            $block->addItem($attributes);
+        }
+    }
+
+    /**
      * @return \Swissup\Breeze\Block\Js
      */
     protected function getJsBlock()
     {
         return $this->layout->getBlock('breeze.js');
+    }
+
+    /**
+     * @return \Swissup\Breeze\Block\Preload
+     */
+    protected function getPreloadBlock()
+    {
+        return $this->layout->getBlock('breeze.preload');
     }
 }
