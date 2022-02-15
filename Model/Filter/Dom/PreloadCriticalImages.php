@@ -52,19 +52,17 @@ class PreloadCriticalImages extends AbstractFilter
         foreach ($nodes as $i => $node) {
             $attr = (string) $node->getAttribute('data-background-images');
             $attr = json_decode(stripslashes($attr), true);
-            if (!$attr) {
+            if (!$attr || empty($attr['desktop_image'])) {
                 continue;
             }
 
-            $values = new \Magento\Framework\DataObject($attr);
-
             $attributes = [
                 'as' => 'image',
-                'href' => $values->getDesktopImage(),
+                'href' => $attr['desktop_image'],
             ];
 
-            if ($values->getMobileImage()) {
-                $attributes['imagesrcset'] = $values->getMobileImage() . ' 768w, ' . $values->getDesktopImage();
+            if (!empty($attr['mobile_image'])) {
+                $attributes['imagesrcset'] = $attr['mobile_image'] . ' 768w, ' . $attr['desktop_image'];
                 $attributes['imagesizes'] = '100vw';
             }
 
