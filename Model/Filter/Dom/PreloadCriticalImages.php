@@ -17,7 +17,7 @@ class PreloadCriticalImages extends AbstractFilter
 
         if ($this->isHomePage($body)) {
             $this->walkSliderNodes($xpath->query('(//div[contains(@class, "pagebuilder-slide-wrapper")])[1]', $content));
-            $this->walkImgNodes($xpath->query('//img[@class="product-image-photo"]', $content), 4);
+            $this->walkImgNodes($xpath->query('//img[@class="product-image-photo"]', $content));
         } elseif ($this->isProductPage($body)) {
             $this->walkImgNodes($xpath->query('(//img[@class="main-image"])[1]', $content));
         } else {
@@ -25,7 +25,7 @@ class PreloadCriticalImages extends AbstractFilter
         }
     }
 
-    private function walkImgNodes($nodes, $limit = 3)
+    private function walkImgNodes($nodes, $limit = 2)
     {
         foreach ($nodes as $i => $node) {
             if (!$node->getAttribute('src')) {
@@ -41,7 +41,7 @@ class PreloadCriticalImages extends AbstractFilter
                 'imagesizes' => $node->getAttribute('sizes'),
             ]);
 
-            if ($i >= $limit) {
+            if ($i + 1 >= $limit) {
                 break;
             }
         }
@@ -68,7 +68,7 @@ class PreloadCriticalImages extends AbstractFilter
 
             $this->addPreloadLink($attributes);
 
-            if ($i >= $limit) {
+            if ($i + 1 >= $limit) {
                 break;
             }
         }
