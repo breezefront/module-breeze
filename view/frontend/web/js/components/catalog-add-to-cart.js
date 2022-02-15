@@ -134,7 +134,7 @@
          * @param {String} form
          */
         disableAddToCartButton: function (form) {
-            var addToCartButton = $(form).find(this.options.addToCartButtonSelector);
+            var addToCartButton = $(form).find(this.options.addToCartButtonSelector).not('.noloader');
 
             addToCartButton.addClass(this.options.addToCartButtonDisabledClass);
             addToCartButton.find('span').css('opacity', 0);
@@ -152,7 +152,7 @@
          */
         enableAddToCartButton: function (form) {
             var self = this,
-                addToCartButton = $(form).find(this.options.addToCartButtonSelector);
+                addToCartButton = $(form).find(this.options.addToCartButtonSelector).not('.noloader');
 
             setTimeout(function () {
                 addToCartButton.removeClass(self.options.addToCartButtonDisabledClass);
