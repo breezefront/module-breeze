@@ -1186,13 +1186,18 @@
                 justAnImage = images[0],
                 initialImages = this.options.mediaGalleryInitial,
                 imagesToUpdate,
-                gallery = context.find(this.options.mediaGallerySelector).gallery('instance'),
+                galleryEl = context.find(this.options.mediaGallerySelector),
+                gallery,
                 photo = context.find('.product-image-photo'),
                 isInitial;
 
+            if (galleryEl.gallery) {
+                gallery = galleryEl.gallery('instance');
+            }
+
             if (isInProductView) {
                 if (!gallery) {
-                    context.find(this.options.mediaGallerySelector).on('gallery:loaded', function () {
+                    galleryEl.on('gallery:loaded', function () {
                         this.updateBaseImage(images, context, isInProductView);
                     }.bind(this));
 

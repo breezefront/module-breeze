@@ -93,7 +93,7 @@
 
             this.inputSimpleProduct = this.element.find(options.selectSimpleProduct);
 
-            gallery.gallery('instance') ?
+            gallery.gallery && gallery.gallery('instance') ?
                 this._onGalleryLoaded(gallery) :
                 gallery.on('gallery:loaded', this._onGalleryLoaded.bind(this, gallery));
 
@@ -298,10 +298,15 @@
         _changeProductImage: function () {
             var images,
                 initialImages = this.options.mediaGalleryInitial,
-                gallery = $(this.options.mediaGallerySelector).gallery('instance');
+                galleryEl = $(this.options.mediaGallerySelector),
+                gallery;
+
+            if (galleryEl.gallery) {
+                gallery = galleryEl.gallery('instance');
+            }
 
             if (_.isUndefined(gallery)) {
-                $(this.options.mediaGallerySelector).on('gallery:loaded', function () {
+                galleryEl.on('gallery:loaded', function () {
                     this._changeProductImage();
                 }.bind(this));
 
