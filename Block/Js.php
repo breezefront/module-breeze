@@ -140,15 +140,16 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                     }
                 }
             } else {
-                $url = $this->jsBuildFactory->create([
+                $assets = $this->jsBuildFactory->create([
                         'name' => 'Swissup_Breeze/bundles/' . $name,
                         'items' => $bundle['items']
                     ])
                     ->publishIfNotExist($this->getCacheKey())
-                    ->getAsset()
-                    ->getUrl();
+                    ->getBundledAssets();
 
-                $scripts[$url] = sprintf(self::TEMPLATE, $url);
+                foreach ($assets as $asset) {
+                    $scripts[$asset->getUrl()] = sprintf(self::TEMPLATE, $asset->getUrl());
+                }
             }
         }
 

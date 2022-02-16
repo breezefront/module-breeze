@@ -74,6 +74,11 @@ class JsBuild
     private $items;
 
     /**
+     * @var array
+     */
+    private $assets = [];
+
+    /**
      * @param \Magento\Framework\View\Asset\Repository $assetRepo
      * @param \Magento\Framework\Filesystem $filesystem
      * @param \Magento\Framework\Filesystem\Directory\ReadFactory $readDirFactory
@@ -123,6 +128,37 @@ class JsBuild
     }
 
     /**
+     * @return \Magento\Framework\View\Asset\File[]
+     */
+    public function getBundledAssets()
+    {
+        if ($this->assets) {
+            return $this->assets;
+        }
+
+        $pathinfo = pathinfo($this->getPath());
+        $file = str_replace('.min', '', $pathinfo['filename']);
+        $dir = $pathinfo['dirname'];
+
+        $paths = $this->staticDir->read($dir);
+        sort($paths, SORT_NATURAL);
+
+        foreach ($paths as $path) {
+            if (strpos($path, '.js') === false) {
+                continue;
+            }
+
+            if (!preg_match("/{$file}(\d+|\.)/", $path)) {
+                continue;
+            }
+
+            $this->assets[] = $this->assetRepo->createArbitrary($path, '');
+        }
+
+        return $this->assets;
+    }
+
+    /**
      * @return $this
      */
     public function publishIfNotExist($version)
@@ -137,7 +173,7 @@ class JsBuild
     /**
      * @return string
      */
-    private function getPath()
+    private function getPath($chunk = 0)
     {
         $suffix = '';
         $name = str_replace('::', '/', $this->name);
@@ -146,7 +182,14 @@ class JsBuild
             $suffix = $this->minification->isEnabled('js') ? '.min.js' : '.js';
         }
 
-        return $this->staticContext->getConfigPath() . '/' . $name . $suffix;
+        $name .= $suffix;
+
+        if ($chunk) {
+            $extension = strpos($name, '.min.js') !== false ? '.min.js' : '.js';
+            $name = str_replace($extension, $chunk . $extension, $name);
+        }
+
+        return $this->staticContext->getConfigPath() . '/' . $name;
     }
 
     /**
@@ -185,16 +228,38 @@ class JsBuild
             $build[$name] .= $this->getContents($path);
         }
 
-        $build = array_filter($build);
-        $content = implode("\n", $build);
+        $build = array_values(array_filter($build));
 
-        if ($this->minification->isEnabled('js')) {
-            $content = $this->minifier->minify($content);
+        $num = 0;
+        $size = 0;
+        $chunks = [];
+        foreach ($build as $i => $item) {
+            $currentSize = mb_strlen($item) / 1024;
+            $isLast = !isset($build[$i + 1]);
+
+            if ($size && $size + $currentSize > 80 && (!$isLast || $currentSize > 5)) {
+                $num++;
+                $size = 0;
+            }
+
+            $chunks[$num][] = $item;
+            $size += $currentSize;
         }
 
-        $this->filesystem
-            ->getDirectoryWrite(DirectoryList::STATIC_VIEW)
-            ->writeFile($this->getPath(), $content);
+        foreach ($chunks as $i => $build) {
+            $content = implode("\n", $build);
+
+            if ($this->minification->isEnabled('js')) {
+                $content = $this->minifier->minify($content);
+            }
+
+            $path = $this->getPath($i);
+            $this->filesystem
+                ->getDirectoryWrite(DirectoryList::STATIC_VIEW)
+                ->writeFile($path, $content);
+
+            $this->assets[] = $this->assetRepo->createArbitrary($path, '');
+        }
 
         if ($version) {
             $this->publishVersion($version);
