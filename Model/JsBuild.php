@@ -234,16 +234,16 @@ class JsBuild
         $size = 0;
         $chunks = [];
         foreach ($build as $i => $item) {
-            $currentSize = mb_strlen($item) / 1024;
+            $itemSize = mb_strlen($item) / 1024;
             $isLast = !isset($build[$i + 1]);
 
-            if ($size > 20 && $size + $currentSize > 80 && (!$isLast || $currentSize > 10)) {
+            if ($size > 20 && $size + $itemSize > 80 && (!$isLast || $itemSize > 10)) {
                 $num++;
                 $size = 0;
             }
 
             $chunks[$num][] = $item;
-            $size += $currentSize;
+            $size += $itemSize;
         }
 
         foreach ($chunks as $i => $build) {
