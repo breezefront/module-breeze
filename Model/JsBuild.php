@@ -237,7 +237,7 @@ class JsBuild
             $currentSize = mb_strlen($item) / 1024;
             $isLast = !isset($build[$i + 1]);
 
-            if ($size > 20 && $size + $currentSize > 80 && (!$isLast || $currentSize > 5)) {
+            if ($size > 20 && $size + $currentSize > 80 && (!$isLast || $currentSize > 10)) {
                 $num++;
                 $size = 0;
             }
