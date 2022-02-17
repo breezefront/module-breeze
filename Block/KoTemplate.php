@@ -26,6 +26,7 @@ class KoTemplate extends Template
             return $html;
         }
 
+        $html = str_replace("\n", ' ', $html);
         $html = preg_replace("/\s{2,}/", ' ', $html);
 
         if ($this->getData('wrapper') !== false) {
