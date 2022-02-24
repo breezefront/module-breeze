@@ -5,19 +5,14 @@ namespace Swissup\Breeze\Plugin;
 class Bundle
 {
     /**
-     * @var \Magento\Framework\App\State
-     */
-    private $appState;
-
-    /**
-     * @var \Magento\Framework\View\Design\Theme\ListInterface
-     */
-    private $themeList;
-
-    /**
      * @var \Magento\Framework\View\DesignInterfaceFactory
      */
     private $designFactory;
+
+    /**
+     * @var \Magento\Framework\View\Asset\RepositoryFactory
+     */
+    private $assetRepoFactory;
 
     /**
      * @var \Magento\Framework\Locale\ResolverInterfaceFactory
@@ -25,24 +20,24 @@ class Bundle
     private $localeFactory;
 
     /**
-     * @param \Magento\Framework\App\State $appState
-     * @param \Magento\Framework\View\Design\Theme\ListInterface $themeList
-     * @param \Magento\Framework\View\DesignInterfaceFactory $designFactory
-     * @param \Magento\Framework\View\LayoutFactory $layoutFactory
-     * @param \Magento\Framework\Locale\ResolverInterfaceFactory $localeFactory
+     * @var \Swissup\Breeze\Model\ThemeResolver
      */
+    private $themeResolver;
+
     public function __construct(
-        \Magento\Framework\App\State $appState,
-        \Magento\Framework\View\Design\Theme\ListInterface $themeList,
         \Magento\Framework\View\DesignInterfaceFactory $designFactory,
+        \Magento\Framework\View\Asset\RepositoryFactory $assetRepoFactory,
         \Magento\Framework\View\LayoutFactory $layoutFactory,
-        \Magento\Framework\Locale\ResolverInterfaceFactory $localeFactory
+        \Magento\Framework\Locale\ResolverInterfaceFactory $localeFactory,
+        \Magento\Theme\Model\ResourceModel\Theme\CollectionFactory $themeCollectionFactory,
+        \Swissup\Breeze\Model\ThemeResolver $themeResolver
     ) {
-        $this->appState = $appState;
-        $this->themeList = $themeList;
         $this->designFactory = $designFactory;
+        $this->assetRepoFactory = $assetRepoFactory;
         $this->layoutFactory = $layoutFactory;
         $this->localeFactory = $localeFactory;
+        $this->themeCollectionFactory = $themeCollectionFactory;
+        $this->themeResolver = $themeResolver;
     }
 
     /**
@@ -60,26 +55,34 @@ class Bundle
         $themePath,
         $localeCode
     ) {
-        $theme = $this->themeList->getThemeByFullPath($areaCode . '/' . $themePath);
+        $themeCollection = $this->themeCollectionFactory->create();
+        $theme = $themeCollection->getThemeByFullPath($areaCode . '/' . $themePath);
+
+        if (!$theme->getId()) {
+            return $result;
+        }
+
         $design = $this->designFactory->create()->setDesignTheme($theme, $areaCode);
         $locale = $this->localeFactory->create();
         $locale->setLocale($localeCode);
         $design->setLocale($locale);
+        $assetRepo = $this->assetRepoFactory->create(['design' => $design]);
 
-        // see Magento\PageBuilder\Model\Stage\Renderer
-        // see Magento\Widget\Model\Template\Filter
-        // see Magento\Email\Model\Template\Filter::emulateAreaCallback
-        // lib/internal/Magento/Framework/View/Layout.php::getUpdate - need to inject theme into theme resolver
+        $this->themeResolver->set($theme);
+        $layout = $this->layoutFactory->create([
+            'cacheable' => false,
+            'themeResolver' => $this->themeResolver,
+        ]);
+        $layout->getUpdate()->addHandle('breeze_default')->load();
+        $layout->generateXml();
+        $layout->generateElements();
 
-        $this->appState->emulateAreaCode('frontend', function () {
-            $layout = $this->layoutFactory->create(['cacheable' => false]);
-            $layout->getUpdate()->addHandle('breeze_default')->load();
-            $layout->generateXml();
-            $layout->generateElements();
-
-            $block = $layout->getBlock('breeze.js');
-            $block->deployBundledAssets();
-        });
+        $block = $layout->getBlock('breeze.js');
+        if ($block) {
+            $block->deployBundledAssets([
+                'assetRepo' => $assetRepo,
+            ]);
+        }
 
         return $result;
     }
