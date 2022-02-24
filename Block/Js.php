@@ -101,49 +101,65 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
      */
     protected function _toHtml()
     {
+        $assets = [];
+
+        if ($this->assetConfig->isMergeJsFiles() || $this->assetConfig->isBundlingJsFiles()) {
+            $assets = $this->deployBundledAssets();
+        } else {
+            $assets = $this->deployAssets();
+        }
+
         $scripts = [];
-        $merge = $this->assetConfig->isMergeJsFiles() || $this->assetConfig->isBundlingJsFiles();
+        foreach ($assets as $asset) {
+            $scripts[$asset->getUrl()] = sprintf(self::TEMPLATE, $asset->getUrl());
+        }
+
+        return implode("\n", $scripts);
+    }
+
+    public function deployAssets(): array
+    {
+        $assets = [];
 
         foreach ($this->getActiveBundles() as $name => $bundle) {
-            if (!$merge) {
-                foreach ($bundle['items'] as $item) {
-                    $path = $item;
-                    $paths = [];
+            foreach ($bundle['items'] as $item) {
+                $path = $item;
+                $paths = [];
 
-                    if (is_array($item)) {
-                        $path = $item['path'];
-                        $paths = $item['deps'] ?? [];
-                        $paths += $item['import'] ?? [];
-                    }
-
-                    $paths[] = $path;
-                    foreach ($paths as $key => $path) {
-                        if (strpos($key, '::') !== false) {
-                            continue;
-                        }
-
-                        $url = $this->jsBuildFactory->create(['name' => $path])
-                            ->getAsset()
-                            ->getUrl();
-
-                        $scripts[$url] = sprintf(self::TEMPLATE, $url);
-                    }
+                if (is_array($item)) {
+                    $path = $item['path'];
+                    $paths = $item['deps'] ?? [];
+                    $paths += $item['import'] ?? [];
                 }
-            } else {
-                $assets = $this->jsBuildFactory->create([
-                        'name' => 'Swissup_Breeze/bundles/' . $name,
-                        'items' => $bundle['items']
-                    ])
-                    ->publishIfNotExist($this->getCacheKey())
-                    ->getBundledAssets();
 
-                foreach ($assets as $asset) {
-                    $scripts[$asset->getUrl()] = sprintf(self::TEMPLATE, $asset->getUrl());
+                $paths[] = $path;
+                foreach ($paths as $key => $path) {
+                    if (strpos($key, '::') !== false) {
+                        continue;
+                    }
+
+                    $assets[] = $this->jsBuildFactory->create(['name' => $path])->getAsset();
                 }
             }
         }
 
-        return implode("\n", $scripts);
+        return $assets;
+    }
+
+    public function deployBundledAssets(): array
+    {
+        $assets = [];
+
+        foreach ($this->getActiveBundles() as $name => $bundle) {
+            $assets += $this->jsBuildFactory->create([
+                    'name' => 'Swissup_Breeze/bundles/' . $name,
+                    'items' => $bundle['items']
+                ])
+                ->publishIfNotExist($this->getCacheKey())
+                ->getBundledAssets();
+        }
+
+        return $assets;
     }
 
     /**

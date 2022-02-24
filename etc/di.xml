@@ -28,8 +28,17 @@
         </arguments>
     </type>
 
+    <type name="Swissup\Breeze\Model\JsBuild">
+        <arguments>
+            <argument name="minifier" xsi:type="object">jsMinificationAdapter</argument>
+        </arguments>
+    </type>
+
     <type name="Magento\Deploy\Config\BundleConfig">
         <plugin name="swissup_breeze" type="Swissup\Breeze\Plugin\BundleConfig" />
+    </type>
+    <type name="Magento\Deploy\Service\Bundle">
+        <plugin name="swissup_breeze" type="Swissup\Breeze\Plugin\Bundle" />
     </type>
 
     <type name="Magento\Catalog\Block\Product\ImageFactory">
