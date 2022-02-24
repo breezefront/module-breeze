@@ -7,11 +7,6 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
     const TEMPLATE = '<script data-breeze defer src="%s"></script>';
 
     /**
-     * @var \Magento\Framework\App\State
-     */
-    protected $appState;
-
-    /**
      * @var \Magento\Framework\View\Asset\ConfigInterface
      */
     protected $assetConfig;
@@ -43,7 +38,6 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
     /**
      * @param \Magento\Backend\Block\Context $context
-     * @param \Magento\Framework\App\State $appState
      * @param \Magento\Framework\View\Asset\ConfigInterface $assetConfig
      * @param \Magento\Framework\View\Page\Config $pageConfig
      * @param \Swissup\Breeze\Model\JsBuildFactory $jsBuildFactory
@@ -51,13 +45,11 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
      */
     public function __construct(
         \Magento\Backend\Block\Context $context,
-        \Magento\Framework\App\State $appState,
         \Magento\Framework\View\Asset\ConfigInterface $assetConfig,
         \Magento\Framework\View\Page\Config $pageConfig,
         \Swissup\Breeze\Model\JsBuildFactory $jsBuildFactory,
         array $data = []
     ) {
-        $this->appState = $appState;
         $this->assetConfig = $assetConfig;
         $this->pageConfig = $pageConfig;
         $this->jsBuildFactory = $jsBuildFactory;
@@ -110,9 +102,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
     protected function _toHtml()
     {
         $scripts = [];
-        $merge = $this->appState->getMode() === \Magento\Framework\App\State::MODE_PRODUCTION
-            || $this->assetConfig->isMergeJsFiles()
-            || $this->assetConfig->isBundlingJsFiles();
+        $merge = $this->assetConfig->isMergeJsFiles() || $this->assetConfig->isBundlingJsFiles();
 
         foreach ($this->getActiveBundles() as $name => $bundle) {
             if (!$merge) {
