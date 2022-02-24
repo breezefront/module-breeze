@@ -149,14 +149,18 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
     public function deployBundledAssets(): array
     {
         $assets = [];
+        $cacheKey = $this->getCacheKey();
 
         foreach ($this->getActiveBundles() as $name => $bundle) {
-            $assets += $this->jsBuildFactory->create([
-                    'name' => 'Swissup_Breeze/bundles/' . $name,
-                    'items' => $bundle['items']
-                ])
-                ->publishIfNotExist($this->getCacheKey())
-                ->getBundledAssets();
+            $assets = array_merge(
+                $assets,
+                $this->jsBuildFactory->create([
+                        'name' => 'Swissup_Breeze/bundles/' . $name,
+                        'items' => $bundle['items']
+                    ])
+                    ->publishIfNotExist($cacheKey)
+                    ->getBundledAssets()
+            );
         }
 
         return $assets;
