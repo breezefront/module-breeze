@@ -37,6 +37,8 @@ class Filter
      */
     public function process($html)
     {
+        $html = $this->escapeHtmlEntities($html);
+
         // fix special characters
         if (function_exists('mb_convert_encoding')) {
             $html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
@@ -54,12 +56,30 @@ class Filter
 
         $html = $document->saveHTML();
         $html = $this->unescapeHtmlInsideScriptTags($html);
+        $html = $this->unescapeHtmlEntities($html);
 
         foreach ($this->strFilters as $filter) {
             $html = $filter->process($html);
         }
 
         return $html;
+    }
+
+    private function escapeHtmlEntities($html)
+    {
+        return strtr($html, $this->getHtmlEntities());
+    }
+
+    private function unescapeHtmlEntities($html)
+    {
+        return strtr($html, array_flip($this->getHtmlEntities()));
+    }
+
+    private function getHtmlEntities()
+    {
+        return [
+            '—' => 'bz-mdash',
+        ];
     }
 
     /**
