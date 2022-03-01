@@ -2,8 +2,15 @@
 
 namespace Swissup\Breeze\Plugin;
 
+use Magento\Framework\App\Area;
+
 class Bundle
 {
+    /**
+     * @var \Magento\Framework\App\State
+     */
+    private $appState;
+
     /**
      * @var \Magento\Framework\View\DesignInterfaceFactory
      */
@@ -25,6 +32,7 @@ class Bundle
     private $themeResolver;
 
     public function __construct(
+        \Magento\Framework\App\State $appState,
         \Magento\Framework\View\DesignInterfaceFactory $designFactory,
         \Magento\Framework\View\Asset\RepositoryFactory $assetRepoFactory,
         \Magento\Framework\View\LayoutFactory $layoutFactory,
@@ -32,6 +40,7 @@ class Bundle
         \Magento\Theme\Model\ResourceModel\Theme\CollectionFactory $themeCollectionFactory,
         \Swissup\Breeze\Model\ThemeResolver $themeResolver
     ) {
+        $this->appState = $appState;
         $this->designFactory = $designFactory;
         $this->assetRepoFactory = $assetRepoFactory;
         $this->layoutFactory = $layoutFactory;
@@ -69,20 +78,23 @@ class Bundle
         $assetRepo = $this->assetRepoFactory->create(['design' => $design]);
 
         $this->themeResolver->set($theme);
-        $layout = $this->layoutFactory->create([
-            'cacheable' => false,
-            'themeResolver' => $this->themeResolver,
-        ]);
-        $layout->getUpdate()->addHandle('breeze_default')->load();
-        $layout->generateXml();
-        $layout->generateElements();
 
-        $block = $layout->getBlock('breeze.js');
-        if ($block) {
-            $block->deployBundledAssets([
-                'assetRepo' => $assetRepo,
+        $this->appState->emulateAreaCode(Area::AREA_FRONTEND, function () use ($assetRepo) {
+            $layout = $this->layoutFactory->create([
+                'cacheable' => false,
+                'themeResolver' => $this->themeResolver,
             ]);
-        }
+            $layout->getUpdate()->addHandle('breeze_default')->load();
+            $layout->generateXml();
+            $layout->generateElements();
+
+            $block = $layout->getBlock('breeze.js');
+            if ($block) {
+                $block->deployBundledAssets([
+                    'assetRepo' => $assetRepo,
+                ]);
+            }
+        });
 
         return $result;
     }
