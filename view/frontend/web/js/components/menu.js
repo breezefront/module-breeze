@@ -17,10 +17,12 @@
         /** Init widget */
         create: function () {
             var mql,
-                self = this;
+                self = this,
+                themeBreakpoint = getComputedStyle(document.documentElement)
+                    .getPropertyValue('--navigation-media-mobile');
 
             if (this.options.responsive) {
-                mql = window.matchMedia(this.options.mediaBreakpoint);
+                mql = window.matchMedia(themeBreakpoint || this.options.mediaBreakpoint);
                 mql.addListener(this.toggleMode.bind(this));
                 this.toggleMode(mql);
             } else if (this.options.mode === 'mobile') {
