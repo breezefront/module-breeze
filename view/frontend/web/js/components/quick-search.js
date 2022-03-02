@@ -337,7 +337,11 @@
                     break;
 
                 case 'Escape':
-                    this.element.focus();
+                    if (this.element.is(':focus')) {
+                        this.element.blur();
+                    } else {
+                        this.element.focus();
+                    }
                     this.hideAutocomplete();
                     break;
 
