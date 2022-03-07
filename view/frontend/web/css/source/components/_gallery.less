@@ -125,7 +125,7 @@
             display: flex;
             flex-grow: 0;
             flex-shrink: 0;
-            margin: 5px 0 0;
+            margin: @bz-gallery-thumb__margin;
             overflow: auto;
             scroll-behavior: smooth;
             .bz-scrollbar();
@@ -149,7 +149,7 @@
             .item {
                 position: relative;
                 flex-shrink: 0;
-                margin: 0 5px 5px 0;
+                margin: @bz-gallery-thumb-item__margin;
                 background: ~"rgba(var(--muted-bg, 244, 244, 244))";
                 &:focus {
                     outline: none;
