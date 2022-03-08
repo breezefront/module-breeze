@@ -1,5 +1,6 @@
 <?php
     $childHtml = $block->getChildHtml();
+    $srOnly = $block->getSrOnly();
 ?>
 
 <div class="<?= $block->getCssClass() ?>">
@@ -13,11 +14,11 @@
         <?php endif ?>
     >
         <?php if ($block->getIcon()) : ?>
+            <?php $srOnly = true ?>
             <?= $block->getIcon() ?>
-            <span class="abs-visually-hidden"><?= $block->escapeHtml($block->getTitle()) ?></span>
-        <?php else : ?>
-            <?= $block->escapeHtml($block->getTitle()) ?>
         <?php endif ?>
+
+        <span class="<?= $srOnly ? 'abs-visually-hidden' : '' ?>"><?= $block->escapeHtml($block->getTitle()) ?></span>
     </a>
 
     <?php if ($childHtml) : ?>
