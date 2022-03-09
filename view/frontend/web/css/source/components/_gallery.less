@@ -125,6 +125,7 @@
             display: flex;
             flex-grow: 0;
             flex-shrink: 0;
+            gap: @bz-gallery-thumb__gap;
             margin: @bz-gallery-thumb__margin;
             overflow: auto;
             scroll-behavior: smooth;
@@ -135,7 +136,7 @@
             }
 
             & when not (@bz-gallery-thumb__wrap) {
-                padding-bottom: 4px;
+                padding-bottom: 12px;
             }
 
             &.hidden {
@@ -143,13 +144,12 @@
             }
 
             img {
-                filter: contrast(97%);
+                filter: contrast(95%);
             }
 
             .item {
                 position: relative;
                 flex-shrink: 0;
-                margin: @bz-gallery-thumb-item__margin;
                 background: ~"rgba(var(--muted-bg, 244, 244, 244))";
                 &:focus {
                     outline: none;
