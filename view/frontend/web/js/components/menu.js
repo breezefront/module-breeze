@@ -18,8 +18,7 @@
         create: function () {
             var mql,
                 self = this,
-                themeBreakpoint = getComputedStyle(document.documentElement)
-                    .getPropertyValue('--navigation-media-mobile');
+                themeBreakpoint = $('body').var('--navigation-media-mobile');
 
             if (this.options.responsive) {
                 mql = window.matchMedia(themeBreakpoint || this.options.mediaBreakpoint);

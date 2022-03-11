@@ -259,6 +259,18 @@
         return this;
     };
 
+    $.fn.var = function (name, value) {
+        var el = this[0];
+
+        if (value !== undefined) {
+            el.style.setProperty(name, value);
+
+            return this;
+        }
+
+        return getComputedStyle(el).getPropertyValue(name);
+    };
+
     /** Proxy implementation */
     $.proxy = function (fn, ctx) {
         return fn.bind(ctx);
