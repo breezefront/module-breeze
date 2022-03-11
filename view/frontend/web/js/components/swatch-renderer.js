@@ -305,8 +305,9 @@
             var productId,
                 isInProductView = false;
 
-            productId = this.element.parents('.product-item-details')
-                    .find('.price-box.price-final_price').attr('data-product-id');
+            productId = this.element.parents('.product-item-info')
+                    .find('.price-box.price-final_price')
+                    .attr('data-product-id');
 
             if (!productId) {
                 // Check individual product.
