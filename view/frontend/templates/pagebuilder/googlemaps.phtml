@@ -1,0 +1,8 @@
+<?php /** @var Magento\PageBuilder\Block\GoogleMapsApi $block */ ?>
+<script>
+var googleMapsConfig = {
+    src: '<?= $block->escapeJs($block->getLibraryUrl()); ?>',
+    style: '<?= $block->escapeJs($block->getStyle()); ?>',
+    apiKey: '<?= $block->escapeJs($block->getApiKey()); ?>'
+}
+</script>

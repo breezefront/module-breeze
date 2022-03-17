@@ -279,6 +279,7 @@
                                     <item name="slider" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/slider</item>
                                     <item name="carousel" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/carousel</item>
                                     <item name="tabs" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/tabs</item>
+                                    <item name="map" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/map</item>
                                 </item>
                             </item>
                         </item>
@@ -300,6 +301,7 @@
         <referenceBlock name="customer.customer.data" template="Swissup_Breeze::customer/js/customer-data.phtml"/>
         <referenceBlock name="wishlist_sidebar" template="Swissup_Breeze::wishlist/sidebar.phtml"/>
         <referenceBlock name="minicart" template="Swissup_Breeze::checkout/minicart.phtml"/>
+        <referenceBlock name="google.maps.api" template="Swissup_Breeze::pagebuilder/googlemaps.phtml"/>
 
         <!-- Add ko templates -->
         <referenceContainer name="before.body.end">
