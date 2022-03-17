@@ -2,8 +2,7 @@
 (function () {
     'use strict';
 
-    var scripts = {},
-        html,
+    var html,
         scriptsContainer,
         scopedElements,
         oldDimensions = {
@@ -223,15 +222,11 @@
         $(document).trigger('breeze:load');
 
         walk(document);
-
-        $('script[src]').each(function () {
-            scripts[this.src] = true;
-        });
     }
 
     $(document).on(loadEventName(), function () {
-        var newScripts = _.isEmpty(scripts) ? [] : $('script[src]').filter(function () {
-                return !scripts[this.src];
+        var newScripts = _.isEmpty($.breeze.loadedScripts) ? [] : $('script[src]').filter(function () {
+                return !$.breeze.loadedScripts[this.src];
             }),
             spinnerTimeout,
             i = 0;

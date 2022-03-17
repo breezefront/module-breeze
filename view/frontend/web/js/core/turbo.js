@@ -83,6 +83,10 @@
             event.preventDefault();
             window.location.href = url;
         }
+
+        $('script[src]').each(function () {
+            $.breeze.loadedScripts[this.src] = true;
+        });
     });
 
     // Fix for document.referrer when using turbo.

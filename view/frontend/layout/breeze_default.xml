@@ -52,6 +52,7 @@
                             <item name="cookie" xsi:type="string">Swissup_Breeze::js/lib/js.cookie-3.0.1.min.js</item>
                             <item name="class" xsi:type="string">Swissup_Breeze::js/lib/class.js</item>
                             <item name="breeze-globals" xsi:type="string">Swissup_Breeze::js/core/globals.js</item>
+                            <item name="breeze-load-script" xsi:type="string">Swissup_Breeze::js/core/load-script.js</item>
                             <item name="breeze-async" xsi:type="string">Swissup_Breeze::js/core/async.js</item>
                             <item name="breeze-request" xsi:type="string">Swissup_Breeze::js/core/request.js</item>
                             <item name="breeze-translate" xsi:type="string">Swissup_Breeze::js/core/translate.js</item>
