@@ -68,6 +68,10 @@
         $(document)
             .find('[data-breeze-processed]')
             .removeAttr('data-breeze-processed');
+
+        $('script[src]').each(function () {
+            $.breeze.loadedScripts[this.src] = true;
+        });
     });
 
     // disable turbo for certain urls before trying to load them
@@ -83,10 +87,6 @@
             event.preventDefault();
             window.location.href = url;
         }
-
-        $('script[src]').each(function () {
-            $.breeze.loadedScripts[this.src] = true;
-        });
     });
 
     // Fix for document.referrer when using turbo.
