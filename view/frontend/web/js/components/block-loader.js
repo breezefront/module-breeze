@@ -4,7 +4,7 @@
 
     var loader,
         template = [
-            '<div data-role="loader" class="loading-mask" style="position: fixed;">',
+            '<div data-role="loader" class="loading-mask" style="position: absolute;">',
                 '<div class="loader">',
                     '<% if (loaderImageHref) { %>',
                         '<img src="<%= loaderImageHref %>" alt="Loading..." style="position: absolute;">',
