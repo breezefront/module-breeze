@@ -49,7 +49,7 @@
     //     initFormKey();
     // });
 
-    $(document).on('breeze:load', function () {
+    $(document).on('breeze:load contentUpdated', function () {
         initFormKey();
     });
 })();
