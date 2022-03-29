@@ -304,6 +304,7 @@
                 }
 
                 thumbnails.push(_.template(template)($.extend({}, picture, {
+                    srcset: '',
                     classes: [
                         'item',
                         picture.videoUrl ? 'video' : ''
