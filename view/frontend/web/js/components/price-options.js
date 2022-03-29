@@ -93,19 +93,29 @@
                 options = $(this.options.optionsSelector, form),
                 priceBox = $(this.options.priceHolderSelector, $(this.options.optionsSelector).element);
 
-            if (priceBox.data('magePriceBox') &&
-                priceBox.priceBox('option') &&
-                priceBox.priceBox('option').priceConfig
-            ) {
-                if (priceBox.priceBox('option').priceConfig.optionTemplate) {
-                    this._setOption('optionTemplate', priceBox.priceBox('option').priceConfig.optionTemplate);
+            if (priceBox.priceBox('instance')) {
+                this._onPriceFormatReady(priceBox);
+            } else {
+                priceBox.on('price-box-initialized', function () {
+                    this._onPriceFormatReady(priceBox);
+                }.bind(this));
+            }
+
+            options.on('change', this._onOptionChanged.bind(this));
+        },
+
+        _onPriceFormatReady: function (priceBox) {
+            var options = $(this.options.optionsSelector, this.element),
+                priceConfig = priceBox.priceBox('option').priceConfig;
+
+            if (priceConfig) {
+                if (priceConfig.optionTemplate) {
+                    this._setOption('optionTemplate', priceConfig.optionTemplate);
                 }
-                this._setOption('priceFormat', priceBox.priceBox('option').priceConfig.priceFormat);
+                this._setOption('priceFormat', priceConfig.priceFormat);
             }
 
             this._applyOptionNodeFix(options);
-
-            options.on('change', this._onOptionChanged.bind(this));
         },
 
         /**
