@@ -39,6 +39,14 @@
          * @private
          */
         _create: function () {
+            if ($(this.options.priceHolderSelector).priceBox('instance')) {
+                this._onPriceFormatReady();
+            } else {
+                $(this.options.priceHolderSelector).on('price-box-initialized', this._onPriceFormatReady.bind(this));
+            }
+        },
+
+        _onPriceFormatReady: function () {
             // Initial setting of various option values
             this._initializeOptions();
 
