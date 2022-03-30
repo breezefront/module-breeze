@@ -37,6 +37,11 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
     protected $activeBundles = null;
 
     /**
+     * @var array
+     */
+    protected $allBundles = null;
+
+    /**
      * @param \Magento\Backend\Block\Context $context
      * @param \Magento\Framework\View\Asset\ConfigInterface $assetConfig
      * @param \Magento\Framework\View\Page\Config $pageConfig
@@ -148,19 +153,18 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
     public function deployBundledAssets($jsBuildParams = []): array
     {
-        $assets = [];
+        $builds = [];
+        foreach ($this->getAllBundles() as $name => $bundle) {
+            $builds[$name] = $this->jsBuildFactory->create(array_merge([
+                    'name' => 'Swissup_Breeze/bundles/' . $name,
+                    'items' => $bundle['items'],
+                ]), $jsBuildParams)
+                ->publishIfNotExist();
+        }
 
+        $assets = [];
         foreach ($this->getActiveBundles() as $name => $bundle) {
-            $version = sha1(implode(',', array_keys($bundle['items']))));
-            $assets = array_merge(
-                $assets,
-                $this->jsBuildFactory->create(array_merge([
-                        'name' => 'Swissup_Breeze/bundles/' . $name,
-                        'items' => $bundle['items'],
-                    ]), $jsBuildParams)
-                    ->publishIfNotExist($version)
-                    ->getBundledAssets()
-            );
+            $assets = array_merge($assets, $builds[$name]->getBundledAssets());
         }
 
         return $assets;
@@ -195,9 +199,9 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
     }
 
     /**
-     * @return array
+     * Get bundles active for the currently viewed page
      */
-    protected function getActiveBundles()
+    protected function getActiveBundles(): array
     {
         if ($this->activeBundles !== null) {
             return $this->activeBundles;
@@ -205,7 +209,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
         $this->activeBundles = [];
 
-        foreach ($this->bundles as $bundleName => $bundle) {
+        foreach ($this->getAllBundles() as $bundleName => $bundle) {
             if (!empty($bundle['active'])) {
                 $this->activeBundles[$bundleName] = $bundle;
                 continue;
@@ -224,26 +228,6 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
             }
         }
 
-        // unset disabled components
-        foreach ($this->activeBundles as $bundleName => $bundle) {
-            foreach ($bundle['items'] as $itemName => $item) {
-                if (!is_array($item)) {
-                    continue;
-                }
-
-                $names = $item['names'] ?? [];
-                if ($names && array_intersect($names, $this->activeItems)) {
-                    continue; // do not check enabled state for the items from dom structure
-                }
-
-                $item['enabled'] = $item['enabled'] ?? true;
-
-                if (!$item['enabled']) {
-                    unset($this->activeBundles[$bundleName]['items'][$itemName]);
-                }
-            }
-        }
-
         $this->processImports($this->activeBundles);
 
         uasort($this->activeBundles, function ($a, $b) {
@@ -258,6 +242,40 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         });
 
         return $this->activeBundles;
+    }
+
+    /**
+     * Get all bundles without disabled components
+     */
+    protected function getAllBundles(): array
+    {
+        if ($this->allBundles !== null) {
+            return $this->allBundles;
+        }
+
+        $this->allBundles = $this->bundles;
+
+        // unset disabled components
+        foreach ($this->allBundles as $bundleName => $bundle) {
+            foreach ($bundle['items'] as $itemName => $item) {
+                if (!is_array($item)) {
+                    continue;
+                }
+
+                $names = $item['names'] ?? [];
+                if ($names && array_intersect($names, $this->activeItems)) {
+                    continue; // do not check enabled state for the items from dom structure
+                }
+
+                $item['enabled'] = $item['enabled'] ?? true;
+
+                if (!$item['enabled']) {
+                    unset($this->allBundles[$bundleName]['items'][$itemName]);
+                }
+            }
+        }
+
+        return $this->allBundles;
     }
 
     /**

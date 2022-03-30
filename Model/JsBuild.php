@@ -161,10 +161,12 @@ class JsBuild
     /**
      * @return $this
      */
-    public function publishIfNotExist($version)
+    public function publishIfNotExist()
     {
-        if (!$this->staticDir->isExist($this->getPath()) || !$this->versionMatches($version)) {
-            $this->publish($version);
+        if (!$this->staticDir->isExist($this->getPath()) ||
+            !$this->versionMatches()
+        ) {
+            $this->publish();
         }
 
         return $this;
@@ -195,7 +197,7 @@ class JsBuild
     /**
      * @return $this
      */
-    public function publish($version = null)
+    public function publish()
     {
         $build = [];
         $loadedDeps = [];
@@ -261,26 +263,32 @@ class JsBuild
             $this->assets[] = $this->assetRepo->createArbitrary($path, '');
         }
 
-        if ($version) {
-            $this->publishVersion($version);
-        }
+        $this->publishVersion();
 
         return $this;
     }
 
-    private function versionMatches($hash)
+    private function getVersion()
+    {
+        return sha1(implode(',', array_keys($this->items)));
+    }
+
+    private function versionMatches()
     {
         $deployedVersion = (string) $this->readFileFromPubStatic($this->getPathToVersionFile());
         $deployedVersion = trim($deployedVersion);
 
-        return strcmp($deployedVersion, $hash) === 0;
+        return strcmp($deployedVersion, $this->getVersion()) === 0;
     }
 
-    private function publishVersion($hash)
+    private function publishVersion()
     {
         $this->filesystem
             ->getDirectoryWrite(DirectoryList::STATIC_VIEW)
-            ->writeFile($this->staticContext->getConfigPath() . '/' . $this->getPathToVersionFile(), $hash);
+            ->writeFile(
+                $this->staticContext->getConfigPath() . '/' . $this->getPathToVersionFile(),
+                $this->getVersion()
+            );
     }
 
     private function getPathToVersionFile()
