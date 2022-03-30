@@ -22,9 +22,24 @@ class Bundle
     private $assetRepoFactory;
 
     /**
+     * @var \Magento\Framework\View\LayoutFactory
+     */
+    private $layoutFactory;
+
+    /**
      * @var \Magento\Framework\Locale\ResolverInterfaceFactory
      */
     private $localeFactory;
+
+    /**
+     * @var \Magento\Framework\View\Design\Theme\ThemeProviderInterface
+     */
+    private $themeProvider;
+
+    /**
+     * @var \Swissup\Breeze\Model\LayoutProcessorFactory
+     */
+    private $layoutProcessorFactory;
 
     /**
      * @var \Swissup\Breeze\Model\ThemeResolver
@@ -37,7 +52,8 @@ class Bundle
         \Magento\Framework\View\Asset\RepositoryFactory $assetRepoFactory,
         \Magento\Framework\View\LayoutFactory $layoutFactory,
         \Magento\Framework\Locale\ResolverInterfaceFactory $localeFactory,
-        \Magento\Theme\Model\ResourceModel\Theme\CollectionFactory $themeCollectionFactory,
+        \Magento\Framework\View\Design\Theme\ThemeProviderInterface $themeProvider,
+        \Magento\Framework\View\Layout\ProcessorFactory $layoutProcessorFactory,
         \Swissup\Breeze\Model\ThemeResolver $themeResolver
     ) {
         $this->appState = $appState;
@@ -45,7 +61,8 @@ class Bundle
         $this->assetRepoFactory = $assetRepoFactory;
         $this->layoutFactory = $layoutFactory;
         $this->localeFactory = $localeFactory;
-        $this->themeCollectionFactory = $themeCollectionFactory;
+        $this->themeProvider = $themeProvider;
+        $this->layoutProcessorFactory = $layoutProcessorFactory;
         $this->themeResolver = $themeResolver;
     }
 
@@ -64,11 +81,12 @@ class Bundle
         $themePath,
         $localeCode
     ) {
-        $themeCollection = $this->themeCollectionFactory->create();
-        $theme = $themeCollection->getThemeByFullPath($areaCode . '/' . $themePath);
+        $theme = $this->themeProvider->getThemeByFullPath($areaCode . '/' . $themePath);
 
         if (!$theme->getId()) {
-            return $result;
+            // Prevent cache collisions when deploying without DB connection
+            // @see Magento\Framework\View\Model\Layout\Merge::generateCacheId
+            $theme->setId($themePath);
         }
 
         $design = $this->designFactory->create()->setDesignTheme($theme, $areaCode);
@@ -83,6 +101,7 @@ class Bundle
             $layout = $this->layoutFactory->create([
                 'cacheable' => false,
                 'themeResolver' => $this->themeResolver,
+                'processorFactory' => $this->layoutProcessorFactory,
             ]);
             $layout->getUpdate()->addHandle('breeze_default')->load();
             $layout->generateXml();

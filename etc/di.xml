@@ -34,6 +34,18 @@
         </arguments>
     </type>
 
+    <virtualType name="Swissup\Breeze\Model\LayoutProcessorFactory" type="Magento\Framework\View\Layout\ProcessorFactory">
+        <arguments>
+            <argument name="instanceName" xsi:type="string">Swissup\Breeze\Model\LayoutProcessor</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Swissup\Breeze\Plugin\Bundle">
+        <arguments>
+            <argument name="layoutProcessorFactory" xsi:type="object">Swissup\Breeze\Model\LayoutProcessorFactory</argument>
+        </arguments>
+    </type>
+
     <type name="Magento\Deploy\Config\BundleConfig">
         <plugin name="swissup_breeze" type="Swissup\Breeze\Plugin\BundleConfig" />
     </type>
