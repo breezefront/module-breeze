@@ -18,7 +18,7 @@ class LayoutProcessor extends \Magento\Framework\View\Model\Layout\Merge
             return false;
         }
 
-        return parent::_fetchDbLayoutUpdates();
+        return parent::_fetchDbLayoutUpdates($handle);
     }
 
     /**
