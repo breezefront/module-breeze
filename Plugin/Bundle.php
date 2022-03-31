@@ -103,7 +103,12 @@ class Bundle
                 'themeResolver' => $this->themeResolver,
                 'processorFactory' => $this->layoutProcessorFactory,
             ]);
-            $layout->getUpdate()->addHandle('breeze_default')->load();
+            // @todo: breeze_amasty_xnotif, breeze_mirasvit_cachewarmer
+            $layout->getUpdate()->addHandle([
+                'default',
+                'default_head_blocks',
+                'breeze_default',
+            ])->load();
             $layout->generateXml();
             $layout->generateElements();
 
