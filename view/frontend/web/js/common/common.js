@@ -97,7 +97,7 @@
                 'mage/cookies': $.cookies,
                 'mage/translate': $.__,
                 'Magento_Customer/js/customer-data': $.sections,
-                'Magento_Ui/js/lib/view/utils/async': $.async,
+                'Magento_Ui/js/lib/view/utils/async': $,
                 'underscore': _
             };
 
