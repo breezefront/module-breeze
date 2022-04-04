@@ -101,7 +101,7 @@
 
         if (_.isObject(selector)) {
             callback = ctx;
-            ctx = selector.ctx;
+            ctx = selector.ctx || document.body;
             selector = selector.selector;
         } else if (!callback) {
             callback = ctx;
