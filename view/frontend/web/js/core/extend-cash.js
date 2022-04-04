@@ -14,7 +14,11 @@
         var method = this;
 
         /** Native methods proxy */
-        $.fn[method] = function () {
+        $.fn[method] = function (callback) {
+            if (callback) {
+                return this.on(method, callback);
+            }
+
             return this.each(function () {
                 var event = document.createEvent('Event');
 
