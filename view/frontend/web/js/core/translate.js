@@ -19,5 +19,5 @@
         }
     };
 
-    $.__ = window.$t = window.__ = $.translation.translate;
+    $.mage.__ = $.__ = window.$t = window.__ = $.translation.translate;
 })();
