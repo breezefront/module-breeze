@@ -123,6 +123,14 @@
             request.ok(params.ok);
         }
 
+        if (params.context) {
+            ['success', 'complete', 'error', 'beforeSend'].forEach(function (fn) {
+                if (params[fn]) {
+                    params[fn] = params[fn].bind(params.context);
+                }
+            });
+        }
+
         $.active++;
 
         return request
