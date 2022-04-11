@@ -142,6 +142,10 @@
             });
         }
 
+        if (params.beforeSend) {
+            params.beforeSend(request, params);
+        }
+
         $.active++;
 
         return request
