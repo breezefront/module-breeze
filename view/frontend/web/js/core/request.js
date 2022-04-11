@@ -106,7 +106,8 @@
             try {
                 return JSON.parse(text);
             } catch (e) {
-                if (params.dataType && params.dataType !== 'json' ||
+                if (!params.dataType && !params.type ||
+                    params.dataType && params.dataType !== 'json' ||
                     params.type && params.type !== 'json'
                 ) {
                     return text;
