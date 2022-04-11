@@ -52,6 +52,10 @@ class Config extends AbstractHelper
     {
         $paths = func_get_args();
 
+        if (isset($paths[0]) && is_array($paths[0])) {
+            $paths = $paths[0];
+        }
+
         foreach ($paths as $path) {
             if (strpos($path, ',') !== false) {
                 $isEnabled = $this->isAllEnabled(explode(',', $path));
@@ -88,6 +92,10 @@ class Config extends AbstractHelper
     public function isAllEnabled()
     {
         $paths = func_get_args();
+
+        if (isset($paths[0]) && is_array($paths[0])) {
+            $paths = $paths[0];
+        }
 
         foreach ($paths as $path) {
             if (strpos($path, ',') !== false) {

@@ -121,8 +121,11 @@
                             <item name="paypalCheckout" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/paypal-checkout</item>
                                 <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isAnyEnabled">
-                                    <param name="0">payment/paypal_express_bml/active</param>
-                                    <param name="1">payment/payflow_express_bml/active</param>
+                                    <param name="0">payment/paypal_express/active,payment/paypal_express/visible_on_product</param>
+                                    <param name="1">payment/paypal_express/active,payment/paypal_express/visible_on_cart</param>
+                                    <param name="2">payment/payflow_express_bml/active,payment/payflow_express/visible_on_product</param>
+                                    <param name="3">payment/payflow_express_bml/active,payment/payflow_express/visible_on_cart</param>
+                                    <param name="4">payment/paypal_express_bml/active</param>
                                 </item>
                             </item>
                             <item name="cookieNotices" xsi:type="array">
