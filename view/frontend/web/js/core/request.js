@@ -67,13 +67,23 @@
      * @return {Object}
      */
     function prepareData(data) {
-        var formKey = $.cookies.get('form_key');
+        var formData,
+            formKey = $.cookies.get('form_key');
 
         if (data.each && data.get) {
             data = data.get(0);
         }
 
-        if (data instanceof Element) {
+        if (typeof data === 'string') {
+            formData = new FormData();
+            formData.set('form_key', formKey);
+
+            _.each($.parseQuery(data), function (value, key) {
+                formData.set(key, value);
+            });
+
+            data = formData;
+        } else if (data instanceof Element) {
             data = new FormData(data);
 
             if (!data.has('form_key')) {
