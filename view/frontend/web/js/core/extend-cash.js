@@ -276,9 +276,7 @@
     };
 
     /** Proxy implementation */
-    $.proxy = function (fn, ctx) {
-        return fn.bind(ctx);
-    };
+    $.proxy = _.bind;
 
     /** Serialize object to query string */
     $.params = function (object) {
