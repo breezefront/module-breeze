@@ -81,6 +81,10 @@ class Bundle
         $themePath,
         $localeCode
     ) {
+        if ($areaCode !== Area::AREA_FRONTEND) {
+            return $result;
+        }
+
         $theme = $this->themeProvider->getThemeByFullPath($areaCode . '/' . $themePath);
 
         if (!$theme->getId()) {
