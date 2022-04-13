@@ -71,7 +71,7 @@ class Data extends AbstractHelper
      */
     public function getExcludedUrls()
     {
-        $excludedUrls = trim($this->getConfig('design/breeze/excluded_urls'));
+        $excludedUrls = trim((string)$this->getConfig('design/breeze/excluded_urls'));
         $excludedUrls = array_filter(explode("\n", $excludedUrls));
 
         foreach ($excludedUrls as $i => $url) {
