@@ -10,29 +10,32 @@
                     ' width="<%- width %>" height="<%- height %>" frameborder="0" allowfullscreen' +
                     ' allow="accelerometer; autoplay; clipboard-write;' +
                     ' encrypted-media; gyroscope; picture-in-picture"></iframe></div>',
-                providers: [{
-                    name: 'youtube',
-                    regexs: [
-                        /youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/,
-                        /youtube\.com\/embed\/([a-zA-Z0-9_-]+)/,
-                        /youtu\.be\/([a-zA-Z0-9_-]+)/
-                    ],
-                    params: {
-                        width: 560,
-                        height: 315,
-                        src: 'https://www.youtube.com/embed/$id'
+                providers: {
+                    youtube: {
+                        name: 'youtube',
+                        regexs: [
+                            /youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/,
+                            /youtube\.com\/embed\/([a-zA-Z0-9_-]+)/,
+                            /youtu\.be\/([a-zA-Z0-9_-]+)/
+                        ],
+                        params: {
+                            width: 560,
+                            height: 315,
+                            src: 'https://www.youtube.com/embed/$id'
+                        }
+                    },
+                    vimeo: {
+                        name: 'vimeo',
+                        regexs: [
+                            /vimeo\.com\/(\d+)/
+                        ],
+                        params: {
+                            width: 640,
+                            height: 380,
+                            src: 'https://player.vimeo.com/video/$id'
+                        }
                     }
-                }, {
-                    name: 'vimeo',
-                    regexs: [
-                        /vimeo\.com\/(\d+)/
-                    ],
-                    params: {
-                        width: 640,
-                        height: 380,
-                        src: 'https://player.vimeo.com/video/$id'
-                    }
-                }]
+                }
             }
         },
 
@@ -268,19 +271,41 @@
             var params = {};
 
             _.find(this.options.video.providers, function (item) {
-                return _.find(item.regexs, function (regex) {
-                    var match = regex.exec(url);
+                var id = this.matchVideoId(url, item);
 
-                    if (match) {
-                        params = _.extend({}, item.params);
-                        params.src = params.src.replace('$id', match[1]);
-                    }
+                if (id) {
+                    params = _.extend({}, item.params);
+                    params.src = params.src.replace('$id', id);
 
-                    return match;
-                });
-            });
+                    return true;
+                }
+            }.bind(this));
 
             return _.template(params.template || this.options.video.template)(params);
+        },
+
+        matchVideoId: function (url, provider) {
+            var id = false;
+
+            if (typeof provider === 'string') {
+                provider = this.options.video.providers[provider];
+            }
+
+            if (!provider) {
+                return id;
+            }
+
+            _.find(provider.regexs, function (regex) {
+                var match = regex.exec(url);
+
+                if (match) {
+                    id = match[1];
+
+                    return true;
+                }
+            });
+
+            return id;
         },
 
         /** [updateData description] */
