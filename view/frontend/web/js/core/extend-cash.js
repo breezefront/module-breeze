@@ -114,6 +114,10 @@
         return this;
     };
 
+    $.fn.rangeSlider = function (settings) {
+        this.before('<range-slider/>');
+    };
+
     /** Evaluates bindings specified in each DOM element of collection. */
     $.fn.applyBindings = function () {
         return this.each(function () {
