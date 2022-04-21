@@ -21,8 +21,36 @@ class RangeSlider extends HTMLElement {
             max.name = this.dataset.name + '[max]';
         }
 
+        /**
+         * Bring max or min above another range, if we can move only one of the thumbs
+         */
+        this.addEventListener('mousemove', function (event) {
+            if (max.valueAsNumber < parseFloat(min.min) + 5) {
+                max.style.zIndex = 4;
+            } else if (min.valueAsNumber > parseFloat(max.max) - 5) {
+                min.style.zIndex = 4;
+            } else {
+                max.style.zIndex = null;
+                min.style.zIndex = null;
+            }
+        });
+
+        /**
+         * Contstrain thumbs inside their min/max values
+         */
         this.addEventListener('input', function (event) {
-            console.log(event);
+            let el = event.target,
+                minDiff = 5,
+                maxValue = max.valueAsNumber - minDiff,
+                minValue = min.valueAsNumber + minDiff;
+
+            if (el === min) {
+                if (el.value > maxValue) {
+                    el.value = maxValue;
+                }
+            } else if (el.value < minValue) {
+                el.value = minValue;
+            }
         });
     }
 
@@ -37,7 +65,19 @@ class RangeSlider extends HTMLElement {
             range-slider {
                 position: relative;
                 display: inline-block;
-                width: 100%;
+            }
+            range-slider input {
+                margin: 0;
+            }
+            range-slider input::-webkit-slider-runnable-track {
+                background: #ddd;
+                height: 4px;
+                border-radius: 999px;
+            }
+            range-slider input::-webkit-slider-thumb {
+                height: 16px;
+                width: 16px;
+                margin-top: -6px;
             }
             range-slider .filler {
                 opacity: 0;
