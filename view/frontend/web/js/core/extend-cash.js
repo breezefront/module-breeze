@@ -115,7 +115,7 @@
     };
 
     $.fn.rangeSlider = function (settings) {
-        this.before('<range-slider/>');
+        this.before('<range-slider></range-slider>');
     };
 
     /** Evaluates bindings specified in each DOM element of collection. */
