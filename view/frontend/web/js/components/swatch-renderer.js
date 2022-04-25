@@ -950,7 +950,7 @@
 
         /** [_getProductWrapper description] */
         _getProductWrapper: function () {
-            var selector = this.options.selectorProduct,
+            var selector = this.options.selectorProduct.replace('.product-item-details', '.product-item-info'),
                 wrapper = this.element.closest(selector);
 
             if (!wrapper.length) {
