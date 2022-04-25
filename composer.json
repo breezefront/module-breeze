@@ -2,7 +2,7 @@
     "name": "swissup/module-breeze",
     "description": "Performant Magento Frontend",
     "type": "magento2-module",
-    "version": "1.11.10",
+    "version": "1.11.11",
     "license": "OSL-3.0",
     "autoload": {
         "files": [
