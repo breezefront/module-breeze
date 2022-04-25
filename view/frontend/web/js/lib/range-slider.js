@@ -25,11 +25,13 @@ class RangeSlider extends HTMLElement {
     }
 
     addMarkup() {
-        this.insertAdjacentHTML('afterbegin', [
-            '<input class="range" type="range"/>',
-            '<input class="range" type="range"/>',
-            '<input class="filler" disabled type="range"/>',
-        ].join(''));
+        if (!this.querySelector(':nth-child(1)')) {
+            this.insertAdjacentHTML('afterbegin', [
+                '<input class="range" type="range"/>',
+                '<input class="range" type="range"/>',
+                '<input class="filler" disabled type="range"/>',
+            ].join(''));
+        }
 
         this.initMinMaxElements();
 
