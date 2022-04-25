@@ -148,6 +148,7 @@ class RangeSlider extends HTMLElement {
             }
             range-slider input {
                 margin: 0;
+                width: 100%;
                 -webkit-appearance: none;
             }
             range-slider input:focus {
