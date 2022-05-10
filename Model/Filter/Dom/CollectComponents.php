@@ -40,6 +40,9 @@ class CollectComponents extends AbstractFilter
         foreach ($nodes as $node) {
             $value = $node->getAttribute('data-mage-init');
             $value = json_decode($value, true);
+            if (!$value) {
+                continue;
+            }
             foreach (array_keys($value) as $name) {
                 $this->addComponent($name);
             }
