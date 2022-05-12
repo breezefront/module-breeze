@@ -99,7 +99,9 @@
         destroy: function () {
             $.breeze.scrollbar.reset();
 
-            $('ul.shown', this.element).removeClass('shown').hide();
+            $(this.options.dropdown + '.shown', this.element).each(function (i, dropdown) {
+                this.close($(dropdown));
+            }.bind(this));
             $('html').removeClass('nav-open').removeClass('nav-before-open');
 
             if (this.element.closest('.nav-sections, .navigation-wrapper, .page-header').length) {
