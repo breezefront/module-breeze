@@ -36,6 +36,7 @@
             this.header.removeAttr('aria-level');
             this.trigger.attr('data-trigger', true);
             this.trigger.attr('tabindex', 0);
+            this.trigger.children('a').attr('tabindex', -1);
             this.element.attr('data-collapsible', true);
             this.content.attr('role', 'tabpanel');
 
