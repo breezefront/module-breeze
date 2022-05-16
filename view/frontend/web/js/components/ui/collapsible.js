@@ -70,6 +70,7 @@
             if (!this.options.active) {
                 this.close();
             }
+            this._super();
         },
 
         /** [isActive description] */

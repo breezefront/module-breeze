@@ -19,6 +19,7 @@
         /** Destroy widget listeners */
         destroy: function () {
             this.element.off('click', this.onClickHandler);
+            this._super();
         },
 
         /** [onClick description] */

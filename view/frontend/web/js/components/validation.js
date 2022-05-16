@@ -23,6 +23,7 @@
         /** [destoy description] */
         destroy: function () {
             this.element.removeAttr('data-validator');
+            this._super();
         },
 
         /** Validate form */

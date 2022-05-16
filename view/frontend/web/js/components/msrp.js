@@ -38,6 +38,7 @@
             if (this.$popup) {
                 this.$popup.remove();
             }
+            this._super();
         },
 
         /** Init msrp popup */

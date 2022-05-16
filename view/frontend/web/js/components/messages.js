@@ -85,6 +85,7 @@
         destroy: function () {
             $('.messages', this.element).remove();
             this.messages([]);
+            this._super();
         }
     });
 

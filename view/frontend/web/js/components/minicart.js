@@ -300,6 +300,7 @@
         /** [destroy description] */
         destroy: function () {
             this.cartSubscription.dispose();
+            this._super();
         },
 
         /** [minicart description] */

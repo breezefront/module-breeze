@@ -120,6 +120,7 @@
 
         destroy: function () {
             $(document).off('click.tabs');
+            this._super();
         },
 
         /** [getActiveTab description] */
