@@ -237,12 +237,16 @@
     & when (@critical = unsure), (@critical) {
         .breeze-gallery.vertical {
             flex-direction: row;
+            align-items: flex-start;
             .thumbnails {
                 flex-direction: column;
                 flex-wrap: nowrap;
                 order: -1;
-                max-height: 550px;
+                max-height: @bz-gallery-vertical-thumb__max-height;
                 margin: @bz-gallery-vertical-thumb__margin;
+                .padding-right(10px);
+                padding-bottom: 0;
+                overflow-y: overlay;
             }
         }
     }
