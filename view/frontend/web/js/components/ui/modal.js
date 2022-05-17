@@ -102,6 +102,7 @@
 
         destroy: function () {
             this.modalWrapper.remove();
+            $(this.options.appendTo).removeClass(this.options.parentModalClass);
             this._super();
         },
 
