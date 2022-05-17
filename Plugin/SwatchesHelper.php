@@ -37,7 +37,7 @@ class SwatchesHelper
         \Magento\Catalog\Model\Product $product
     ) {
         if (!$result || empty($result['gallery']) || !$this->helper->isResponsiveImagesEnabled()) {
-            return;
+            return $result;
         }
 
         $baseImage = null;
