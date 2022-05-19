@@ -328,13 +328,13 @@
                     return;
                 }
 
-                thumbnails.push(_.template(template)($.extend({}, picture, {
+                thumbnails.push(_.template(template)($.extend({}, {
                     srcset: '',
                     classes: [
                         'item',
                         picture.videoUrl ? 'video' : ''
                     ].join(' ')
-                })));
+                }, picture)));
             });
 
             this.thumbsWrapper.html(thumbnails.join(''));
