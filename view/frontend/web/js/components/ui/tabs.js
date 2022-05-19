@@ -15,7 +15,8 @@
         /** init widget */
         create: function () {
             var self = this,
-                activeIndex;
+                activeIndex,
+                expanded = true;
 
             this.collapsibles = this.element.find(this.options.collapsibleElement);
             this.headers = this.element.find(this.options.header);
@@ -52,6 +53,10 @@
                     isActive = index === self.options.active;
                 }
 
+                if (!isActive) {
+                    expanded = false;
+                }
+
                 $(el).collapsible($.extend({}, self.options, {
                     active: isActive,
                     header: self.headers.eq(index),
@@ -59,6 +64,11 @@
                     trigger: self.triggers.eq(index)
                 }));
             });
+
+            if (expanded) {
+                this.triggers.attr('tabIndex', -1);
+                this.collapsibles.removeAttr('data-collapsible', true);
+            }
 
             $(this.element).on('collapsible:beforeOpen', function (event, data) {
                 var activeTab = self.getActiveTab(),
