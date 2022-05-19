@@ -169,6 +169,10 @@
                     return -1;
                 }
 
+                if (!activeContent.length) {
+                    activeContent = this.contents.filter(hash);
+                }
+
                 if (activeContent.length) {
                     index = this.contents.index(activeContent);
                 }
