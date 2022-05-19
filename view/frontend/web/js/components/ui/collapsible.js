@@ -35,13 +35,10 @@
             this.header.attr('role', 'tab');
             this.header.removeAttr('aria-level');
             this.trigger.attr('data-trigger', true);
+            this.trigger.attr('tabindex', 0);
             this.trigger.children('a').attr('tabindex', -1);
+            this.element.attr('data-collapsible', true);
             this.content.attr('role', 'tabpanel');
-
-            if (this.options.collapsible || !this.options.active) {
-                this.trigger.attr('tabindex', 0);
-                this.element.attr('data-collapsible', true);
-            }
 
             if (this.header.parent().attr('role') !== 'presentation') {
                 this.header.parent().attr('role', 'tablist');
