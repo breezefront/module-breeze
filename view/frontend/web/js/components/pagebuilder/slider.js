@@ -36,12 +36,18 @@
             this.page = 0;
             this.slide = 0;
 
-            this.options = $.extend(this.options, {
-                autoplay: this.element.data('autoplay'),
-                autoplaySpeed: this.element.data('autoplay-speed') || 5000,
-                infinite: this.element.data('infinite-loop'),
-                arrows: this.element.data('show-arrows'),
-                dots: this.element.data('show-dots')
+            $.each({
+                autoplay: 'autoplay',
+                autoplaySpeed: 'autoplay-speed',
+                infinite: 'infinite-loop',
+                arrows: 'show-arrows',
+                dots: 'show-dots'
+            }, (key, domKey) => {
+                var value = this.element.data(domKey);
+
+                if (value !== undefined) {
+                    this.options[key] = value;
+                }
             });
 
             this.prepareMarkup();
@@ -296,7 +302,7 @@
                 }
 
                 this.start();
-            }.bind(this), this.options.autoplaySpeed);
+            }.bind(this), this.options.autoplaySpeed || 5000);
         },
 
         /** [stop description] */
