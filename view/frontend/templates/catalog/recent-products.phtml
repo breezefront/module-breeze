@@ -5,12 +5,8 @@
 <div class="block widget" data-bind="
     scope: '<?= $config['scope'] ?>',
     css: options.additionalClasses,
-    visible: visible,
-    template: {
-        if: visible,
-        name: 'recent-products'
-    }
-"></div>
+    visible: visible
+"><!-- ko template: { if: visible, name: 'recent-products' } --><!-- /ko --></div>
 
 <script type="text/x-magento-init">
 {
