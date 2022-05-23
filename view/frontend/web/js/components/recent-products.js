@@ -56,7 +56,6 @@
             }
 
             return {
-                retina: false,
                 width: image.width,
                 height: image.height,
                 src: image.url,
