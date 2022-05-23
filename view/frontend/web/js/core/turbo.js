@@ -16,16 +16,7 @@
         return prefix + name;
     }
 
-    // fixed not working scripts on 404 page
-    document.addEventListener(turboEventName('request-end'), function (event) {
-        if (event.data.xhr.status !== 200) {
-            event.preventDefault();
-            window.location.reload();
-        }
-    });
-
     // refresh the page if store was changed or breeze was disabled during visit
-    // or main merged css was changed
     document.addEventListener(turboEventName('before-render'), function (event) {
         var newConfig = $(event.data.newBody).find('#breeze-turbo').data('config'),
             shouldReload;
@@ -38,6 +29,7 @@
         }
     });
 
+    // refresh the page if main merged css was changed
     document.addEventListener(turboEventName('request-end'), function (event) {
         var hashRegex = /\/_cache\/merged\/([a-z0-9]+)/,
             newMergedCss = event.data.xhr.responseText.match(hashRegex),
@@ -107,4 +99,21 @@
             $.storage.ns('breeze').set('referrer', $.breeze.referrer);
         });
     })();
+
+    // Fixed jumping content on 404 page. Taken from https://github.com/turbolinks/turbolinks/issues/179
+    Turbolinks.HttpRequest.prototype.requestLoaded = function () {
+        return this.endRequest(function () {
+            var code = this.xhr.status;
+
+            if (200 <= code && code < 300 || code === 403 || code === 404 || code === 500) {
+                this.delegate.requestCompletedWithResponse(
+                    this.xhr.responseText,
+                    this.xhr.getResponseHeader("Turbolinks-Location")
+                );
+            } else {
+                this.failed = true;
+                this.delegate.requestFailedWithStatusCode(code, this.xhr.responseText);
+            }
+        }.bind(this));
+    };
 })();
