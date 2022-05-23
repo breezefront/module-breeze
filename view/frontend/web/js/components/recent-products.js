@@ -37,7 +37,7 @@
 
             // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
             ids = _.filter(ids, function (values, key) {
-                return key.indexOf(prefix) > -1 && currentTime - values.added_at < 1000;
+                return key.indexOf(prefix) > -1 && currentTime - values.added_at < 86400;
             });
             // jscs:enable requireCamelCaseOrUpperCaseIdentifiers
 
