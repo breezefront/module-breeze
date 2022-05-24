@@ -78,6 +78,7 @@ class Data extends AbstractHelper
             $excludedUrls[$i] = trim($url);
         }
 
+        $excludedUrls[] = '/sendfriend/product/';
         $excludedUrls[] = '/redirect/';
         $excludedUrls[] = '/checkout/';
         $excludedUrls[] = '/multishipping/';
