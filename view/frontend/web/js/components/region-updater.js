@@ -2,8 +2,12 @@
 (function () {
     'use strict';
 
+    $(document).on('breeze:mount:regionUpdater', function (event, data) {
+        $(data.el).regionUpdater(data.settings);
+    });
+
     $.widget('regionUpdater', {
-        component: 'regionUpdater',
+        component: 'directoryRegionUpdater',
         options: {
             regionTemplate:
                 '<option value="<%- data.value %>" <% if (data.isSelected) { %>selected="selected"<% } %>>' +
