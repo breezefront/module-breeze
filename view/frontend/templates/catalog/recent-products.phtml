@@ -2,7 +2,7 @@
     $config = $block->getBreezeConfig();
 ?>
 
-<div class="block widget" data-bind="
+<div class="block widget widget-recent" data-bind="
     scope: '<?= $config['scope'] ?>',
     css: options.additionalClasses,
     visible: visible
@@ -28,7 +28,7 @@
         <strong role="heading" aria-level="2" data-bind="text: options.title"></strong>
     </div>
     <div class="block-content">
-        <div data-bind="css: 'products-' + options.displayMode">
+        <div class="recent" data-bind="css: 'products-' + options.displayMode">
             <ol class="product-items" data-bind="foreach: items">
                 <li class="product-item">
                     <div class="product-item-info">
