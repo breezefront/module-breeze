@@ -10,11 +10,15 @@
             }
 
             .product-items {
+                // space for arrows
+                padding-left: 50px;
+                padding-right: 50px;
+
                 display: flex;
                 flex-wrap: nowrap;
                 overflow-x: auto;
                 scroll-behavior: smooth;
-                scroll-snap-type: x mandatory;
+                scroll-snap-type: none;
                 margin-bottom: 0;
 
                 // hide scrollbar
@@ -25,11 +29,20 @@
                 }
             }
 
+            &.slide-item-hovered {
+                .product-items {
+                    margin-top: -20px;
+                    padding-top: 20px;
+                    margin-bottom: -200px;
+                    padding-bottom: 200px;
+                    z-index: 3; // cover other below list content
+                }
+            }
+
             li.product-item {
                 flex-shrink: 0;
                 display: block;
                 visibility: visible;
-                scroll-snap-align: start;
             }
         }
     }

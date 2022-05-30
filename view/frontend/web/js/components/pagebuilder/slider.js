@@ -278,7 +278,9 @@
                 .eq(page)
                 .addClass('slick-active');
             slider.scrollTo({
-                left: slider.scrollLeft + slide.position().left,
+                left: slider.scrollLeft
+                    - parseFloat(getComputedStyle(slider).getPropertyValue('padding-left'))
+                    + slide.position().left,
                 behavior: instant ? 'instant' : 'auto'
             });
 

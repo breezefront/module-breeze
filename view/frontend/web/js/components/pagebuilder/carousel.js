@@ -11,6 +11,15 @@
             this.element.pagebuilderSlider($.extend({}, this.options, {
                 slider: slider.length ? slider : this.element.children()
             }));
+
+            this.element.pagebuilderSlider('instance').slides.hover(
+                () => {
+                    this.element.addClass('slide-item-hovered');
+                },
+                () => {
+                    this.element.removeClass('slide-item-hovered');
+                }
+            );
         }
     });
 })();
