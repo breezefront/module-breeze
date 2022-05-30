@@ -4,6 +4,7 @@
         .products-grid.slick-initialized,
         [data-content-type='products'][data-appearance='carousel'] {
             position: relative;
+            display: grid; // preserve proper arrows position when hover-reveal is used
 
             &[data-show-dots="true"] {
                 padding-bottom: 55px;
