@@ -48,6 +48,10 @@ class ProductImageFactory
 
         $attributes = $result->getCustomAttributes();
 
+        if (!$attributes) {
+            $attributes = [];
+        }
+
         if (isset($attributes['srcset'])) {
             return $result;
         }
