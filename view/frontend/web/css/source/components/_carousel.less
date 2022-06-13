@@ -35,14 +35,18 @@
                 }
             }
 
-            &:focus-within,
-            &.slide-item-hovered, {
-                .product-items {
-                    margin-top: -20px;
-                    padding-top: 20px;
-                    margin-bottom: -200px;
-                    padding-bottom: 200px;
-                    z-index: 3; // cover other below list content
+            & when not (@listing-grid-item__details-height = false) {
+                @media @media-hover {
+                    &:focus-within,
+                    &.slide-item-hovered, {
+                        .product-items {
+                            margin-top: -20px;
+                            padding-top: 20px;
+                            margin-bottom: -200px;
+                            padding-bottom: 200px;
+                            z-index: 3; // cover other below list content
+                        }
+                    }
                 }
             }
 
