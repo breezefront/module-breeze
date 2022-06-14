@@ -113,6 +113,12 @@ class Image extends AbstractHelper
                 $this->helper->getConfig('design/breeze/sizes'),
                 $this->helper->getThemeConfig('sizes') ?: []
             );
+
+            foreach ($this->sizesConfig as $key => $value) {
+                $value = preg_replace("/\s+/", ' ', $value);
+                $value = trim($value);
+                $this->sizesConfig[$key] = $value;
+            }
         }
 
         $keys = [
