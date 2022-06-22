@@ -5,19 +5,10 @@
     var config = $('#breeze-turbo').data('config'),
         mergedCss = $('link[href*="/merged/"]')[0];
 
-    /** Get correctly prefixed event name for turbo library */
-    function turboEventName(name) {
-        var prefix = 'turbo:';
-
-        if (typeof Turbolinks !== 'undefined') {
-            prefix = 'turbolinks:';
-        }
-
-        return prefix + name;
-    }
-
-    // refresh the page if store was changed or breeze was disabled during visit
-    document.addEventListener(turboEventName('before-render'), function (event) {
+    /**
+     * Refresh the page if store was changed or breeze was disabled during visit
+     */
+    function onBeforeRender(event) {
         var newConfig = $(event.data.newBody).find('#breeze-turbo').data('config'),
             shouldReload;
 
@@ -27,10 +18,12 @@
             event.preventDefault();
             window.location.reload();
         }
-    });
+    }
 
-    // refresh the page if main merged css was changed
-    document.addEventListener(turboEventName('request-end'), function (event) {
+    /**
+     * Refresh the page if main merged css was changed
+     */
+    function onRequestEnd(event) {
         var hashRegex = /\/_cache\/merged\/([a-z0-9]+)/,
             newMergedCss = event.data.xhr.responseText.match(hashRegex),
             oldMergedCss,
@@ -47,9 +40,9 @@
             event.preventDefault();
             window.location.reload();
         }
-    });
+    }
 
-    $(document).on(turboEventName('before-cache'), function () {
+    function onBeforeCache() {
         // destroy all widgets and views
         $.registry.delete();
 
@@ -64,10 +57,12 @@
         $('script[src]').each(function () {
             $.breeze.loadedScripts[this.src] = true;
         });
-    });
+    }
 
-    // disable turbo for certain urls before trying to load them
-    document.addEventListener(turboEventName('before-visit'), function (event) {
+    /**
+     * Disable turbo for certain urls before trying to load them
+     */
+    function onBeforeVisit(event) {
         var url = event.data.url,
             excluded = false;
 
@@ -79,7 +74,12 @@
             event.preventDefault();
             window.location.href = url;
         }
-    });
+    }
+
+    document.addEventListener('turbolinks:before-render', onBeforeRender);
+    document.addEventListener('turbolinks:request-end', onRequestEnd);
+    document.addEventListener('turbolinks:before-cache', onBeforeCache);
+    document.addEventListener('turbolinks:before-visit', onBeforeVisit);
 
     // Fix for document.referrer when using turbo.
     // Since it's readonly - use $.breeze.referrer instead.
@@ -90,11 +90,11 @@
 
         // Since this event doesn't work when using back/forward buttons we use it to update referrers
         // $.on is not used because it's overwrite event.data property
-        document.addEventListener(turboEventName('before-visit'), function (event) {
+        document.addEventListener('turbolinks:before-visit', function (event) {
             referrers[event.data.url] = window.location.href;
         });
 
-        $(document).on(turboEventName('visit'), function () {
+        $(document).on('turbolinks:visit', function () {
             $.breeze.referrer = referrers[window.location.href] || document.referrer;
             $.storage.ns('breeze').set('referrer', $.breeze.referrer);
         });
