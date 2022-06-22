@@ -44,7 +44,7 @@ class Filter
             $html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
         }
 
-        $html = $this->escapeHtmlInsideScriptTags($html);
+        $html = $this->escapeNestedHtmlTags($html);
 
         libxml_use_internal_errors(true);
         $document = new \DOMDocument();
@@ -55,7 +55,7 @@ class Filter
         }
 
         $html = $document->saveHTML();
-        $html = $this->unescapeHtmlInsideScriptTags($html);
+        $html = $this->unescapeNestedHtmlTags($html);
         $html = $this->unescapeHtmlEntities($html);
 
         foreach ($this->strFilters as $filter) {
@@ -91,21 +91,27 @@ class Filter
      * @param  string $html
      * @return string
      */
-    private function escapeHtmlInsideScriptTags($html)
+    private function escapeNestedHtmlTags($html)
     {
         $matches = [];
-        $pattern = '/<script\b[^>]*>(.*?)<\/script>/is';
-        preg_match_all($pattern, $html, $matches);
+        $patterns = [
+            '/<script\b[^>]*>(.*?)<\/script>/is',
+            '/<style\b[^>]*>(.*?)<\/style>/is',
+        ];
 
-        foreach ($matches[1] as $script) {
-            if (strpos($script, '</') === false) {
-                continue;
+        foreach ($patterns as $pattern) {
+            preg_match_all($pattern, $html, $matches);
+
+            foreach ($matches[1] as $rawHtml) {
+                if (strpos($rawHtml, '</') === false) {
+                    continue;
+                }
+
+                $escapedHtml = str_replace('</', '<\/', $rawHtml);
+                $html = str_replace($rawHtml, $escapedHtml, $html);
+
+                $this->escapedBlocks[$rawHtml] = $escapedHtml;
             }
-
-            $escapedScript = str_replace('</', '<\/', $script);
-            $html = str_replace($script, $escapedScript, $html);
-
-            $this->escapedBlocks[$script] = $escapedScript;
         }
 
         return $html;
@@ -115,7 +121,7 @@ class Filter
      * @param  string $html
      * @return string
      */
-    protected function unescapeHtmlInsideScriptTags($html)
+    protected function unescapeNestedHtmlTags($html)
     {
         foreach ($this->escapedBlocks as $originalHtml => $escapedHtml) {
             $html = str_replace($escapedHtml, $originalHtml, $html);
