@@ -200,5 +200,6 @@
 
     $(document).on('breeze:load', function () {
         customerData.initialize(window.customerDataConfig);
+        window.customerDataCmp = customerData;
     });
 })();

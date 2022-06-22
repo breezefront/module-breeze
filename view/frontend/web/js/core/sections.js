@@ -110,6 +110,17 @@ $.sections = $.customerData = window.customerData = (function () {
             $(document).trigger('customerData:invalidate', {
                 sections: names
             });
+        },
+
+        /**
+         * @return {Array}
+         */
+        getExpiredSectionNames: function () {
+            if (!window.customerDataCmp) {
+                return [];
+            }
+
+            return window.customerDataCmp.getExpiredSectionNames();
         }
     };
 })();
