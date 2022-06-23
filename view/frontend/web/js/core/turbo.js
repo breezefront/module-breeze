@@ -3,7 +3,8 @@
     'use strict';
 
     var config = $('#breeze-turbo').data('config'),
-        mergedCss = $('link[href*="/merged/"]')[0];
+        mergedCss = $('link[href*="/merged/"]')[0],
+        restoreInlineScripts = true;
 
     /**
      * Refresh the page if store was changed or breeze was disabled during visit
@@ -18,6 +19,27 @@
             event.preventDefault();
             window.location.reload();
         }
+    }
+
+    /**
+     * Restore inline scripts if back/forward buttons where used to open the page
+     */
+    function onRender() {
+        if (restoreInlineScripts) {
+            $(document.body).find('script[type="text/breeze"]').each(function () {
+                this.parentNode.insertBefore($(this).clone().removeAttr('type').get(0), this);
+                $(this).remove();
+            });
+        }
+
+        restoreInlineScripts = true;
+    }
+
+    /**
+     * Cancel inline scripts restoring to prevent double calls.
+     */
+    function onRequestStart() {
+        restoreInlineScripts = false;
     }
 
     /**
@@ -54,6 +76,11 @@
             .find('[data-breeze-processed]')
             .removeAttr('data-breeze-processed');
 
+        // prevent multiple calls of the same script when page is restored by turbo cache
+        $(document.body)
+            .find('script:not([type]), script[type="text/javascript"]')
+            .attr('type', 'text/breeze');
+
         $('script[src]').each(function () {
             $.breeze.loadedScripts[this.src] = true;
         });
@@ -77,6 +104,8 @@
     }
 
     document.addEventListener('turbolinks:before-render', onBeforeRender);
+    document.addEventListener('turbolinks:render', onRender);
+    document.addEventListener('turbolinks:request-start', onRequestStart);
     document.addEventListener('turbolinks:request-end', onRequestEnd);
     document.addEventListener('turbolinks:before-cache', onBeforeCache);
     document.addEventListener('turbolinks:before-visit', onBeforeVisit);
