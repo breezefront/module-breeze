@@ -49,6 +49,7 @@
             this.stage = this.gallery.find('.stage');
             this.image = this.stage.find('.stage img');
             this.activeIndex = this.gallery.find('.thumbnails a.active').index();
+            this.focusTrap = this.createFocusTrap(this.gallery);
 
             if (this.activeIndex === -1) {
                 this.activeIndex = 0;
@@ -146,6 +147,7 @@
 
         destroy: function () {
             $(document).off('keydown.gallery');
+            this.close();
             this._super();
         },
 
@@ -241,6 +243,8 @@
             $('body').addClass('_has-modal');
             this.gallery.addClass('opened');
             this.activate(this.activeIndex);
+            this.focusTrap.activate();
+            $.breeze.scrollbar.hide();
         },
 
         /** Close fullscreen gallery */
@@ -253,6 +257,8 @@
             this.gallery.removeClass('opened');
             this.activate(this.activeIndex);
             $('body').removeClass('_has-modal');
+            this.focusTrap.deactivate();
+            $.breeze.scrollbar.reset();
             this.parent.css({
                 width: '',
                 height: ''
