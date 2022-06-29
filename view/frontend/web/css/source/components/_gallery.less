@@ -6,8 +6,8 @@
 
         .prev,
         .next,
+        .controls a,
         .close {
-            position: absolute;
             color: ~"rgba(var(--base-color, 119, 119, 119), .6)";
             &:hover {
                 color: ~"rgba(var(--base-color, 119, 119, 119), 1)";
@@ -17,6 +17,33 @@
                 height: 24px;
                 vertical-align: top;
             }
+        }
+
+        .prev,
+        .next,
+        .close,
+        .controls {
+            position: absolute;
+            z-index: 20;
+        }
+
+        .controls {
+            .left(3px);
+            top: 3px;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            a {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 45px;
+                height: 45px;
+                background: ~"rgba(var(--base-bg, 255, 255, 255), .6)";
+            }
+        }
+        .video .controls {
+            display: none;
         }
 
         .close {
@@ -84,7 +111,7 @@
             align-items: center;
             position: relative;
 
-            > div:not(.loading-mask):not(.close),
+            > div:not(.loading-mask):not(.close):not(.controls),
             .main-image-wrapper,
             .main-image-wrapper > picture {
                 position: relative;
@@ -187,6 +214,7 @@
         background: ~"rgb(var(--base-bg, 255, 255, 255))";
 
         .close {
+            background: ~"rgba(var(--base-bg, 255, 255, 255), .6)";
             display: block;
             .right(3px);
             top: 3px;
@@ -207,7 +235,7 @@
                 }
             }
 
-            > div:not(.loading-mask):not(.close) {
+            > div:not(.loading-mask):not(.close):not(.controls) {
                 &,
                 picture {
                     margin: 0 auto;
