@@ -64,16 +64,18 @@
 
             $('body')
                 .css('box-sizing', 'border-box')
-                .css('padding-right', padding + scrollbar)
-                .css('overflow', 'hidden');
+                .css('padding-right', padding + scrollbar);
+
+            $('html, body').css('overflow', 'hidden');
         },
 
         /** [show description] */
         reset: function () {
             $('body')
                 .css('box-sizing', '')
-                .css('padding-right', '')
-                .css('overflow', '');
+                .css('padding-right', '');
+
+            $('html, body').css('overflow', '');
         }
     };
 
