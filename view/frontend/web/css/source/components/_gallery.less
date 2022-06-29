@@ -112,7 +112,7 @@
             align-items: center;
             position: relative;
 
-            > div:not(.loading-mask):not(.close):not(.controls),
+            > div:first-child,
             .main-image-wrapper,
             .main-image-wrapper > picture {
                 position: relative;
@@ -240,7 +240,7 @@
                 }
             }
 
-            > div:not(.loading-mask):not(.close):not(.controls) {
+            > div:first-child {
                 &,
                 picture {
                     margin: 0 auto;
