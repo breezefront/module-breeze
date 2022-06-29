@@ -185,6 +185,8 @@
                 return;
             }
 
+            this._trigger('beforeActivate');
+
             this.thumbs.eq(this.activeIndex).removeClass('active');
             this.thumbs.eq(index).addClass('active');
             this.image.siblings('source').remove();
@@ -226,6 +228,8 @@
             }
 
             this.activeIndex = index;
+
+            this._trigger('afterActivate');
         },
 
         /** Open fullscreen gallery */
@@ -233,6 +237,8 @@
             if (this.gallery.hasClass('opened') || this.options.allowfullscreen === false) {
                 return;
             }
+
+            this._trigger('beforeOpen');
 
             this.image.removeAttr('width').removeAttr('height');
 
@@ -245,10 +251,14 @@
             this.activate(this.activeIndex);
             this.focusTrap.activate();
             $.breeze.scrollbar.hide();
+
+            this._trigger('afterOpen');
         },
 
         /** Close fullscreen gallery */
         close: function () {
+            this._trigger('beforeClose');
+
             this.image
                 .removeAttr('src')
                 .attr('width', this.options.width)
@@ -263,6 +273,8 @@
                 width: '',
                 height: ''
             });
+
+            this._trigger('afterClose');
         },
 
         /** Plays active video */
