@@ -95,16 +95,16 @@
                 align-items: flex-start;
             }
 
-            .video-wrapper,
-            .video-wrapper:not(.loading-mask) {
-                position: absolute;
+            .video-wrapper {
+                position: absolute !important;
                 z-index: 10;
                 top: 0;
                 right: 0;
                 left: 0;
                 bottom: 0;
-                align-items: center;
+                align-items: center !important;
                 + div {
+                    // do not hide this element to keep frame size.
                     opacity: 0;
                 }
             }
@@ -207,7 +207,7 @@
                 }
             }
 
-            > div:not(.loading-mask) {
+            > div:not(.loading-mask):not(.close) {
                 &,
                 picture {
                     margin: 0 auto;
