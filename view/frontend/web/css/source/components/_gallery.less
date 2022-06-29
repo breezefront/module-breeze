@@ -84,7 +84,7 @@
             align-items: center;
             position: relative;
 
-            > div:not(.loading-mask),
+            > div:not(.loading-mask):not(.close),
             .main-image-wrapper,
             .main-image-wrapper > picture {
                 position: relative;
@@ -188,9 +188,13 @@
 
         .close {
             display: block;
-            position: absolute;
-            right: 10px;
-            top: 10px;
+            .right(3px);
+            top: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
         }
 
         .stage {
