@@ -133,9 +133,7 @@
          * @private
          */
         _parseQueryParams: function (queryString) {
-            var queryParams = $.parseQuery({
-                query: queryString
-            });
+            var queryParams = $.parseQuery(queryString);
 
             $.each(queryParams, function (key, value) {
                 if (this.options.spConfig.attributes[key] !== undefined &&
