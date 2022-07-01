@@ -56,8 +56,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            visibility: hidden;
-            opacity: 0;
             left: 0;
             top: 50%;
             width: 40px;
@@ -66,19 +64,26 @@
             background: ~"rgba(var(--muted-bg, 255, 255, 255), .6)";
             z-index: 11;
             transition: all 150ms ease-in;
-            &:hover {
-                opacity: 1;
+
+            @media (hover: hover) {
+                visibility: hidden;
+                opacity: 0;
+                &:hover {
+                    opacity: 1;
+                }
             }
         }
         .next {
             left: auto;
             right: 0;
         }
-        .stage:hover {
-            .prev,
-            .next {
-                visibility: visible;
-                opacity: .8;
+        @media (hover: hover) {
+            .stage:hover {
+                .prev,
+                .next {
+                    visibility: visible;
+                    opacity: .8;
+                }
             }
         }
 
