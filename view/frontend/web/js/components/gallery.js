@@ -121,7 +121,7 @@
                     return;
                 }
 
-                if (!self.gallery.hasClass('opened') &&
+                if (!self.opened() &&
                     !self.gallery.is(':focus-within')
                 ) {
                     return;
@@ -176,7 +176,7 @@
         /** Activate image by its index */
         activate: function (index) {
             var data,
-                fullscreen = this.gallery.hasClass('opened');
+                fullscreen = this.opened();
 
             index = this.options.data[index] ? index : 0;
             data = this.options.data[index];
@@ -234,7 +234,7 @@
 
         /** Open fullscreen gallery */
         open: function () {
-            if (this.gallery.hasClass('opened') || this.options.allowfullscreen === false) {
+            if (this.opened() || this.options.allowfullscreen === false) {
                 return;
             }
 
@@ -253,6 +253,11 @@
             $.breeze.scrollbar.hide();
 
             this._trigger('afterOpen');
+        },
+
+        /** Checks if gallery is opened */
+        opened: function () {
+            return this.gallery.hasClass('opened');
         },
 
         /** Close fullscreen gallery */
