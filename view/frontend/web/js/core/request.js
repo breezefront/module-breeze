@@ -1,4 +1,3 @@
-/* global superagent */
 (function () {
     'use strict';
 
@@ -96,42 +95,23 @@
         return data;
     }
 
-    /**
-     * @param {Object} request
-     * @param {Promise} params
-     */
-    function prepareRequest(request, params) {
-        request.set('X-Requested-With', 'XMLHttpRequest');
+    function send(params) {
+        params.headers = params.headers || {};
+        params.headers['X-Requested-With'] = 'XMLHttpRequest';
 
-        if (params.type) {
-            request.type(params.type);
-
-            if (params.type === 'json') {
-                request.accept('json');
-            }
+        if (params.type === 'form') {
+            params.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+        } else if (params.type === 'json') {
+            params.headers['Content-Type'] = 'application/json';
         }
 
-        // always try to parse response as json with fallback to raw text
-        request.parse(function (response, text) {
-            try {
-                return JSON.parse(text);
-            } catch (e) {
-                if (!params.dataType && !params.type ||
-                    params.dataType && params.dataType !== 'json' ||
-                    params.type && params.type !== 'json'
-                ) {
-                    return text;
-                }
-
-                // fixed bug? of missing response in superagent library
-                e.response = response;
-
-                throw e;
+        if (params.data) {
+            if (!params.method || params.method === 'get') {
+                params.url += params.url.indexOf('?') === -1 ? '?' : '&';
+                params.url += $.params(params.data);
+            } else {
+                params.body = params.data instanceof FormData ? params.data : $.params(params.data);
             }
-        });
-
-        if (params.ok) {
-            request.ok(params.ok);
         }
 
         if (params.context) {
@@ -143,15 +123,43 @@
         }
 
         if (params.beforeSend) {
-            params.beforeSend(request, params);
+            params.beforeSend(params);
         }
 
         $.active++;
 
-        return request
-            .on('response', function (response) {
+        return fetch(params.url, params)
+            .then(function (response) {
+                return response.text();
+            })
+            .then(function (text) {
+                var response = {
+                    text: text,
+                    req: params
+                };
+
                 $.active--;
+
+                response.body = (function () {
+                    try {
+                        return JSON.parse(text);
+                    } catch (e) {
+                        if (!params.dataType && !params.type ||
+                            params.dataType && params.dataType !== 'json' ||
+                            params.type && params.type !== 'json'
+                        ) {
+                            return text;
+                        }
+
+                        e.response = response;
+
+                        throw e;
+                    }
+                })();
+
                 onResponse(response, params);
+
+                return response;
             })
             .then(function (response) {
                 try {
@@ -180,6 +188,7 @@
          */
         post: function (params) {
             params = prepareParams(params);
+            params.method = 'post';
 
             if (params.each || params instanceof Element) {
                 params = {
@@ -196,7 +205,7 @@
                 params.data = prepareData(params.data);
             }
 
-            return prepareRequest(superagent.post(params.url).send(params.data), params);
+            return send(params);
         },
 
         /**
@@ -205,8 +214,9 @@
          */
         get: function (params) {
             params = prepareParams(params);
+            params.method = 'get';
 
-            return prepareRequest(superagent.get(params.url).query(params.data), params);
+            return send(params);
         }
     };
 

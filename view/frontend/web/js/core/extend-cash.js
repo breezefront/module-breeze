@@ -279,11 +279,30 @@
     $.proxy = _.bind;
 
     /** Serialize object to query string */
-    $.params = function (object) {
-        return Object.keys(object).map(function (key) {
-            return key + '=' + object[key];
-        }).join('&');
+    $.params = function (params, prefix) {
+        if (params instanceof FormData) {
+            return new URLSearchParams(params).toString();
+        }
+
+        var query = Object.keys(params).map(function (key) {
+            var value = params[key];
+
+            if (params.constructor === Array) {
+                key = `${prefix}[]`;
+            } else if (params.constructor === Object) {
+                key = (prefix ? `${prefix}[${key}]` : key);
+            }
+
+            if (typeof value === 'object') {
+                return $.params(value, key);
+            } else {
+                return `${key}=${encodeURIComponent(value)}`;
+            }
+        });
+
+        return [].concat.apply([], query).join('&');
     };
+    $.param = $.params;
 
     /** Parse url query params */
     $.parseQuery = function (query) {
