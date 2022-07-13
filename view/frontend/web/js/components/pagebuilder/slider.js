@@ -112,7 +112,7 @@
             new ResizeObserver(function (entries) {
                 var entry = entries[0];
 
-                if (prevWidth && prevWidth !== entry.contentRect.width) {
+                if (prevWidth !== entry.contentRect.width) {
                     self.update();
                 }
 
