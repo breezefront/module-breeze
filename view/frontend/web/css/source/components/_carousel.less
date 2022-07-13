@@ -37,9 +37,9 @@
             }
 
             & when not (@listing-grid-item__details-height = false) {
-                @media @media-hover {
+                @media (hover: hover) {
                     &:focus-within,
-                    &.slide-item-hovered, {
+                    &.slide-item-hovered {
                         .slick-list,
                         > .product-items {
                             margin-top: -20px;
@@ -54,7 +54,7 @@
 
             li.product-item {
                 flex-shrink: 0;
-                display: block;
+                display: inline-block;
                 visibility: visible;
             }
         }
