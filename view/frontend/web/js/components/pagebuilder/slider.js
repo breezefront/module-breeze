@@ -88,7 +88,8 @@
 
         /** [addEventListeners description] */
         addEventListeners: function () {
-            var self = this;
+            var self = this,
+                prevWidth = 0;
 
             if (!this.slider.length) {
                 return;
@@ -108,9 +109,14 @@
 
             this.slider.on('scroll', _.debounce(this.updateCurrentPage.bind(this), 40));
 
-            new ResizeObserver(function () {
-                self.buildPagination();
-                self.scrollToPage(self.page, true); // preserve active page in the viewport
+            new ResizeObserver(function (entries) {
+                var entry = entries[0];
+
+                if (prevWidth && prevWidth !== entry.contentRect.width) {
+                    self.update();
+                }
+
+                prevWidth = entry.contentRect.width;
             }).observe(this.slider.get(0));
         },
 
