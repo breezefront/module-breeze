@@ -38,6 +38,12 @@
 
             & when not (@listing-grid-item__details-height = false) {
                 @media (hover: hover) {
+                    &.scrolling {
+                        .product-item {
+                            pointer-events: none;
+                        }
+                    }
+
                     &:focus-within,
                     &.slide-item-hovered {
                         .slick-list,

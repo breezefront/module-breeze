@@ -185,7 +185,8 @@
                 offset = this.slider.get(0).scrollLeft,
                 delta = 2,
                 width = this.slider.outerWidth(),
-                diffStart = Math.abs(page.start - offset);
+                diffStart = Math.abs(page.start - offset),
+                pageUpdated = false;
 
             if (diffStart > delta) { // rounding issues
                 $.each(this.pages, function (i) {
@@ -204,6 +205,10 @@
                     }
                 });
 
+                if (this.page !== pageNum) {
+                    pageUpdated = true;
+                }
+
                 this.page = pageNum;
             }
 
@@ -212,6 +217,10 @@
                 .addClass('slick-active');
 
             this.updateArrows();
+
+            if (pageUpdated) {
+                this._trigger('slideChange');
+            }
         },
 
         /** [updateArrows description] */
@@ -278,7 +287,8 @@
         /** [scrollToPage description] */
         scrollToPage: function (page, instant) {
             var slider = this.slider.get(0),
-                slide = this.slides.eq(this.pages[page].slides[0]);
+                slide = this.slides.eq(this.pages[page].slides[0]),
+                pageUpdated = false;
 
             this.dots.removeClass('slick-active')
                 .eq(page)
@@ -290,8 +300,16 @@
                 behavior: instant ? 'instant' : 'auto'
             });
 
+            if (this.page !== page) {
+                pageUpdated = true;
+            }
+
             this.page = page;
             this.slide = slide.index();
+
+            if (pageUpdated) {
+                this._trigger('slideChange');
+            }
         },
 
         /** [start description] */
@@ -322,6 +340,21 @@
         /** [stop description] */
         pause: function () {
             clearTimeout(this.timer);
+        },
+
+        update: function () {
+            this.slides = this.slider.children();
+            this.buildPagination();
+        },
+
+        addSlide: function (index, slides) {
+            this.slides.eq(index).before(slides);
+            this.update();
+        },
+
+        removeSlide: function (index) {
+            this.slides.eq(index).remove();
+            this.update();
         }
     });
 })();
