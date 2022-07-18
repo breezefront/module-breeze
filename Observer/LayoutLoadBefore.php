@@ -12,14 +12,18 @@ class LayoutLoadBefore implements ObserverInterface
 
     private $customerSession;
 
+    private $design;
+
     public function __construct(
         \Swissup\Breeze\Helper\Data $helper,
         \Magento\Framework\View\Page\Config $pageConfig,
-        \Magento\Customer\Model\Session $customerSession
+        \Magento\Customer\Model\Session $customerSession,
+        \Magento\Framework\View\DesignInterface $design
     ) {
         $this->helper = $helper;
         $this->pageConfig = $pageConfig;
         $this->customerSession = $customerSession;
+        $this->design = $design;
     }
 
     /**
@@ -49,6 +53,11 @@ class LayoutLoadBefore implements ObserverInterface
             }
 
             $update->addHandle('breeze_' . $handle);
+        }
+
+        $baseTheme = $this->design->getDesignTheme()->getInheritedThemes()[0];
+        if ($baseTheme->getCode() === 'Swissup/breeze-blank') {
+            $update->addHandle('breeze_theme');
         }
 
         $update->addHandle('breeze');
