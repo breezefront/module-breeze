@@ -12,6 +12,7 @@
     $.widget('priceBox', {
         component: 'priceBox',
         options: globalOptions,
+        qtyInfo: '#qty',
 
         /**
          * Widget initialisation.
@@ -37,6 +38,7 @@
 
             box.on('reloadPrice', this.reloadPrice.bind(this));
             box.on('updatePrice', this.onUpdatePrice.bind(this));
+            $(this.qtyInfo).on('input', this.updateProductTierPrice.bind(this));
             box.trigger('price-box-initialized');
         },
 
@@ -178,6 +180,35 @@
             if (config && config.prices) {
                 this.options.prices = config.prices;
             }
+        },
+
+        /**
+         * Updates product final price according to tier prices
+         */
+        updateProductTierPrice: function () {
+            var productQty = $(this.qtyInfo).val(),
+                originalPrice = this.options.prices.finalPrice.amount,
+                tierPrice;
+
+            if (!this.options.priceConfig || !this.options.priceConfig.tierPrices) {
+                return;
+            }
+
+            _.find(this.options.priceConfig.tierPrices, function (rule) {
+                if (productQty < rule.qty) {
+                    return true;
+                }
+
+                tierPrice = rule.price;
+            });
+
+            this.updatePrice({
+                prices: {
+                    finalPrice: {
+                        amount: tierPrice - originalPrice
+                    }
+                }
+            });
         }
     });
 })();
