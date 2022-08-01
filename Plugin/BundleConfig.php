@@ -13,6 +13,7 @@ class BundleConfig
         $subject,
         $result
     ) {
+        $result[] = 'Swissup_Breeze/bundles';
         $result[] = 'Swissup_Breeze::js'; // module sources
         $result[] = 'Lib::js/breeze/';    // theme and module integrations
 
