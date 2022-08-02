@@ -39,7 +39,10 @@
             box.on('reloadPrice', this.reloadPrice.bind(this));
             box.on('updatePrice', this.onUpdatePrice.bind(this));
             $(this.qtyInfo).on('input', this.updateProductTierPrice.bind(this));
-            box.trigger('price-box-initialized');
+
+            setTimeout(() => {
+                box.trigger('price-box-initialized');
+            });
         },
 
         /**
