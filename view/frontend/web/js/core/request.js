@@ -98,10 +98,9 @@
     function send(params) {
         params.headers = params.headers || {};
         params.headers['X-Requested-With'] = 'XMLHttpRequest';
+        params.headers['Content-Type'] = 'application/x-www-form-urlencoded';
 
-        if (params.type === 'form') {
-            params.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-        } else if (params.type === 'json') {
+        if (params.type === 'json' || params.dataType === 'json') {
             params.headers['Content-Type'] = 'application/json';
         }
 
@@ -109,8 +108,11 @@
             if (!params.method || params.method === 'get') {
                 params.url += params.url.indexOf('?') === -1 ? '?' : '&';
                 params.url += $.params(params.data);
+            } else if (params.data instanceof FormData) {
+                params.body = params.data;
+                delete params.headers['Content-Type'];
             } else {
-                params.body = params.data instanceof FormData ? params.data : $.params(params.data);
+                params.body = $.params(params.data);
             }
         }
 
