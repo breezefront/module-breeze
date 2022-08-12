@@ -93,9 +93,13 @@
         var url = event.data.url,
             excluded = false;
 
-        excluded = _.some(config.excludedUrls, function (excludedUrl) {
-            return url.indexOf(excludedUrl) !== -1;
-        });
+        if (!config.enabled) {
+            excluded = true;
+        } else {
+            excluded = _.some(config.excludedUrls, function (excludedUrl) {
+                return url.indexOf(excludedUrl) !== -1;
+            });
+        }
 
         if (excluded) {
             event.preventDefault();

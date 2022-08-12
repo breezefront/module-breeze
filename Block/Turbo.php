@@ -40,6 +40,7 @@ class Turbo extends Template
     public function getJsonConfig()
     {
         return $this->serializer->serialize([
+            'enabled' => $this->helper->isTurboEnabled(),
             'excludedUrls' => $this->helper->getExcludedUrls(),
             'store' => $this->_storeManager->getStore()->getCode(),
         ]);
