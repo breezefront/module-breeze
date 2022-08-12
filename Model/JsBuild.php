@@ -305,6 +305,10 @@ class JsBuild
      */
     private function getContents($path)
     {
+        if (!$path) {
+            return '';
+        }
+
         list($module, $relativePath) = $this->extractModuleAndPath($path);
 
         if ($module) {
