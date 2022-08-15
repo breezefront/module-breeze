@@ -67,9 +67,9 @@
 
     /**
      * @param {Object} data
-     * @return {Object}
+     * @return {FormData}
      */
-    function prepareData(data) {
+    function toFormData(data) {
         var formData,
             formKey = $.cookies.get('form_key');
 
@@ -77,26 +77,44 @@
             data = data.get(0);
         }
 
-        if (typeof data === 'string') {
+        if (data instanceof Element) {
+            formData = new FormData(data);
+        } else {
             formData = new FormData();
-            formData.set('form_key', formKey);
 
-            _.each($.parseQuery(data), function (value, key) {
+            if (typeof data === 'string') {
+                data = $.parseQuery(data);
+            }
+
+            _.each(data, function (value, key) {
                 formData.set(key, value);
             });
-
-            data = formData;
-        } else if (data instanceof Element) {
-            data = new FormData(data);
-
-            if (!data.has('form_key')) {
-                data.set('form_key', formKey);
-            }
-        } else if (!data.form_key) {
-            data.form_key = formKey;
         }
 
-        return data;
+        if (!formData.has('form_key')) {
+            formData.set('form_key', formKey);
+        }
+
+        return formData;
+    }
+
+    function toJsonData(formData) {
+        var object = {};
+
+        formData.forEach((value, key) => {
+            if (!Reflect.has(object, key)) {
+                object[key] = value;
+                return;
+            }
+
+            if (!Array.isArray(object[key])) {
+                object[key] = [object[key]];
+            }
+
+            object[key].push(value);
+        });
+
+        return object;
     }
 
     function send(params) {
@@ -109,14 +127,16 @@
         }
 
         if (params.data) {
-            if (!params.method || params.method === 'get') {
+            if (!params.method || params.method.toLowerCase() === 'get') {
                 params.url += params.url.indexOf('?') === -1 ? '?' : '&';
                 params.url += $.params(params.data);
-            } else if (params.data instanceof FormData) {
+            } else if (params.processData !== false &&
+                params.headers['Content-Type'] === 'application/json'
+            ) {
+                params.body = JSON.stringify(toJsonData(params.data));
+            } else {
                 params.body = params.data;
                 delete params.headers['Content-Type'];
-            } else {
-                params.body = $.params(params.data);
             }
         }
 
@@ -207,10 +227,11 @@
             if (params.form) {
                 params.url = params.url || $(params.form).attr('action');
                 params.data = params.form;
+                params.processData = false;
             }
 
             if (params.data) {
-                params.data = prepareData(params.data);
+                params.data = toFormData(params.data);
             }
 
             return send(params);
