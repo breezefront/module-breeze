@@ -51,11 +51,15 @@
      * @param {Object} params
      * @return {Object}
      */
-    function prepareParams(params) {
-        if (typeof params === 'string') {
-            params = {
-                url: params
-            };
+    function prepareParams(url, params) {
+        if (typeof url === 'object') {
+            params = url;
+        } else if (!params) {
+            params = {};
+        }
+
+        if (typeof url === 'string') {
+            params.url = url;
         }
 
         return params;
@@ -180,7 +184,9 @@
          * @param {Object} params
          * @return {Promise}
          */
-        send: function (params) {
+        send: function (url, params) {
+            params = prepareParams(url, params);
+
             return this[params.method || 'get'](params);
         },
 
@@ -188,8 +194,8 @@
          * @param {Object} params
          * @return {Promise}
          */
-        post: function (params) {
-            params = prepareParams(params);
+        post: function (url, params) {
+            params = prepareParams(url, params);
             params.method = 'post';
 
             if (params.each || params instanceof Element) {
@@ -214,8 +220,8 @@
          * @param {Object} params
          * @return {Promise}
          */
-        get: function (params) {
-            params = prepareParams(params);
+        get: function (url, params) {
+            params = prepareParams(url, params);
             params.method = 'get';
 
             return send(params);
@@ -223,17 +229,17 @@
     };
 
     /** [get description] */
-    $.ajax = function (params) {
-        return $.request.send(params);
+    $.ajax = function (url, params) {
+        return $.request.send(url, params);
     };
 
     /** [get description] */
-    $.get = function (params) {
-        return $.request.get(params);
+    $.get = function (url, params) {
+        return $.request.get(url, params);
     };
 
     /** [get description] */
-    $.post = function (params) {
-        return $.request.post(params);
+    $.post = function (url, params) {
+        return $.request.post(url, params);
     };
 })();
