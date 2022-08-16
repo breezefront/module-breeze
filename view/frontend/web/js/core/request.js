@@ -73,6 +73,10 @@
             params.url = url;
         }
 
+        if (params.type && ['post', 'get', 'put', 'delete', 'head'].indexOf(params.type.toLowerCase()) > -1) {
+            params.method = params.type.toLowerCase();
+        }
+
         params.headers = Object.assign({
             'X-Requested-With': 'XMLHttpRequest',
             'Content-Type': 'application/x-www-form-urlencoded'
