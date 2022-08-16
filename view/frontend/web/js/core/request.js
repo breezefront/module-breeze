@@ -58,8 +58,34 @@
             params = {};
         }
 
+        if (params.each || params instanceof Element) {
+            params = {
+                form: params
+            };
+        }
+
+        if (params.form) {
+            params.url = params.url || $(params.form).attr('action');
+            params.data = params.form;
+        }
+
         if (typeof url === 'string') {
             params.url = url;
+        }
+
+        params.headers = Object.assign({
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }, params.headers || {});
+
+        if (params.type === 'json' || params.dataType === 'json') {
+            params.headers['Content-Type'] = 'application/json';
+        }
+
+        if (params.contentType) {
+            params.headers['Content-Type'] = params.contentType;
+        } else if (params.contentType === false) {
+            delete params.headers['Content-Type'];
         }
 
         return params;
@@ -118,25 +144,20 @@
     }
 
     function send(params) {
-        params.headers = params.headers || {};
-        params.headers['X-Requested-With'] = 'XMLHttpRequest';
-        params.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+        if (params.method === 'get' && params.data) {
+            params.url += params.url.indexOf('?') === -1 ? '?' : '&';
 
-        if (params.type === 'json' || params.dataType === 'json') {
-            params.headers['Content-Type'] = 'application/json';
-        }
+            if (typeof params.data !== 'string') {
+                params.data = $.params(params.data);
+            }
 
-        if (params.data) {
-            if (!params.method || params.method.toLowerCase() === 'get') {
-                params.url += params.url.indexOf('?') === -1 ? '?' : '&';
-                params.url += $.params(params.data);
-            } else if (params.processData !== false &&
-                params.headers['Content-Type'] === 'application/json'
-            ) {
-                params.body = JSON.stringify(toJsonData(params.data));
+            params.url += params.data;
+        } else if (params.method === 'post' && params.data) {
+            if (typeof params.data !== 'string') {
+                params.body = toFormData(params.data);
+                delete params.headers['Content-Type'];
             } else {
                 params.body = params.data;
-                delete params.headers['Content-Type'];
             }
         }
 
@@ -217,22 +238,6 @@
         post: function (url, params) {
             params = prepareParams(url, params);
             params.method = 'post';
-
-            if (params.each || params instanceof Element) {
-                params = {
-                    form: params
-                };
-            }
-
-            if (params.form) {
-                params.url = params.url || $(params.form).attr('action');
-                params.data = params.form;
-                params.processData = false;
-            }
-
-            if (params.data) {
-                params.data = toFormData(params.data);
-            }
 
             return send(params);
         },
