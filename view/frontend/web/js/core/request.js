@@ -78,7 +78,7 @@
             'Content-Type': 'application/x-www-form-urlencoded'
         }, params.headers || {});
 
-        if (params.type === 'json' || params.dataType === 'json') {
+        if (params.type === 'json') {
             params.headers['Content-Type'] = 'application/json';
         }
 
