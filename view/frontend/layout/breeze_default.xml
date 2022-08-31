@@ -309,6 +309,7 @@
         </block>
 
         <!-- Remove unused blocks-->
+        <referenceBlock name="requirejs-config" remove="true"/>
         <referenceBlock name="cookie-status-check" remove="true"/>
         <referenceBlock name="js_cookies" remove="true"/>
         <referenceBlock name="authentication-popup" remove="true"/>
