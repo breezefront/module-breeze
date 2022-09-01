@@ -6,14 +6,18 @@ class Css extends \Magento\Framework\View\Element\AbstractBlock
 {
     private $assetRepo;
 
+    private $cssResolver;
+
     public function __construct(
         \Magento\Framework\View\Element\Context $context,
         \Magento\Framework\View\Asset\Repository $assetRepo,
+        \Magento\Framework\View\Url\CssResolver $cssResolver,
         array $data = []
     ) {
         parent::__construct($context, $data);
 
         $this->assetRepo = $assetRepo;
+        $this->cssResolver = $cssResolver;
     }
 
     /**
@@ -80,6 +84,7 @@ class Css extends \Magento\Framework\View\Element\AbstractBlock
         try {
             $asset = $this->assetRepo->createAsset('css/' . $name . '.css', ['_secure' => 'false']);
             $content = $asset->getContent();
+            $content = $this->cssResolver->relocateRelativeUrls($content, $asset->getUrl(), '..');
         } catch (\Exception $e) {
             return '';
         }
