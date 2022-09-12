@@ -101,14 +101,22 @@
 
     /** Get/Set scroll top position */
     $.fn.scrollTop = function (val) {
-        var el = this.get(0);
+        var el = this.get(0),
+            isWindow = el === window,
+            prop = isWindow ? 'pageYOffset' : 'scrollTop';
 
         if (val === undefined) {
-            return el ? el.scrollTop : null;
+            return el ? el[prop] : null;
         }
 
         if (el) {
-            el.scrollTop = val;
+            if (isWindow) {
+                el.scroll({
+                    top: val
+                });
+            } else {
+                el[prop] = val;
+            }
         }
 
         return this;
