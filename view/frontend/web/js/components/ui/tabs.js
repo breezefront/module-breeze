@@ -88,6 +88,10 @@
 
                 self.prevHeight = prevContent ? $(prevContent).outerHeight() : false;
                 self.collapsibles.not(data.instance.element).collapsible('close');
+
+                if (!activeTab.isInViewport()) {
+                    activeTab.get(0).scrollIntoView();
+                }
             });
 
             $(this.element).on('collapsible:beforeLoad', function (event, data) {
