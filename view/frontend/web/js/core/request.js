@@ -117,7 +117,12 @@
             }
 
             _.each(data, function (value, key) {
-                formData.set(key, value);
+                if (_.isArray(value)) {
+                    key = key.includes('[') ? key : key + '[]';
+                    value.map((val) => formData.append(key, val));
+                } else {
+                    formData.set(key, value);
+                }
             });
         }
 
