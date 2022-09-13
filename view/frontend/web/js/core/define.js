@@ -1,5 +1,7 @@
 (function () {
-    $.defineMap = [
+    'use strict';
+
+    $.defineMap = {
         'jquery': $,
         'ko': ko,
         'mage/cookies': $.cookies,
@@ -7,7 +9,7 @@
         'Magento_Customer/js/customer-data': $.sections,
         'Magento_Ui/js/lib/view/utils/async': $,
         'underscore': _
-    ];
+    };
 
     function resolve(alias) {
         // @todo: text!, functions, urls
