@@ -33,6 +33,9 @@
     left: auto;
     right: 0;
 }
+.breeze-gallery .controls {
+    visibility: hidden;
+}
 .breeze-gallery img {
     vertical-align: top;
     height: auto;
@@ -44,7 +47,7 @@
     align-items: center;
     position: relative;
 }
-.breeze-gallery .stage > div,
+.breeze-gallery .stage > div:first-child,
 .breeze-gallery .stage .main-image-wrapper,
 .breeze-gallery .stage .main-image-wrapper > picture {
     position: relative;
