@@ -22,6 +22,7 @@ class Script
             }
 
             if ($node->hasAttribute('data-breeze')
+                || $node->hasAttribute('src')
                 || $node->getAttribute('type') === 'text/x-magento-init'
                 || $node->getAttribute('type') === 'application/ld+json'
                 || $node->getAttribute('type') === 'application/json'
