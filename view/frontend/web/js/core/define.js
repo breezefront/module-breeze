@@ -1,19 +1,20 @@
 (function () {
     'use strict';
 
-    $.defineMap = {
+    $.breezemap = {
         'jquery': $,
         'ko': ko,
         'mage/cookies': $.cookies,
         'mage/translate': $.__,
         'Magento_Customer/js/customer-data': $.sections,
         'Magento_Ui/js/lib/view/utils/async': $,
-        'underscore': _
+        'uiComponent': $.uiComponent,
+        'underscore': _,
     };
 
     function resolve(alias) {
         // @todo: text!, functions, urls
-        return $.defineMap[alias] || undefined;
+        return $.breezemap[alias] || undefined;
     }
 
     /**

@@ -347,6 +347,7 @@ $.registry = (function () {
     }
 
     Base = Class.extend({
+        initialize: _.noop,
         create: _.noop,
         init: _.noop,
         destroy: _.noop,
@@ -362,6 +363,7 @@ $.registry = (function () {
             this._options(options);
             this._defaults(this.options);
             this._trigger('beforeCreate');
+            this.initialize();
             this.create();
             this._create();
             this.init();
@@ -645,6 +647,12 @@ $.registry = (function () {
     $.Base = Base;
     $.widget = createComponent(createFactory(Widget));
     $.view = createComponent(createFactory(View));
+    $.uiComponent = {
+        counter: 1,
+        extend: function (proto) {
+            $.view('uiComponent' + this.counter++, proto);
+        }
+    }
 
     /** Wrap prototype with mixins */
     $.mixin = function (name, mixins) {
