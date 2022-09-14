@@ -43,11 +43,11 @@ class RecentlyViewedAndCompared
     private function prepareBlockData($subject, $template)
     {
         if (strpos($template, 'viewed') !== false) {
-            $title = 'Recently Viewed';
+            $title = __('Recently Viewed');
             $storage = 'recently_viewed_product';
             $additionalClasses = 'block-viewed-products-grid';
         } else {
-            $title = 'Recently Compared';
+            $title = __('Recently Compared');
             $storage = 'recently_compared_product';
             $additionalClasses = 'block-compared-products-grid';
         }
