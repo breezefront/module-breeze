@@ -4,6 +4,7 @@
     <head>
         <remove src="mage/calendar.css"/>
         <remove src="mage/gallery/gallery.css"/>
+        <remove src="requirejs/require.js"/>
     </head>
     <body>
         <referenceContainer name="before.body.end">
