@@ -16,6 +16,11 @@ class Script
 
         $nodes = $document->getElementsByTagName('script');
         foreach ($nodes as $node) {
+            if ($node->hasAttribute('data-breeze-remove')) {
+                $remove[] = $node;
+                continue;
+            }
+
             if ($node->hasAttribute('data-breeze')
                 || $node->getAttribute('type') === 'text/x-magento-init'
                 || $node->getAttribute('type') === 'application/ld+json'
