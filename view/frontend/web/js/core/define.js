@@ -34,4 +34,14 @@
 
         callback.apply(this, args);
     };
+
+    var staticUrl = window.require.baseUrl;
+
+    window.require = window.requirejs = function (deps, callback) {
+        return window.define(deps, callback);
+    };
+
+    window.require.toUrl = function (path) {
+        return staticUrl + '/' + path.trim('/');
+    };
 })();

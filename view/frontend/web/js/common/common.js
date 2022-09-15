@@ -2,8 +2,6 @@
 (function () {
     'use strict';
 
-    var staticUrl = window.require.baseUrl;
-
     $('form[data-auto-submit="true"]').submit();
 
     $(document).on('submit', function (event) {
@@ -77,11 +75,5 @@
 
             $('html, body').css('overflow', '');
         }
-    };
-
-    /** Prevent js error in case some module calls for requirejs */
-    window.require = function () {};
-    window.require.toUrl = function (path) {
-        return staticUrl + '/' + path.trim('/');
     };
 })();
