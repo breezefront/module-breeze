@@ -115,4 +115,5 @@
         strPad: stringPad,
         findOptionId: findOptionId
     };
+    $.breezemap['Magento_Catalog/js/price-utils'] = $.catalog.priceUtils;
 })();
