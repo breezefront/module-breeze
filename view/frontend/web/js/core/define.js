@@ -20,7 +20,7 @@
         }
 
         if (alias.indexOf('text!') === 0) {
-            result = alias.substr(5).replace(/\/\./g, '_');
+            result = alias.substr(5).replace(/[\/.]/g, '_');
             result = $('#' + result).html();
         } else if (alias.includes('//')) {
             result = $.loadScript(alias);
