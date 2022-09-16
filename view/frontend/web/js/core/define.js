@@ -35,13 +35,7 @@
         callback.apply(this, args);
     };
 
-    var staticUrl = window.require.baseUrl;
-
-    window.require = window.requirejs = function (deps, callback) {
-        return window.define(deps, callback);
-    };
-
-    window.require.toUrl = function (path) {
-        return staticUrl + '/' + path.trim('/');
-    };
+    window.require = (deps, callback) => window.define(deps, callback);
+    window.require.toUrl = (path) => window.VIEW_URL + '/' + path;
+    window.require.config = _.noop;
 })();

@@ -16,6 +16,7 @@
         </referenceContainer>
 
         <block class="Swissup\Breeze\Block\Preload" name="breeze.preload"/>
+        <block class="Magento\Framework\View\Element\Template" name="breeze.required" template="Swissup_Breeze::theme/js/required.phtml"/>
 
         <block class="Swissup\Breeze\Block\Js" name="breeze.js">
             <arguments>
@@ -320,6 +321,7 @@
         <referenceBlock name="product.info.addtocart.instantPurchase.additional" remove="true"/>
 
         <!-- Change templates -->
+        <referenceBlock name="require.js" template="Swissup_Breeze::theme/js/require_js.phtml"/>
         <referenceBlock name="cookie_config" template="Swissup_Breeze::theme/js/cookie.phtml"/>
         <referenceBlock name="customer.section.config" template="Swissup_Breeze::customer/js/section-config.phtml"/>
         <referenceBlock name="customer.customer.data" template="Swissup_Breeze::customer/js/customer-data.phtml"/>

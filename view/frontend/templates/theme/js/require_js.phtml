@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ * @var \Magento\Framework\Locale\LocaleFormatter $localeFormatter
+ */
+$scriptString = <<<script
+
+    var LOCALE = '{$block->escapeJs($localeFormatter->getLocaleJs())}';
+    var BASE_URL = '{$block->escapeJs($block->getBaseUrl())}';
+    var VIEW_URL = '{$block->escapeJs($block->getViewFileUrl("/"))}';
+    var required = [];
+    var require = (deps, callback) => required.push([deps, callback]);
+
+script;
+
+echo /* @noEscape */ $secureRenderer->renderTag('script', ['data-breeze' => true], $scriptString, false);
