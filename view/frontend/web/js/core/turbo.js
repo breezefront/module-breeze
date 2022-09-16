@@ -78,7 +78,7 @@
 
         // prevent multiple calls of the same script when page is restored by turbo cache
         $(document.body)
-            .find('script:not([type]), script[type="text/javascript"]')
+            .find('script:not([type]), script[type="text/javascript"], script[type="module"]')
             .attr('type', 'text/breeze');
 
         $('script[src]').each(function () {
