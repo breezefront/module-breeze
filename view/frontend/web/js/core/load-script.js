@@ -2,15 +2,18 @@
     'use strict';
 
     $.loadScript = function (src, callback) {
-        var script = document.createElement('script');
+        return new Promise((resolve, reject) => {
+            var script = document.createElement('script');
 
-        if (callback) {
-            script.onload = function () {
+            script.onload = resolve;
+            script.onerror = reject;
+            script.src = src;
+
+            document.head.appendChild(script);
+        }).then(() => {
+            if (callback) {
                 callback();
-            };
-        }
-
-        script.src = src;
-        document.head.appendChild(script);
+            }
+        });
     };
 })();
