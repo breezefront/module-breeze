@@ -13,29 +13,51 @@
     };
 
     function resolve(alias) {
-        // @todo: text!, functions, urls
-        return $.breezemap[alias] || undefined;
+        var result;
+
+        if ($.breezemap.hasOwnProperty(alias)) {
+            return $.breezemap[alias];
+        }
+
+        if (alias.indexOf('text!') === 0) {
+            result = alias.substr(5).replace(/\/\./g, '_');
+            result = $('#' + result).html();
+        } else if (alias.includes('//')) {
+            result = $.loadScript(alias);
+        }
+
+        $.breezemap[alias] = result;
+
+        return $.breezemap[alias];
     }
 
     /**
      * @param {Array} deps
      * @param {Function} callback
      */
-    window.define = function (deps, callback) {
+    window.require = function (deps, success, error) {
         var args = [];
 
         if (!_.isArray(deps)) {
             return;
         }
 
-        deps.forEach(function (alias) {
+        deps.forEach((alias) => {
             args.push(resolve(alias));
         });
 
-        callback.apply(this, args);
+        Promise.all(args)
+            .then((values) => success.apply(this, values))
+            .catch((reason) => {
+                if (error) {
+                    error(reason);
+                } else {
+                    throw reason;
+                }
+            });
     };
 
-    window.require = (deps, callback) => window.define(deps, callback);
+    window.define = (deps, callback) => window.require(deps, callback);
     window.require.toUrl = (path) => window.VIEW_URL + '/' + path;
     window.require.config = _.noop;
 })();
