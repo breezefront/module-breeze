@@ -4,9 +4,15 @@
  * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
  * @var \Magento\Framework\Locale\LocaleFormatter $localeFormatter
  */
+
+$localeString = '';
+if (isset($localeFormatter)) {
+    $localeString = "var LOCALE = '{$block->escapeJs($localeFormatter->getLocaleJs())}';";
+}
+
 $scriptString = <<<script
 
-    var LOCALE = '{$block->escapeJs($localeFormatter->getLocaleJs())}';
+    {$localeString}
     var BASE_URL = '{$block->escapeJs($block->getBaseUrl())}';
     var VIEW_URL = '{$block->escapeJs($block->getViewFileUrl("/"))}';
     var required = [];
