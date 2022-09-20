@@ -20,4 +20,8 @@ $scriptString = <<<script
 
 script;
 
-echo /* @noEscape */ $secureRenderer->renderTag('script', ['data-breeze' => true], $scriptString, false);
+if (isset($secureRenderer)) {
+    echo /* @noEscape */ $secureRenderer->renderTag('script', ['data-breeze' => true], $scriptString, false);
+} else {
+    echo "<script data-breeze>${scriptString}</script>";
+}
