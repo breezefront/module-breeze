@@ -55,10 +55,14 @@
 
     /** [visit description] */
     $.breeze.scrollbar = {
+        counter: 0,
+
         /** [hide description] */
         hide: function () {
             var padding = parseFloat($('body').css('padding-right')),
                 scrollbar = Math.abs(window.innerWidth - document.documentElement.clientWidth);
+
+            this.counter++;
 
             $('body')
                 .css('box-sizing', 'border-box')
@@ -69,6 +73,12 @@
 
         /** [show description] */
         reset: function () {
+            this.counter--;
+
+            if (this.counter) {
+                return;
+            }
+
             $('body')
                 .css('box-sizing', '')
                 .css('padding-right', '');
