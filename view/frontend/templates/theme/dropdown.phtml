@@ -4,6 +4,12 @@
 ?>
 
 <div class="<?= $block->getCssClass() ?>">
+    <?php if ($block->getLabel()) : ?>
+        <strong class="label switcher-label">
+            <span><?= $block->escapeHtml($block->getLabel()) ?></span>
+        </strong>
+    <?php endif ?>
+
     <a class="action toggle switcher-trigger"
         href="<?= $block->escapeUrl($block->getHref()) ?>"
         title="<?= $block->escapeHtml($block->getTitle()) ?>"
@@ -18,7 +24,9 @@
             <?= $block->getIcon() ?>
         <?php endif ?>
 
-        <span class="<?= $srOnly ? 'abs-visually-hidden' : '' ?>"><?= $block->escapeHtml($block->getTitle()) ?></span>
+        <strong class="<?= $srOnly ? 'abs-visually-hidden' : '' ?>">
+            <span><?= $block->escapeHtml($block->getTitle()) ?></span>
+        </strong>
     </a>
 
     <?php if ($childHtml) : ?>
