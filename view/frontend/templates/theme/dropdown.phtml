@@ -3,7 +3,7 @@
     $srOnly = $block->getSrOnly();
 ?>
 
-<div class="switcher">
+<div class="<?= $block->getSwitcherCssClass() ?>">
     <?php if ($block->getLabel()) : ?>
         <strong class="label switcher-label">
             <span><?= $block->escapeHtml($block->getLabel()) ?></span>

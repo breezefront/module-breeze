@@ -53,6 +53,17 @@ class Dropdown extends Template
         return $class;
     }
 
+    public function getSwitcherCssClass(): string
+    {
+        $class = 'switcher';
+
+        if ($this->getData('switcher_css_class')) {
+            $class .= ' ' . $this->getData('switcher_css_class');
+        }
+
+        return $class;
+    }
+
     public function getJsonConfig()
     {
         return $this->json->serialize([
