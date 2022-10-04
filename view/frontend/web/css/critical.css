@@ -28,6 +28,7 @@
 }
 .breeze-gallery .close {
     display: none;
+    position: absolute;
 }
 .breeze-gallery .next {
     left: auto;
@@ -35,6 +36,7 @@
 }
 .breeze-gallery .controls {
     visibility: hidden;
+    position: absolute;
 }
 .breeze-gallery img {
     vertical-align: top;
