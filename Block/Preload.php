@@ -30,7 +30,7 @@ class Preload extends \Magento\Framework\View\Element\AbstractBlock
             }
             $renderedAttributes = join(' ', $renderedAttributes);
 
-            $items[] = '<link rel="preload" ' . $renderedAttributes . '/>';
+            $items[] = '<link rel="preload" fetchpriority="high" ' . $renderedAttributes . '/>';
         }
 
         return implode("\n", $items);
