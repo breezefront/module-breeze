@@ -33,6 +33,7 @@ $thumbSizes = $responsiveImageHelper->getSizes('product_page_image_small');
         data-gallery-role="gallery-placeholder">
         <div class="main-image-wrapper">
             <img alt="<?= $mainImage ? $mainImage->getLabel() : '' ?>"
+                fetchpriority="high"
                 class="main-image"
                 src="<?= $mainImageUrl ?>"
                 width="<?= $width ?>"
