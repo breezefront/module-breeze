@@ -73,9 +73,7 @@
 
         /** [show description] */
         reset: function () {
-            this.counter--;
-
-            if (this.counter) {
+            if (!this.counter || --this.counter) {
                 return;
             }
 
