@@ -4,7 +4,42 @@
 
     var config = $('#breeze-turbo').data('config'),
         mergedCss = $('link[href*="/merged/"]')[0],
+        staticVersion = $('link[href*="/static/version"]')[0],
         restoreInlineScripts = true;
+
+    function isMergedHashChanged() {
+        var mergedRegex = /\/_cache\/merged\/([a-z0-9]+)/,
+            newMergedCss = event.data.xhr.responseText.match(mergedRegex),
+            oldMergedCss;
+
+        if (!mergedCss) {
+            if (newMergedCss) {
+                return true;
+            }
+            return false;
+        }
+
+        oldMergedCss = mergedCss.href.match(mergedRegex);
+
+        return !newMergedCss || oldMergedCss[1] !== newMergedCss[1];
+    }
+
+    function isStaticVersionChanged() {
+        var staticRegex = /\/static\/version([a-z0-9]+)/,
+            newStaticVersion = event.data.xhr.responseText.match(staticRegex),
+            oldStaticVersion;
+
+        if (!staticVersion) {
+            if (newStaticVersion) {
+                return true;
+            }
+            return false;
+        }
+
+        oldStaticVersion = staticVersion.href.match(mergedRegex);
+
+        return !newStaticVersion || oldStaticVersion[1] !== newStaticVersion[1];
+    }
 
     /**
      * Refresh the page if store was changed or breeze was disabled during visit
@@ -43,22 +78,10 @@
     }
 
     /**
-     * Refresh the page if main merged css was changed
+     * RequestEnd event is used to minify unstyled blink effect.
      */
     function onRequestEnd(event) {
-        var hashRegex = /\/_cache\/merged\/([a-z0-9]+)/,
-            newMergedCss = event.data.xhr.responseText.match(hashRegex),
-            oldMergedCss,
-            shouldReload;
-
-        if (!mergedCss) {
-            return;
-        }
-
-        oldMergedCss = mergedCss.href.match(hashRegex);
-        shouldReload = !newMergedCss || oldMergedCss[1] !== newMergedCss[1];
-
-        if (shouldReload) {
+        if (isMergedHashChanged() || isStaticVersionChanged()) {
             event.preventDefault();
             window.location.reload();
         }
