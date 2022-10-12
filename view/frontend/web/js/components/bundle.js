@@ -480,7 +480,7 @@
             .val(value)
             .data('optionId', optionId)
             .data('optionValueId', optionValueId)
-            .attr('disabled', !canEdit);
+            .prop('disabled', !canEdit);
 
         if (canEdit) {
             element.removeClass('qty-disabled');
