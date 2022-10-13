@@ -36,7 +36,7 @@
             return false;
         }
 
-        oldStaticVersion = staticVersion.href.match(mergedRegex);
+        oldStaticVersion = staticVersion.href.match(staticRegex);
 
         return !newStaticVersion || oldStaticVersion[1] !== newStaticVersion[1];
     }
