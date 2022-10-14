@@ -134,6 +134,14 @@ class Data extends AbstractHelper
             return true;
         }
 
+        if ($this->_request->isAjax()) {
+            $referer = $this->_request->getServer('HTTP_REFERER');
+
+            if ($referer && $this->isUrlExcluded($referer)) {
+                return false;
+            }
+        }
+
         return strpos($page, 'checkout_') === false
             && strpos($page, 'multishipping_') === false;
     }
