@@ -125,7 +125,7 @@
                 element = self.contents.find('#' + anchor);
 
                 if (!element.length) {
-                    element = self.triggers.eq(index);
+                    element = self.contents.eq(index);
                 }
 
                 element.get(0).scrollIntoView();
