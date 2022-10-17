@@ -42,6 +42,18 @@
     }
 
     /**
+     * Fixed page reload when hash has dots (Product page: #product.info.description)
+     */
+    function onClick(event) {
+        var from = window.location.href.split('#').at(0),
+            to = event.data.url.split('#').at(0);
+
+        if (from === to) {
+            event.preventDefault();
+        }
+    }
+
+    /**
      * Refresh the page if store was changed or breeze was disabled during visit
      */
     function onBeforeRender(event) {
@@ -130,6 +142,7 @@
         }
     }
 
+    document.addEventListener('turbolinks:click', onClick);
     document.addEventListener('turbolinks:before-render', onBeforeRender);
     document.addEventListener('turbolinks:render', onRender);
     document.addEventListener('turbolinks:request-start', onRequestStart);
