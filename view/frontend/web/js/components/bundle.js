@@ -62,7 +62,7 @@
             this.element
                 .closest(this.options.mainContainer)
                 .on('updateProductSummary', $.proxy(this._renderSummaryBox, this))
-                .priceBundle({})
+                // .priceBundle({})
             ;
         },
 
