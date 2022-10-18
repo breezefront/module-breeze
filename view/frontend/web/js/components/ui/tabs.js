@@ -167,6 +167,8 @@
             if (activeTrigger.length) {
                 index = this.triggers.index(activeTrigger);
             } else {
+                hash = hash.replace(/\./g, '\\.');
+
                 try {
                     activeContent = this.contents.has(hash);
                 } catch (e) {
