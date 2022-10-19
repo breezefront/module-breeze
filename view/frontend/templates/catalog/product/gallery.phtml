@@ -30,6 +30,12 @@ $thumbSizes = $responsiveImageHelper->getSizes('product_page_image_small');
 
 <div class="breeze-gallery <?= $block->getGalleryOptions()->getVar('gallery/navdir') ?>">
     <div class="stage <?= $mainImage && $mainImage->getVideoUrl() ? 'video' : '' ?>"
+        data-mage-init='{
+            "mage/gallery/gallery": {
+                "data": <?= /* @noEscape */ $block->getGalleryImagesJson() ?>,
+                "options": <?= /* @noEscape */ $block->getGalleryOptions()->getOptionsJson() ?>
+            }
+        }'
         data-gallery-role="gallery-placeholder">
         <div class="main-image-wrapper">
             <img alt="<?= $mainImage ? $mainImage->getLabel() : '' ?>"
@@ -105,17 +111,6 @@ $thumbSizes = $responsiveImageHelper->getSizes('product_page_image_small');
         <?php endif ?>
     </div>
 </div>
-
-<script type="text/x-magento-init">
-    {
-        "[data-gallery-role=gallery-placeholder]": {
-            "mage/gallery/gallery": {
-                "data": <?= /* @noEscape */ $block->getGalleryImagesJson() ?>,
-                "options": <?= /* @noEscape */ $block->getGalleryOptions()->getOptionsJson() ?>
-            }
-        }
-    }
-</script>
 
 <script type="text/x-magento-template" id="gallery-thumbnail">
     <a class="<%- classes %>" href="<%- full %>">
