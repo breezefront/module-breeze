@@ -9,8 +9,10 @@
             useInlineDisplay: true,
             responsive: true,
             expanded: false,
-            showDelay: 42,
-            hideDelay: 300,
+            dropdownShowDelay: 80,
+            dropdownHideDelay: 120,
+            slideoutShowDelay: 42,
+            slideoutHideDelay: 300,
             mediaBreakpoint: '(max-width: 767px)'
         },
 
@@ -154,7 +156,7 @@
             setTimeout(function () {
                 html.addClass('nav-open');
                 self._trigger('navAfterOpen');
-            }, self.options.showDelay);
+            }, self.options.slideoutShowDelay);
             setTimeout(self.focusTrap.activate, 300); // wait till css animation is over
         },
 
@@ -170,7 +172,7 @@
                 $.breeze.scrollbar.reset();
                 html.removeClass('nav-before-open');
                 self._trigger('navAfterClose');
-            }, self.options.hideDelay);
+            }, self.options.slideoutHideDelay);
         },
 
         /** Toggles between mobile and desktop modes */
@@ -193,19 +195,31 @@
             $('li.parent', this.element)
                 .off('click.menu')
                 .on('mouseenter.menu', function () {
-                    var dropdown = $(this).children(self.options.dropdown);
+                    var dropdown = $(this).children(self.options.dropdown),
+                        delay = self.options.dropdownShowDelay;
 
                     if (this.breezeTimeout) {
                         clearTimeout(this.breezeTimeout);
                         delete this.breezeTimeout;
                     }
 
-                    self.open(dropdown);
+                    if ($(self.options.dropdown + '.shown').length) {
+                        delay = 50;
+                    }
+
+                    this.breezeTimeout = setTimeout(function () {
+                        self.open(dropdown);
+                    }, delay);
                 })
                 .on('mouseleave.menu', function () {
+                    if (this.breezeTimeout) {
+                        clearTimeout(this.breezeTimeout);
+                        delete this.breezeTimeout;
+                    }
+
                     this.breezeTimeout = setTimeout(function () {
                         self.close($(this).children(self.options.dropdown));
-                    }.bind(this), 80);
+                    }.bind(this), self.options.dropdownHideDelay);
                 });
 
             this._trigger('afterToggleDesktopMode');
