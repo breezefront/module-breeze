@@ -9,7 +9,7 @@
             useInlineDisplay: true,
             responsive: true,
             expanded: false,
-            dropdownShowDelay: 80,
+            dropdownShowDelay: 100,
             dropdownHideDelay: 120,
             slideoutShowDelay: 42,
             slideoutHideDelay: 300,
