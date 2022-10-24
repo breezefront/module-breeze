@@ -100,4 +100,23 @@
         messages.messages = messages.messages.concat(cookieMessages);
         $.sections.set('messages', messages);
     });
+
+    // Appear effect when sticky position is used. See _messages.less
+    $(document).on('breeze:load', () => {
+        $.async('.message', (el) => {
+            $(el).append('<button class="button-close"></div>');
+
+            setTimeout(() => {
+                $(el).addClass('shown');
+            }, 0);
+        });
+
+        $(document).on('click', '.message > .button-close', function () {
+            var message = $(this).closest('.message').removeClass('shown');
+
+            setTimeout(() => {
+                $(message).remove();
+            }, 100);
+        });
+    });
 })();
