@@ -103,6 +103,10 @@
 
     // Appear effect when sticky position is used. See _messages.less
     $(document).on('breeze:load', () => {
+        if (!$('body').hasClass('breeze-theme')) {
+            return;
+        }
+
         $.async('.message', (el) => {
             $(el).append('<button class="button-close"></div>');
 
