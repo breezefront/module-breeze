@@ -119,6 +119,8 @@
         $('script[src]').each(function () {
             $.breeze.loadedScripts[this.src] = true;
         });
+
+        $(document).trigger('breeze:unmount');
     }
 
     /**
