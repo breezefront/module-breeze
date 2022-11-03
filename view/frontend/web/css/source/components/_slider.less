@@ -49,6 +49,13 @@
         }
 
         div[data-content-type='slider'].containered {
+            opacity: 0;
+            transition: 180ms opacity ease-in-out;
+
+            &.slick-initialized {
+                opacity: 1;
+            }
+
             .slick-list {
                 &::before,
                 &::after {

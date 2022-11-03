@@ -51,8 +51,13 @@
             });
 
             this.prepareMarkup();
+            this.buildPagination();
             this.addEventListeners();
             this.element.addClass('slick-initialized');
+
+            if (this.element.hasClass('containered')) {
+                this.scrollToPage(1, true); // hide empty space before first slide
+            }
 
             if (this.options.autoplay) {
                 this.start();
