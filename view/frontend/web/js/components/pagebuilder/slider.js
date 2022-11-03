@@ -64,6 +64,11 @@
             }
         },
 
+        destroy: function () {
+            this.element.removeClass('slick-initialized');
+            this._super();
+        },
+
         /** [prepareMarkup description] */
         prepareMarkup: function () {
             var arrowTpl = _.template(this.options.templates.arrow);
