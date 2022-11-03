@@ -55,7 +55,7 @@
             this.addEventListeners();
             this.element.addClass('slick-initialized');
 
-            if (this.element.hasClass('containered')) {
+            if (this.element.hasClass('containered') && matchMedia('(min-width: 1024px)').matches) {
                 this.scrollToPage(1, true); // hide empty space before first slide
             }
 
