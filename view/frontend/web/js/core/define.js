@@ -46,15 +46,21 @@
             args.push(resolve(alias));
         });
 
-        Promise.all(args)
-            .then((values) => success.apply(this, values))
-            .catch((reason) => {
-                if (error) {
-                    error(reason);
-                } else {
-                    throw reason;
-                }
-            });
+        // If there is a promise in arguments - wait for it.
+        // Otherwise, execute it immediately.
+        if (args.some((arg) => arg && arg.then)) {
+            Promise.all(args)
+                .then((values) => success.apply(this, values))
+                .catch((reason) => {
+                    if (error) {
+                        error(reason);
+                    } else {
+                        throw reason;
+                    }
+                });
+        } else {
+            success.apply(this, args);
+        }
     };
 
     window.define = (deps, callback) => window.require(deps, callback);
