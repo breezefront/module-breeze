@@ -120,7 +120,7 @@
             $.breeze.loadedScripts[this.src] = true;
         });
 
-        $(document).trigger('breeze:unmount');
+        $(document).trigger('breeze:destroy');
     }
 
     /**
