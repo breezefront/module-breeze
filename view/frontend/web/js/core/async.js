@@ -80,7 +80,7 @@
         });
     });
 
-    $(document).on('breeze:load', function () {
+    $(document).on('breeze:beforeLoad', function () {
         mapping = {};
         counter = 1;
 

@@ -219,6 +219,7 @@
         scriptsContainer = $('.breeze-container');
         scopedElements = $('[data-bind*="scope:"]');
 
+        $(document).trigger('breeze:beforeLoad');
         $(document).trigger('breeze:load');
 
         walk(document);
