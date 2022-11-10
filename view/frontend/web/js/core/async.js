@@ -81,14 +81,16 @@
     });
 
     $(document).on('breeze:beforeLoad', function () {
-        mapping = {};
-        counter = 1;
-
-        observer.disconnect();
         observer.observe(document.body, {
             subtree: true,
             childList: true
         });
+    });
+
+    $(document).on('breeze:destroy', function () {
+        mapping = {};
+        counter = 1;
+        observer.disconnect();
     });
 
     /**
