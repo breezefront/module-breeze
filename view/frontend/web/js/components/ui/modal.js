@@ -76,6 +76,8 @@
             );
 
             this.options.id = $.guid++;
+            this._elMarkup = this.element.get(0).outerHTML;
+            this._elParent = this.element.parent();
             this._createWrapper();
             this._renderModal();
             this._createButtons();
@@ -103,6 +105,7 @@
         destroy: function () {
             this.modalWrapper.remove();
             $(this.options.appendTo).removeClass(this.options.parentModalClass);
+            this._elParent.append(this._elMarkup);
             this._super();
         },
 
