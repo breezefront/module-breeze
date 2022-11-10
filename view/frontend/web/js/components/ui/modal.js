@@ -173,7 +173,11 @@
          * Toggle modal.
          * * @return {Element} - current element.
          */
-        toggleModal: function () {
+        toggleModal: function (e) {
+            if (e && e.preventDefault) {
+                e.preventDefault();
+            }
+
             if (this.options.isOpen === true) {
                 this.closeModal();
             } else {
