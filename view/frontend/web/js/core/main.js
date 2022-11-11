@@ -232,9 +232,6 @@
             spinnerTimeout,
             i = 0;
 
-        // destroy all widgets and views
-        $.registry.delete();
-
         if (!newScripts.length) {
             return onBreezeLoad();
         }
