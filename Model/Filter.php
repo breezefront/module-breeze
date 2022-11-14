@@ -95,14 +95,13 @@ class Filter
     {
         $matches = [];
         $patterns = [
-            '/<script\b[^>]*>(.*?)<\/script>/is',
-            '/<style\b[^>]*>(.*?)<\/style>/is',
+            '/<(script|style)\b[^>]*>(.*?)<\/\1>/is',
         ];
 
         foreach ($patterns as $pattern) {
             preg_match_all($pattern, $html, $matches);
 
-            foreach ($matches[1] as $rawHtml) {
+            foreach ($matches[2] as $rawHtml) {
                 if (strpos($rawHtml, '</') === false) {
                     continue;
                 }
