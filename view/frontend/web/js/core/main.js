@@ -125,17 +125,20 @@
         /** Parse mageInit binding from data-bind string */
         function parseJson(string) {
             var parsed = {},
-                literal = ko.expressionRewriting.parseObjectLiteral(string);
+                literal = ko.expressionRewriting.parseObjectLiteral(string),
+                unknown = literal[0].unknown;
 
-            if (literal[0].unknown) {
-                if (literal[0].unknown.indexOf &&
-                    (literal[0].unknown.indexOf('[') === 0 ||
-                     literal[0].unknown.indexOf('function') > -1)
-                ) {
-                    throw 'Unable to parse complex literal';
+            if (unknown) {
+                // if it's not a string or it's not startsWith [ or {
+                if (!unknown.indexOf || !['[', '{'].includes(unknown[0])) {
+                    return unknown;
                 }
 
-                return literal[0].unknown;
+                try {
+                    return JSON.parse(unknown);
+                } catch (e) {
+                    throw 'Unable to parse complex literal';
+                }
             }
 
             $.each(literal, function (i, object) {
@@ -161,10 +164,6 @@
     /** Update data-mage-init attribute for all matches elements based on data-bind value */
     function convertDataBindToDataMageInit(el) {
         var json;
-
-        if ($(el).closest('[data-bind*="scope:"]').length) {
-            return;
-        }
 
         try {
             json = extractJsonFromDataBind('mageInit', $(el).data('bind'));
