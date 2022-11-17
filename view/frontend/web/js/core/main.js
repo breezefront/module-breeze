@@ -125,8 +125,17 @@
         /** Parse mageInit binding from data-bind string */
         function parseJson(string) {
             var parsed = {},
-                literal = ko.expressionRewriting.parseObjectLiteral(string),
-                unknown = literal[0].unknown;
+                literal,
+                unknown;
+
+            try {
+                return JSON.parse(string);
+            } catch (e) {
+                //
+            }
+
+            literal = ko.expressionRewriting.parseObjectLiteral(string);
+            unknown = literal[0].unknown;
 
             if (unknown) {
                 // if it's not a string or it's not startsWith [ or {
