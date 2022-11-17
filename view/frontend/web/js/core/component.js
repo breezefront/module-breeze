@@ -650,7 +650,13 @@ $.registry = (function () {
     $.uiComponent = {
         counter: 1,
         extend: function (proto) {
-            $.view('uiComponent' + this.counter++, proto);
+            var name = proto.component;
+
+            if (!name) {
+                name = 'uiComponent' + this.counter++;
+            }
+
+            $.view(name, proto);
         }
     }
 
