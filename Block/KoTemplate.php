@@ -46,7 +46,14 @@ class KoTemplate extends Template
             return $this->getData('id');
         }
 
-        $parts = explode('.', $this->getNameInLayout());
+        $name = $this->getNameInLayout();
+
+        // When block is anonymous make id = template path - Vendor_Module/popup.html
+        if (strpos($name, 'breeze.container_schedule_') === 0) {
+            $parts = ['breeze', str_replace('::', '/', $this->getTemplate())];
+        } else {
+            $parts = explode('.', $name);
+        }
 
         return array_pop($parts);
     }
