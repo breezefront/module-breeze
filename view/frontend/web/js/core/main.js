@@ -33,9 +33,12 @@
 
     /** Init view components */
     function mountView(scope, config) {
-        var elements = scopedElements.filter(function () {
-            return $(this).attr('data-bind').indexOf('\'' + scope + '\'') !== -1;
-        });
+        var scopeRe = new RegExp(`scope:.*${scope}'`),
+            elements = scopedElements.filter(function () {
+                var bind = $(this).attr('data-bind');
+
+                return bind.includes('\'' + scope + '\'') || bind.match(scopeRe);
+            });
 
         if (!elements.length) {
             elements = $([false]);
@@ -221,8 +224,33 @@
             });
     }
 
+    // convert 'ko scope:' into 'data-bind scope'
+    function convertKoScopeToDataBind() {
+        var iterator = document.createNodeIterator(
+                document,
+                NodeFilter.SHOW_COMMENT,
+                function (node) {
+                    return node.nodeValue.startsWith(' ko scope:');
+                }
+            ),
+            curNode;
+
+        while (curNode = iterator.nextNode()) {
+            var match = curNode.nodeValue.match(/ko scope:.*?(['"])(.*)\1/);
+
+            if (!match) {
+                continue;
+            }
+
+            $(curNode.nextElementSibling)
+                .wrap(`<div data-bind="scope:'${match[2]}'"></div>`)
+        }
+    }
+
     /** [onBreezeLoad description] */
     function onBreezeLoad() {
+        convertKoScopeToDataBind();
+
         html = $('html');
         scriptsContainer = $('.breeze-container');
         scopedElements = $('[data-bind*="scope:"]');
