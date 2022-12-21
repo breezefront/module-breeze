@@ -158,8 +158,8 @@
                 });
 
                 $.each(regionsEntries, function (key, value) {
-                    regionId = value[0];
                     regionData = value[1];
+                    regionId = regionData.id;
                     this._renderSelectOption(regionList, regionId, regionData);
                 }.bind(this));
 
