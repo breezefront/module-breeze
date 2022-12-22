@@ -93,7 +93,7 @@
                 isSelected: false
             };
 
-            if (this.options.defaultRegion === key) {
+            if (this.options.defaultRegion == key) {
                 tmplData.isSelected = true;
             }
 
