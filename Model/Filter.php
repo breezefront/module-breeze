@@ -54,7 +54,9 @@ class Filter
             $filter->process($document);
         }
 
-        $html = $document->saveHTML();
+        $html = $document->saveHTML($document->documentElement);
+        $html = '<!DOCTYPE html>' . $html;
+
         $html = $this->unescapeNestedHtmlTags($html);
         $html = $this->unescapeHtmlEntities($html);
 
