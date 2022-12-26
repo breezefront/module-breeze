@@ -2,24 +2,8 @@
 
 namespace Swissup\Breeze\Model\Filter\Str;
 
-use Magento\PageCache\Model\Config as PageCacheConfig;
-
 class Varnish
 {
-    /**
-     * @var PageCacheConfig
-     */
-    protected $pageCacheConfig;
-
-    /**
-     * @param PageCacheConfig $pageCacheConfig
-     */
-    public function __construct(
-        PageCacheConfig $pageCacheConfig
-    ) {
-        $this->pageCacheConfig = $pageCacheConfig;
-    }
-
     /**
      * Varnish ESI fix: replace <include> tag with <esi:include>
      *
