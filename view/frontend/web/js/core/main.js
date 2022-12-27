@@ -211,7 +211,8 @@
     function walk(node) {
         node = node || document;
 
-        node.querySelectorAll('[data-bind*="mageInit:"]')
+        [...node.querySelectorAll('[data-bind*="mageInit:"]')]
+            .filter((el) => !$(el).closest('[data-bind*="scope:"]').length)
             .forEach(convertDataBindToDataMageInit);
 
         node.querySelectorAll('[data-mage-init-lazy]')
