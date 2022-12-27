@@ -493,10 +493,10 @@ $.registry = (function () {
                 handlers[event] = handler;
                 el = $(element);
                 this.__bindings = this.__bindings.add(el);
-            } else if (_.isObject(event)) { // on('body', { click: fn })
+            } else if (typeof event === 'object') { // on('body', { click: fn })
                 handlers = event;
                 el = $(element);
-            } else if (_.isFunction(event)) { // on('click .class', fn)
+            } else if (typeof event === 'function') { // on('click .class', fn)
                 handlers[element] = event;
             } else { // on({ 'click .class': fn })
                 handlers = element;
