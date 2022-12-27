@@ -475,24 +475,31 @@ $.registry = (function () {
         },
 
         /**
+         * ._on('body', 'click .class', fn)
+         * ._on('body', { 'click .class': fn })
+         * ._on('click .class', fn)      // events inside this.element only
+         * ._on({ 'click .class': fn })  // events inside this.element only
+         *
          * @param {Element|Object|String} element
-         * @param {Object|Function} handlers
+         * @param {Object|Function|String} event
+         * @param {Function} handler
          */
-        _on: function (element, handlers) {
+        _on: function (element, event, handler) {
             var self = this,
-                callback;
+                handlers = {},
+                el = this.element;
 
-            if (_.isString(element)) {
-                callback = handlers;
-                handlers = {};
-                handlers[element] = callback;
-                element = this.element;
-            } else if (!handlers) {
+            if (handler) { // on('body', 'click', fn)
+                handlers[event] = handler;
+                el = $(element);
+                this.__bindings = this.__bindings.add(el);
+            } else if (_.isObject(event)) { // on('body', { click: fn })
+                handlers = event;
+                el = $(element);
+            } else if (_.isFunction(event)) { // on('click .class', fn)
+                handlers[element] = event;
+            } else { // on({ 'click .class': fn })
                 handlers = element;
-                element = this.element;
-            } else {
-                element = $(element);
-                this.__bindings = this.__bindings.add(element);
             }
 
             $.each(handlers, function (event, handler) {
@@ -507,7 +514,7 @@ $.registry = (function () {
                 handler = handler.bind(self);
 
                 if (selector) {
-                    element.on(eventName, selector, function (e) {
+                    el.on(eventName, selector, function (e) {
                         e.handleObj = {
                             selector: selector
                         };
@@ -515,7 +522,7 @@ $.registry = (function () {
                         handler(e);
                     });
                 } else {
-                    element.on(eventName, handler);
+                    el.on(eventName, handler);
                 }
             });
         },
