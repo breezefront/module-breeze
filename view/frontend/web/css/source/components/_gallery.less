@@ -120,6 +120,7 @@
             justify-content: center;
             align-items: center;
             position: relative;
+            overflow: visible !important; // override panzoom inline styles
 
             > div:first-child,
             .main-image-wrapper,
@@ -241,7 +242,7 @@
 
         .stage {
             flex-grow: 1;
-            overflow: hidden;
+            overflow: hidden !important; // apply previously unset panzoom styles
 
             &:not(.video) {
                 .main-image-wrapper {
