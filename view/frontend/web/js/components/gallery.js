@@ -42,6 +42,7 @@
         /** [create description] */
         create: function () {
             this.options = _.extend(this.options, this.options.options || {});
+            this.cache = $('<div data-breeze-temporary>').hide().appendTo(document.body);
             this.gallery = this.element.parent();
             this.parent = this.gallery.parent();
             this.thumbsWrapper = this.gallery.find('.thumbnails');
@@ -67,6 +68,10 @@
 
             this.image
                 .on('load error', function () {
+                    if (!self.cache.find(`[src="${self.image.attr('src')}"]`).length) {
+                        self.cache.append(self.image.clone().removeAttr('alt id class fetchpriority'));
+                    }
+
                     self.stage.spinner(false);
                 })
                 .on('click', function (event) {
