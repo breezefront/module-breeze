@@ -58,18 +58,23 @@
      * @param {Object} element
      */
     function hide(element) {
-        var timerId = element.data('spinner-timer');
+        var timerId = element.data('spinner-timer'),
+            loaders = element.find('.loading-mask');
 
         if (timerId) {
             clearTimeout(timerId);
             element.data('spinner-timer', 0);
         }
 
-        if (!element.has('.loading-mask').length) {
+        if (!loaders.length) {
             return;
         }
-        element.find('.loading-mask').remove();
-        element.removeClass('_block-content-loading');
+
+        if (loaders.length === 1) {
+            element.removeClass('_block-content-loading');
+        }
+
+        loaders.first().remove();
     }
 
     $.widget('blockLoader', {
