@@ -68,11 +68,12 @@
 
             this.image
                 .on('load error', function () {
+                    self.stage.spinner(false);
+                })
+                .on('load', function () {
                     if (!self.cache.find(`[src="${self.image.attr('src')}"]`).length) {
                         self.cache.append(self.image.clone().removeAttr('alt id class fetchpriority'));
                     }
-
-                    self.stage.spinner(false);
                 })
                 .on('click', function (event) {
                     event.preventDefault();
