@@ -42,6 +42,7 @@
         /** [create description] */
         create: function () {
             this.options = _.extend(this.options, this.options.options || {});
+            this.promises = {};
             this.cache = $('<div data-breeze-temporary>').hide().appendTo(document.body);
             this.gallery = this.element.parent();
             this.parent = this.gallery.parent();
@@ -386,6 +387,35 @@
             });
 
             return images;
+        },
+
+        getData: function () {
+            return this.options.data[this.activeIndex];
+        },
+
+        loadFullImage: function () {
+            if (this.promises[this.activeIndex]) {
+                return this.promises[this.activeIndex];
+            }
+
+            this.promises[this.activeIndex] = new Promise((resolve, reject) => {
+                var image = new Image();
+
+                image.onerror = reject;
+                image.onload = () => {
+                    resolve({
+                        src: image.src,
+                        width: image.width,
+                        height: image.height
+                    });
+                }
+
+                image.src = this.getData().full;
+
+                this.cache.append(image);
+            });
+
+            return this.promises[this.activeIndex];
         }
     });
 })();
