@@ -296,4 +296,9 @@
             .bz-gallery-vertical();
         }
     }
+    & when (@critical = unsure), (@critical = false) {
+        .breeze-gallery.opened {
+            padding: 30px;
+        }
+    }
 }
