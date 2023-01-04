@@ -496,6 +496,7 @@ $.registry = (function () {
             } else if (typeof event === 'object') { // on('body', { click: fn })
                 handlers = event;
                 el = $(element);
+                this.__bindings = this.__bindings.add(el);
             } else if (typeof event === 'function') { // on('click .class', fn)
                 handlers[element] = event;
             } else { // on({ 'click .class': fn })
