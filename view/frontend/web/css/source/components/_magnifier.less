@@ -1,0 +1,115 @@
+& when (@media-common = true) {
+& when (@critical = unsure), (@critical = false) {
+    .image-magnifier-lens,
+    .image-magnifier-stage {
+        pointer-events: none;
+        overflow: hidden;
+        opacity: 0;
+        visibility: visible !important;
+        box-shadow: 0 2px 7px rgba(0, 0, 0, .1), 0 1px 6px rgba(0, 0, 0, .06);
+        &.magnifier-active {
+            opacity: 1;
+        }
+        div {
+            transform: translate3d(0, 0, 0);
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        img[src=''] {
+            opacity: 0;
+        }
+    }
+    .image-magnifier-lens {
+        border: 1px solid rgba(0, 0, 0, .4);
+
+        & when not (@critical = unsure) {
+            .lib-css(filter, @product-image__filter);
+        }
+
+        &.circle {
+            border-radius: 9999px;
+        }
+        div {
+            background: rgba(255, 255, 255, .4);
+        }
+    }
+    .image-magnifier-stage {
+        z-index: 999; // magnifier inside modal
+        background: #fff;
+        div {
+            transition: 100ms transform ease-out;
+            @media (prefers-reduced-motion) {
+                transition: none;
+            }
+        }
+        .magnifier-mode-lens & {
+            display: none;
+        }
+    }
+
+    .magnifier {
+        .breeze-gallery:not(.opened) .stage {
+            -webkit-touch-callout: none;
+        }
+        .main-image {
+            backface-visibility: hidden;
+        }
+    }
+
+    .magnifier-stage-inner {
+        .image-magnifier-lens {
+            opacity: 0;
+        }
+        .image-magnifier-stage {
+            box-shadow: none;
+        }
+        &:has(.stage .loading-mask) {
+            .image-magnifier-stage {
+                opacity: 0;
+            }
+        }
+        .breeze-gallery .next,
+        .breeze-gallery .prev {
+            z-index: 1000;
+        }
+    }
+
+    .image-magnifier-stage-inner {
+        & when not (@critical = unsure) {
+            & when not (@product-image__filter = false) {
+                filter: @product-image__filter;
+            }
+        }
+    }
+
+    .magnifier-active {
+        .product.media {
+            .magnifier-stage-inner& {
+                .main-image-wrapper {
+                    z-index: 100;
+                }
+            }
+            :not(.magnifier-stage-inner)& {
+                .stage {
+                    z-index: 100;
+                }
+            }
+            .main-image {
+                & when not (@critical = unsure) {
+                    & when not (@product-image__filter = false) {
+                        filter: ~"@{product-image__filter} grayscale(100%) opacity(60%)";
+                    }
+                    & when (@product-image__filter = false) {
+                        filter: grayscale(100%) opacity(60%);
+                    }
+                }
+                & when (@critical = unsure) {
+                    filter: grayscale(100%) opacity(60%);
+                }
+            }
+        }
+    }
+}
+}

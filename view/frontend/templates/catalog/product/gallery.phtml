@@ -33,7 +33,8 @@ $thumbSizes = $responsiveImageHelper->getSizes('product_page_image_small');
         data-mage-init='{
             "mage/gallery/gallery": {
                 "data": <?= /* @noEscape */ $block->getGalleryImagesJson() ?>,
-                "options": <?= /* @noEscape */ $block->getGalleryOptions()->getOptionsJson() ?>
+                "options": <?= /* @noEscape */ $block->getGalleryOptions()->getOptionsJson() ?>,
+                "magnifierOpts": <?= /* @noEscape */ $block->getMagnifier() ?>
             }
         }'
         data-gallery-role="gallery-placeholder">
