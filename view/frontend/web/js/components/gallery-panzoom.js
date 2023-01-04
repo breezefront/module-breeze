@@ -1,121 +1,140 @@
 (function () {
     'use strict';
 
-    var panzoom, disableDblClick;
+    $.widget('panzoom', {
+        options: {
+            canvas: true,
+            maxScale: 4,
+            minScale: 1,
+            // contain: 'outside',
+            disablePan: true,
+            disableZoom: true,
+            touchAction: '',
+            cursor: false,
+            step: 0.5
+        },
 
-    function create(widget) {
-        var options = {
-                canvas: true,
-                maxScale: 4,
-                minScale: 1,
-                // contain: 'outside',
-                disablePan: true,
-                disableZoom: true,
-                touchAction: '',
-                cursor: false,
-                step: 0.5
-            },
-            el = widget.element.find('.main-image-wrapper').get(0);
+        create: function () {
+            this.panzoom = Panzoom(this.element[0], this.options);
+            this.addEventListeners();
+        },
 
-        panzoom = Panzoom(el, options);
-
-        el.addEventListener('panzoomzoom', (e) => {
-            if (e.detail.scale === 1) {
-                if (e.detail.x !== 0 || e.detail.y !== 0) {
-                    panzoom.pan(0, 0);
+        addEventListeners: function () {
+            this._on('panzoomzoom', (e) => {
+                if (e.detail.scale === 1) {
+                    if (e.detail.x !== 0 || e.detail.y !== 0) {
+                        this.panzoom.pan(0, 0);
+                    }
                 }
-            }
 
-            panzoom.setOptions({
-                disablePan: e.detail.scale === 1
+                this.panzoom.setOptions({
+                    disablePan: e.detail.scale === 1
+                });
             });
-        });
 
-        el.addEventListener('wheel', (e) => {
-            if (!$(e.currentTarget).is('.opened .stage:not(.video) .main-image-wrapper')) {
-                return;
-            }
-
-            panzoom.zoomWithWheel(e);
-        }, {
-            passive: true
-        });
-
-        widget.element
-            .on('swiped-left swiped-right', (e) => {
-                if (panzoom.getScale() > 1) {
-                    e.stopImmediatePropagation(); // prevent next/prev
-                }
-            })
-            .on('click', '.zoom', (e) => {
-                e.preventDefault();
-                panzoom[$(e.currentTarget).hasClass('zoom-out') ? 'zoomOut' : 'zoomIn']();
-            })
-            .on('dblclick dbltap', '.main-image-wrapper', (e) => {
-                if (disableDblClick) {
+            this.element[0].addEventListener('wheel', (e) => {
+                if (!$(e.currentTarget).is('.opened .stage:not(.video) .main-image-wrapper')) {
                     return;
                 }
 
-                if (panzoom.getScale() >= options.maxScale) {
-                    panzoom.pan(0, 0);
-                    panzoom.zoom(1, {
-                        animate: true
-                    });
-                } else {
-                    panzoom.zoomToPoint(panzoom.getScale() * Math.exp(options.step), e);
-                }
+                this.panzoom.zoomWithWheel(e);
+            }, {
+                passive: true
             });
-    }
 
-    function disable() {
-        panzoom.setOptions({
-            disablePan: true,
-            disableZoom: true,
-            touchAction: ''
-        });
-    }
+            this.element.closest('.stage')
+                .on('swiped-left swiped-right', (e) => {
+                    if (this.panzoom.getScale() > 1) {
+                        e.stopImmediatePropagation(); // prevent next/prev
+                    }
+                })
+                .on('click', '.zoom', (e) => {
+                    e.preventDefault();
+                    this.panzoom[$(e.currentTarget).hasClass('zoom-out') ? 'zoomOut' : 'zoomIn']();
+                })
+                .on('dblclick dbltap', '.main-image-wrapper', (e) => {
+                    if (this.disabledDblClick) {
+                        return;
+                    }
 
-    function enable() {
-        panzoom.setOptions({
-            disablePan: true, // will enable after first zoom
-            disableZoom: false,
-            touchAction: 'none'
-        });
-    }
+                    if (this.panzoom.getScale() >= this.options.maxScale) {
+                        this.panzoom.pan(0, 0);
+                        this.panzoom.zoom(1, {
+                            animate: true
+                        });
+                    } else {
+                        this.panzoom.zoomToPoint(this.panzoom.getScale() * Math.exp(this.options.step), e);
+                    }
+                });
+        },
 
-    function reset() {
-        panzoom.reset({
-            animate: false
-        });
+        disableDblClick: function (milliseconds) {
+            this.disabledDblClick = true;
+            setTimeout(() => {
+                this.disabledDblClick = false;
+            }, milliseconds);
+        },
+
+        disable: function () {
+            this.panzoom.setOptions({
+                disablePan: true,
+                disableZoom: true,
+                touchAction: ''
+            });
+        },
+
+        enable: function () {
+            this.panzoom.setOptions({
+                disablePan: true, // will enable after first zoom
+                disableZoom: false,
+                touchAction: 'none'
+            });
+        },
+
+        reset: function () {
+            this.panzoom.reset({
+                animate: false
+            });
+        }
+    });
+
+    function panzoom(gallery) {
+        var el = gallery.element.find('.main-image-wrapper'),
+            instance = el.panzoom('instance');
+
+        if (!instance) {
+            el.panzoom();
+            instance = el.panzoom('instance');
+        }
+
+        return instance;
     }
 
     $(document)
         .on('gallery:beforeCreate', (e, data) => {
-            create(data.instance);
+            panzoom(data.instance);
         })
-        .on('gallery:beforeActivate', reset)
+        .on('gallery:beforeActivate', (e, data) => {
+            panzoom(data.instance).reset();
+        })
         .on('gallery:afterActivate', (e, data) => {
             if (!data.instance.opened()) {
                 return;
             }
 
             if (data.instance.stage.hasClass('video')) {
-                disable();
+                panzoom(data.instance).disable();
             } else {
-                enable();
+                panzoom(data.instance).enable();
             }
         })
-        .on('gallery:beforeOpen', () => {
-            enable();
-            reset();
-
-            disableDblClick = true;
-            setTimeout(() => {
-                disableDblClick = false;
-            }, 300);
+        .on('gallery:beforeOpen', (e, data) => {
+            panzoom(data.instance).enable();
+            panzoom(data.instance).reset();
+            panzoom(data.instance).disableDblClick(300);
         })
-        .on('gallery:beforeClose', () => {
-            disable();
-            reset();
+        .on('gallery:beforeClose', (e, data) => {
+            panzoom(data.instance).disable();
+            panzoom(data.instance).reset();
         });
 })();
