@@ -31,15 +31,7 @@
                     <dataScope>breeze_excluded_urls</dataScope>
                 </settings>
             </field>
-            <field name="breeze_turbo" component="Magento_Catalog/js/components/visible-on-option/select" formElement="select">
-                <argument name="data" xsi:type="array">
-                    <item name="config" xsi:type="array">
-                        <item name="valuesForOptions" xsi:type="array">
-                            <item name="theme" xsi:type="string">theme</item>
-                            <item name="1" xsi:type="number">1</item>
-                        </item>
-                    </item>
-                </argument>
+            <field name="breeze_turbo" formElement="select">
                 <settings>
                     <dataType>string</dataType>
                     <label translate="true">Enable Turbo Feature</label>
@@ -54,15 +46,7 @@
                     </select>
                 </formElements>
             </field>
-            <field name="breeze_responsive_images" component="Magento_Catalog/js/components/visible-on-option/select" formElement="select">
-                <argument name="data" xsi:type="array">
-                    <item name="config" xsi:type="array">
-                        <item name="valuesForOptions" xsi:type="array">
-                            <item name="theme" xsi:type="string">theme</item>
-                            <item name="1" xsi:type="number">1</item>
-                        </item>
-                    </item>
-                </argument>
+            <field name="breeze_responsive_images" formElement="select">
                 <settings>
                     <dataType>string</dataType>
                     <label translate="true">Enable Responsive Images</label>
