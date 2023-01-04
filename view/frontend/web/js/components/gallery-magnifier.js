@@ -91,11 +91,9 @@
                 mode = 'stage';
             }
 
-            $('body').removeClass(`magnifier-mode-${this.state.mode}`)
-                .addClass(`magnifier-mode-${mode}`);
-
             this.state.mode = mode;
             this.lens.toggleClass(this.options.lens.shape, mode === 'lens');
+            this.stage.toggle(mode === 'stage');
         },
 
         addEventListeners: function () {
