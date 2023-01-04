@@ -228,6 +228,8 @@
                 setTimeout(function () {
                     this.thumbs.eq(index).focus();
                 }.bind(this), 50);
+            } else {
+                this.thumbs.eq(this.activeIndex).blur();
             }
 
             if (this.activeIndex !== index) {
