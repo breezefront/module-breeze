@@ -26,18 +26,13 @@ $responsiveImageHelper = $this->helper(\Swissup\Breeze\Helper\Image::class);
 $srcset = $responsiveImageHelper->getSrcset($block->getProduct(), 'product_page_image_medium');
 $sizes = $responsiveImageHelper->getSizes('product_page_image_medium');
 $thumbSizes = $responsiveImageHelper->getSizes('product_page_image_small');
+
+$galleryId = 'gallery-' . $block->getProduct()->getId();
 ?>
 
 <div class="breeze-gallery <?= $block->getGalleryOptions()->getVar('gallery/navdir') ?>">
     <div class="stage <?= $mainImage && $mainImage->getVideoUrl() ? 'video' : '' ?>"
-        data-mage-init='{
-            "mage/gallery/gallery": {
-                "data": <?= /* @noEscape */ $block->getGalleryImagesJson() ?>,
-                "options": <?= /* @noEscape */ $block->getGalleryOptions()->getOptionsJson() ?>,
-                "magnifierOpts": <?= /* @noEscape */ $block->getMagnifier() ?>
-            }
-        }'
-        data-gallery-role="gallery-placeholder">
+        data-gallery-id="<?= $galleryId ?>" data-gallery-role="gallery-placeholder">
         <div class="main-image-wrapper">
             <img alt="<?= $mainImage ? $mainImage->getLabel() : '' ?>"
                 fetchpriority="high"
@@ -112,6 +107,18 @@ $thumbSizes = $responsiveImageHelper->getSizes('product_page_image_small');
         <?php endif ?>
     </div>
 </div>
+
+<script type="text/x-magento-init">
+    {
+        "[data-gallery-id='<?= $galleryId ?>'": {
+            "mage/gallery/gallery": {
+                "data": <?= /* @noEscape */ $block->getGalleryImagesJson() ?>,
+                "options": <?= /* @noEscape */ $block->getGalleryOptions()->getOptionsJson() ?>,
+                "magnifierOpts": <?= /* @noEscape */ $block->getMagnifier() ?>
+            }
+        }
+    }
+</script>
 
 <script type="text/x-magento-template" id="gallery-thumbnail">
     <a class="<%- classes %>" href="<%- full %>">
