@@ -182,11 +182,12 @@ class Data extends AbstractHelper
 
     /**
      * @param string $key
+     * @param string $module
      * @return string
      */
-    public function getThemeConfig($key)
+    public function getThemeConfig($key, $module = 'Swissup_Breeze')
     {
-        return $this->getViewConfig()->getVarValue('Swissup_Breeze', $key);
+        return $this->getViewConfig()->getVarValue($module, $key);
     }
 
     /**
