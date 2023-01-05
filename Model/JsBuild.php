@@ -54,6 +54,11 @@ class JsBuild
     private $minifier;
 
     /**
+     * @var \Magento\Framework\HTTP\Adapter\CurlFactory
+     */
+    private $curlFactory;
+
+    /**
      * @var \Magento\Framework\View\DesignInterface
      */
     private $design;
@@ -86,6 +91,7 @@ class JsBuild
      * @param \Magento\Framework\View\Asset\Minification $minification
      * @param \Magento\Framework\Code\Minifier\AdapterInterface $minifier
      * @param \Magento\Framework\View\DesignInterface $design
+     * @param \Magento\Framework\HTTP\Adapter\CurlFactory $curlFactory
      * @param ComponentRegistrar $componentRegistrar
      * @param Dir $moduleDir
      * @param string $name
@@ -99,6 +105,7 @@ class JsBuild
         \Magento\Framework\View\Asset\Minification $minification,
         \Magento\Framework\Code\Minifier\AdapterInterface $minifier,
         \Magento\Framework\View\DesignInterface $design,
+        \Magento\Framework\HTTP\Adapter\CurlFactory $curlFactory,
         ComponentRegistrar $componentRegistrar,
         Dir $moduleDir,
         $name,
@@ -115,6 +122,7 @@ class JsBuild
         $this->moduleManager = $moduleManager;
         $this->minification = $minification;
         $this->minifier = $minifier;
+        $this->curlFactory = $curlFactory;
         $this->name = $name;
         $this->items = $items;
     }
@@ -403,6 +411,14 @@ class JsBuild
         $fullFilepaths[] = $fullFilepath;
 
         foreach ($fullFilepaths as $fullFilepath) {
+            if (!$this->staticDir->isExist($fullFilepath)) {
+                try {
+                    return $this->deployAndRead($fullFilepath);
+                } catch (\Exception $e) {
+                    continue;
+                }
+            }
+
             try {
                 return $this->staticDir->readFile($fullFilepath);
             } catch (\Exception $e) {
@@ -436,5 +452,29 @@ class JsBuild
             $module,
             $relativePath
         ];
+    }
+
+    private function deployAndRead($path)
+    {
+        $path = str_replace($this->staticContext->getPath(), '', $path);
+        $path = trim($path, '/');
+        $url = $this->assetRepo->getUrl($path);
+
+        $curl = $this->curlFactory->create()->setConfig([
+            'header' => false,
+            'verifypeer' => false,
+        ]);
+        $curl->write('GET', $url);
+
+        $data = $curl->read();
+        $responseCode = (int) $curl->getInfo(CURLINFO_HTTP_CODE);
+
+        $curl->close();
+
+        if ($responseCode !== 200) {
+            throw new \Exception('Unable to read ' . $url);
+        }
+
+        return $data;
     }
 }
