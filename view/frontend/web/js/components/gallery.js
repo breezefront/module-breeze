@@ -396,11 +396,13 @@
         },
 
         loadFullImage: function () {
-            if (this.promises[this.activeIndex]) {
-                return this.promises[this.activeIndex];
+            var src = this.getData().full;
+
+            if (this.promises[src]) {
+                return this.promises[src];
             }
 
-            this.promises[this.activeIndex] = new Promise((resolve, reject) => {
+            this.promises[src] = new Promise((resolve, reject) => {
                 var image = new Image();
 
                 image.onerror = reject;
@@ -417,7 +419,7 @@
                 this.cache.append(image);
             });
 
-            return this.promises[this.activeIndex];
+            return this.promises[src];
         }
     });
 })();
