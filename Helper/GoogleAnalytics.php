@@ -39,6 +39,14 @@ class GoogleAnalytics extends AbstractHelper
             && $this->configHelper->isEnabled('google/analytics/account');
     }
 
+    // Magento 2.4.5 Gtag module
+    public function isGtagAnalyticsEnabled()
+    {
+        return $this->configHelper->isEnabled('google/gtag/analytics4/active')
+            && $this->configHelper->isEnabled('google/gtag/analytics4/measurement_id');
+    }
+
+    // Magento Commerce
     public function isTagManagerAnalyticsEnabled()
     {
         return $this->isEnabled()

@@ -136,6 +136,10 @@
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/google-analytics</item>
                                 <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\GoogleAnalytics::isUniversalAnalyticsEnabled"/>
                             </item>
+                            <item name="Magento_GoogleGtag/js/google-analytics" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/google-gtag-analytics</item>
+                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\GoogleAnalytics::isGtagAnalyticsEnabled"/>
+                            </item>
                             <item name="Magento_GoogleTagManager/js/google-tag-manager" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/google-tag-manager</item>
                                 <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\GoogleAnalytics::isTagManagerAnalyticsEnabled"/>
