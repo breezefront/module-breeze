@@ -382,7 +382,7 @@
                 // keep lens inside viewport to prevent scrollbars
                 if (!this.rtl && lensX + rect.left + lensWidth > $(window).width()) {
                     lensX = $(window).width() - lensWidth - rect.left;
-                } else if (this.rtl && x + rect.left < 0) {
+                } else if (this.rtl && lensX + rect.left < 0) {
                     lensX = -rect.left;
                 }
 
