@@ -54,6 +54,7 @@
                 'keydown [data-trigger]': function (e) {
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
+                        e.stopPropagation();
                         this.toggle();
                     }
                 }.bind(this)
