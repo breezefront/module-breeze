@@ -56,4 +56,12 @@
     <type name="Magento\Catalog\Block\Product\ImageFactory">
         <plugin name="swissup_breeze" type="Swissup\Breeze\Plugin\ProductImageFactory" />
     </type>
+
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="moduleCreateCommand" xsi:type="object">Swissup\Breeze\Console\Command\ModuleCreateCommand</item>
+            </argument>
+        </arguments>
+    </type>
 </config>
