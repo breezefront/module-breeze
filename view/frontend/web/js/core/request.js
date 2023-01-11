@@ -186,6 +186,12 @@
 
         return fetch(params.url, params)
             .then(function (response) {
+                if (!response.ok) {
+                    var error = new Error(response.code);
+                    error.response = response;
+                    throw error;
+                }
+
                 return response.text();
             })
             .then(function (text) {
