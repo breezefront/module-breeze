@@ -607,6 +607,25 @@ $.registry = (function () {
             });
         },
 
+        observe: function (items) {
+            if (typeof items === 'string') {
+                items = items.split(' ');
+            }
+
+            $.each(items, (key, value) => {
+                if (typeof key !== 'string') {
+                    key = value;
+                    value = ko.isObservable(this[value]) ? this[value]() : this[value];
+                }
+
+                if (ko.isObservable(this[key])) {
+                    this[key](value);
+                } else {
+                    this[key] = _.isArray(value) ? ko.observableArray(value) : ko.observable(value);
+                }
+            });
+        },
+
         /** [getTemplate description] */
         getTemplate: function () {
             return (this.template || this.options.template).replace(/\//g, '_');
