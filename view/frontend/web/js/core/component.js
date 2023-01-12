@@ -628,7 +628,15 @@ $.registry = (function () {
 
         /** [getTemplate description] */
         getTemplate: function () {
-            return (this.template || this.options.template).replace(/\//g, '_');
+            var template = this.template || this.options.template,
+                templates = [
+                    template.replace(/\//g, '_'),
+                    template + '.html',
+                    template,
+                ],
+                found = _.find(templates, (id) => document.getElementById(id));
+
+            return found || templates[0];
         },
 
         /** [getRegion description] */
