@@ -58,6 +58,12 @@
             params = {};
         }
 
+        if (typeof params === 'function') {
+            params = {
+                success: params
+            };
+        }
+
         if (params.each || params instanceof Element) {
             params = {
                 form: params
