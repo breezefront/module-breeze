@@ -98,6 +98,7 @@
 
     $.fn.fadeIn = $.fn.show;
     $.fn.fadeOut = $.fn.hide;
+    $.fn.bind = $.fn.on;
 
     /** Get/Set scroll top position */
     $.fn.scrollTop = function (val) {
