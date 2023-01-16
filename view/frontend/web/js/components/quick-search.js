@@ -375,7 +375,8 @@
 
         /** [sendRequest description] */
         sendRequest: function () {
-            var value = this.element.val();
+            var value = this.element.val(),
+                spinnerTarget = this.searchForm.find('.actions');
 
             this.submitBtn.prop('disabled', true);
 
@@ -384,6 +385,9 @@
             }
 
             this.submitBtn.prop('disabled', false);
+            spinnerTarget.spinner(true, {
+                delay: 200
+            });
 
             return $.request.get({
                 url: this.options.url,
@@ -392,6 +396,7 @@
                     q: value
                 }
             }).then(function (response) {
+                spinnerTarget.spinner(false);
                 this.prepareResponse(response.body);
                 this.processResponse();
             }.bind(this));
