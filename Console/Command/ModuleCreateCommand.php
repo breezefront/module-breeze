@@ -51,9 +51,9 @@ class ModuleCreateCommand extends Command
     protected function configure()
     {
         $this->setName('breeze:module:create')
-            ->setDescription('Create breeze integration module')
-            ->addArgument('package', InputArgument::OPTIONAL, 'Package name. Use --for for autogeneraion.')
-            ->addOption('for', null, InputOption::VALUE_REQUIRED, 'Package name to integrate')
+            ->setDescription('Create breeze module')
+            ->addArgument('package', InputArgument::OPTIONAL, 'Package name (vendor/name)')
+            ->addOption('for', null, InputOption::VALUE_REQUIRED, 'Use when creating an integration for a third-party module. Omit "package" when using this option.')
             ->addOption('vendor', null, InputOption::VALUE_REQUIRED, 'Vendor name')
             ->addOption('noxml', null, null, 'Do not generate layout XML')
             ->addOption('nocss', null, null, 'Do not generate CSS')
