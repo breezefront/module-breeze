@@ -4,11 +4,8 @@ namespace Swissup\Breeze\Console\Command;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem;
-use Swissup\Breeze\Model\BreezeThemesProvider;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestionFactory;
@@ -103,5 +100,18 @@ class AbstractCreateCommand extends Command
         }
 
         return $this->questionHelper->ask($this->input, $this->output, $question);
+    }
+
+    protected function getVendorName()
+    {
+        if ($vendor = $this->input->getOption('vendor')) {
+            return $vendor;
+        }
+
+        if ($vendor = $this->ask('Enter vendor name: ')) {
+            return $vendor;
+        }
+
+        throw new \Exception('Vendor name is required. Use --vendor=name.');
     }
 }

@@ -94,14 +94,8 @@ class ThemeCreateCommand extends AbstractCreateCommand
             return $package;
         }
 
-        $vendor = $this->input->getOption('vendor');
-        if (!$vendor) {
-            if (!$vendor = $this->ask('Enter the vendor name: ')) {
-                throw new \Exception('Vendor name is required. Use --vendor=name.');
-            }
-        }
-
-        $theme = $this->ask('Enter the theme name: ');
+        $vendor = $this->getVendorName();
+        $theme = $this->ask('Enter theme name: ');
 
         if (strpos($theme, 'theme-frontend-') === false) {
             $theme = 'theme-frontend-' . $theme;

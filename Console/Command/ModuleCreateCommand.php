@@ -66,12 +66,7 @@ class ModuleCreateCommand extends AbstractCreateCommand
             return $package;
         }
 
-        $vendor = $this->input->getOption('vendor');
-        if (!$vendor) {
-            if (!$vendor = $this->ask('Enter the vendor name: ')) {
-                throw new \Exception('Vendor name is required. Use --vendor=name.');
-            }
-        }
+        $vendor = $this->getVendorName();
 
         if ($for = $this->input->getOption('for')) {
             $package = strtr($for, [
@@ -81,7 +76,7 @@ class ModuleCreateCommand extends AbstractCreateCommand
                 'magento2-' => '',
             ]);
         } else {
-            $package = $this->ask('Enter the package name: ');
+            $package = $this->ask('Enter package name: ');
         }
 
         if (strpos($package, 'module-breeze-') === false) {
