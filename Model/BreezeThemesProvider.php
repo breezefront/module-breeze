@@ -36,13 +36,15 @@ class BreezeThemesProvider
         }
 
         foreach ($this->getAllThemes() as $theme) {
-            if ($this->isBreezeTheme($theme)) {
-                $theme->setPackageName(
-                    $this->themePackageInfo->getPackageName($theme->getFullPath())
-                );
-
-                $this->breezeThemes[$theme->getCode()] = $theme;
+            if (!$this->isBreezeTheme($theme)) {
+                continue;
             }
+
+            $theme->setPackageName(
+                $this->themePackageInfo->getPackageName($theme->getFullPath())
+            );
+
+            $this->breezeThemes[$theme->getCode()] = $theme;
         }
 
         ksort($this->breezeThemes);
@@ -94,7 +96,7 @@ class BreezeThemesProvider
     private function getAllThemes(): Collection
     {
         if (!$this->allThemes) {
-            $this->allThemes = $this->collectionFactory->create();
+            $this->allThemes = $this->collectionFactory->create()->filterPhysicalThemes();
         }
 
         return $this->allThemes;
