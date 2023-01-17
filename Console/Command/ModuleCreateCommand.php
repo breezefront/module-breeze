@@ -69,12 +69,15 @@ class ModuleCreateCommand extends Command
 
         try {
             $package = $this->getPackageName();
-            $confirm = $this->ask($this->confirmationQuestionFactory->create([
-                'question' => "Do you want to create {$package} package? [y/n]"
-            ]));
 
-            if (!$confirm) {
-                return;
+            if (!$this->input->getArgument('package')) {
+                $confirm = $this->ask($this->confirmationQuestionFactory->create([
+                    'question' => "Do you want to create {$package} package? (y/n) [y]"
+                ]));
+
+                if (!$confirm) {
+                    return;
+                }
             }
 
             $paths = $this->create($package);
