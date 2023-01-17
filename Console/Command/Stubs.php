@@ -4,22 +4,6 @@ namespace Swissup\Breeze\Console\Command;
 
 class Stubs
 {
-    public function placeholders(string $package)
-    {
-        list($vendor, $name) = explode('/', $package);
-
-        $module = strtr($name, [
-            'module-' => '',
-        ]);
-        $module = str_replace('-', '', ucwords($module, '-'));
-
-        return [
-            '{{package}}' => $package,
-            '{{Vendor}}' => ucfirst($vendor),
-            '{{Module}}' => $module,
-        ];
-    }
-
     public function module(string $package)
     {
         $stubs = [
@@ -147,6 +131,150 @@ TEXT,
         ];
 
         return $this->process($stubs, $this->placeholders($package));
+    }
+
+    public function theme(string $package, $parentTheme)
+    {
+        $stubs = [
+            'design/frontend/{{Vendor}}/{{theme}}/composer.json' => [
+                'content' => <<<TEXT
+{
+    "name": "{{package}}",
+    "description": "",
+    "type": "magento2-theme",
+    "version": "1.0.0",
+    "license": "OSL-3.0",
+    "autoload": {
+        "files": [
+            "registration.php"
+        ]
+    },
+    "require": {
+        "{{parent_package}}": "*"
+    }
+}
+
+TEXT,
+            ],
+
+            'design/frontend/{{Vendor}}/{{theme}}/theme.xml' => [
+                'content' => <<<TEXT
+<theme xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Config/etc/theme.xsd">
+    <title>{{Theme}}</title>
+    <parent>{{parent_theme_code}}</parent>
+</theme>
+
+TEXT,
+            ],
+
+            'design/frontend/{{Vendor}}/{{theme}}/README.md' => [
+                'content' => <<<TEXT
+# {{Theme}}
+
+## Installation
+
+```bash
+composer require {{package}}
+```
+
+TEXT,
+            ],
+
+            'design/frontend/{{Vendor}}/{{theme}}/registration.php' => [
+                'content' => <<<TEXT
+<?php
+
+use Magento\Framework\Component\ComponentRegistrar;
+
+ComponentRegistrar::register(ComponentRegistrar::THEME, 'frontend/{{Vendor}}/{{theme}}', __DIR__);
+
+TEXT,
+            ],
+
+            'design/frontend/{{Vendor}}/{{theme}}/etc/view.xml' => [
+                'content' => <<<TEXT
+<?xml version="1.0"?>
+<view xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:Config/etc/view.xsd">
+    <vars module="Magento_Catalog">
+        <var name="magnifier">
+            <var name="enabled">true</var>
+        </var>
+    </vars>
+</view>
+TEXT,
+            ],
+
+            'design/frontend/{{Vendor}}/{{theme}}/Magento_Theme/layout/default.xml' => [
+                'content' => <<<TEXT
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- <move element="navigation.wrapper" destination="header-wrapper" after="logo"/> -->
+        <!-- <move element="navigation.wrapper" destination="header.container"/> -->
+        <!-- <referenceBlock name="header.wishlist" remove="true"/> -->
+    </body>
+</page>
+
+TEXT,
+            ],
+
+            'design/frontend/{{Vendor}}/{{theme}}/web/css/_extend.less' => [
+                'content' => <<<TEXT
+& when (@critical) {
+}
+
+& when not (@critical) {
+}
+
+TEXT,
+            ],
+
+            'design/frontend/{{Vendor}}/{{theme}}/web/js/breeze/extend.js' => [
+                'content' => <<<TEXT
+(function () {
+    'use strict';
+
+    // $.mixin('collapsible', {
+    //     create: function (original) {
+    //         console.log('hello collapsible.js mixin');
+    //         original();
+    //     }
+    // });
+
+    $(document).on('breeze:load', () => {
+        console.log('hello from web/js/breeze/extend.js');
+    });
+})();
+
+TEXT,
+            ],
+        ];
+
+        return $this->process($stubs, array_merge($this->placeholders($package), [
+            '{{parent_package}}' => $parentTheme->getPackageName(),
+            '{{parent_theme_code}}' => $parentTheme->getCode(),
+        ]));
+    }
+
+    private function placeholders(string $package)
+    {
+        list($vendor, $name) = explode('/', $package);
+
+        $name = strtr($name, [
+            'module-' => '',
+            'theme-frontend-' => '',
+        ]);
+        $module = str_replace('-', '', ucwords($name, '-'));
+
+        return [
+            '{{package}}' => $package,
+            '{{Vendor}}' => ucfirst($vendor),
+            '{{Module}}' => $module,
+            '{{Theme}}' => $module,
+            '{{theme}}' => $name,
+        ];
     }
 
     private function process(array $stubs, array $placeholders)
