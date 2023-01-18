@@ -1,44 +1,23 @@
-/* global _ */
 (function () {
     'use strict';
 
     var config = $('#breeze-turbo').data('config'),
-        mergedCss = $('link[href*="/merged/"]')[0],
-        staticVersion = $('link[href*="/static/version"]')[0],
+        mergedRe = /\/_cache\/merged\/([a-z0-9]+)/,
+        staticRe = /\/static\/version([a-z0-9]+)/,
+        mergedVersion = ($('link[href*="/_cache/merged/"]').attr('href') || '').match(mergedRe),
+        staticVersion = ($('link[href*="/static/version"]').attr('href') || '').match(staticRe),
         restoreInlineScripts = true;
 
-    function isMergedHashChanged() {
-        var mergedRegex = /\/_cache\/merged\/([a-z0-9]+)/,
-            newMergedCss = event.data.xhr.responseText.match(mergedRegex),
-            oldMergedCss;
+    function isResourceVersionChanged(type) {
+        var regex = type === 'static' ? staticRe : mergedRe,
+            oldVersion = type === 'static' ? staticVersion : mergedVersion,
+            newVersion = event.data.xhr.responseText.match(regex);
 
-        if (!mergedCss) {
-            if (newMergedCss) {
-                return true;
-            }
-            return false;
+        if (!oldVersion) {
+            return !!newVersion;
         }
 
-        oldMergedCss = mergedCss.href.match(mergedRegex);
-
-        return !newMergedCss || oldMergedCss[1] !== newMergedCss[1];
-    }
-
-    function isStaticVersionChanged() {
-        var staticRegex = /\/static\/version([a-z0-9]+)/,
-            newStaticVersion = event.data.xhr.responseText.match(staticRegex),
-            oldStaticVersion;
-
-        if (!staticVersion) {
-            if (newStaticVersion) {
-                return true;
-            }
-            return false;
-        }
-
-        oldStaticVersion = staticVersion.href.match(staticRegex);
-
-        return !newStaticVersion || oldStaticVersion[1] !== newStaticVersion[1];
+        return !newVersion || oldVersion[1] !== newVersion[1];
     }
 
     /**
@@ -93,7 +72,7 @@
      * RequestEnd event is used to minify unstyled blink effect.
      */
     function onRequestEnd(event) {
-        if (isMergedHashChanged() || isStaticVersionChanged()) {
+        if (isResourceVersionChanged('merged') || isResourceVersionChanged('static')) {
             event.preventDefault();
             window.location.reload();
         }
