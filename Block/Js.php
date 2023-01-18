@@ -7,6 +7,11 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
     const TEMPLATE = '<script data-breeze defer src="%s"></script>';
 
     /**
+     * @var \Magento\Framework\App\View\Deployment\Version
+     */
+    protected $deploymentVersion;
+
+    /**
      * @var \Magento\Framework\View\Asset\ConfigInterface
      */
     protected $assetConfig;
@@ -50,11 +55,13 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
      */
     public function __construct(
         \Magento\Backend\Block\Context $context,
+        \Magento\Framework\App\View\Deployment\Version $deploymentVersion,
         \Magento\Framework\View\Asset\ConfigInterface $assetConfig,
         \Magento\Framework\View\Page\Config $pageConfig,
         \Swissup\Breeze\Model\JsBuildFactory $jsBuildFactory,
         array $data = []
     ) {
+        $this->deploymentVersion = $deploymentVersion;
         $this->assetConfig = $assetConfig;
         $this->pageConfig = $pageConfig;
         $this->jsBuildFactory = $jsBuildFactory;
@@ -183,9 +190,16 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
      */
     public function getCacheKeyInfo()
     {
+        try {
+            $version = $this->deploymentVersion->getValue();
+        } catch (\Exception $e) {
+            $version = '';
+        }
+
         $info = [
             $this->getNameInLayout(),
             $this->_design->getDesignTheme()->getId(),
+            $version,
         ];
 
         foreach ($this->getActiveBundles() as $bundleName => $bundle) {
