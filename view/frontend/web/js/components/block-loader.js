@@ -4,7 +4,7 @@
 
     var loader,
         template = [
-            '<div data-role="loader" class="loading-mask" style="position: absolute;">',
+            '<div data-role="loader" class="loading-mask breeze-block-loader" style="position: absolute;">',
                 '<div class="loader">',
                     '<% if (loaderImageHref) { %>',
                         '<img src="<%= loaderImageHref %>" alt="Loading..." style="position: absolute;">',
@@ -59,7 +59,7 @@
      */
     function hide(element) {
         var timerId = element.data('spinner-timer'),
-            loaders = element.find('.loading-mask');
+            loaders = element.find('.breeze-block-loader');
 
         if (timerId) {
             clearTimeout(timerId);
