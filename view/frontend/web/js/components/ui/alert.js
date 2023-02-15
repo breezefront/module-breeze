@@ -5,7 +5,7 @@
     $.widget('alert', 'confirm', {
         component: 'Magento_Ui/js/modal/alert',
         options: {
-            modalClass: 'confirm',
+            modalClass: 'alert',
             title: $.__('Attention'),
             actions: {
 
