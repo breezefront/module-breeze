@@ -118,7 +118,7 @@
          * @returns {Boolean}
          */
         getIsInvisibleRecaptcha: function () {
-            return this.settings.invisible;
+            return this.settings?.invisible;
         },
 
         /**
@@ -142,7 +142,7 @@
                 widgetId,
                 parameters;
 
-            if (this.captchaInitialized) {
+            if (this.captchaInitialized || !this.settings) {
                 return;
             }
 
@@ -213,6 +213,8 @@
             } else {
                 this.tokenField = null;
             }
+
+            $('#send2').prop('disabled', false);
         },
 
         /**
