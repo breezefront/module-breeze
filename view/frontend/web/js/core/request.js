@@ -22,12 +22,15 @@
      * @throws {Exception}
      */
     function onError(error, params) {
-        if (params.error) {
-            params.error(error.response || error.original.response, error);
+        var failFn = params.fail || params.error,
+            alwaysFn = params.always || params.complete;
+
+        if (failFn) {
+            failFn(error.response || error.original.response, error);
         }
 
-        if (params.complete) {
-            params.complete(error.response || error.original.response);
+        if (alwaysFn) {
+            alwaysFn(error.response || error.original.response);
         }
     }
 
@@ -36,12 +39,15 @@
      * @return {Object}
      */
     function onSuccess(response, params) {
-        if (params.success) {
-            params.success(response.body || response.text, response);
+        var doneFn = params.done || params.success,
+            alwaysFn = params.always || params.complete;
+
+        if (doneFn) {
+            doneFn(response.body || response.text, response);
         }
 
-        if (params.complete) {
-            params.complete(response);
+        if (alwaysFn) {
+            alwaysFn(response);
         }
 
         return response;
@@ -177,7 +183,7 @@
         }
 
         if (params.context) {
-            ['success', 'complete', 'error', 'beforeSend'].forEach(function (fn) {
+            ['done', 'always', 'fail', 'success', 'complete', 'error', 'beforeSend'].forEach(function (fn) {
                 if (params[fn]) {
                     params[fn] = params[fn].bind(params.context);
                 }
