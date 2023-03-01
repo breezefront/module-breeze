@@ -58,6 +58,7 @@
                             <item name="breeze-main" xsi:type="string">Swissup_Breeze::js/core/main.js</item>
                             <item name="breeze-turbo" xsi:type="string">Swissup_Breeze::js/core/turbo.js</item>
                             <item name="breeze-define" xsi:type="string">Swissup_Breeze::js/core/define.js</item>
+                            <item name="breeze-lazy" xsi:type="string">Swissup_Breeze::js/core/lazy.js</item>
                             <item name="breeze-template" xsi:type="string">Swissup_Breeze::js/core/template.js</item>
                             <item name="breeze-common" xsi:type="string">Swissup_Breeze::js/common/common.js</item>
                             <item name="breeze-url" xsi:type="string">Swissup_Breeze::js/common/url.js</item>

@@ -43,7 +43,7 @@
                 });
                 j.async = true;
                 j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-                f.parentNode.insertBefore(j, f);
+                $.lazy(() => f.parentNode.insertBefore(j, f));
             })(window, document, 'script', 'dataLayer', this.options.gtmAccountId);
 
             window.dlCurrencyCode = this.options.storeCurrencyCode;

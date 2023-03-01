@@ -39,13 +39,7 @@
                     gtag('event', 'purchase', purchaseObject);
                 }
             } else {
-                (function(d,s,u){
-                    var gtagScript = d.createElement(s);
-                    gtagScript.type = 'text/javascript';
-                    gtagScript.async = true;
-                    gtagScript.src = u;
-                    d.head.insertBefore(gtagScript, d.head.children[0]);
-                })(document, 'script', 'https://www.googletagmanager.com/gtag/js?id=' + measurementId);
+                $.lazy(() => $.loadScript('https://www.googletagmanager.com/gtag/js?id=' + measurementId));
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
