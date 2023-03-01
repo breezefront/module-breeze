@@ -77,20 +77,45 @@ class FormValidation extends AbstractFilter
         $node->setAttribute('type', 'email');
     }
 
+    public function applyNumber($node)
+    {
+        $node->setAttribute('type', 'number');
+    }
+
     public function applyRequiredNumber($node)
     {
         $this->applyRequired($node);
-        $node->setAttribute('type', 'number');
+        $this->applyNumber($node);
     }
 
     public function applyValidateItemQuantity($node, $config)
     {
-        $node->setAttribute('min', $config['minAllowed'] ?? 1);
-        $node->setAttribute('max', $config['maxAllowed'] ?? 100000000);
+        $this->applyMin($node, $config['minAllowed'] ?? 1);
+        $this->applyMax($node, $config['maxAllowed'] ?? 100000000);
+    }
+
+    public function applyMin($node, $config)
+    {
+        $node->setAttribute('min', $config);
+    }
+
+    public function applyMax($node, $config)
+    {
+        $node->setAttribute('max', $config);
+    }
+
+    public function applyMinlength($node, $config)
+    {
+        $node->setAttribute('minlength', $config);
+    }
+
+    public function applyMaxlength($node, $config)
+    {
+        $node->setAttribute('maxlength', $config);
     }
 
     public function applyValidateCustomerPassword($node)
     {
-        $node->setAttribute('minlength', $node->getAttribute('data-password-min-length') ?: 8);
+        $this->applyMinlength($node, $node->getAttribute('data-password-min-length') ?: 8);
     }
 }
