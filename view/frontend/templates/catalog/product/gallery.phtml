@@ -35,19 +35,19 @@ $thumbSizes = $responsiveImageHelper->getSizes('product_page_image_small');
 $galleryId = 'gallery-' . $block->getProduct()->getId();
 ?>
 
-<div class="breeze-gallery <?= $block->getGalleryOptions()->getVar('gallery/navdir') ?>">
+<div class="breeze-gallery <?= $block->escapeHtmlAttr($block->getGalleryOptions()->getVar('gallery/navdir')) ?>">
     <div class="stage <?= $mainImage && $mainImage->getVideoUrl() ? 'video' : '' ?>"
         data-gallery-id="<?= $galleryId ?>" data-gallery-role="gallery-placeholder">
         <div class="main-image-wrapper">
-            <img alt="<?= $mainImageLabel ?>"
+            <img alt="<?= $block->escapeHtmlAttr($mainImageLabel) ?>"
                 fetchpriority="high"
                 class="main-image"
-                src="<?= $mainImageUrl ?>"
+                src="<?= $block->escapeUrl($mainImageUrl) ?>"
                 width="<?= $width ?>"
                 height="<?= $height ?>"
                 <?php if ($srcset) : ?>
-                    srcset="<?= $srcset ?>"
-                    sizes="<?= $sizes ?>"
+                    srcset="<?= $block->escapeHtmlAttr($srcset) ?>"
+                    sizes="<?= $block->escapeHtmlAttr($sizes) ?>"
                 <?php endif ?>
             />
         </div>
@@ -97,12 +97,15 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
 
                     $srcset = $responsiveImageHelper->getSrcset($image, 'product_page_image_small');
                 ?>
-                <a class="<?= implode(' ', $classes) ?>" href="<?= $image->getLargeImageUrl() ?>" title="<?= $image->getLabel() ?: __('View Image') ?>">
-                    <img loading="lazy" alt="<?= $image->getLabel() ?>"
-                        src="<?= $image->getSmallImageUrl() ?>"
+                <a class="<?= implode(' ', $classes) ?>"
+                    href="<?= $block->escapeUrl($image->getLargeImageUrl()) ?>"
+                    title="<?= $block->escapeHtmlAttr($image->getLabel() ?: __('View Image')) ?>">
+                    <img loading="lazy"
+                        alt="<?= $block->escapeHtmlAttr($image->getLabel()) ?>"
+                        src="<?= $block->escapeUrl($image->getSmallImageUrl()) ?>"
                         <?php if ($srcset) : ?>
-                            srcset="<?= $srcset ?>"
-                            sizes="<?= $thumbSizes ?>"
+                            srcset="<?= $block->escapeHtmlAttr($srcset) ?>"
+                            sizes="<?= $block->escapeHtmlAttr($thumbSizes) ?>"
                         <?php endif ?>
                         width="<?= $thumbWidth ?>"
                         height="<?= $thumbHeight ?>"
