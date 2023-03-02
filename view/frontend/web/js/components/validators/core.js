@@ -22,7 +22,7 @@
         ],
         min: [
             function (value, el, min) {
-                return value >= min;
+                return value >= +min;
             },
             function (value, el, min) {
                 return $t('Please enter a value greater than or equal to {0}.').replace('{0}', min);
@@ -30,7 +30,7 @@
         ],
         max: [
             function (value, el, max) {
-                return value <= max;
+                return value <= +max;
             },
             function (value, el, max) {
                 return $t('Please enter a value less than or equal to {0}.').replace('{0}', max);
@@ -38,7 +38,7 @@
         ],
         minlength: [
             function (value, el, min) {
-                return value >= min;
+                return value >= +min;
             },
             function (value, el, min) {
                 return $t('Please enter at least {0} characters.').replace('{0}', min);
@@ -46,7 +46,7 @@
         ],
         maxlength: [
             function (value, el, max) {
-                return value <= max;
+                return value <= +max;
             },
             function (value, el, max) {
                 return $t('Please enter no more than {0} characters.').replace('{0}', max);
