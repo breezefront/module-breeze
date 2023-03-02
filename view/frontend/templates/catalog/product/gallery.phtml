@@ -13,6 +13,11 @@ $mainImageUrl = $mainImage ?
     $mainImage->getData('medium_image_url') :
     $helper->getDefaultPlaceholderUrl('image');
 
+$mainImageLabel = $block->getProduct()->getName();
+if ($mainImage && $mainImage->getLabel()) {
+    $mainImageLabel = $mainImage->getLabel();
+}
+
 $width = (int) $block->getImageAttribute('product_page_image_medium', 'width');
 $height = (int) $block->getImageAttribute('product_page_image_medium', 'height');
 $height = $height ?: $width;
@@ -34,7 +39,7 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
     <div class="stage <?= $mainImage && $mainImage->getVideoUrl() ? 'video' : '' ?>"
         data-gallery-id="<?= $galleryId ?>" data-gallery-role="gallery-placeholder">
         <div class="main-image-wrapper">
-            <img alt="<?= $mainImage ? $mainImage->getLabel() : '' ?>"
+            <img alt="<?= $mainImageLabel ?>"
                 fetchpriority="high"
                 class="main-image"
                 src="<?= $mainImageUrl ?>"
