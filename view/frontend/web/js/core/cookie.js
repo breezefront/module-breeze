@@ -48,6 +48,14 @@
 
             /**
              * @param {String} name
+             * @param {Object} attributes
+             */
+            clear: function (name, attributes) {
+                cookies.remove(name, attributes);
+            },
+
+            /**
+             * @param {String} name
              * @return {Mixed}
              */
             getJson: function (name) {
