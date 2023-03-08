@@ -464,8 +464,12 @@
                         element.options[index] = new Option(this._getOptionLabel(options[i]), options[i].id);
 
                         if (this.options.spConfig.canDisplayShowOutOfStockStatus) {
-                            filteredSalableProducts = $(this.options.spConfig.salable[attributeId][options[i].id])
-                                .filter(options[i].allowedProducts);
+                            if (this.options.spConfig.salable[attributeId][options[i].id]?.filter) {
+                                filteredSalableProducts = this.options.spConfig.salable[attributeId][options[i].id]
+                                    .filter(id => allowedProducts.includes(id));
+                            } else {
+                                filteredSalableProducts = [];
+                            }
 
                             canDisplayOutOfStockProducts = filteredSalableProducts.length === 0;
                         }
