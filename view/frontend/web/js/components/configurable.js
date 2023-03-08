@@ -88,7 +88,11 @@
             if (priceBoxOptions && priceBoxOptions.priceFormat) {
                 options.priceFormat = priceBoxOptions.priceFormat;
             }
-            options.optionTemplate = _.template(options.optionTemplate);
+
+            if (typeof options.optionTemplate === 'string') {
+                options.optionTemplate = _.template(options.optionTemplate);
+            }
+
             options.tierPriceTemplate = $(this.options.tierPriceTemplateSelector).html();
 
             options.settings = options.spConfig.containerId ?
