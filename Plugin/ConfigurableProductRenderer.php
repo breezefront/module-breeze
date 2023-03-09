@@ -4,25 +4,13 @@ namespace Swissup\Breeze\Plugin;
 
 class ConfigurableProductRenderer
 {
-    /**
-     * @var \Swissup\Breeze\Helper\Data
-     */
-    private $helper;
+    private \Swissup\Breeze\Helper\Data $helper;
 
-    /**
-     * @var \Swissup\Breeze\Helper\Image
-     */
-    private $imageHelper;
+    private \Swissup\Breeze\Helper\Image $imageHelper;
 
-    /**
-     * @var \Magento\Framework\Serialize\Serializer\Json
-     */
-    private $json;
+    private \Magento\Framework\Serialize\Serializer\Json $json;
 
-    /**
-     * @var \Magento\ConfigurableProduct\Helper\Data
-     */
-    private $configurableHelper;
+    private \Magento\ConfigurableProduct\Helper\Data $configurableHelper;
 
     /**
      * @param \Swissup\Breeze\Helper\Data $helper

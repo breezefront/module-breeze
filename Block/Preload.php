@@ -4,9 +4,9 @@ namespace Swissup\Breeze\Block;
 
 class Preload extends \Magento\Framework\View\Element\AbstractBlock
 {
-    private $items = [];
+    private array $items = [];
 
-    private $allowedAttributes = [
+    private array $allowedAttributes = [
         'as',
         'href',
         'imagesrcset',

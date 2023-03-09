@@ -8,80 +8,35 @@ use Magento\Framework\Module\Dir;
 
 class JsBuild
 {
-    /**
-     * @var \Magento\Framework\View\Asset\Repository
-     */
-    private $assetRepo;
+    private \Magento\Framework\View\Asset\Repository $assetRepo;
 
-    /**
-     * @var \Magento\Framework\View\Asset\File\FallbackContext
-     */
-    private $staticContext;
+    private \Magento\Framework\View\Asset\File\FallbackContext $staticContext;
 
-    /**
-     * @var \Magento\Framework\Filesystem
-     */
-    private $filesystem;
+    private \Magento\Framework\Filesystem $filesystem;
 
-    /**
-     * @var \Magento\Framework\Filesystem\Directory\ReadInterface
-     */
-    private $staticDir;
+    private \Magento\Framework\Filesystem\Directory\ReadInterface $staticDir;
 
-    /**
-     * @var \Magento\Framework\Filesystem\Directory\ReadFactory
-     */
-    private $readDirFactory;
+    private \Magento\Framework\Filesystem\Directory\ReadFactory $readDirFactory;
 
-    /**
-     * @var \Magento\Framework\Module\Dir
-     */
-    private $moduleDir;
+    private \Magento\Framework\Module\Dir $moduleDir;
 
-    /**
-     * @var \Magento\Framework\Module\Manager
-     */
-    private $moduleManager;
+    private \Magento\Framework\Module\Manager $moduleManager;
 
-    /**
-     * @var \Magento\Framework\View\Asset\Minification
-     */
-    private $minification;
+    private \Magento\Framework\View\Asset\Minification $minification;
 
-    /**
-     * @var \Magento\Framework\Code\Minifier\AdapterInterface
-     */
-    private $minifier;
+    private \Magento\Framework\Code\Minifier\AdapterInterface $minifier;
 
-    /**
-     * @var \Magento\Framework\HTTP\Adapter\CurlFactory
-     */
-    private $curlFactory;
+    private \Magento\Framework\HTTP\Adapter\CurlFactory $curlFactory;
 
-    /**
-     * @var \Magento\Framework\View\DesignInterface
-     */
-    private $design;
+    private \Magento\Framework\View\DesignInterface $design;
 
-    /**
-     * @var ComponentRegistrar $componentRegistrar
-     */
-    private $componentRegistrar;
+    private \Magento\Framework\Component\ComponentRegistrar $componentRegistrar;
 
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
-    /**
-     * @var array
-     */
-    private $items;
+    private array $items;
 
-    /**
-     * @var array
-     */
-    private $assets = [];
+    private array $assets = [];
 
     /**
      * @param \Magento\Framework\View\Asset\Repository $assetRepo

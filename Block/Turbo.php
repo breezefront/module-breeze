@@ -8,15 +8,9 @@ class Turbo extends Template
 {
     protected $_template = 'Swissup_Breeze::turbo.phtml';
 
-    /**
-     * @var \Magento\Framework\Serialize\Serializer\Json
-     */
-    private $serializer;
+    private \Magento\Framework\Serialize\Serializer\Json $serializer;
 
-    /**
-     * @var \Swissup\Breeze\Helper\Data
-     */
-    private $helper;
+    private \Swissup\Breeze\Helper\Data $helper;
 
     /**
      * @param Template\Context $context

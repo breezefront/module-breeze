@@ -8,10 +8,7 @@ class Dropdown extends Template
 {
     protected $_template = 'Swissup_Breeze::theme/dropdown.phtml';
 
-    /**
-     * @var \Magento\Framework\Serialize\Serializer\Json
-     */
-    private $json;
+    private \Magento\Framework\Serialize\Serializer\Json $json;
 
     private $content;
 

@@ -91,7 +91,7 @@ class FormValidation extends AbstractFilter
     public function applyValidateItemQuantity($node, $config)
     {
         $this->applyMin($node, $config['minAllowed'] ?? 1);
-        $this->applyMax($node, $config['maxAllowed'] ?? 100000000);
+        $this->applyMax($node, $config['maxAllowed'] ?? 100_000_000);
     }
 
     public function applyMin($node, $config)

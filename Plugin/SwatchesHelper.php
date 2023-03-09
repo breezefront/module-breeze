@@ -4,15 +4,9 @@ namespace Swissup\Breeze\Plugin;
 
 class SwatchesHelper
 {
-    /**
-     * @var \Swissup\Breeze\Helper\Data
-     */
-    private $helper;
+    private \Swissup\Breeze\Helper\Data $helper;
 
-    /**
-     * @var \Swissup\Breeze\Helper\Image
-     */
-    private $imageHelper;
+    private \Swissup\Breeze\Helper\Image $imageHelper;
 
     /**
      * @param \Swissup\Breeze\Helper\Data $helper

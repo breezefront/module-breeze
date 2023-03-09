@@ -4,10 +4,7 @@ namespace Swissup\Breeze\Plugin;
 
 class RecentlyViewedAndCompared
 {
-    /**
-     * @var \Swissup\Breeze\Helper\Data
-     */
-    private $helper;
+    private \Swissup\Breeze\Helper\Data $helper;
 
     /**
      * @param \Swissup\Breeze\Helper\Data $helper

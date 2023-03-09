@@ -6,10 +6,7 @@ use Magento\Framework\App\Area;
 
 class Bundle
 {
-    /**
-     * @var \Magento\Framework\App\State
-     */
-    private $appState;
+    private \Magento\Framework\App\State $appState;
 
     /**
      * @var \Magento\Framework\View\DesignInterfaceFactory
@@ -21,30 +18,21 @@ class Bundle
      */
     private $assetRepoFactory;
 
-    /**
-     * @var \Magento\Framework\View\LayoutFactory
-     */
-    private $layoutFactory;
+    private \Magento\Framework\View\LayoutFactory $layoutFactory;
 
     /**
      * @var \Magento\Framework\Locale\ResolverInterfaceFactory
      */
     private $localeFactory;
 
-    /**
-     * @var \Magento\Framework\View\Design\Theme\ThemeProviderInterface
-     */
-    private $themeProvider;
+    private \Magento\Framework\View\Design\Theme\ThemeProviderInterface $themeProvider;
 
     /**
      * @var \Swissup\Breeze\Model\LayoutProcessorFactory
      */
     private $layoutProcessorFactory;
 
-    /**
-     * @var \Swissup\Breeze\Model\ThemeResolver
-     */
-    private $themeResolver;
+    private \Swissup\Breeze\Model\ThemeResolver $themeResolver;
 
     public function __construct(
         \Magento\Framework\App\State $appState,

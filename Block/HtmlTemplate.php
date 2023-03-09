@@ -6,10 +6,7 @@ use Magento\Framework\View\Element\Template;
 
 class HtmlTemplate extends KoTemplate
 {
-    /**
-     * @var \Magento\Framework\Filesystem\Driver\File
-     */
-    private $file;
+    private \Magento\Framework\Filesystem\Driver\File $file;
 
     /**
      * @param Template\Context $context

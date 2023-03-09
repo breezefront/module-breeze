@@ -9,30 +9,15 @@ class JsTranslations extends \Magento\Framework\View\Element\AbstractBlock
 {
     const TEMPLATE = '<script data-breeze>var translations = %s</script>';
 
-    /**
-     * @var \Magento\Translation\Model\FileManager
-     */
-    private $fileManager;
+    private \Magento\Translation\Model\FileManager $fileManager;
 
-    /**
-     * @var \Magento\Framework\Filesystem\Driver\File
-     */
-    private $file;
+    private \Magento\Framework\Filesystem\Driver\File $file;
 
-    /**
-     * @var \Magento\Framework\HTTP\Adapter\CurlFactory
-     */
-    private $curlFactory;
+    private \Magento\Framework\HTTP\Adapter\CurlFactory $curlFactory;
 
-    /**
-     * @var DirectoryList
-     */
-    private $directoryList;
+    private \Magento\Framework\App\Filesystem\DirectoryList $directoryList;
 
-    /**
-     * @var Config
-     */
-    private $config;
+    private \Magento\Translation\Model\Js\Config $config;
 
     /**
      * @param \Magento\Framework\View\Element\Context $context

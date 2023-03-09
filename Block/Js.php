@@ -204,7 +204,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
         foreach ($this->getActiveBundles() as $bundleName => $bundle) {
             $info[] = $bundleName;
-            $info = array_merge($info, array_keys($bundle['items']));
+            $info = [...$info, ...array_keys($bundle['items'])];
         }
 
         sort($info);
@@ -281,7 +281,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                     continue; // do not check enabled state for the items from dom structure
                 }
 
-                $item['enabled'] = $item['enabled'] ?? true;
+                $item['enabled'] ??= true;
 
                 if (!$item['enabled']) {
                     unset($this->allBundles[$bundleName]['items'][$itemName]);

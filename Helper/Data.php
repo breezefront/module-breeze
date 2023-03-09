@@ -8,20 +8,14 @@ use Magento\Store\Model\ScopeInterface;
 
 class Data extends AbstractHelper
 {
-    /**
-     * @var \Magento\Framework\View\ConfigInterface
-     */
-    private $viewConfig;
+    private \Magento\Framework\View\ConfigInterface $viewConfig;
 
     /**
      * @var boolean
      */
     private $isEnabled = null;
 
-    /**
-     * @var boolean
-     */
-    private $isResponsiveImagesEnabled = null;
+    private ?bool $isResponsiveImagesEnabled = null;
 
     /**
      * @param Context $context

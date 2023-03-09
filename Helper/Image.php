@@ -219,9 +219,7 @@ class Image extends AbstractHelper
     {
         return array_filter(
             $images,
-            function ($key) use ($id) {
-                return $key === $id || strpos($key . '-srcset', $id) === 0;
-            },
+            fn($key) => $key === $id || strpos($key . '-srcset', $id) === 0,
             ARRAY_FILTER_USE_KEY
         );
     }
