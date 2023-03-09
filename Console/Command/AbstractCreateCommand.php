@@ -14,6 +14,9 @@ use Symfony\Component\Console\Question\QuestionFactory;
 
 class AbstractCreateCommand extends Command
 {
+    /** @var \Magento\Framework\Filesystem\Directory\WriteInterface */
+    protected $directory;
+
     /** @var Stubs */
     protected $stubs;
 

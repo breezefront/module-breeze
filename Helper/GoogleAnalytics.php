@@ -8,6 +8,11 @@ use Magento\Framework\App\Helper\AbstractHelper;
 class GoogleAnalytics extends AbstractHelper
 {
     /**
+     * @var \Swissup\Breeze\Helper\Config
+     */
+    private $configHelper;
+
+    /**
      * @param Context $context
      * @param Config $configHelper
      */

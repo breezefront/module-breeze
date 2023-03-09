@@ -9,6 +9,11 @@ use Magento\Store\Model\ScopeInterface;
 class Data extends AbstractHelper
 {
     /**
+     * @var \Magento\Framework\View\ConfigInterface
+     */
+    private $viewConfig;
+
+    /**
      * @var boolean
      */
     private $isEnabled = null;
