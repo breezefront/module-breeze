@@ -39,10 +39,9 @@ class Filter
     {
         $html = $this->escapeHtmlEntities($html);
 
-        // fix special characters
-        if (function_exists('mb_convert_encoding')) {
-            $html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
-        }
+        // https://php.watch/versions/8.2/mbstring-qprint-base64-uuencode-html-entities-deprecated#html
+        $html = htmlentities($html);
+        $html = htmlspecialchars_decode($html);
 
         $html = $this->escapeNestedHtmlTags($html);
 
