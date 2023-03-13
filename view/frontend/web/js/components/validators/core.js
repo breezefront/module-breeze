@@ -23,11 +23,11 @@
             (value, el, max) => $t('Please enter a value less than or equal to {0}.').replace('{0}', max)
         ],
         minlength: [
-            (value, el, min) => value >= +min,
+            (value, el, min) => value.length >= +min,
             (value, el, min) => $t('Please enter at least {0} characters.').replace('{0}', min)
         ],
         maxlength: [
-            (value, el, max) => value <= +max,
+            (value, el, max) => value.length <= +max,
             (value, el, max) => $t('Please enter no more than {0} characters.').replace('{0}', max)
         ],
         'required-entry': 'required',
