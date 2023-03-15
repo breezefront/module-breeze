@@ -87,16 +87,16 @@
                 newMarkers.forEach(function (newMarker) {
                     var location = _.escape(newMarker['location_name']) || '',
                     comment = newMarker.comment ?
-                        '<p>' + _.escape(newMarker.comment).replace(/(?:\r\n|\r|\n)/g, '<br/>') + '</p>'
+                        '<p>' + _.escape(newMarker.comment).replace(/(?:\r\n|\r|\n)/g, '<br>') + '</p>'
                         : '',
                     phone = newMarker.phone ? '<p>Phone: ' + _.escape(newMarker.phone) + '</p>' : '',
-                    address = newMarker.address ? _.escape(newMarker.address) + '<br/>' : '',
+                    address = newMarker.address ? _.escape(newMarker.address) + '<br>' : '',
                     city = _.escape(newMarker.city) || '',
                     country = newMarker.country ? _.escape(newMarker.country) : '',
                     state = newMarker.state ? _.escape(newMarker.state) + ' ' : '',
                     zipCode = newMarker.zipcode ? _.escape(newMarker.zipcode) : '',
                     cityComma = city !== '' && (zipCode !== '' || state !== '') ? ', ' : '',
-                    lineBreak = city !== '' || zipCode !== '' ? '<br/>' : '',
+                    lineBreak = city !== '' || zipCode !== '' ? '<br>' : '',
                     contentString =
                         '<div>' +
                         '<h3><b>' + location + '</b></h3>' +

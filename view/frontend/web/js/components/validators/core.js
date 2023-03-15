@@ -7,7 +7,7 @@
             $t('This is a required field.')
         ],
         email: [
-            (value) => $('<input type="email" required/>').val(value).get(0).checkValidity(),
+            (value) => $('<input type="email" required>').val(value).get(0).checkValidity(),
             $t('Please enter a valid email address (Ex: johndoe@domain.com).')
         ],
         equalTo: [

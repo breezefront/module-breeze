@@ -202,7 +202,7 @@
                 }.bind(this));
 
                 // Create a virtual token field
-                this.tokenField = $('<input type="text" name="token" style="display: none" />')[0];
+                this.tokenField = $('<input type="text" name="token" style="display: none">')[0];
                 this.$parentForm = parentForm;
                 parentForm.append(this.tokenField);
             } else {

@@ -6,7 +6,7 @@
         options: {
             productId: 'input[type="hidden"][name="product"]',
             ppCheckoutSelector: '[data-role=pp-checkout-url]',
-            ppCheckoutInput: '<input type="hidden" data-role="pp-checkout-url" name="return_url" value=""/>'
+            ppCheckoutInput: '<input type="hidden" data-role="pp-checkout-url" name="return_url" value="">'
         },
 
         /** Init widget */
