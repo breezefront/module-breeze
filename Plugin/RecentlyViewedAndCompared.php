@@ -73,7 +73,7 @@ class RecentlyViewedAndCompared
         $subject->setBreezeConfig([
             'title' => $title,
             'component' => 'Swissup_Breeze/js/components/recent-products',
-            'scope' => $subject->getNameInLayout(),
+            'scope' => str_replace('\\', '_', $subject->getNameInLayout()),
             'storage' => $storage,
             'limit' => $subject->getPageSize() ?: 5,
             'displayMode' => $displayMode,
