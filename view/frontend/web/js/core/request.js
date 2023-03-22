@@ -119,7 +119,9 @@
             data = data.get(0);
         }
 
-        if (data instanceof Element) {
+        if (data instanceof FormData) {
+            formData = data;
+        } else if (data instanceof Element) {
             formData = new FormData(data);
         } else {
             formData = new FormData();
