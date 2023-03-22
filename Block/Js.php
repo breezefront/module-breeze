@@ -22,6 +22,11 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
     protected $pageConfig;
 
     /**
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
+    protected $storeManager;
+
+    /**
      * @var \Swissup\Breeze\Model\JsBuildFactory
      */
     protected $jsBuildFactory;
@@ -50,6 +55,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
      * @param \Magento\Backend\Block\Context $context
      * @param \Magento\Framework\View\Asset\ConfigInterface $assetConfig
      * @param \Magento\Framework\View\Page\Config $pageConfig
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Swissup\Breeze\Model\JsBuildFactory $jsBuildFactory
      * @param array $data
      */
@@ -58,12 +64,14 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         \Magento\Framework\App\View\Deployment\Version $deploymentVersion,
         \Magento\Framework\View\Asset\ConfigInterface $assetConfig,
         \Magento\Framework\View\Page\Config $pageConfig,
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Swissup\Breeze\Model\JsBuildFactory $jsBuildFactory,
         array $data = []
     ) {
         $this->deploymentVersion = $deploymentVersion;
         $this->assetConfig = $assetConfig;
         $this->pageConfig = $pageConfig;
+        $this->storeManager = $storeManager;
         $this->jsBuildFactory = $jsBuildFactory;
 
         $bundles = $data['bundles'] ?? [];
@@ -198,6 +206,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
         $info = [
             $this->getNameInLayout(),
+            $this->storeManager->getStore()->getId(),
             $this->_design->getDesignTheme()->getId(),
             $version,
         ];
