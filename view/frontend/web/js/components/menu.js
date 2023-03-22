@@ -35,7 +35,7 @@
             this.focusTrap = this.createFocusTrap(this.element.closest('.navigation-wrapper,.nav-sections'));
             this._setActiveMenu(); // varnish fix
 
-            if (this.element.closest('.nav-sections, .page-header, .navigation-wrapper').length) {
+            if (this.element.closest('.nav-sections, .navigation-wrapper').length) {
                 this.addToggleListener();
             }
 
@@ -106,7 +106,7 @@
             }.bind(this));
             $('html').removeClass('nav-open').removeClass('nav-before-open');
 
-            if (this.element.closest('.nav-sections, .navigation-wrapper, .page-header').length) {
+            if (this.element.closest('.nav-sections, .navigation-wrapper').length) {
                 $(document).off('click.menu').off('keydown.menu');
             }
 
