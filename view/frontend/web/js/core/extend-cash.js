@@ -288,32 +288,27 @@
     $.proxy = _.bind;
 
     /** Serialize object to query string */
-    $.params = function (params, prefix) {
+    $.param = $.params = function (params, prefix) {
         if (params instanceof FormData) {
             return new URLSearchParams(params).toString();
         }
 
-        var query = Object.keys(params).map(function (key) {
-            var value = params[key];
-
+        return Object.entries(params).map(([key, value]) => {
             key = encodeURIComponent(key);
 
             if (params.constructor === Array) {
                 key = `${prefix}[]`;
             } else if (params.constructor === Object) {
-                key = (prefix ? `${prefix}[${key}]` : key);
+                key = prefix ? `${prefix}[${key}]` : key;
             }
 
             if (typeof value === 'object') {
                 return $.params(value, key);
-            } else {
-                return `${key}=${encodeURIComponent(value)}`;
             }
-        });
 
-        return [].concat.apply([], query).join('&');
+            return `${key}=${encodeURIComponent(value)}`;
+        }).join('&');
     };
-    $.param = $.params;
 
     /** Parse url query params */
     $.parseQuery = function (query) {
