@@ -141,7 +141,11 @@
                     value.map((val) => formData.append(key, val));
                 } else if (_.isObject(value)) {
                     $.params({[key]: value}).split('&').map(pair => {
-                        formData.append(...pair.split('='));
+                        var parts = pair.split('='),
+                            v = parts.pop(),
+                            k = parts.join('=');
+
+                        formData.append(k, v);
                     });
                 } else {
                     formData.set(key, value);
