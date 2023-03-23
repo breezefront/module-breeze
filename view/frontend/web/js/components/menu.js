@@ -11,8 +11,6 @@
             expanded: false,
             dropdownShowDelay: 100,
             dropdownHideDelay: 120,
-            slideoutShowDelay: 42,
-            slideoutHideDelay: 300,
             mediaBreakpoint: '(max-width: 767px)'
         },
 
@@ -32,12 +30,7 @@
                 this.toggleDesktopMode();
             }
 
-            this.focusTrap = this.createFocusTrap(this.element.closest('.navigation-wrapper,.nav-sections'));
             this._setActiveMenu(); // varnish fix
-
-            if (this.element.closest('.nav-sections, .navigation-wrapper').length) {
-                this.addToggleListener();
-            }
 
             $('li.parent > ul', this.element).hide();
             $('li.parent', this.element)
@@ -99,80 +92,11 @@
 
         /** Hide expanded menu's, remove event listeneres */
         destroy: function () {
-            $.breeze.scrollbar.reset();
-
             $(this.options.dropdown + '.shown', this.element).each(function (i, dropdown) {
                 this.close($(dropdown));
             }.bind(this));
-            $('html').removeClass('nav-open').removeClass('nav-before-open');
-
-            if (this.element.closest('.nav-sections, .navigation-wrapper').length) {
-                $(document).off('click.menu').off('keydown.menu');
-            }
 
             this._super();
-        },
-
-        /** [addToggleListener description] */
-        addToggleListener: function () {
-            $('[data-action="toggle-nav"]').attr('tabindex', 0);
-
-            $(document)
-                .on('click.menu', '[data-action="toggle-nav"]', this.toggleNavbar.bind(this))
-                .on('keydown.menu', '[data-action="toggle-nav"]', function (e) {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        this.toggleNavbar();
-                    } else if (e.key === 'Escape') {
-                        this.closeNavbar();
-                    }
-                }.bind(this));
-
-            this._on(document, {
-                keydown: function (e) {
-                    if (e.key === 'Escape' && $('html').hasClass('nav-open')) {
-                        this.closeNavbar();
-                    }
-                }.bind(this)
-            });
-        },
-
-        /** [toggleNavbar description] */
-        toggleNavbar: function (flag) {
-            if (flag === false || $('html').hasClass('nav-open')) {
-                this.closeNavbar();
-            } else {
-                this.openNavbar();
-            }
-        },
-
-        /** Show mobile navbar */
-        openNavbar: function () {
-            var self = this,
-                html = $('html');
-
-            $.breeze.scrollbar.hide();
-            self._trigger('navBeforeOpen');
-            html.addClass('nav-before-open');
-            setTimeout(function () {
-                html.addClass('nav-open');
-                self._trigger('navAfterOpen');
-            }, self.options.slideoutShowDelay);
-            setTimeout(self.focusTrap.activate, 300); // wait till css animation is over
-        },
-
-        /** Hide mobile navbar  */
-        closeNavbar: function () {
-            var self = this,
-                html = $('html');
-
-            self._trigger('navBeforeClose');
-            self.focusTrap.deactivate();
-            html.removeClass('nav-open');
-            setTimeout(function () {
-                $.breeze.scrollbar.reset();
-                html.removeClass('nav-before-open');
-                self._trigger('navAfterClose');
-            }, self.options.slideoutHideDelay);
         },
 
         /** Toggles between mobile and desktop modes */
@@ -350,4 +274,72 @@
             }
         }
     });
+
+    $.widget('menuSlideout', {
+        options: {
+            openDelay: 42,
+            closeDelay: 300
+        },
+
+        create: function () {
+            $(this.element).attr('tabindex', 0);
+
+            this.focusTrap = this.createFocusTrap($('.navigation-wrapper, .nav-sections').first());
+
+            this._on({
+                click: this.toggle,
+                keydown: e => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        this.toggle();
+                    } else if (e.key === 'Escape') {
+                        this.close();
+                    }
+                }
+            });
+
+            this._on(document, 'keydown', e => {
+                if (e.key === 'Escape' && $('html').hasClass('nav-open')) {
+                    this.close();
+                }
+            });
+        },
+
+        destroy: function () {
+            $.breeze.scrollbar.reset();
+            $('html').removeClass('nav-open').removeClass('nav-before-open');
+            this._super();
+        },
+
+        toggle: function (flag) {
+            if (flag === false || $('html').hasClass('nav-open')) {
+                this.close();
+            } else {
+                this.open();
+            }
+        },
+
+        open: function () {
+            $.breeze.scrollbar.hide();
+            this._trigger('beforeOpen');
+            $('html').addClass('nav-before-open');
+            setTimeout(() => {
+                $('html').addClass('nav-open');
+                this._trigger('afterOpen');
+            }, this.options.openDelay);
+            setTimeout(this.focusTrap.activate, 300); // wait till css animation is over
+        },
+
+        close: function () {
+            this._trigger('beforeClose');
+            this.focusTrap.deactivate();
+            $('html').removeClass('nav-open');
+            setTimeout(() => {
+                $.breeze.scrollbar.reset();
+                $('html').removeClass('nav-before-open');
+                this._trigger('afterClose');
+            }, this.options.closeDelay);
+        }
+    });
+
+    $(document).on('breeze:load', () => $('[data-action="toggle-nav"]').menuSlideout());
 })();
