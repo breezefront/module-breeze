@@ -104,6 +104,11 @@
             delete params.headers['Content-Type'];
         }
 
+        // cache: true/false is not supported
+        if (typeof params.cache !== 'string') {
+            delete params.cache;
+        }
+
         return params;
     }
 
