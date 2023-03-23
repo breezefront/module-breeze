@@ -441,6 +441,7 @@ $.registry = (function () {
             this.__uuid = $.guid++;
             this.__eventNamespace = '.' + name + this.__uuid;
             this.__bindings = $();
+            this.uuid = this.__uuid;
             this.element = $(element);
 
             $.registry.set(name, element, this);
