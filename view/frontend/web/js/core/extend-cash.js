@@ -296,6 +296,8 @@
         var query = Object.keys(params).map(function (key) {
             var value = params[key];
 
+            key = encodeURIComponent(key);
+
             if (params.constructor === Array) {
                 key = `${prefix}[]`;
             } else if (params.constructor === Object) {
