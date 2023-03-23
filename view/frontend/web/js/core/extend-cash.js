@@ -294,8 +294,6 @@
         }
 
         return Object.entries(params).map(([key, value]) => {
-            key = encodeURIComponent(key);
-
             if (params.constructor === Array) {
                 key = `${prefix}[]`;
             } else if (params.constructor === Object) {
