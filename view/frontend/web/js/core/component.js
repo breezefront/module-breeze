@@ -577,7 +577,7 @@ $.registry = (function () {
 
         /** [applyBindings description] */
         _applyBindings: function (element) {
-            if (!element.children.length || !ko.dataFor(element.children[0])) {
+            if (!element.children?.length || !ko.dataFor(element.children[0])) {
                 if (this.beforeRender() === false) {
                     return;
                 }
