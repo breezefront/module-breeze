@@ -14,16 +14,20 @@ class LayoutLoadBefore implements ObserverInterface
 
     private $design;
 
+    private $entitySpecificHandlesList;
+
     public function __construct(
         \Swissup\Breeze\Helper\Data $helper,
         \Magento\Framework\View\Page\Config $pageConfig,
         \Magento\Customer\Model\Session $customerSession,
-        \Magento\Framework\View\DesignInterface $design
+        \Magento\Framework\View\DesignInterface $design,
+        \Magento\Framework\View\EntitySpecificHandlesList $entitySpecificHandlesList
     ) {
         $this->helper = $helper;
         $this->pageConfig = $pageConfig;
         $this->customerSession = $customerSession;
         $this->design = $design;
+        $this->entitySpecificHandlesList = $entitySpecificHandlesList;
     }
 
     /**
@@ -47,12 +51,17 @@ class LayoutLoadBefore implements ObserverInterface
 
         $this->pageConfig->addBodyClass('breeze');
 
+        $entitySpecificHandles = $this->entitySpecificHandlesList->getHandles();
         foreach ($update->getHandles() as $handle) {
             if (strpos($handle, 'breeze_') === 0) {
                 continue;
             }
 
             $update->addHandle('breeze_' . $handle);
+
+            if (in_array($handle, $entitySpecificHandles)) {
+                $this->entitySpecificHandlesList->addHandle('breeze_' . $handle);
+            }
         }
 
         $baseTheme = $this->design->getDesignTheme()->getInheritedThemes()[0];
