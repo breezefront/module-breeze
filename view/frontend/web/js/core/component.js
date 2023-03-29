@@ -504,16 +504,16 @@ $.registry = (function () {
                 handlers = element;
             }
 
-            $.each(handlers, function (event, handler) {
-                var match = event.match(/^([\w:-]*)\s*(.*)$/),
+            $.each(handlers, function (eventAndSelector, fn) {
+                var match = eventAndSelector.match(/^([\w:-]*)\s*(.*)$/),
                     eventName = match[1] + self.__eventNamespace,
                     selector = match[2];
 
-                if (typeof handler === 'string') {
-                    handler = self[handler];
+                if (typeof fn === 'string') {
+                    fn = self[fn];
                 }
 
-                handler = handler.bind(self);
+                fn = fn.bind(self);
 
                 if (selector) {
                     el.on(eventName, selector, function (e) {
@@ -521,10 +521,10 @@ $.registry = (function () {
                             selector: selector
                         };
 
-                        handler(e);
+                        fn(e);
                     });
                 } else {
-                    el.on(eventName, handler);
+                    el.on(eventName, fn);
                 }
             });
         },
