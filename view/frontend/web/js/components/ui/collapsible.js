@@ -19,7 +19,6 @@
             ajaxContent: false
         },
 
-        /** Mount widget on the element */
         create: function () {
             this.header = typeof this.options.header === 'object' ?
                 this.options.header : this.element.find(this.options.header).first();
@@ -61,7 +60,6 @@
             });
         },
 
-        /** [init description] */
         init: function () {
             this.disabled = false;
         },
@@ -74,12 +72,10 @@
             this._super();
         },
 
-        /** [isActive description] */
         isActive: function () {
             return this.content.attr('aria-hidden') === 'false';
         },
 
-        /** Disable click events */
         isEnabled: function () {
             return !this.disabled;
         },
@@ -134,7 +130,6 @@
             });
         },
 
-        /** Close dropdown */
         close: function () {
             if (this.options.openedState) {
                 this.element.removeClass(this.options.openedState);
@@ -158,7 +153,6 @@
             });
         },
 
-        /** Toggle dropdown */
         toggle: function () {
             if (this.element.hasClass(this.options.openedState)) {
                 if (this.options.collapsible) {
@@ -169,7 +163,6 @@
             }
         },
 
-        /** @private */
         loadContent: function () {
             var url = this.element.find(this.options.ajaxUrlElement).attr(this.options.ajaxUrlAttribute),
                 self = this;
@@ -189,14 +182,10 @@
             $.request.get({
                 url: url,
                 type: 'html',
-
-                /** [success description] */
                 success: function (data) {
                     self.element.data('loaded', true);
                     self.content.empty().append(data).trigger('contentUpdated');
                 },
-
-                /** [complete description] */
                 complete: function () {
                     self.element.removeClass(self.options.loadingClass);
                     self.content.spinner(false);

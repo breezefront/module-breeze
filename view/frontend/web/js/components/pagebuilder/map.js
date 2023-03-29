@@ -1,4 +1,4 @@
-/* global google */
+/* global google GoogleMap googleMapsConfig pagebuilderMapsLoad */
 (function () {
     'use strict';
 
@@ -15,11 +15,9 @@
         },
         gmAuthFailure = false;
 
-    // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
     window.gm_authFailure = function () {
         gmAuthFailure = true;
     };
-    // jscs:enable requireCamelCaseOrUpperCaseIdentifiers
 
     window.GoogleMap = function (element, markers, additionalOptions) {
         var options,
@@ -186,7 +184,7 @@
                 mapOptions = {};
 
             if (!locations || locations === '[]') {
-                return $(element).hide();
+                return $(this.element).hide();
             }
 
             locations = JSON.parse(locations);

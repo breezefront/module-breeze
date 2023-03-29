@@ -20,7 +20,7 @@
 
             return true;
         },
-        $.__('Please enter valid email addresses, separated by commas. For example, johndoe@domain.com, johnsmith@domain.com.')
+        $.__('Please enter valid email addresses, separated by commas. For example, johndoe@domain.com, johnsmith@domain.com.') //eslint-disable-line max-len
     ];
 
     $.validator.validators['password-not-equal-to-user-name'] = [

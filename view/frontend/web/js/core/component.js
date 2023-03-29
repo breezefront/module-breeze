@@ -1,4 +1,3 @@
-/* global WeakMap ko _ */
 $.registry = (function () {
     'use strict';
 
@@ -118,7 +117,6 @@ $.registry = (function () {
         };
     }
 
-    /** [registerComponent description] */
     function registerComponent(factory, fullname, prototype) {
         var name = fullname.split('.').pop();
 
@@ -562,7 +560,6 @@ $.registry = (function () {
         beforeRender: _.noop,
         afterRender: _.noop,
 
-        /** [initialize description] */
         _initialize: function (name, options, element) {
             this._regions = {};
             this._markup = $(element).html();
@@ -575,7 +572,6 @@ $.registry = (function () {
             }
         },
 
-        /** [applyBindings description] */
         _applyBindings: function (element) {
             if (!element.children?.length || !ko.dataFor(element.children[0])) {
                 if (this.beforeRender() === false) {
@@ -588,7 +584,6 @@ $.registry = (function () {
             }
         },
 
-        /** destroy implementation */
         destroy: function () {
             // Restore initial markup that is used as a template in knockout
             this.element.html(this._markup);
@@ -627,7 +622,6 @@ $.registry = (function () {
             });
         },
 
-        /** [getTemplate description] */
         getTemplate: function () {
             var template = this.template || this.options.template,
                 templates = [
@@ -640,7 +634,6 @@ $.registry = (function () {
             return found || templates[0];
         },
 
-        /** [getRegion description] */
         getRegion: function (code) {
             var self = this,
                 result = ko.observableArray();
@@ -668,7 +661,6 @@ $.registry = (function () {
             return result;
         },
 
-        /** [mount description] */
         mount: function (config) {
             // @see main.js
             $.breeze.mount(config.component, {
@@ -694,7 +686,7 @@ $.registry = (function () {
 
             $.view(name, proto);
         }
-    }
+    };
 
     /** Wrap prototype with mixins */
     $.mixin = function (name, mixins) {

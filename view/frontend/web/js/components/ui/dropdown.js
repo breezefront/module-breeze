@@ -10,7 +10,6 @@
             menu: '[data-target="dropdown"]'
         },
 
-        /** Init widget */
         create: function () {
             this.status = false;
 
@@ -51,13 +50,11 @@
             this.close();
         },
 
-        /** Hide expanded menu's, remove event listeneres */
         destroy: function () {
             this.close();
             this._super();
         },
 
-        /** Open dropdown */
         open: function () {
             this._trigger('beforeOpen');
 
@@ -71,7 +68,6 @@
                 .contstraint();
         },
 
-        /** Close dropdown */
         close: function () {
             if (!this.status) {
                 return;
@@ -88,7 +84,6 @@
                 .attr('aria-hidden', true);
         },
 
-        /** Toggle dropdown */
         toggle: function () {
             if (this.status) {
                 this.close();

@@ -1,0 +1,6 @@
+{
+    "esversion": 11,
+    "-W038": true,
+    "-W082": true,
+    "-W083": true
+}

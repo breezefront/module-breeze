@@ -1,0 +1,23 @@
+{
+    "globals": {
+        "_": "readonly",
+        "$t": "readonly",
+        "breeze": "readonly",
+        "ko": "readonly",
+        "Turbolinks": "readonly"
+    },
+    "rules": {
+        "camelcase": ["error", { "properties": "never" }],
+        "comma-dangle": ["error", "only-multiline"],
+        "no-extra-parens": [
+            "error",
+            "all",
+            {
+                "conditionalAssign": false,
+                "enforceForNewInMemberExpressions": false,
+                "nestedBinaryExpressions": false
+            }
+        ]
+    },
+    "ignorePatterns": ["view/frontend/web/js/lib/*"]
+}

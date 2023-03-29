@@ -1,4 +1,3 @@
-/* global _ */
 (function () {
     'use strict';
 
@@ -39,7 +38,6 @@
             }
         },
 
-        /** [create description] */
         create: function () {
             this.options = _.extend(this.options, this.options.options || {});
             this.promises = {};
@@ -63,7 +61,6 @@
             this._trigger('loaded');
         },
 
-        /** [addEventListeners description] */
         addEventListeners: function () {
             var self = this;
 
@@ -340,7 +337,6 @@
             return id;
         },
 
-        /** [updateData description] */
         updateData: function (data) {
             var thumbnails = [],
                 activeIndex = this.activeIndex,
@@ -412,7 +408,7 @@
                         width: image.width,
                         height: image.height
                     });
-                }
+                };
 
                 image.src = this.getData().full;
 

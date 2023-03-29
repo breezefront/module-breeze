@@ -1,4 +1,3 @@
-/* global Cookies */
 (function () {
     'use strict';
 
@@ -18,6 +17,7 @@
     }
 
     $.cookies = $.cookieStorage = (function () {
+        // eslint-disable-next-line no-undef
         var cookies = Cookies.withAttributes($.extend(defaults, settings));
 
         return {

@@ -155,10 +155,10 @@
         return this.endRequest(function () {
             var code = this.xhr.status;
 
-            if (200 <= code && code < 300 || code === 403 || code === 404 || code === 500) {
+            if (code >= 200 && code < 300 || code === 403 || code === 404 || code === 500) {
                 this.delegate.requestCompletedWithResponse(
                     this.xhr.responseText,
-                    this.xhr.getResponseHeader("Turbolinks-Location")
+                    this.xhr.getResponseHeader('Turbolinks-Location')
                 );
             } else {
                 this.failed = true;

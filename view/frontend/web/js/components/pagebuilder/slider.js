@@ -1,4 +1,3 @@
-/* global _ */
 (function () {
     'use strict';
 
@@ -31,7 +30,6 @@
             }
         },
 
-        /** [create description] */
         create: function () {
             this.page = 0;
             this.slide = 0;
@@ -69,7 +67,6 @@
             this._super();
         },
 
-        /** [prepareMarkup description] */
         prepareMarkup: function () {
             var arrowTpl = _.template(this.options.templates.arrow);
 
@@ -96,7 +93,6 @@
             this.prevEl = this.element.find('.slick-prev');
         },
 
-        /** [addEventListeners description] */
         addEventListeners: function () {
             var self = this;
 
@@ -121,7 +117,6 @@
             new ResizeObserver(this.update.bind(this)).observe(this.slider.get(0));
         },
 
-        /** [buildPagination description] */
         buildPagination: function () {
             var self = this,
                 pageNumTmp = 0,
@@ -179,7 +174,6 @@
             this.updateArrows();
         },
 
-        /** [updateCurrentPage description] */
         updateCurrentPage: function () {
             var pageNum = this.page,
                 page = this.pages[pageNum],
@@ -224,7 +218,6 @@
             }
         },
 
-        /** [updateArrows description] */
         updateArrows: function () {
             var arrows = this.nextEl.add(this.prevEl);
 
@@ -255,7 +248,6 @@
             }
         },
 
-        /** [next description] */
         next: function () {
             var page = this.page + 1;
 
@@ -270,7 +262,6 @@
             this.scrollToPage(page);
         },
 
-        /** [prev description] */
         prev: function () {
             var page = this.page - 1;
 
@@ -285,7 +276,6 @@
             this.scrollToPage(page);
         },
 
-        /** [scrollToPage description] */
         scrollToPage: function (page, instant) {
             var slider = this.slider.get(0),
                 slide = this.slides.eq(this.pages[page].slides[0]),
@@ -295,9 +285,9 @@
                 .eq(page)
                 .addClass('slick-active');
             slider.scrollTo({
-                left: slider.scrollLeft
-                    - parseFloat(getComputedStyle(slider).getPropertyValue('padding-left'))
-                    + slide.position().left,
+                left: slider.scrollLeft -
+                    parseFloat(getComputedStyle(slider).getPropertyValue('padding-left')) +
+                    slide.position().left,
                 behavior: instant ? 'instant' : 'auto'
             });
 
@@ -313,7 +303,6 @@
             }
         },
 
-        /** [start description] */
         start: function () {
             if (!this.options.autoplay) {
                 return;
@@ -332,13 +321,11 @@
             }.bind(this), this.options.autoplaySpeed || 5000);
         },
 
-        /** [stop description] */
         stop: function () {
             this.pause();
             this.options.autoplay = false;
         },
 
-        /** [stop description] */
         pause: function () {
             clearTimeout(this.timer);
         },

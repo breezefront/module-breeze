@@ -4,7 +4,6 @@
     $.widget('pagebuilderCarousel', {
         component: 'Magento_PageBuilder/js/content-type/products/appearance/carousel/widget',
 
-        /** [create description] */
         create: function () {
             var slider = this.element.find('.slick-list'),
                 timer;
@@ -38,7 +37,6 @@
             });
         },
 
-        /** [slider description] */
         slider: function () {
             return this.element.pagebuilderSlider('instance');
         }

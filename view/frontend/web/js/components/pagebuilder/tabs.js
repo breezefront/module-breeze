@@ -4,7 +4,6 @@
     $.widget('pagebuilderTabs', {
         component: 'Magento_PageBuilder/js/content-type/tabs/appearance/default/widget',
 
-        /** [create description] */
         create: function () {
             this.element.tabs({
                 collapsibleElement: '[role=tab]',

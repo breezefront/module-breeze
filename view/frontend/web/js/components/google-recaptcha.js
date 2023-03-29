@@ -1,4 +1,4 @@
-/* global _ ko grecaptcha */
+/* global grecaptcha */
 (function () {
     'use strict';
 
@@ -81,7 +81,6 @@
             reCaptchaId: 'recaptcha'
         },
 
-        /** [create description] */
         create: function () {
             $.lazy(this._loadApi.bind(this));
         },

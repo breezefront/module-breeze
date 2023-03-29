@@ -1,4 +1,3 @@
-/* global $t _ */
 (function () {
     'use strict';
 
@@ -45,16 +44,12 @@
             }
         },
 
-        /** [create description] */
         create: function () {
             this.zipInput = this.element.find(this.options.selectors.zip);
             this.countrySelect = this.element.find(this.options.selectors.country);
             this._addPostCodeValidation();
         },
 
-        /**
-         * Add postcode validation
-         */
         _addPostCodeValidation: function () {
             var self = this;
 
@@ -73,8 +68,6 @@
         },
 
         /**
-         * Validate post code value.
-         *
          * @protected
          * @param {String} postCode - post code
          * @return {Boolean} Whether is post code valid
@@ -90,8 +83,6 @@
         },
 
         /**
-         * Renders warning messages for invalid post code.
-         *
          * @protected
          * @param {Boolean} valid
          */

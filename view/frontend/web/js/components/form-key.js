@@ -14,7 +14,6 @@
 
     /**
      * Generate form key string
-     * @private
      */
     function generateFormKeyString() {
         var result = '',
@@ -30,7 +29,6 @@
 
     /**
      * Init form_key inputs with value
-     * @private
      */
     function initFormKey() {
         var formKey = $.cookies.get('form_key');

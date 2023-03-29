@@ -13,7 +13,6 @@
             elementsSelector: '.item.product'
         },
 
-        /** Initialize plugin */
         create: function () {
             $(this.options.selectAllLink, this.element).on('click', this._selectAllRelated.bind(this));
             $(this.options.relatedCheckbox, this.element).on('click', this._addRelatedToProduct.bind(this));

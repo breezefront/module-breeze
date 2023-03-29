@@ -1,4 +1,3 @@
-/* global _ */
 (function () {
     'use strict';
 
@@ -37,10 +36,6 @@
             qtyInfo: '#qty'
         },
 
-        /**
-         * Creates widget
-         * @private
-         */
         _create: function () {
             if ($(this.options.priceHolderSelector).priceBox('instance')) {
                 this._onPriceFormatReady();
@@ -74,7 +69,6 @@
 
         /**
          * Initialize tax configuration, initial settings, and options values.
-         * @private
          */
         _initializeOptions: function () {
             var options = this.options,
@@ -113,7 +107,6 @@
         /**
          * Override default options values settings with either URL query parameters or
          * initialized inputs values.
-         * @private
          */
         _overrideDefaults: function () {
             var hashIndex = window.location.href.indexOf('#');
@@ -133,7 +126,6 @@
          * Parse query parameters from a query string and set options values based on the
          * key value pairs of the parameters.
          * @param {*} queryString - URL query string containing query parameters.
-         * @private
          */
         _parseQueryParams: function (queryString) {
             var queryParams = $.parseQuery(queryString);
@@ -151,7 +143,6 @@
         /**
          * Override default options values with values based on each element's attribute
          * identifier.
-         * @private
          */
         _setValuesByAttribute: function () {
             this.options.values = {};
@@ -173,7 +164,6 @@
 
         /**
          * Set additional field with initial label to be used when switching between options with different prices.
-         * @private
          */
         _setInitialOptionsLabels: function () {
             $.each(this.options.spConfig.attributes, function (index, element) {
@@ -185,7 +175,6 @@
 
         /**
          * Set up .on('change') events for each option element to configure the option.
-         * @private
          */
         _setupChangeEvents: function () {
             $.each(this.options.settings, function (index, element) {
@@ -196,7 +185,6 @@
         /**
          * Iterate through the option settings and set each option's element configuration,
          * attribute identifier. Set the state based on the attribute identifier.
-         * @private
          */
         _fillState: function () {
             $.each(this.options.settings, function (index, element) {
@@ -213,7 +201,6 @@
         /**
          * Set each option's child settings, and next/prev option setting. Fill (initialize)
          * an option's list of selections as needed or disable an option's setting.
-         * @private
          */
         _setChildSettings: function () {
             var childSettings = [],
@@ -243,7 +230,6 @@
         /**
          * Setup for all configurable option settings. Set the value of the option and configure
          * the option, which sets its state, and initializes the option's choices, etc.
-         * @private
          */
         _configureForValues: function () {
             if (this.options.values) {
@@ -258,7 +244,6 @@
 
         /**
          * Event handler for configuring an option.
-         * @private
          * @param {Object} event - Event triggered to configure an option.
          */
         _configure: function (event) {
@@ -268,7 +253,6 @@
         /**
          * Configure an option, initializing it's state and enabling related options, which
          * populates the related option's selection and resets child option selections.
-         * @private
          * @param {*} element - The element associated with a configurable option.
          */
         _configureElement: function (element) {
@@ -301,8 +285,6 @@
 
         /**
          * Change displayed product image according to chosen options of configurable product
-         *
-         * @private
          */
         _changeProductImage: function () {
             var images,
@@ -339,11 +321,6 @@
             }
         },
 
-        /**
-         * Sorting images array
-         *
-         * @private
-         */
         _sortImages: function (images) {
             return _.sortBy(images, function (image) {
                 return image.position;
@@ -353,7 +330,6 @@
         /**
          * For a given option element, reset all of its selectable options. Clear any selected
          * index, disable the option choice, and reset the option's state if necessary.
-         * @private
          * @param {*} element - The element associated with a configurable option.
          */
         _resetChildren: function (element) {
@@ -371,7 +347,6 @@
 
         /**
          * Populates an option's selectable choices.
-         * @private
          * @param {*} element - Element associated with a configurable option.
          */
         _fillSelect: function (element) {
@@ -470,6 +445,7 @@
                         if (this.options.spConfig.canDisplayShowOutOfStockStatus) {
                             if (this.options.spConfig.salable[attributeId][options[i].id]?.filter) {
                                 filteredSalableProducts = this.options.spConfig.salable[attributeId][options[i].id]
+                                    // eslint-disable-next-line no-loop-func
                                     .filter(id => allowedProducts.includes(id));
                             } else {
                                 filteredSalableProducts = [];
@@ -498,7 +474,6 @@
         /**
          * Generate the label associated with a configurable option. This includes the option's
          * label or value and the option's price.
-         * @private
          * @param {*} option - A single choice among a group of choices for a configurable option.
          * @return {String} The option label with option value and price (e.g. Black +1.99)
          */
@@ -508,7 +483,6 @@
 
         /**
          * Removes an option's selections.
-         * @private
          * @param {*} element - The element associated with a configurable option.
          */
         _clearSelect: function (element) {
@@ -521,7 +495,6 @@
 
         /**
          * Retrieve the attribute options associated with a specific attribute Id.
-         * @private
          * @param {Number} attributeId - The id of the attribute whose configurable options are sought.
          * @return {Object} Object containing the attribute options.
          */
@@ -542,7 +515,6 @@
         /**
          * Get product various prices
          * @returns {{}}
-         * @private
          */
         _getPrices: function () {
             var prices = {},
@@ -578,7 +550,6 @@
          *
          * @param {Array} allowedProducts
          * @returns {String}
-         * @private
          */
         _getAllowedProductWithMinPrice: function (allowedProducts) {
             var optionPrices = this.options.spConfig.optionPrices,
@@ -602,7 +573,6 @@
          *
          * @param {*} config - Products configuration
          * @returns {*}
-         * @private
          */
         _calculatePrice: function (config) {
             var displayPrices = $(this.options.priceHolderSelector).priceBox('option').prices,
@@ -645,7 +615,6 @@
          * Show or hide regular price block
          *
          * @param {*} optionId
-         * @private
          */
         _displayRegularPriceBlock: function (optionId) {
             var shouldBeShown = true,
@@ -678,8 +647,6 @@
 
         /**
          * Show or hide normal price label
-         *
-         * @private
          */
         _displayNormalPriceLabel: function () {
             var shouldBeShown = false;
@@ -710,7 +677,6 @@
          * Show or hide tier price block
          *
          * @param {*} optionId
-         * @private
          */
         _displayTierPriceBlock: function (optionId) {
             var tierPrices = typeof optionId != 'undefined' && this.options.spConfig.optionPrices[optionId].tierPrices;

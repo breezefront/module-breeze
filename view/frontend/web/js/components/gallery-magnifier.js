@@ -23,8 +23,8 @@
         },
 
         create: function () {
-            this.memo = {}
-            this.state = { enabled: true }
+            this.memo = {};
+            this.state = { enabled: true };
             this.rtl = $('body').hasClass('rtl');
             this.gallery = this.element.gallery('instance');
             this.image = this.element.find('img');
@@ -34,8 +34,7 @@
             }
 
             if (this.rtl && this.options.stage.position !== 'inner') {
-                this.options.stage.position = this.options.stage.position === 'right'
-                    ? 'left' : 'right';
+                this.options.stage.position = this.options.stage.position === 'right' ? 'left' : 'right';
             }
 
             this.prepareMarkup();
@@ -124,7 +123,7 @@
                 this.touchActive = false;
             });
 
-            this._on(isTouch ? 'touchend' : 'mouseleave', (e) => {
+            this._on(isTouch ? 'touchend' : 'mouseleave', () => {
                 if (this.activateTimer) {
                     this.activateTimer = clearTimeout(this.activateTimer);
                 }
@@ -258,6 +257,7 @@
                     .css(this.calculateStageSizeAndPosition());
 
                 if (parseFloat(this.stage.css('width')) < 150) {
+                    // eslint-disable-next-line max-depth
                     if (this.options.mode === 'auto') {
                         this.mode('lens');
                     } else {
@@ -285,7 +285,7 @@
                     this.image.one('load', function setLensBackground() {
                         this.image.off('load', setLensBackground);
                         this.lensImage.attr('src', this.image[0].currentSrc);
-                    }.bind(this))
+                    }.bind(this));
                 }
             } else {
                 image = this.lensImage;
@@ -321,9 +321,10 @@
                     height: this.element.height(),
                     top: this.element.offset().top + parseFloat(this.element.css('border-top-width')),
                     left: this.element.offset().left + parseFloat(this.element.css('border-left-width'))
-                }
+                };
             }
 
+            // eslint-disable-next-line one-var, vars-on-top
             var leftPosition = this.element.offset().left - this.element.width() - 10,
                 rightPosition = this.element.offset().left + this.element.width() + 10,
                 result = {
@@ -334,7 +335,7 @@
                 };
 
             if (result.left < 0) {
-                result.width += (result.left - 10);
+                result.width += result.left - 10;
                 result.left = 10;
             } else if (result.left + result.width > $(window).width()) {
                 result.width -= result.left + result.width - $(window).width() + 10;
@@ -423,7 +424,7 @@
             // wait for panzoom to reset scale
             setTimeout(() => {
                 magnifier.status(true);
-            }, 20)
+            }, 20);
         }
     }
 

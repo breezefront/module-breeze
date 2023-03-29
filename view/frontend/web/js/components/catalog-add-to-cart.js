@@ -14,7 +14,6 @@
             addToCartButtonDisabledClass: 'disabled'
         },
 
-        /** Init widget */
         create: function () {
             var self = this,
                 element = $(self.element);
@@ -34,8 +33,6 @@
         },
 
         /**
-         * Handler for the form 'submit' event
-         *
          * @param {Object} form
          */
         submitForm: function (form) {
@@ -59,13 +56,9 @@
             $.request.post({
                 form: form,
                 dataType: 'json',
-
-                /** A method to run after error or success */
                 complete: function () {
                     self.enableAddToCartButton(form);
                 },
-
-                /** Success callback */
                 success: function (data, response) {
                     data = self.getResponseData(response);
 
@@ -107,8 +100,6 @@
                             .html(data.product.statusText);
                     }
                 },
-
-                /** [error description] */
                 error: function (response) {
                     $(document).trigger('ajax:addToCart:error', {
                         'sku': form.data().productSku,

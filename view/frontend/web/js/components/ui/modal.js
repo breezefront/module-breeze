@@ -1,4 +1,3 @@
-/* global _ */
 (function () {
     'use strict';
 
@@ -40,10 +39,6 @@
                 text: $.__('Ok'),
                 class: '',
                 attr: {},
-
-                /**
-                 * Default action on button click
-                 */
                 click: function (event) {
                     this.closeModal(event);
                 }
@@ -63,9 +58,6 @@
             }
         },
 
-        /**
-         * Creates modal widget.
-         */
         _create: function () {
             var listeners = {};
 
@@ -118,8 +110,7 @@
         },
 
         /**
-         * Gets visible modal count.
-         * * @return {Number} - visible modal count.
+         * @return {Number}
          */
         _getVisibleCount: function () {
             var modals = this.modalWrapper.find(this.options.modalBlock);
@@ -128,8 +119,7 @@
         },
 
         /**
-         * Gets count of visible modal by slide type.
-         * * @return {Number} - visible modal count.
+         * @return {Number}
          */
         _getVisibleSlideCount: function () {
             var elems = this.modalWrapper.find('[data-type="slide"]');
@@ -150,8 +140,6 @@
         },
 
         /**
-         * Set title for modal.
-         *
          * @param {String} title
          */
         setTitle: function (title) {
@@ -163,8 +151,6 @@
         },
 
         /**
-         * Set sub title for modal.
-         *
          * @param {String} subTitle
          */
         setSubTitle: function (subTitle) {
@@ -172,10 +158,6 @@
             this.modal.find(this.options.modalSubTitle).html(subTitle);
         },
 
-        /**
-         * Toggle modal.
-         * * @return {Element} - current element.
-         */
         toggleModal: function (e) {
             if (e && e.preventDefault) {
                 e.preventDefault();
@@ -189,8 +171,7 @@
         },
 
         /**
-         * Open modal.
-         * * @return {Element} - current element.
+         * @return {Element}
          */
         openModal: function () {
             if (this.options.isOpen) {
@@ -223,8 +204,7 @@
         },
 
         /**
-         * Close modal.
-         * * @return {Element} - current element.
+         * @return {Element}
          */
         closeModal: function () {
             var that = this;
@@ -289,9 +269,6 @@
             }
         },
 
-        /**
-         * Creates wrapper to hold all modals.
-         */
         _createWrapper: function () {
             this.modalWrapper = $(this.options.appendTo).find('.' + this.options.wrapperClass);
 
@@ -302,9 +279,6 @@
             }
         },
 
-        /**
-         * Compile template and append to wrapper.
-         */
         _renderModal: function () {
             $(
                 _.template(this.options[this.options.type + 'Tpl'])({
@@ -322,9 +296,6 @@
             }
         },
 
-        /**
-         * Creates buttons pane.
-         */
         _createButtons: function () {
             this.buttons = this._getElem(this.options.modalAction);
             _.each(this.options.buttons, function (btn, key) {
@@ -345,9 +316,6 @@
             }, this);
         },
 
-        /**
-         * Creates overlay, append it to wrapper, set previous click event on overlay.
-         */
         _createOverlay: function () {
             var outerClickHandler = this.options.outerClickHandler || this.closeModal;
 
@@ -368,9 +336,6 @@
             }
         },
 
-        /**
-         * Destroy overlay.
-         */
         _destroyOverlay: function () {
             if (!this._getVisibleCount()) {
                 $(this.options.appendTo).removeClass(this.options.parentModalClass);

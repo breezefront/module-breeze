@@ -1,9 +1,7 @@
-/* global _ */
 (function () {
     'use strict';
 
     $.widget('abstractConfigurableUpdater', {
-        /** [create description] */
         create: function () {
             this.productOptions = {};
 
@@ -19,7 +17,6 @@
             }.bind(this));
         },
 
-        /** [destroy description] */
         destroy: function () {
             this.cartSubscription.dispose();
             this._super();
@@ -27,7 +24,6 @@
 
         updateOptions: _.noop,
 
-        /** [setProductOptions description] */
         setProductOptions: function (data) {
             var product,
                 changedProductOptions,
@@ -65,7 +61,6 @@
     $.widget('swatchUpdater', 'abstractConfigurableUpdater', {
         eventName: 'swatch.initialized',
 
-        /** [updateOptions description] */
         updateOptions: function () {
             var swatchWidget = $('.swatch-opt').data('mageSwatchRenderer');
 
@@ -83,7 +78,6 @@
     $.widget('configurableUpdater', 'abstractConfigurableUpdater', {
         eventName: 'configurable.initialized',
 
-        /** [updateOptions description] */
         updateOptions: function () {
             var configurableWidget = $('#product_addtocart_form').data('mageConfigurable');
 

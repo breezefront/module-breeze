@@ -1,4 +1,3 @@
-/* global ko _ */
 (function () {
     'use strict';
 
@@ -14,7 +13,6 @@
         isVisible: ko.observable(false),
         notificationText: ko.observable(),
 
-        /** [create description] */
         create: function () {
             var customerData = $.sections.get('customer'),
                 loggedAsCustomerData = $.sections.get('loggedAsCustomer');

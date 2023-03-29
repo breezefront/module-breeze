@@ -1,4 +1,3 @@
-/* global _ */
 (function () {
     'use strict';
 
@@ -8,22 +7,17 @@
             modalClass: 'alert',
             title: $.__('Attention'),
             actions: {
-
-                /** Callback always - called on all actions. */
                 always: function () {}
             },
             buttons: [{
                 text: $.__('OK'),
                 class: 'action-primary action-accept',
-
-                /** Click handler. */
                 click: function () {
                     this.closeModal(true);
                 }
             }]
         },
 
-        /** Create widget. */
         _create: function () {
             this._super();
             this.element.on('alert:closed', _.bind(this._remove, this));

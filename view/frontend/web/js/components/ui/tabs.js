@@ -12,7 +12,6 @@
             trigger: '[data-role=trigger]'
         },
 
-        /** init widget */
         create: function () {
             var self = this,
                 activeIndex,
@@ -137,7 +136,6 @@
             this._super();
         },
 
-        /** [getActiveTab description] */
         getActiveTab: function () {
             var tab;
 

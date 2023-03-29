@@ -10,16 +10,10 @@
             imageLoader: ''
         },
 
-        /**
-         * Method binds click event to reload image
-         */
         _create: function () {
             this.element.on('click', this.options.reloadSelector, this.refresh.bind(this));
         },
 
-        /**
-         * Method triggers an AJAX request to refresh the CAPTCHA image
-         */
         refresh: function () {
             var self = this,
                 button = this.element.find(this.options.reloadSelector);
@@ -40,16 +34,12 @@
                     formId: this.options.type
                 },
 
-                /**
-                 * @param {Object} data
-                 */
                 success: function (data) {
                     if (data.imgSrc) {
                         self.element.find(self.options.imageSelector).attr('src', data.imgSrc);
                     }
                 },
 
-                /** Complete callback. */
                 complete: function () {
                     button.spinner(false);
                     button.find('span').css('opacity', 1);

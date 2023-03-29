@@ -194,8 +194,10 @@
 
         return fetch(params.url, params)
             .then(function (response) {
+                var error;
+
                 if (!response.ok) {
-                    var error = new Error(response.code);
+                    error = new Error(response.code);
                     error.response = response;
                     throw error;
                 }
@@ -277,17 +279,14 @@
         }
     };
 
-    /** [get description] */
     $.ajax = function (url, params) {
         return $.request.send(url, params);
     };
 
-    /** [get description] */
     $.get = function (url, params) {
         return $.request.get(url, params);
     };
 
-    /** [get description] */
     $.post = function (url, params) {
         return $.request.post(url, params);
     };

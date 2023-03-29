@@ -1,11 +1,9 @@
 (function () {
     'use strict';
 
-    // Review List
     $.widget('ajaxReviews', {
         component: 'Magento_Review/js/process-reviews',
 
-        /** Create widget */
         create: function () {
             var self = this,
                 reviewTab = $(this.options.reviewsTabSelector);
@@ -33,7 +31,6 @@
             this._super();
         },
 
-        /** [loadReviews description] */
         loadReviews: function (href) {
             return $.request.get({
                 url: href || this.options.productReviewUrl,
@@ -44,16 +41,13 @@
         }
     });
 
-    // Review Form
     $.view('reviewForm', {
         component: 'Magento_Review/js/view/review',
 
-        /** Init component */
         create: function () {
             this.review = $.sections.get('review');
         },
 
-        /** Get nickname for the customer */
         nickname: function () {
             return this.review().nickname || $.sections.get('customer')().firstname;
         }

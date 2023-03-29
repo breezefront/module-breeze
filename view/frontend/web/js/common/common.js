@@ -1,4 +1,3 @@
-/* global _ ko */
 (function () {
     'use strict';
 
@@ -25,7 +24,6 @@
         form.get(0).appendChild(input);
     });
 
-    /** [getScopeId description] */
     $.breeze.getScopeId = function (scope) {
         var mapping = {
             'store': window.checkout ? window.checkout.storeId : '',
@@ -40,24 +38,17 @@
         return mapping[scope];
     };
 
-    /** [visit description] */
     $.breeze.visit = function (url) {
-        if (typeof Turbo !== 'undefined') {
-            // eslint-disable-next-line no-undef
-            Turbo.visit(url);
-        } else if (typeof Turbolinks !== 'undefined') {
-            // eslint-disable-next-line no-undef
+        if (typeof Turbolinks !== 'undefined') {
             Turbolinks.visit(url);
         } else {
             location.href = url;
         }
     };
 
-    /** [visit description] */
     $.breeze.scrollbar = {
         counter: 0,
 
-        /** [hide description] */
         hide: function () {
             var padding = parseFloat($('body').css('padding-right')),
                 scrollbar = Math.abs(window.innerWidth - document.documentElement.clientWidth);
@@ -71,7 +62,6 @@
             $('html, body').css('overflow', 'hidden');
         },
 
-        /** [show description] */
         reset: function () {
             if (!this.counter || --this.counter) {
                 return;

@@ -1,4 +1,3 @@
-/* global _ */
 (function () {
     'use strict';
 
@@ -26,9 +25,6 @@
             this.cache.displayPrices = $.catalog.priceUtils.deepClone(this.options.prices);
         },
 
-        /**
-         * Widget creating.
-         */
         _create: function () {
             var box = this.element;
 
@@ -128,7 +124,6 @@
         },
 
         /*eslint-disable no-extra-parens*/
-        /** Render price unit block. */
         reloadPrice: function () {
             var priceFormat = (this.options.priceConfig && this.options.priceConfig.priceFormat) || {},
                 priceTemplate = _.template(this.options.priceTemplate);
@@ -146,13 +141,11 @@
             }, this);
         },
 
-        /** [setDefault description] */
         setDefault: function (prices) {
             this.cache.displayPrices = $.catalog.priceUtils.deepClone(prices);
             this.options.prices = $.catalog.priceUtils.deepClone(prices);
         },
 
-        /** setDefaultsFromDataSet */
         _setDefaultsFromDataSet: function () {
             var box = this.element,
                 priceHolders = $('[data-price-type]', box),
@@ -174,9 +167,6 @@
             }
         },
 
-        /**
-         * setDefaultsFromPriceConfig
-         */
         _setDefaultsFromPriceConfig: function () {
             var config = this.options.priceConfig;
 
@@ -185,9 +175,6 @@
             }
         },
 
-        /**
-         * Updates product final price according to tier prices
-         */
         updateProductTierPrice: function () {
             var productQty = $(this.qtyInfo).val(),
                 originalPrice = this.options.prices.finalPrice.amount,

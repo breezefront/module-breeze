@@ -1,4 +1,3 @@
-/* global _ */
 (function () {
     'use strict';
 
@@ -13,7 +12,6 @@
             currentLabelElement: null
         },
 
-        /** Initialize plugin */
         create: function () {
             var self = this;
 
@@ -31,7 +29,6 @@
             });
         },
 
-        /** Toggle dropdown */
         toggle: function () {
             this.element.toggleClass(this.options.baseToggleClass);
 

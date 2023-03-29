@@ -1,4 +1,3 @@
-/* global ko _ */
 $.sections = $.customerData = window.customerData = (function () {
     'use strict';
 

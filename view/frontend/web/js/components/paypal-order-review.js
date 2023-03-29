@@ -18,14 +18,9 @@
             updateOrderSubmitUrl: null,
             canEditShippingMethod: false
         },
-
-        /**
-         * Widget instance properties
-         */
         triggerPropertyChange: true,
         isShippingSubmitForm: false,
 
-        /** @inheritdoc */
         _create: function () {
             var isDisable;
 
@@ -74,37 +69,22 @@
             }
         },
 
-        /**
-         * show ajax loader
-         */
         _ajaxBeforeSend: function () {
             this.element.find(this.options.waitLoadingContainer).show();
         },
 
-        /**
-         * hide ajax loader
-         */
         _ajaxComplete: function () {
             this.element.find(this.options.waitLoadingContainer).hide();
         },
 
-        /**
-         * trigger propertychange for input type select
-         */
         _propertyChange: function () {
             $(this).trigger('propertychange');
         },
 
-        /**
-         * trigger change for the update of shipping methods from server
-         */
         _updateOrderHandler: function () {
             $(this.options.shippingSelector).trigger('change');
         },
 
-        /**
-         * Attempt to submit order
-         */
         _submitOrder: function () {
             if (this._validateForm()) {
                 this.element.find(this.options.waitLoadingContainer).show();
@@ -113,9 +93,6 @@
             }
         },
 
-        /**
-         * Validate Order form
-         */
         _validateForm: function () {
             this.element.find(this.options.agreementSelector)
                 .off('change')

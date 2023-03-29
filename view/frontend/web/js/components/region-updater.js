@@ -1,4 +1,3 @@
-/* global _ */
 (function () {
     'use strict';
 
@@ -20,7 +19,6 @@
             isMultipleCountriesAllowed: true
         },
 
-        /** [create description] */
         create: function () {
             this._initCountryElement();
 
@@ -39,7 +37,6 @@
             }.bind(this));
         },
 
-        /** [_initCountryElement description] */
         _initCountryElement: function () {
             if (this.options.isMultipleCountriesAllowed) {
                 this.element.parents('div.field').show();
@@ -93,6 +90,7 @@
                 isSelected: false
             };
 
+            // eslint-disable-next-line eqeqeq
             if (this.options.defaultRegion == key) {
                 tmplData.isSelected = true;
             }
@@ -234,7 +232,7 @@
             var self = this;
 
             this.options.isRegionRequired = false;
-            $.each(this.options.regionJson.config['regions_required'], function (index, elem) {
+            $.each(this.options.regionJson.config.regions_required, function (index, elem) {
                 if (elem === country) {
                     self.options.isRegionRequired = true;
                 }

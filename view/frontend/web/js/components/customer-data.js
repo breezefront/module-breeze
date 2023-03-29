@@ -1,4 +1,3 @@
-/* global _ */
 (function () {
     'use strict';
 
@@ -42,7 +41,6 @@
             this.create();
         },
 
-        /** Init component */
         create: function () {
             var sectionNames;
 
@@ -126,8 +124,6 @@
                 url: this.options.sectionLoadUrl,
                 data: params,
                 accept: 'json',
-
-                /** Success callback */
                 success: function (data) {
                     var sectionDataIds = $.cookies.getJson('section_data_ids') || {};
 

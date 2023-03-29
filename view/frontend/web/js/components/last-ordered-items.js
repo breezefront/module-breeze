@@ -1,4 +1,3 @@
-/* global _ ko */
 (function () {
     'use strict';
 
@@ -8,7 +7,6 @@
             isShowAddToCart: false
         },
 
-        /** [create description] */
         create: function () {
             this.isShowAddToCart = ko.observable(this.isShowAddToCart);
             this.lastOrderedItems = $.customerData.get('last-ordered-items');
@@ -18,7 +16,6 @@
             return this;
         },
 
-        /** [checkSalableItems description] */
         checkSalableItems: function () {
             var isShowAddToCart = _.some(this.lastOrderedItems().items, {
                 'is_saleable': true

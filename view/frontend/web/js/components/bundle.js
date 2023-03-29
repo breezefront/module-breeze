@@ -1,4 +1,3 @@
-/* global _ */
 (function () {
     'use strict';
 
@@ -10,7 +9,6 @@
             bundleOptionsContainer: '#options-container'
         },
 
-        /** @inheritdoc */
         _create: function () {
             $(this.options.slideSelector).on('click', this._show.bind(this));
             $(this.options.slideBackSelector).on('click', this._hide.bind(this));
@@ -20,9 +18,6 @@
             }
         },
 
-        /**
-         * @private
-         */
         _show: function () {
             $(this.options.bundleOptionsContainer).show();
             $('html').css('scroll-behavior', 'smooth');
@@ -30,9 +25,6 @@
             $('#product-options-wrapper > fieldset').focus();
         },
 
-        /**
-         * @private
-         */
         _hide: function () {
             $('html').scrollTop(0);
             $(this.options.bundleOptionsContainer).hide();
@@ -56,7 +48,6 @@
 
         /**
          * Method attaches event observer to the product form
-         * @private
          */
         _create: function () {
             this.element
@@ -256,7 +247,6 @@
             }
         },
 
-        /** [_applyQtyFix description] */
         _applyQtyFix: function () {
             var config = this.options.optionConfig;
 
@@ -273,7 +263,6 @@
             }
         },
 
-        /** [_applyOptionNodeFix description] */
         _applyOptionNodeFix: function (options) {
             var config = this.options,
                 format = config.priceFormat,
@@ -322,7 +311,6 @@
             });
         },
 
-        /** [_setOptions description] */
         _setOptions: function (options) {
             $.extend(true, this.options, options);
 
@@ -331,7 +319,6 @@
             return this;
         },
 
-        /** [_displayTierPriceBlock description] */
         _displayTierPriceBlock: function (optionElement) {
             var optionType = optionElement.prop('type'),
                 optionId,
@@ -355,7 +342,6 @@
             }
         },
 
-        /** [updateProductSummary description] */
         updateProductSummary: function () {
             this.element.trigger('updateProductSummary', {
                 config: this.options.optionConfig
@@ -521,16 +507,16 @@
             tiersFirstKey = _.keys(optionConfig)[0],
             lowest = false;
 
-        if (!tiers) {//tiers is undefined when options has only one option
+        if (!tiers) { //tiers is undefined when options has only one option
             tiers = optionConfig[tiersFirstKey].tierPrice;
         }
 
-        tiers.sort(function (a, b) {//sorting based on "price_qty"
-            return a['price_qty'] - b['price_qty'];
+        tiers.sort(function (a, b) {
+            return a.price_qty - b.price_qty;
         });
 
         _.each(tiers, function (tier, index) {
-            if (tier['price_qty'] > qty) {
+            if (tier.price_qty > qty) {
                 return;
             }
 

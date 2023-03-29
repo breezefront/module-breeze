@@ -1,9 +1,7 @@
-/* global _ */
 (function () {
     'use strict';
 
     $.widget('productConfigure', {
-        /** [create description] */
         create: function () {
             this.cartSubscription = $.sections.get('cart').subscribe(function (data) {
                 this.syncQuantity(data);
@@ -12,13 +10,11 @@
             this.syncQuantity($.sections.get('cart')());
         },
 
-        /** [destroy description] */
         destroy: function () {
             this.cartSubscription.dispose();
             this._super();
         },
 
-        /** [syncQuantity description] */
         syncQuantity: function (data) {
             var product,
                 itemId = $('#product_addtocart_form [name="item"]').val(),

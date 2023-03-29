@@ -20,7 +20,6 @@
             url: ''
         },
 
-        /** @inheritdoc */
         create: function () {
             var self = this,
                 controls = [
@@ -39,7 +38,6 @@
             });
         },
 
-        /** @inheritdoc */
         addEventListener: function (element, paramName, defaultValue) {
             var self = this;
 
@@ -55,9 +53,6 @@
             }
         },
 
-        /**
-         * @private
-         */
         getUrlParams: function () {
             var decode = window.decodeURIComponent,
                 urlPaths = this.options.url.split('?'),
@@ -75,18 +70,10 @@
             return params;
         },
 
-        /**
-         * @returns {String}
-         * @private
-         */
         getCurrentLimit: function () {
             return this.getUrlParams()[this.options.limit] || this.options.limitDefault;
         },
 
-        /**
-         * @returns {String}
-         * @private
-         */
         getCurrentPage: function () {
             return this.getUrlParams()[this.options.page] || 1;
         },

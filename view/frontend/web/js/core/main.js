@@ -1,4 +1,3 @@
-/* global ko _ */
 (function () {
     'use strict';
 
@@ -234,21 +233,21 @@
                     return node.nodeValue.startsWith(' ko scope:');
                 }
             ),
-            curNode;
+            curNode,
+            match;
 
-        while (curNode = iterator.nextNode()) {
-            var match = curNode.nodeValue.match(/ko scope:.*?(['"])(.*)\1/);
+        while ((curNode = iterator.nextNode())) {
+            match = curNode.nodeValue.match(/ko scope:.*?(['"])(.*)\1/);
 
             if (!match) {
                 continue;
             }
 
             $(curNode.nextElementSibling)
-                .wrap(`<div data-bind="scope:'${match[2]}'"></div>`)
+                .wrap(`<div data-bind="scope:'${match[2]}'"></div>`);
         }
     }
 
-    /** [onBreezeLoad description] */
     function onBreezeLoad() {
         convertKoScopeToDataBind();
 

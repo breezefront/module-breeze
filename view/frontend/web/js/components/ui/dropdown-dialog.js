@@ -15,8 +15,6 @@
                 {
                     class: 'action close',
                     text: $.__('Close'),
-
-                    /** Click action. */
                     click: function () {
                         $(this).dropdownDialog('close');
                     }
@@ -24,7 +22,6 @@
             ]
         },
 
-        /** Init widget */
         create: function () {
             var self = this;
 
@@ -54,7 +51,6 @@
             });
         },
 
-        /** Add buttons panel */
         addButtons: function () {
             var self = this,
                 pane = $('<div class="ui-dialog-buttonpane">'),
@@ -104,13 +100,11 @@
             }
         },
 
-        /** Hide expanded menu's, remove event listeneres */
         destroy: function () {
             this.close();
             this._super();
         },
 
-        /** Open dialog */
         open: function () {
             this.status = true;
 
@@ -128,7 +122,6 @@
             this._trigger('open');
         },
 
-        /** Close dialog */
         close: function () {
             this.status = false;
 
@@ -140,7 +133,6 @@
             this._trigger('close');
         },
 
-        /** [toggleClasses description] */
         toggleClasses: function (flag) {
             if (this.options.dialogContentClass) {
                 this.element.toggleClass(this.options.dialogContentClass, flag);
@@ -159,7 +151,6 @@
             }
         },
 
-        /** Toggle dialog */
         toggle: function () {
             if (this.status) {
                 this.close();
@@ -168,7 +159,6 @@
             }
         },
 
-        /** Update dialog coords */
         updatePosition: function () {
             var target = this.options.position.of,
                 targetCoords = target.offset(),

@@ -1,4 +1,3 @@
-/* global ko _ */
 (function () {
     'use strict';
 
@@ -223,7 +222,6 @@
 
         /**
          * Calculate height of minicart list
-         *
          */
         _calcHeight: function () {
             var self = this,
@@ -264,7 +262,6 @@
         addToCartCalls: 0,
         minicartSelector: '[data-block="minicart"]',
 
-        /** [create description] */
         create: function () {
             var self = this,
                 cartData = $.sections.get('cart');
@@ -297,18 +294,15 @@
             }
         },
 
-        /** [destroy description] */
         destroy: function () {
             this.cartSubscription.dispose();
             this._super();
         },
 
-        /** [minicart description] */
         minicart: function () {
             return $(this.minicartSelector);
         },
 
-        /** init sidebar widget */
         initSidebar: function () {
             var minicart = this.minicart(),
                 sidebar = minicart.sidebar('instance');
@@ -326,7 +320,6 @@
             minicart.sidebar(this.getSidebarSettings());
         },
 
-        /** [getSidebarSettings description] */
         getSidebarSettings: function () {
             return {
                 url: {
@@ -437,7 +430,6 @@
     });
 
     ko.components.register('subtotal.totals', {
-        /** Constructor */
         viewModel: function (options) {
             this.cart = $.sections.get('cart');
             this.displaySubtotal = options.$root.displaySubtotal;

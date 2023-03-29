@@ -7,11 +7,10 @@
             deleteConfirmMessage: $.__('Are you sure you want to delete this address?')
         },
 
-        /** [_create description] */
         _create: function () {
-            var options         = this.options,
-                addAddress      = options.addAddress,
-                deleteAddress   = options.deleteAddress;
+            var options = this.options,
+                addAddress = options.addAddress,
+                deleteAddress = options.deleteAddress;
 
             if (addAddress) {
                 $(document).on('click.address', addAddress, this._addAddress.bind(this));
@@ -22,18 +21,15 @@
             }
         },
 
-        /** [destroy description] */
         destroy: function () {
             $(document).off('click.address');
             this._super();
         },
 
-        /** [_addAddress description] */
         _addAddress: function () {
             $.breeze.visit(this.options.addAddressLocation);
         },
 
-        /** [_deleteAddress description] */
         _deleteAddress: function (e) {
             var self = this,
                 id = $(e.target).parent().data('address') || $(e.target).data('address');
@@ -41,7 +37,6 @@
             $.confirm({
                 content: this.options.deleteConfirmMessage,
                 actions: {
-                    /** [confirm description] */
                     confirm: function () {
                         $.breeze.visit(
                             self.options.deleteUrlPrefix +

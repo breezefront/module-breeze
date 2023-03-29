@@ -1,11 +1,9 @@
-/* global _ */
 (function () {
     'use strict';
 
     $.widget('googleTagManager', {
         component: 'Magento_GoogleTagManager/js/google-tag-manager',
 
-        /** [create description] */
         create: function () {
             if (!this.isAllowed()) {
                 return;
@@ -14,7 +12,6 @@
             this.start();
         },
 
-        /** [isAllowed description] */
         isAllowed: function () {
             var cookie;
 
@@ -27,11 +24,11 @@
             return cookie && cookie[this.options.currentWebsite] === 1;
         },
 
-        /** [start description] */
         start: function () {
             window.dataLayer = [];
 
             (function (w, d, s, l, i) {
+                // eslint-disable-next-line eqeqeq
                 var dl = l != 'dataLayer' ? '&l=' + l : '',
                     f = d.getElementsByTagName(s)[0],
                     j = d.createElement(s);
@@ -79,7 +76,6 @@
             actions: {}
         },
 
-        /** [create description] */
         create: function () {
             this.googleAnalyticsUniversalCart = new window.GoogleAnalyticsUniversalCart({
                 dlCurrencyCode: this.options.dlCurrencyCode,
@@ -107,9 +103,9 @@
             this.googleAnalyticsUniversalCart.subscribeProductsUpdateInCart();
             this.googleAnalyticsUniversalCart.listenMinicartReload();
             this.options.dataLayer.push({
-                'ecommerce': {
-                    'impressions': 0,
-                    'promoView': 0
+                ecommerce: {
+                    impressions: 0,
+                    promoView: 0
                 }
             });
         },
@@ -124,18 +120,18 @@
 
             this.options.actions[events.AJAX_ADD_TO_CART] = function (product) {
                 this.googleAnalyticsUniversal.addToCart(
-                    product['product_sku'],
-                    product['product_name'],
-                    product['product_price_value'],
+                    product.product_sku,
+                    product.product_name,
+                    product.product_price_value,
                     product.qty
                 );
             }.bind(this);
 
             this.options.actions[events.AJAX_REMOVE_FROM_CART] = function (product) {
                 this.googleAnalyticsUniversal.removeFromCart(
-                    product['product_sku'],
-                    product['product_name'],
-                    product['product_price_value'],
+                    product.product_sku,
+                    product.product_name,
+                    product.product_price_value,
                     product.qty
                 );
             }.bind(this);
@@ -155,7 +151,7 @@
              * @return {Boolean}
              */
             var searchCriteria = function (item) {
-                    return item['product_id'] === productId;
+                    return item.product_id === productId;
                 },
                 productFromCache = _.find(this.cartItemsCache, searchCriteria),
                 productFromCart = _.find($.customerData.get('cart')().items, searchCriteria);
@@ -181,8 +177,6 @@
          *
          * @param {String} type - Event type.
          * @param {Array} productIds - list of product ids.
-         *
-         * @private
          */
         _setToTemporaryEventStorage: function (type, productIds) {
             this.options.temporaryEventStorage.push({
@@ -193,8 +187,6 @@
 
         /**
          * Sets listener to the cart data.
-         *
-         * @private
          */
         _setCartDataListener: function () {
             $.customerData.get('cart').subscribe(function (data) {
@@ -208,8 +200,6 @@
 
         /**
          * Sets listener to the cart.
-         *
-         * @private
          */
         _executeEvents: function () {
             var product;
@@ -218,7 +208,7 @@
                 item.productIds.forEach(function (productId) {
                     product = this.getProductById(productId);
 
-                    if (!_.isUndefined(product['product_sku']) && parseInt(product.qty, 10) > 0) {
+                    if (!_.isUndefined(product.product_sku) && parseInt(product.qty, 10) > 0) {
                         this.options.actions[item.type](product);
                     }
 
@@ -229,8 +219,6 @@
 
         /**
          * Sets listener to cart events.
-         *
-         * @private
          */
         _setListeners: function () {
             /**

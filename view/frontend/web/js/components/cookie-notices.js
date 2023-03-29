@@ -4,7 +4,6 @@
     $.widget('cookieNotices', {
         component: 'cookieNotices',
 
-        /** Initialize plugin */
         create: function () {
             var self = this;
 

@@ -15,6 +15,7 @@
         },
 
         create: function () {
+            // eslint-disable-next-line no-undef
             this.panzoom = Panzoom(this.element[0], this.options);
             this.addEventListeners();
         },

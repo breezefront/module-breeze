@@ -1,4 +1,3 @@
-/* global _ */
 (function () {
     'use strict';
 
@@ -29,7 +28,6 @@
             mediaBreakpoint: '(max-width: 768px)'
         },
 
-        /** @inheritdoc */
         create: function () {
             var self = this;
 
@@ -90,7 +88,6 @@
                 });
 
             this._on(document, {
-                /** [keydown description] */
                 keydown: function (e) {
                     if (e.key === 'Escape') {
                         self.hideAutocomplete();
@@ -119,16 +116,10 @@
             this._super();
         },
 
-        /**
-         * @returns {Boolean}
-         */
         isActive: function () {
             return this.searchLabel.hasClass('active');
         },
 
-        /**
-         * @param {Boolean} isActive
-         */
         setActiveState: function (isActive) {
             var el = this.element.get(0);
 
@@ -156,7 +147,6 @@
             }
         },
 
-        /** [submitSelectedItem description] */
         submitSelectedItem: function () {
             this.searchForm.submit();
         },
@@ -215,7 +205,6 @@
             }
         },
 
-        /** [_onBlur description] */
         _onBlur: function () {
             var self = this;
 
@@ -233,7 +222,6 @@
             }, 250);
         },
 
-        /** [_selectEl description] */
         _selectEl: function (el, focus) {
             if (!el) {
                 return;
@@ -253,7 +241,6 @@
             this.responseList.selectedIndex = this.responseList.indexList.index(el);
         },
 
-        /** [_selectNextEl description] */
         _selectNextEl: function (focus) {
             var index = this.responseList.selectedIndex,
                 el = this._getFirstVisibleElement();
@@ -265,7 +252,6 @@
             this._selectEl(el, focus);
         },
 
-        /** [_selectPrevEl description] */
         _selectPrevEl: function (focus) {
             var index = this.responseList.selectedIndex,
                 el = this._getLastElement();
@@ -351,19 +337,16 @@
             }
         },
 
-        /** [canUseNavKeys description] */
         canUseNavKeys: function () {
             return this.isVisibleAutocomplete();
         },
 
-        /** [isVisibleAutocomplete description] */
         isVisibleAutocomplete: function () {
             var autocomplete = this.autoComplete.not(':empty').visible();
 
             return autocomplete.length > 0 && autocomplete.css('visibility') !== 'hidden';
         },
 
-        /** [_onEnterKeyDown description] */
         _onEnterKeyDown: function (e) {
             if (e.key === 'Enter' &&
                 this.element.val().length >= this.options.minSearchLength
@@ -373,7 +356,6 @@
             }
         },
 
-        /** [sendRequest description] */
         sendRequest: function () {
             var value = this.element.val();
 
@@ -397,12 +379,10 @@
             }.bind(this));
         },
 
-        /** [prepareResponse description] */
         prepareResponse: function (data) {
             this.dataset = data;
         },
 
-        /** [processResponse description] */
         processResponse: function () {
             var dropdown = $(this.options.dropdown);
 
@@ -438,7 +418,6 @@
             }
         },
 
-        /** [showAutocomplete description] */
         showAutocomplete: function (content) {
             if (!content && this.isVisibleAutocomplete()) {
                 return;
@@ -458,7 +437,6 @@
                 .attr('tabIndex', 0);
         },
 
-        /** [showAutocomplete description] */
         hideAutocomplete: function () {
             this.autoComplete
                 .hide()
@@ -466,14 +444,12 @@
                 .removeAttr('tabIndex');
         },
 
-        /** [renderItem description] */
         renderItem: function (item) {
             return this.getItemTemplate(item)({
                 data: item
             });
         },
 
-        /** [getItemTemplate description] */
         getItemTemplate: function () {
             if (!this.template) {
                 this.template = _.template(this.options.template);
@@ -482,7 +458,6 @@
             return this.template;
         },
 
-        /** [resetAutocomplete description] */
         resetAutocomplete: function () {
             this._resetResponseList(true);
             this.hideAutocomplete();

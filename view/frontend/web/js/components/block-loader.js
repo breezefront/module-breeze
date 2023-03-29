@@ -1,4 +1,3 @@
-/* global _ */
 (function () {
     'use strict';
 
@@ -15,6 +14,7 @@
 
     /**
      * @param {Object} element
+     * @param {Object} settings
      */
     function show(element, settings) {
         var position = element.css('position'),
@@ -80,7 +80,6 @@
     $.widget('blockLoader', {
         component: 'Magento_Ui/js/block-loader',
 
-        /** [create description] */
         create: function () {
             var href = this.options;
 
@@ -90,7 +89,7 @@
                 }));
             }
         },
-        show: delayedShow, // @todo Promise
-        hide: hide  // @todo Promise
+        show: delayedShow,
+        hide: hide
     });
 })();

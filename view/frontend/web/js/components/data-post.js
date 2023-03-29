@@ -1,4 +1,3 @@
-/* global _ */
 (function () {
     'use strict';
 
@@ -11,7 +10,6 @@
             formKeyInputSelector: 'input[name="form_key"]'
         },
 
-        /** Send post request */
         postData: function (params) {
             var self = this,
                 formKey = $(this.options.formKeyInputSelector).val(),
@@ -49,7 +47,6 @@
             $.confirm({
                 content: params.data.confirmationMessage,
                 actions: {
-                    /** [confirm description] */
                     confirm: function () {
                         self.submitForm($form);
                     }

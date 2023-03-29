@@ -1,4 +1,3 @@
-/* global _ */
 (function () {
     'use strict';
 
@@ -73,9 +72,6 @@
         component: 'priceOptions',
         options: globalOptions,
 
-        /**
-         * @private
-         */
         _init: function () {
             // timout is used to wait until price-box widget will be mounted
             setTimeout(function () {
@@ -83,11 +79,6 @@
             }.bind(this), 80);
         },
 
-        /**
-         * Widget creating method.
-         * Triggered once.
-         * @private
-         */
         _create: function () {
             var form = this.element,
                 options = $(this.options.optionsSelector, form),

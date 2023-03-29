@@ -7,7 +7,6 @@
             elementsSelector: '.item.product'
         },
 
-        /** Initialize plugin */
         create: function () {
             if (this.element.data('shuffle')) {
                 $.breeze.shuffleElements(this.element.find(this.options.elementsSelector));

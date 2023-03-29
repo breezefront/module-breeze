@@ -11,7 +11,6 @@
             handles: []
         },
 
-        /** Initialize plugin */
         create: function () {
             var placeholders,
                 version = $.cookies.get(this.options.versionCookieName);
@@ -26,14 +25,11 @@
             }
         },
 
-        /** Get all comments */
         getComments: function () {
             var comments = [],
                 iterator = document.createNodeIterator(
                     document.body,
                     NodeFilter.SHOW_COMMENT,
-
-                    /** [filterNone description] */
                     function filterNone() {
                         return NodeFilter.FILTER_ACCEPT;
                     },

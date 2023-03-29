@@ -4,7 +4,6 @@
     $.widget('persistent', {
         component: 'Magento_Persistent/js/view/additional-welcome',
 
-        /** Initialize plugin */
         create: function () {
             var persistent = $.sections.get('persistent');
 

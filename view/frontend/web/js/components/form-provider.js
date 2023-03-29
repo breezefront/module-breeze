@@ -1,4 +1,3 @@
-/* global _ */
 (function () {
     'use strict';
 
@@ -7,7 +6,6 @@
             data: {}
         },
 
-        /** [set description] */
         set: function (key, value) {
             this.data[key] = value;
         },
@@ -20,7 +18,6 @@
             return _.get(this, path.split('.'));
         },
 
-        /** [save description] */
         save: function () {
             return $.request.post({
                 url: this.options.submit_url,

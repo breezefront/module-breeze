@@ -1,4 +1,3 @@
-/* global ko _ focusTrap */
 (function () {
     'use strict';
 
@@ -33,12 +32,10 @@
         };
     });
 
-    /** [isVisible description] */
     function isVisible(i, el) {
         return el.offsetWidth || el.offsetHeight || el.getClientRects().length;
     }
 
-    /** [isVisible description] */
     function isHidden(i, el) {
         return !isVisible(i, el);
     }
@@ -63,7 +60,6 @@
         return this.hidden().length > 0;
     };
 
-    /** [inViewport description] */
     function inViewport(i, el) {
         var rect = el.getBoundingClientRect();
 
@@ -204,7 +200,6 @@
         return result;
     });
 
-    /** Hover implementation */
     $.fn.hover = function (mouseenter, mouseleave) {
         this.on('mouseenter', mouseenter).on('mouseleave', mouseleave);
     };
@@ -284,7 +279,6 @@
         return getComputedStyle(el).getPropertyValue(name);
     };
 
-    /** Proxy implementation */
     $.proxy = _.bind;
 
     /** Serialize object to query string */
@@ -353,5 +347,6 @@
         return destination;
     };
 
+    // eslint-disable-next-line no-undef
     $.focusTrap = focusTrap;
 })();

@@ -1,4 +1,3 @@
-/* global _ */
 (function () {
     'use strict';
 
@@ -9,36 +8,25 @@
             title: '',
             focus: '.action-accept',
             actions: {
-
-                /** Callback always - called on all actions. */
                 always: function () {},
-
-                /** Callback confirm. */
                 confirm: function () {},
-
-                /** Callback cancel. */
                 cancel: function () {}
             },
             buttons: [{
                 text: $.__('Cancel'),
                 class: 'action-secondary action-dismiss',
-
-                /** Click handler. */
                 click: function (event) {
                     this.closeModal(event);
                 }
             }, {
                 text: $.__('OK'),
                 class: 'action-primary action-accept',
-
-                /** Click handler. */
                 click: function (event) {
                     this.closeModal(event, true);
                 }
             }]
         },
 
-        /** Create widget. */
         _create: function () {
             this._super();
             this.openModal();
@@ -46,12 +34,10 @@
             this.element.on('confirm:closed', _.bind(this._remove, this));
         },
 
-        /** Remove modal window. */
         _remove: function () {
             this.modal.remove();
         },
 
-        /** Close modal window. */
         closeModal: function (event, result) {
             result = result || false;
 

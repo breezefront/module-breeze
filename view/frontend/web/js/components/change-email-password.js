@@ -17,18 +17,12 @@
             confirmPasswordSelector: '[data-input=confirm-password]'
         },
 
-        /**
-         * Create widget
-         */
         create: function () {
             this.element.on('change', this._checkChoice.bind(this));
             $(this.options.emailSelector).on('change keyup paste', this._updatePasswordFieldWithEmailValue.bind(this));
             this._checkChoice();
         },
 
-        /**
-         * Check choice
-         */
         _checkChoice: function () {
             if ($(this.options.changeEmailSelector).is(':checked') &&
                 $(this.options.changePasswordSelector).is(':checked')) {
@@ -42,9 +36,6 @@
             }
         },
 
-        /**
-         * Show email and password input fields
-         */
         _showAll: function () {
             $(this.options.titleSelector).html(this.options.titleChangeEmailAndPassword);
 
@@ -62,9 +53,6 @@
             ).prop('disabled', false);
         },
 
-        /**
-         * Hide email and password input fields
-         */
         _hideAll: function () {
             $(this.options.mainContainerSelector).hide();
             $(this.options.emailContainerSelector).hide();
@@ -77,9 +65,6 @@
             $(this.options.confirmPasswordSelector).removeAttr('data-validate').prop('disabled', true);
         },
 
-        /**
-         * Show email input fields
-         */
         _showEmail: function () {
             this._showAll();
             $(this.options.titleSelector).html(this.options.titleChangeEmail);
@@ -91,9 +76,6 @@
             $(this.options.confirmPasswordSelector).removeAttr('data-validate').prop('disabled', true);
         },
 
-        /**
-         * Show password input fields
-         */
         _showPassword: function () {
             this._showAll();
             $(this.options.titleSelector).html(this.options.titleChangePassword);
@@ -103,9 +85,6 @@
             $(this.options.emailSelector).removeAttr('data-validate').prop('disabled', true);
         },
 
-        /**
-         * Update password validation rules with email input field value
-         */
         _updatePasswordFieldWithEmailValue: function () {
             $(this.options.newPasswordSelector).attr(
                 'data-validate',

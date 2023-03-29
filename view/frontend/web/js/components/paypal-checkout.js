@@ -9,20 +9,17 @@
             ppCheckoutInput: '<input type="hidden" data-role="pp-checkout-url" name="return_url" value="">'
         },
 
-        /** Init widget */
         create: function () {
             this.agreements = $.sections.get('paypal-billing-agreement');
             this.onClickHandler = this.onClick.bind(this);
             this.element.on('click', '[data-action="checkout-form-submit"]', this.onClickHandler);
         },
 
-        /** Destroy widget listeners */
         destroy: function () {
             this.element.off('click', this.onClickHandler);
             this._super();
         },
 
-        /** [onClick description] */
         onClick: function (event) {
             var self = this,
                 target = $(event.target),
@@ -58,7 +55,6 @@
             }
         },
 
-        /** Initialize plugin */
         redirect: function (returnUrl, form) {
             var ppCheckoutInput;
 

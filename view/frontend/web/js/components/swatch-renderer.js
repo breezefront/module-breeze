@@ -1,14 +1,12 @@
-/* global _ */
 (function () {
     'use strict';
 
     $.widget('SwatchRendererTooltip', {
         options: {
-            delay: 200,                             //how much ms before tooltip to show
-            tooltipClass: 'swatch-option-tooltip'  //configurable, but remember about css
+            delay: 200,
+            tooltipClass: 'swatch-option-tooltip'
         },
 
-        /** [_init description] */
         _init: function () {
             var $widget = this,
                 $this = this.element,
@@ -260,18 +258,12 @@
             this._super();
         },
 
-        /**
-         * @private
-         */
         _sortAttributes: function () {
             this.options.jsonConfig.attributes = _.sortBy(this.options.jsonConfig.attributes, function (attribute) {
                 return parseInt(attribute.position, 10);
             });
         },
 
-        /**
-         * @private
-         */
         _create: function () {
             var options = this.options,
                 gallery = $('.column.main').find('[data-gallery-role="gallery-placeholder"]'),
@@ -295,10 +287,7 @@
         },
 
         /**
-         * Determine product id and related data
-         *
          * @returns {{productId: *, isInProductView: bool}}
-         * @private
          */
         _determineProductData: function () {
             // Check if product is in a list of products.
@@ -321,11 +310,6 @@
             };
         },
 
-        /**
-         * Render controls
-         *
-         * @private
-         */
         _RenderControls: function () {
             var $widget = this,
                 container = this.element,
@@ -618,11 +602,6 @@
             });
         },
 
-        /**
-         * Load media gallery using ajax or json config.
-         *
-         * @private
-         */
         _loadMedia: function () {
             var $main = this.inProductList ?
                     this.element.parents('.product-item-info') :
@@ -641,11 +620,6 @@
             }
         },
 
-        /**
-         * Sorting images array
-         *
-         * @private
-         */
         _sortImages: function (images) {
             return _.sortBy(images, function (image) {
                 return parseInt(image.position, 10);
@@ -716,7 +690,6 @@
          * Get selected option price index
          *
          * @return {String|undefined}
-         * @private
          */
         _getSelectedOptionPriceIndex: function () {
             var allowedProduct = this._getAllowedProductWithMinPrice(this._CalcProducts());
@@ -733,7 +706,6 @@
          *
          * @param {Number} attributeId
          * @returns {*}
-         * @private
          */
         _getAttributeCodeById: function (attributeId) {
             var attribute = this.options.jsonConfig.mappedAttributes[attributeId];
@@ -746,7 +718,6 @@
          *
          * @param {Object} $this
          * @param {Object} $wrapper
-         * @private
          */
         _toggleCheckedAttributes: function ($this, $wrapper) {
             $wrapper.attr('aria-activedescendant', $this.attr('id'))
@@ -759,7 +730,6 @@
          *
          * @param {Object} $this
          * @param {Object} $widget
-         * @private
          */
         _OnChange: function ($this, $widget) {
             var $parent = $this.parents('.' + $widget.options.classes.attributeClass),
@@ -790,7 +760,6 @@
          * Event for more switcher
          *
          * @param {Object} $this
-         * @private
          */
         _OnMoreClick: function ($this) {
             $this.nextAll().show();
@@ -799,8 +768,6 @@
 
         /**
          * Rewind options for controls
-         *
-         * @private
          */
         _Rewind: function (controls) {
             controls.find('div[data-option-id], option[data-option-id]').removeClass('disabled').removeAttr('disabled');
@@ -810,11 +777,6 @@
                 .attr('tabindex', '-1');
         },
 
-        /**
-         * Rebuild container
-         *
-         * @private
-         */
         _Rebuild: function () {
             var $widget = this,
                 controls = $widget.element.find('.' + $widget.options.classes.attributeClass + '[data-attribute-id]'),
@@ -861,7 +823,6 @@
          * Get selected product list
          *
          * @returns {Array}
-         * @private
          */
         _CalcProducts: function ($skipAttributeId) {
             var $widget = this,
@@ -891,11 +852,6 @@
             return products;
         },
 
-        /**
-         * Update total price
-         *
-         * @private
-         */
         _UpdatePrice: function () {
             var $widget = this,
                 $product = $widget._getProductWrapper(),
@@ -948,7 +904,6 @@
             }.bind(this));
         },
 
-        /** [_getProductWrapper description] */
         _getProductWrapper: function () {
             var selector = this.options.selectorProduct.replace('.product-item-details', '.product-item-info'),
                 wrapper = this.element.closest(selector);
@@ -964,7 +919,6 @@
          * Get new prices for selected options
          *
          * @returns {*}
-         * @private
          */
         _getNewPrices: function () {
             var $widget = this,
@@ -979,12 +933,9 @@
         },
 
         /**
-         * Get prices
-         *
          * @param {Object} newPrices
          * @param {Object} displayPrices
          * @returns {*}
-         * @private
          */
         _getPrices: function (newPrices, displayPrices) {
             var $widget = this;
@@ -1007,7 +958,6 @@
          *
          * @param {Array} allowedProducts
          * @returns {String}
-         * @private
          */
         _getAllowedProductWithMinPrice: function (allowedProducts) {
             var optionPrices = this.options.jsonConfig.optionPrices,
@@ -1028,8 +978,6 @@
 
         /**
          * Gets all product media and change current to the needed one
-         *
-         * @private
          */
         _LoadProductMedia: function () {
             var $widget = this,
@@ -1080,7 +1028,6 @@
          * Enable loader
          *
          * @param {Object} element
-         * @private
          */
         _EnableProductMediaLoader: function (element) {
             element.parents('.product-item-info')
@@ -1093,7 +1040,6 @@
          * Disable loader
          *
          * @param {Object} element
-         * @private
          */
         _DisableProductMediaLoader: function (element) {
             element.parents('.product-item-info')
@@ -1108,7 +1054,6 @@
          * @param {Object} $this
          * @param {String} response
          * @param {Boolean} isInProductView
-         * @private
          */
         _ProductMediaCallback: function ($this, response, isInProductView) {
             var $main = isInProductView ? $this.parents('.column.main') : $this.parents('.product-item-info'),
@@ -1239,7 +1184,6 @@
         /**
          * Emulate mouse click on all swatches that should be selected
          * @param {Object} [selectedAttributes]
-         * @private
          */
         _EmulateSelected: function (selectedAttributes) {
             $.each(selectedAttributes, function (attributeCode, optionId) {
@@ -1263,7 +1207,6 @@
         /**
          * Emulate mouse click or selection change on all swatches that should be selected
          * @param {Object} [selectedAttributes]
-         * @private
          */
         _EmulateSelectedByAttributeId: function (selectedAttributes) {
             $.each(selectedAttributes, function (attributeId, optionId) {
@@ -1286,7 +1229,6 @@
 
         /**
          * Get default options values settings with either URL query parameters
-         * @private
          */
         _getSelectedAttributes: function () {
             var hashIndex = window.location.href.indexOf('#'),
@@ -1315,8 +1257,6 @@
 
         /**
          * Sets mediaCache for cases when jsonConfig contains preSelectedGallery on layered navigation result pages
-         *
-         * @private
          */
         _setPreSelectedGallery: function () {
             var mediaCallData;

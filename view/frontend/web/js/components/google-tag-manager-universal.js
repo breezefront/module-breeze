@@ -1,4 +1,3 @@
-/* global _ */
 (function () {
     'use strict';
 
@@ -263,15 +262,15 @@
          */
         collectOriginalProducts: function () {
             var products = {},
-                items = customerData.get('cart')().items;
+                items = $.customerData.get('cart')().items;
 
             if (!_.isUndefined(items)) {
                 items.forEach(function (item) {
-                    products[item['product_sku']] = {
-                        'id': item['product_sku'],
-                        'name': item['product_name'],
-                        'price': item['product_price_value'],
-                        'qty': parseInt(item.qty, 10)
+                    products[item.product_sku] = {
+                        id: item.product_sku,
+                        name: item.product_name,
+                        price: item.product_price_value,
+                        qty: parseInt(item.qty, 10)
                     };
                 });
             }
@@ -288,8 +287,8 @@
 
             $('[data-multiship-item-id]').each(function (index, elem) {
                 productQtys.push({
-                    'id': $(elem).data('multiship-item-id'),
-                    'qty': $(elem).val()
+                    id: $(elem).data('multiship-item-id'),
+                    qty: $(elem).val()
                 });
             });
 
@@ -304,8 +303,8 @@
 
             $('[data-cart-item-id]').each(function (index, elem) {
                 productQtys.push({
-                    'id': $(elem).data('cart-item-id'),
-                    'qty': $(elem).val()
+                    id: $(elem).data('cart-item-id'),
+                    qty: $(elem).val()
                 });
             });
 
@@ -320,8 +319,8 @@
 
             $('input[data-cart-item-id]').each(function (index, elem) {
                 productQtys.push({
-                    'id': $(elem).data('cart-item-id'),
-                    'qty': $(elem).val()
+                    id: $(elem).data('cart-item-id'),
+                    qty: $(elem).val()
                 });
             });
 
@@ -380,10 +379,10 @@
                     }
 
                     productsOut.push({
-                        'id': itemId,
-                        'name': productsIn[i].name,
-                        'price': productsIn[i].price,
-                        'quantity': parseInt(productsIn[i].qty, 10)
+                        id: itemId,
+                        name: productsIn[i].name,
+                        price: productsIn[i].price,
+                        quantity: parseInt(productsIn[i].qty, 10)
                     });
                 }
             }
@@ -403,11 +402,11 @@
             }
 
             this.dataLayer.push({
-                'event': 'addToCart',
-                'ecommerce': {
-                    'currencyCode': this.dlCurrencyCode,
-                    'add': {
-                        'products': this.formatProductsArray(this.addedProducts)
+                event: 'addToCart',
+                ecommerce: {
+                    currencyCode: this.dlCurrencyCode,
+                    add: {
+                        products: this.formatProductsArray(this.addedProducts)
                     }
                 }
             });
@@ -424,11 +423,11 @@
             }
 
             this.dataLayer.push({
-                'event': 'removeFromCart',
-                'ecommerce': {
-                    'currencyCode': this.dlCurrencyCode,
-                    'remove': {
-                        'products': this.formatProductsArray(this.removedProducts)
+                event: 'removeFromCart',
+                ecommerce: {
+                    currencyCode: this.dlCurrencyCode,
+                    remove: {
+                        products: this.formatProductsArray(this.removedProducts)
                     }
                 }
             });
@@ -497,18 +496,18 @@
          */
         activeOnCategory: function (id, name, category, list, position) {
             this.dataLayer.push({
-                'event': 'productClick',
-                'ecommerce': {
-                    'click': {
-                        'actionField': {
-                            'list': list
+                event: 'productClick',
+                ecommerce: {
+                    click: {
+                        actionField: {
+                            list: list
                         },
-                        'products': [{
-                            'id': id,
-                            'name': name,
-                            'category': category,
-                            'list': list,
-                            'position': position
+                        products: [{
+                            id: id,
+                            name: name,
+                            category: category,
+                            list: list,
+                            position: position
                         }]
                     }
                 }
@@ -526,18 +525,18 @@
          */
         activeOnProducts: function (id, name, list, position, category) {
             this.dataLayer.push({
-                'event': 'productClick',
-                'ecommerce': {
-                    'click': {
-                        'actionField': {
-                            'list': list
+                event: 'productClick',
+                ecommerce: {
+                    click: {
+                        actionField: {
+                            list: list
                         },
-                        'products': [{
-                            'id': id,
-                            'name': name,
-                            'list': list,
-                            'position': position,
-                            'category': category
+                        products: [{
+                            id: id,
+                            name: name,
+                            list: list,
+                            position: position,
+                            category: category
                         }]
                     }
                 }
@@ -554,15 +553,15 @@
          */
         addToCart: function (id, name, price, quantity) {
             this.dataLayer.push({
-                'event': 'addToCart',
-                'ecommerce': {
-                    'currencyCode': this.dlCurrencyCode,
-                    'add': {
-                        'products': [{
-                            'id': id,
-                            'name': name,
-                            'price': price,
-                            'quantity': quantity
+                event: 'addToCart',
+                ecommerce: {
+                    currencyCode: this.dlCurrencyCode,
+                    add: {
+                        products: [{
+                            id: id,
+                            name: name,
+                            price: price,
+                            quantity: quantity
                         }]
                     }
                 }
@@ -579,15 +578,15 @@
          */
         removeFromCart: function (id, name, price, quantity) {
             this.dataLayer.push({
-                'event': 'removeFromCart',
-                'ecommerce': {
-                    'currencyCode': this.dlCurrencyCode,
-                    'remove': {
-                        'products': [{
-                            'id': id,
-                            'name': name,
-                            'price': price,
-                            'quantity': quantity
+                event: 'removeFromCart',
+                ecommerce: {
+                    currencyCode: this.dlCurrencyCode,
+                    remove: {
+                        products: [{
+                            id: id,
+                            name: name,
+                            price: price,
+                            quantity: quantity
                         }]
                     }
                 }
@@ -604,14 +603,14 @@
          */
         clickBanner: function (id, name, creative, position) {
             this.dataLayer.push({
-                'event': 'promotionClick',
-                'ecommerce': {
-                    'promoClick': {
-                        'promotions': [{
-                            'id': id,
-                            'name': name,
-                            'creative': creative,
-                            'position': position
+                event: 'promotionClick',
+                ecommerce: {
+                    promoClick: {
+                        promotions: [{
+                            id: id,
+                            name: name,
+                            creative: creative,
+                            position: position
                         }]
                     }
                 }
@@ -686,9 +685,9 @@
         updateImpressions: function () {
             var pageImpressions = this.mergeImpressions(),
                 dlImpressions = {
-                    'event': 'productImpression',
-                    'ecommerce': {
-                        'impressions': []
+                    event: 'productImpression',
+                    ecommerce: {
+                        impressions: []
                     }
                 },
                 i = 0,
@@ -707,11 +706,11 @@
                 for (i; i < pageImpressions[blockName].length; i++) {
                     impression = pageImpressions[blockName][i];
                     dlImpressions.ecommerce.impressions.push({
-                        'id': impression.id,
-                        'name': impression.name,
-                        'category': impression.category,
-                        'list': impression.list,
-                        'position': impression.position
+                        id: impression.id,
+                        name: impression.name,
+                        category: impression.category,
+                        list: impression.list,
+                        position: impression.position
                     });
                     impressionCounter++;
                     this.bindImpressionClick(
@@ -755,10 +754,10 @@
          */
         updatePromotions: function () {
             var dlPromotions = {
-                    'event': 'promotionView',
-                    'ecommerce': {
-                        'promoView': {
-                            'promotions': []
+                    event: 'promotionView',
+                    ecommerce: {
+                        promoView: {
+                            promotions: []
                         }
                     }
                 },
@@ -803,10 +802,10 @@
                 /* eslint-enable eqeqeq */
 
                 dlPromotions.ecommerce.promoView.promotions.push({
-                    'id': promotion.id,
-                    'name': promotion.name,
-                    'creative': promotion.creative,
-                    'position': promotion.position
+                    id: promotion.id,
+                    name: promotion.name,
+                    creative: promotion.creative,
+                    position: promotion.position
                 });
                 promotionCounter++;
             }

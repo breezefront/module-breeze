@@ -1,8 +1,6 @@
-/* global _ ko */
 (function () {
     'use strict';
 
-    // Magento_Ui/js/view/messages
     $.view('uiMessages', {
         component: 'Magento_Ui/js/view/messages',
         defaults: {
@@ -45,11 +43,9 @@
         }
     });
 
-    // Magento_Theme/js/view/messages
     $.view('messages', {
         component: 'Magento_Theme/js/view/messages',
 
-        /** Init component */
         create: function () {
             var self = this;
 
@@ -66,7 +62,6 @@
             this.removeCookieMessages();
         },
 
-        /** Remove mage-messages cookie */
         removeCookieMessages: function () {
             $.cookies.remove('mage-messages', {
                 domain: ''
@@ -81,7 +76,6 @@
             return message.replace(/\+/g, ' ');
         },
 
-        /** Hide all messages */
         destroy: function () {
             $('.messages', this.element).remove();
             this.messages([]);

@@ -4,7 +4,6 @@
     $.widget('validator', {
         component: 'validation',
 
-        /** Init widget */
         create: function () {
             var self = this;
 
@@ -20,23 +19,19 @@
             }
         },
 
-        /** [destoy description] */
         destroy: function () {
             this.element.removeAttr('data-validator');
             this._super();
         },
 
-        /** Validate form */
         isValid: function (inputs, silent) {
             return this.validator.isValid(inputs, silent);
         },
 
-        /** Validate form */
         validate: function (inputs, silent) {
             return this.validator.validate(inputs, silent);
         },
 
-        /** Reset form */
         reset: function () {
             return this.validator.reset();
         }
@@ -44,7 +39,6 @@
 
     $.fn.validation = $.fn.validator;
 
-    /** [valid description] */
     $.fn.valid = function () {
         $(this).validator();
 

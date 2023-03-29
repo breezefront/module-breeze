@@ -1,4 +1,3 @@
-/* global _ */
 (function () {
     'use strict';
 
@@ -11,9 +10,9 @@
         _.each(data.settings.data.items, function (item, key) {
             products.set(key, item);
             recentlyViewed.set(scope + '-' + scopeId + '-' + key, {
-                'added_at': new Date().getTime() / 1000,
-                'product_id': key,
-                'scope_id': scopeId
+                added_at: new Date().getTime() / 1000,
+                product_id: key,
+                scope_id: scopeId
             });
         });
     });

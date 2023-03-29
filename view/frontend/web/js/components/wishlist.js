@@ -14,7 +14,6 @@
             qtySelector: '[data-role=qty]'
         },
 
-        /** Initialize plugin */
         create: function () {
             this._on({
                 'click [data-role=tocart]': '_beforeAddToCart',
@@ -45,10 +44,6 @@
             }
         },
 
-        /**
-         * Add all wish list items to cart
-         * @private
-         */
         _addAllWItemsToCart: function () {
             var urlParams = this.options.addAllToCartUrl,
                 separator = urlParams.action.indexOf('?') >= 0 ? '&' : '?';
@@ -76,7 +71,6 @@
             productPageWrapper: '.product-info-main'
         },
 
-        /** @inheritdoc */
         create: function () {
             var options = this.options,
                 dataUpdateFunc = '_updateWishlistData',
@@ -106,10 +100,6 @@
             this._on(events);
         },
 
-        /**
-         * @param {jQuery.Event} event
-         * @private
-         */
         _updateWishlistData: function (event) {
             var dataToAdd = {},
                 isFileUploaded = false,
@@ -156,8 +146,7 @@
 
         /**
          * @param {Object} dataToAdd
-         * @param {jQuery.Event} event
-         * @private
+         * @param {Object} event
          */
         _updateAddToWishlistButton: function (dataToAdd, event) {
             var self = this,
@@ -190,8 +179,7 @@
         },
 
         /**
-         * @param {jQuery.Event} event
-         * @private
+         * @param {Object} event
          */
         _getAddToWishlistButton: function (event) {
             var productListWrapper = $(event.currentTarget).closest(this.options.productListWrapper);
@@ -206,7 +194,6 @@
         /**
          * @param {HTMLElement} element
          * @return {Object}
-         * @private
          */
         _getElementData: function (element) {
             var data, elementName, elementValue;
@@ -234,9 +221,6 @@
             return data;
         },
 
-        /**
-         * Bind form submit.
-         */
         bindFormSubmit: function () {
             var self = this;
 

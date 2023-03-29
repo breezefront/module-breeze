@@ -1,8 +1,6 @@
-/* global ko _ */
 (function () {
     'use strict';
 
-    /** [isVirtualElement description] */
     function isVirtualElement(node) {
         return node.nodeType === 8;
     }
@@ -26,7 +24,6 @@
 
     ko.bindingHandlers.blockLoader = {
         /**
-         * Process loader for block
          * @param {String} element
          * @param {Boolean} displayBlockLoader
          */
@@ -60,9 +57,6 @@
     ko.virtualElements.allowedBindings.i18n = true;
 
     ko.bindingHandlers.scope = {
-        /**
-         * Scope binding's init method.
-         */
         init: function () {
             return {
                 controlsDescendantBindings: true
@@ -73,9 +67,6 @@
     ko.virtualElements.allowedBindings.scope = true;
 
     ko.bindingHandlers.bindHtml = {
-        /**
-         * Scope binding's init method.
-         */
         init: function () {
             return {
                 controlsDescendantBindings: true
@@ -109,9 +100,6 @@
     };
 
     ko.bindingHandlers.afterRender = {
-        /**
-         * Binding init callback.
-         */
         init: function (element, valueAccessor, allBindings, viewModel) {
             var callback = valueAccessor();
 
@@ -123,8 +111,6 @@
 
     ko.bindingHandlers.mageInit = {
         /**
-         * Initializes components assigned to HTML elements.
-         *
          * @param {HTMLElement} el
          * @param {Function} valueAccessor
          */

@@ -14,7 +14,6 @@
             mediaBreakpoint: '(max-width: 767px)'
         },
 
-        /** Init widget */
         create: function () {
             var mql,
                 self = this,
@@ -170,7 +169,6 @@
             this._trigger('afterToggleMobileMode');
         },
 
-        /** [open description] */
         open: function (dropdown) {
             this._trigger('beforeOpen', {
                 dropdown: dropdown
@@ -185,7 +183,6 @@
             }
         },
 
-        /** [open description] */
         close: function (dropdown) {
             var eventData = {
                 dropdown: dropdown,
@@ -211,7 +208,6 @@
             });
         },
 
-        /** [_setActiveMenu description] */
         _setActiveMenu: function () {
             var currentUrl = window.location.href.split('?')[0];
 
@@ -220,7 +216,6 @@
             }
         },
 
-        /** [_setActiveMenuForCategory description] */
         _setActiveMenuForCategory: function (url) {
             var activeCategoryLink = this.element.find('a[href="' + url + '"]'),
                 classes,
@@ -241,7 +236,6 @@
             return true;
         },
 
-        /** [_setActiveParent description] */
         _setActiveParent: function (childClassName) {
             var parentElement,
                 parentClass = childClassName.substr(0, childClassName.lastIndexOf('-'));
@@ -256,7 +250,6 @@
             }
         },
 
-        /** [_setActiveMenuForProduct description] */
         _setActiveMenuForProduct: function (currentUrl) {
             var categoryUrlExtension,
                 lastUrlSection,

@@ -5,7 +5,6 @@
     $.widget('googleAnalytics', {
         component: 'Magento_GoogleAnalytics/js/google-analytics',
 
-        /** [create description] */
         create: function () {
             if (!this.isAllowed()) {
                 return;
@@ -14,7 +13,6 @@
             this.start();
         },
 
-        /** [isAllowed description] */
         isAllowed: function () {
             var cookie;
 

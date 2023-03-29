@@ -1,4 +1,3 @@
-/* global _ */
 (function () {
     'use strict';
 
@@ -22,7 +21,6 @@
             }
         },
 
-        /** Init widget */
         create: function () {
             if (this.options.origin === 'msrp') {
                 this.initMsrpPopup();
@@ -33,7 +31,6 @@
             }
         },
 
-        /** Remove event listeners and dom elements */
         destroy: function () {
             if (this.$popup) {
                 this.$popup.remove();
@@ -41,7 +38,6 @@
             this._super();
         },
 
-        /** Init msrp popup */
         initMsrpPopup: function () {
             var self = this,
                 popupDOM = $(self.options.popUpAttr)[0],
@@ -78,7 +74,6 @@
             }));
         },
 
-        /** Init tier price popup */
         initTierPopup: function () {
             var self = this,
                 popupDOM = $(self.options.popUpAttr)[0];
@@ -120,7 +115,6 @@
             });
         },
 
-        /** Init info popup */
         initInfoPopup: function () {
             var infoPopupDOM = $('[data-role=msrp-info-template]')[0];
 
@@ -144,6 +138,7 @@
             if (this.options.addToCartButton && this.options.addToCartButton.indexOf(':has') !== -1) {
                 button = $('form[action*="/"]')
                     .has('input[type="hidden"][name="product"][value="%1"]'.replace('%1', productId))
+                    // eslint-disable-next-line max-len
                     .add('.block.widget .price-box[data-product-id="%1"]+.product-item-actions'.replace('%1', productId))
                     .find('button[type="submit"], button.tocart');
             } else {
@@ -153,7 +148,6 @@
             return button.first();
         },
 
-        /** Update popup content */
         updatePopupContent: function () {
             var options = this.tierOptions || this.options;
 
@@ -165,7 +159,6 @@
             }
         },
 
-        /** Close MAP information popup */
         closePopup: function () {
             this.$popup.dropdownDialog('close');
         },
@@ -173,8 +166,6 @@
         /**
          * handle 'AddToCart' click on Msrp popup
          * @param {Object} ev
-         *
-         * @private
          */
         handleMsrpAddToCart: function (ev) {
             ev.preventDefault();
@@ -186,9 +177,6 @@
             }
         },
 
-        /**
-         * @private
-         */
         handleMsrpPaypalCheckout: function () {
             this.closePopup();
         },
@@ -197,7 +185,6 @@
          * handle 'AddToCart' click on Tier popup
          *
          * @param {Object} ev
-         * @private
          */
         handleTierAddToCart: function (ev) {
             ev.preventDefault();
@@ -211,11 +198,6 @@
             }
         },
 
-        /**
-         * handle 'paypal checkout buttons' click on Tier popup
-         *
-         * @private
-         */
         handleTierPaypalCheckout: function () {
             if (this.options.inputQty && !isNaN(this.tierOptions.qty)) {
                 $(this.options.inputQty).val(this.tierOptions.qty);
@@ -224,7 +206,6 @@
         }
     });
 
-    // minicart totals integration
     $(document).one('breeze:mount:Magento_Checkout/js/view/minicart', function () {
         /**
          * @param {Array} cartItems

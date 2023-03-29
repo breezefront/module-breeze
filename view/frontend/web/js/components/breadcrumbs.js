@@ -1,4 +1,3 @@
-/* global _ */
 (function () {
     'use strict';
 
@@ -12,7 +11,6 @@
             menuContainer: '[data-action="navigation"] > ul'
         },
 
-        /** Initialize plugin */
         create: function () {
             this.breadcrumbs = [{
                 name: 'home',
@@ -44,7 +42,6 @@
             }
         },
 
-        /** [_appendCatalogCrumbs description] */
         _appendCatalogCrumbs: function () {
             var self = this,
                 categoryCrumbs = this._resolveCategoryCrumbs();

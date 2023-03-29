@@ -6,7 +6,6 @@
             namespace: false
         },
 
-        /** [_initialize description] */
         _initialize: function (name, options, element) {
             this.source = $.registry.get(options.provider);
 
@@ -15,7 +14,6 @@
             this.selector = 'input, select, textarea, [data-form-part=' + this.namespace + ']';
         },
 
-        /** [save description] */
         save: function () {
             var provider = $.registry.get(this.options.provider);
 
