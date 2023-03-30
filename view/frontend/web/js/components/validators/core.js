@@ -41,4 +41,76 @@
             $t('Please enter a number 0 or greater in this field.')
         ]
     });
+
+    // Validate Date
+    (function () {
+        var mapping = {
+            'yyyy': { regex: '(?<year>\\d{4})', example: '2001' },
+            'y':    { regex: '(?<year>\\d{4})', example: '2001' },
+            'yy':   { regex: '(?<year>\\d{2})', example: '01' },
+
+            'MM':   { regex: '(?<month>\\d{2})', example: '05' },
+            'M':    { regex: '(?<month>\\d{1,2})', example: '5' },
+
+            'DD':   { regex: '(?<day>\\d{2})', example: '04' },
+            'dd':   { regex: '(?<day>\\d{2})', example: '04' },
+            'D':    { regex: '(?<day>\\d{1,2})', example: '4' },
+        };
+
+        function parseDateFormat(format) {
+            var separator = format.match(/[./-]/);
+
+            return [separator, format.split(separator)];
+        }
+
+        function parseDate(value, dateFormat) {
+            var [separator, parts] = parseDateFormat(dateFormat),
+                regex = new RegExp(_.map(parts, part => mapping[part].regex).join(separator)),
+                match = value.match(regex),
+                date;
+
+            if (!match) {
+                return false;
+            }
+
+            date = new Date(match.groups.year, match.groups.month - 1, match.groups.day);
+
+            if (date.getFullYear() !== +match.groups.year ||
+                date.getMonth() !== match.groups.month - 1 ||
+                date.getDate() !== +match.groups.day
+            ) {
+                return false;
+            }
+
+            return date;
+        }
+
+        $.validator.validators['validate-date'] = [
+            (value, el, settings) => {
+                return !!parseDate(value, settings.dateFormat);
+            },
+            (value, el, settings) => {
+                var [separator, parts] = parseDateFormat(settings.dateFormat),
+                    format = _.map(parts, part => mapping[part].regex.match(/<(.*)>/)[1]).join(separator),
+                    example = _.map(parts, part => mapping[part].example).join(separator);
+
+                return $t('The valid format is {0}. For example, the valid date for "May 4, 2001" is {1}')
+                    .replace('{0}', format)
+                    .replace('{1}', example);
+            }
+        ];
+
+        $.validator.validators['validate-dob'] = [
+            (value, el, settings) => {
+                var date = parseDate(value, settings.dateFormat);
+
+                if (!date) {
+                    return false;
+                }
+
+                return date < new Date();
+            },
+            $t('The Date of Birth should not be greater than today.')
+        ];
+    })();
 })();
