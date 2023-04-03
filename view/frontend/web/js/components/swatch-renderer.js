@@ -294,7 +294,7 @@
             var productId,
                 isInProductView = false;
 
-            productId = this.element.parents('.product-item-info')
+            productId = this.element.parents('.product-item-details, .product-item-info')
                     .find('.price-box.price-final_price')
                     .attr('data-product-id');
 
