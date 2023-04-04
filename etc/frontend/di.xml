@@ -7,6 +7,9 @@
     <type name="Magento\Framework\App\Config">
         <plugin name="swissup_breeze" type="Swissup\Breeze\Plugin\AppConfig"/>
     </type>
+    <type name="Magento\Framework\View\Element\Html\Date">
+        <plugin name="swissup_breeze" type="Swissup\Breeze\Plugin\DateElement"/>
+    </type>
     <type name="Magento\Theme\Block\Html\Header\CriticalCss">
         <plugin name="swissup_breeze" type="Swissup\Breeze\Plugin\CriticalCss"/>
     </type>

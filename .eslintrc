@@ -3,6 +3,7 @@
         "_": "readonly",
         "$t": "readonly",
         "breeze": "readonly",
+        "dayjs": "readonly",
         "ko": "readonly",
         "Turbolinks": "readonly"
     },
