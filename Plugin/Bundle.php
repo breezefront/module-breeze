@@ -27,6 +27,7 @@ class Bundle
 
     private \Magento\Framework\View\Design\Theme\ThemeProviderInterface $themeProvider;
 
+    private \Magento\Store\Model\StoreManagerInterface $storeManager;
 
     private \Swissup\Breeze\Model\ThemeResolver $themeResolver;
 
@@ -37,6 +38,7 @@ class Bundle
         \Magento\Framework\View\LayoutFactory $layoutFactory,
         \Magento\Framework\Locale\ResolverInterfaceFactory $localeFactory,
         \Magento\Framework\View\Design\Theme\ThemeProviderInterface $themeProvider,
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Swissup\Breeze\Model\ThemeResolver $themeResolver
     ) {
         $this->appState = $appState;
@@ -45,6 +47,7 @@ class Bundle
         $this->layoutFactory = $layoutFactory;
         $this->localeFactory = $localeFactory;
         $this->themeProvider = $themeProvider;
+        $this->storeManager = $storeManager;
         $this->themeResolver = $themeResolver;
     }
 
@@ -83,27 +86,33 @@ class Bundle
 
         $this->themeResolver->set($theme);
 
-        $this->appState->emulateAreaCode(Area::AREA_FRONTEND, function () use ($assetRepo) {
-            $layout = $this->layoutFactory->create([
-                'cacheable' => false,
-                'themeResolver' => $this->themeResolver,
-            ]);
-            // @todo: breeze_amasty_xnotif, breeze_mirasvit_cachewarmer
-            $layout->getUpdate()->addHandle([
-                'default',
-                'default_head_blocks',
-                'breeze_default',
-            ])->load();
-            $layout->generateXml();
-            $layout->generateElements();
-
-            $block = $layout->getBlock('breeze.js');
-            if ($block) {
-                $block->deployBundledAssets([
-                    'assetRepo' => $assetRepo,
+        $oldStoreId = $this->storeManager->getStore()->getId();
+        foreach ($this->storeManager->getStores() as $store) {
+            $this->storeManager->setCurrentStore($store->getId());
+            $this->appState->emulateAreaCode(Area::AREA_FRONTEND, function ($assetRepo) {
+                $layout = $this->layoutFactory->create([
+                    'cacheable' => false,
+                    'themeResolver' => $this->themeResolver,
                 ]);
-            }
-        });
+                // @todo: breeze_amasty_xnotif, breeze_mirasvit_cachewarmer
+                $layout->getUpdate()->addHandle([
+                    'default',
+                    'default_head_blocks',
+                    'breeze_default',
+                ])->load();
+                $layout->generateXml();
+                $layout->generateElements();
+
+                $block = $layout->getBlock('breeze.js');
+                if ($block) {
+                    $block->deployBundledAssets([
+                        'assetRepo' => $assetRepo,
+                    ]);
+                }
+            }, [$assetRepo]);
+        }
+
+        $this->storeManager->setCurrentStore($oldStoreId);
 
         return $result;
     }
