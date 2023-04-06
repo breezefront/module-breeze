@@ -38,20 +38,6 @@ class JsBuild
 
     private array $assets = [];
 
-    /**
-     * @param \Magento\Framework\View\Asset\Repository $assetRepo
-     * @param \Magento\Framework\Filesystem $filesystem
-     * @param \Magento\Framework\Filesystem\Directory\ReadFactory $readDirFactory
-     * @param \Magento\Framework\Module\Manager $moduleManager
-     * @param \Magento\Framework\View\Asset\Minification $minification
-     * @param \Magento\Framework\Code\Minifier\AdapterInterface $minifier
-     * @param \Magento\Framework\View\DesignInterface $design
-     * @param \Magento\Framework\HTTP\Adapter\CurlFactory $curlFactory
-     * @param ComponentRegistrar $componentRegistrar
-     * @param Dir $moduleDir
-     * @param string $name
-     * @param array $items
-     */
     public function __construct(
         \Magento\Framework\View\Asset\Repository $assetRepo,
         \Magento\Framework\Filesystem $filesystem,
