@@ -27,10 +27,6 @@ class Bundle
 
     private \Magento\Framework\View\Design\Theme\ThemeProviderInterface $themeProvider;
 
-    /**
-     * @var \Swissup\Breeze\Model\LayoutProcessorFactory
-     */
-    private $layoutProcessorFactory;
 
     private \Swissup\Breeze\Model\ThemeResolver $themeResolver;
 
@@ -41,7 +37,6 @@ class Bundle
         \Magento\Framework\View\LayoutFactory $layoutFactory,
         \Magento\Framework\Locale\ResolverInterfaceFactory $localeFactory,
         \Magento\Framework\View\Design\Theme\ThemeProviderInterface $themeProvider,
-        \Magento\Framework\View\Layout\ProcessorFactory $layoutProcessorFactory,
         \Swissup\Breeze\Model\ThemeResolver $themeResolver
     ) {
         $this->appState = $appState;
@@ -50,7 +45,6 @@ class Bundle
         $this->layoutFactory = $layoutFactory;
         $this->localeFactory = $localeFactory;
         $this->themeProvider = $themeProvider;
-        $this->layoutProcessorFactory = $layoutProcessorFactory;
         $this->themeResolver = $themeResolver;
     }
 
@@ -93,7 +87,6 @@ class Bundle
             $layout = $this->layoutFactory->create([
                 'cacheable' => false,
                 'themeResolver' => $this->themeResolver,
-                'processorFactory' => $this->layoutProcessorFactory,
             ]);
             // @todo: breeze_amasty_xnotif, breeze_mirasvit_cachewarmer
             $layout->getUpdate()->addHandle([
