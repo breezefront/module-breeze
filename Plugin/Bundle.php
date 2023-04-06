@@ -8,22 +8,13 @@ class Bundle
 {
     private \Magento\Framework\App\State $appState;
 
-    /**
-     * @var \Magento\Framework\View\DesignInterfaceFactory
-     */
-    private $designFactory;
+    private \Magento\Framework\View\DesignInterfaceFactory $designFactory;
 
-    /**
-     * @var \Magento\Framework\View\Asset\RepositoryFactory
-     */
-    private $assetRepoFactory;
+    private \Magento\Framework\View\Asset\RepositoryFactory $assetRepoFactory;
 
     private \Magento\Framework\View\LayoutFactory $layoutFactory;
 
-    /**
-     * @var \Magento\Framework\Locale\ResolverInterfaceFactory
-     */
-    private $localeFactory;
+    private \Magento\Framework\Locale\ResolverInterfaceFactory $localeFactory;
 
     private \Magento\Framework\View\Design\Theme\ThemeProviderInterface $themeProvider;
 
