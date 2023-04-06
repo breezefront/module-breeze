@@ -223,10 +223,7 @@ class JsBuild
             }
 
             $path = $this->getPath($i);
-            $this->filesystem
-                ->getDirectoryWrite(DirectoryList::STATIC_VIEW)
-                ->writeFile($path, $content);
-
+            $this->staticDir->writeFile($path, $content);
             $this->assets[] = $this->assetRepo->createArbitrary($path, '');
         }
 
@@ -250,12 +247,10 @@ class JsBuild
 
     private function publishVersion()
     {
-        $this->filesystem
-            ->getDirectoryWrite(DirectoryList::STATIC_VIEW)
-            ->writeFile(
-                $this->staticContext->getConfigPath() . '/' . $this->getPathToVersionFile(),
-                $this->getVersion()
-            );
+        $this->staticDir->writeFile(
+            $this->staticContext->getConfigPath() . '/' . $this->getPathToVersionFile(),
+            $this->getVersion()
+        );
     }
 
     private function getPathToVersionFile()
