@@ -233,7 +233,7 @@ class JsBuild
 
     private function getVersion()
     {
-        return sha1(implode(',', array_keys($this->items)));
+        return implode(',', array_keys($this->items));
     }
 
     private function versionMatches()
