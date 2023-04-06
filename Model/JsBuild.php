@@ -14,7 +14,7 @@ class JsBuild
 
     private \Magento\Framework\Filesystem $filesystem;
 
-    private \Magento\Framework\Filesystem\Directory\ReadInterface $staticDir;
+    private \Magento\Framework\Filesystem\Directory\WriteInterface $staticDir;
 
     private \Magento\Framework\Filesystem\Directory\ReadFactory $readDirFactory;
 
@@ -69,7 +69,7 @@ class JsBuild
         $this->assetRepo = $assetRepo;
         $this->staticContext = $assetRepo->getStaticViewFileContext();
         $this->filesystem = $filesystem;
-        $this->staticDir = $this->filesystem->getDirectoryRead(DirectoryList::STATIC_VIEW);
+        $this->staticDir = $this->filesystem->getDirectoryWrite(DirectoryList::STATIC_VIEW);
         $this->readDirFactory = $readDirFactory;
         $this->design = $design;
         $this->componentRegistrar = $componentRegistrar;
@@ -162,6 +162,10 @@ class JsBuild
      */
     public function publish()
     {
+        if (!$this->staticDir->isWritable()) {
+            return $this;
+        }
+
         $build = [];
         $loadedDeps = [];
 
