@@ -36,31 +36,25 @@ class GoogleAnalytics extends AbstractHelper
     {
         $type = $this->getType();
 
-        return $this->isEnabled()
-            && (!$type || $type === 'universal')
-            && $this->configHelper->isEnabled('google/analytics/account');
+        return $this->isEnabled() && (!$type || $type === 'universal');
     }
 
     // Magento 2.4.5 Gtag module
     public function isGtagAnalyticsEnabled()
     {
-        return $this->configHelper->isEnabled('google/gtag/analytics4/active')
-            && $this->configHelper->isEnabled('google/gtag/analytics4/measurement_id');
+        return $this->configHelper->isEnabled('google/gtag/analytics4/active');
     }
 
     // Magento 2.4.5 Gtag module
     public function isGtagAdwordsEnabled()
     {
         return $this->configHelper->isEnabled('google/gtag/adwords/active')
-            && $this->configHelper->isEnabled('google/gtag/adwords/conversion_id')
             && $this->configHelper->isEnabled('google/gtag/adwords/conversion_label');
     }
 
     // Magento Commerce
     public function isTagManagerAnalyticsEnabled()
     {
-        return $this->isEnabled()
-            && $this->getType() === 'tag_manager'
-            && $this->configHelper->isEnabled('google/analytics/container_id');
+        return $this->isEnabled() && $this->getType() === 'tag_manager';
     }
 }
