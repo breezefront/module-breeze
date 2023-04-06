@@ -171,7 +171,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         $builds = [];
         foreach ($this->getAllBundles() as $name => $bundle) {
             $builds[$name] = $this->jsBuildFactory->create(array_merge([
-                    'name' => 'Swissup_Breeze/bundles/' . $name,
+                    'name' => 'Swissup_Breeze/bundles/' . $this->storeManager->getStore()->getId() . '/' . $name,
                     'items' => $bundle['items'],
                 ], $jsBuildParams))
                 ->publishIfNotExist();
