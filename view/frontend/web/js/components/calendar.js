@@ -3,11 +3,11 @@
 
     $.widget('calendar', {
         create: function () {
-            this.element.addClass('abs-visually-hidden');
+            this.element.addClass('abs-visually-hidden').attr('tabindex', -1);
             this.calendar = this.element.parent().find('.input-breeze-calendar');
 
             if (!this.calendar.length) {
-                this.calendar = $('<input class="input-breeze-calendar" tabindex="-1">')
+                this.calendar = $('<input class="input-breeze-calendar">')
                     .attr('type', this.options.showsTime ? 'datetime-local' : 'date')
                     .attr('value', this.toISOString())
                     .insertBefore(this.element);

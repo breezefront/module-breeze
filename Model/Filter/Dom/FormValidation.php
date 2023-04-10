@@ -123,12 +123,12 @@ class FormValidation extends AbstractFilter
     {
         $parent = $node->parentNode;
         $node->setAttribute('class', $node->getAttribute('class') . ' input-breeze-date abs-visually-hidden');
+        $node->setAttribute('tabindex', -1);
         $parent->setAttribute('class', $parent->getAttribute('class') . ' field-breeze-date');
 
         $date = new \DOMElement('input');
         $parent->insertBefore($date, $node);
         $date->setAttribute('type', 'date');
-        $date->setAttribute('tabindex', -1);
         $date->setAttribute('class', 'input-breeze-calendar');
     }
 }
