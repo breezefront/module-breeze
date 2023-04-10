@@ -102,13 +102,19 @@
 
             this.element
                 .on('click', this.stop.bind(this))
-                .on('click', '.slick-next, .slick-prev', function () {
+                .on('click', '.slick-next, .slick-prev', function (event) {
                     event.preventDefault();
-                    self[$(this).hasClass('slick-prev') ? 'prev' : 'next']();
+
+                    if ($(this).closest('.slick-initialized').is(self.element)) {
+                        self[$(this).hasClass('slick-prev') ? 'prev' : 'next']();
+                    }
                 })
                 .on('click', '.slick-dots li', function (event) {
                     event.preventDefault();
-                    self.scrollToPage($(this).index());
+
+                    if ($(this).closest('.slick-initialized').is(self.element)) {
+                        self.scrollToPage($(this).index());
+                    }
                 })
                 .hover(this.pause.bind(this), this.start.bind(this));
 
