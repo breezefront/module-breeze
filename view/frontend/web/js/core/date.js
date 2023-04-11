@@ -12,6 +12,7 @@
         'DD':   { regex: '(?<day>\\d{2})', dayjs: 'DD' },
         'dd':   { regex: '(?<day>\\d{2})', dayjs: 'DD' },
         'D':    { regex: '(?<day>\\d{1,2})', dayjs: 'D' },
+        'd':    { regex: '(?<day>\\d{1,2})', dayjs: 'D' },
     };
 
     function parseFormat(format) {
