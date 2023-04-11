@@ -9,9 +9,10 @@
             if (!this.calendar.length) {
                 this.calendar = $('<input class="input-breeze-calendar">')
                     .attr('type', this.options.showsTime ? 'datetime-local' : 'date')
-                    .attr('value', this.toISOString())
                     .insertBefore(this.element);
             }
+
+            this.calendar.attr('value', this.toISOString());
 
             if (this.options.maxDate) {
                 this.calendar.attr('max', this.toISOString(this.calculateDate(this.options.maxDate)));
