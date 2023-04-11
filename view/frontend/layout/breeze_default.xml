@@ -186,7 +186,7 @@
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/google-recaptcha</item>
                                 <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isAnyEnabled">
                                     <param name="customer_login">recaptcha_frontend/type_for/customer_login</param>
-                                    <param name="forgot_password">recaptcha_frontend/type_for/forgot_password</param>
+                                    <param name="forgot_password">recaptcha_frontend/type_for/customer_forgot_password</param>
                                     <param name="customer_create">recaptcha_frontend/type_for/customer_create</param>
                                     <param name="customer_edit">recaptcha_frontend/type_for/customer_edit</param>
                                     <param name="contact">recaptcha_frontend/type_for/contact</param>
