@@ -46,6 +46,8 @@
             args.push(resolve(alias));
         });
 
+        success = success || _.noop;
+
         // If there is a promise in arguments - wait for it.
         // Otherwise, execute it immediately.
         if (args.some((arg) => arg && arg.then)) {
