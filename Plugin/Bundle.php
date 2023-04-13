@@ -8,6 +8,8 @@ class Bundle
 {
     private \Magento\Framework\App\State $appState;
 
+    private \Magento\Framework\Event\ManagerInterface $eventManager;
+
     private \Magento\Framework\View\DesignInterfaceFactory $designFactory;
 
     private \Magento\Framework\View\Asset\RepositoryFactory $assetRepoFactory;
@@ -24,6 +26,7 @@ class Bundle
 
     public function __construct(
         \Magento\Framework\App\State $appState,
+        \Magento\Framework\Event\ManagerInterface $eventManager,
         \Magento\Framework\View\DesignInterfaceFactory $designFactory,
         \Magento\Framework\View\Asset\RepositoryFactory $assetRepoFactory,
         \Magento\Framework\View\LayoutFactory $layoutFactory,
@@ -33,6 +36,7 @@ class Bundle
         \Swissup\Breeze\Model\ThemeResolver $themeResolver
     ) {
         $this->appState = $appState;
+        $this->eventManager = $eventManager;
         $this->designFactory = $designFactory;
         $this->assetRepoFactory = $assetRepoFactory;
         $this->layoutFactory = $layoutFactory;
@@ -77,20 +81,16 @@ class Bundle
 
         $this->themeResolver->set($theme);
 
+        $handles = $this->getHandles();
         $oldStoreId = $this->storeManager->getStore()->getId();
         foreach ($this->storeManager->getStores() as $store) {
             $this->storeManager->setCurrentStore($store->getId());
-            $this->appState->emulateAreaCode(Area::AREA_FRONTEND, function ($assetRepo) {
+            $this->appState->emulateAreaCode(Area::AREA_FRONTEND, function ($handles, $assetRepo) {
                 $layout = $this->layoutFactory->create([
                     'cacheable' => false,
                     'themeResolver' => $this->themeResolver,
                 ]);
-                // @todo: breeze_amasty_xnotif, breeze_mirasvit_cachewarmer
-                $layout->getUpdate()->addHandle([
-                    'default',
-                    'default_head_blocks',
-                    'breeze_default',
-                ])->load();
+                $layout->getUpdate()->addHandle($handles)->load();
                 $layout->generateXml();
                 $layout->generateElements();
 
@@ -100,11 +100,31 @@ class Bundle
                         'assetRepo' => $assetRepo,
                     ]);
                 }
-            }, [$assetRepo]);
+            }, [$handles, $assetRepo]);
         }
 
         $this->storeManager->setCurrentStore($oldStoreId);
 
         return $result;
+    }
+
+    private function getHandles()
+    {
+        $transport = new \Magento\Framework\DataObject([
+            'handles' => [
+                'default',
+                'default_head_blocks',
+                'breeze_default',
+            ],
+        ]);
+
+        $this->eventManager->dispatch(
+            'swissup_breeze_bundle_collect_handles',
+            [
+                'transport' => $transport
+            ]
+        );
+
+        return $transport->getHandles();
     }
 }
