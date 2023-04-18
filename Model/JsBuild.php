@@ -85,19 +85,24 @@ class JsBuild
             return $this->assets;
         }
 
-        $pathinfo = pathinfo($this->getPath());
+        $curPath = $this->getPath();
+        $pathinfo = pathinfo($curPath);
         $file = str_replace('.min', '', $pathinfo['filename']);
         $dir = $pathinfo['dirname'];
 
         $paths = $this->staticDir->read($dir);
         sort($paths, SORT_NATURAL);
+        $suffix = strpos($curPath, '.min.js') === false ? '.js' : '.min.js';
 
         foreach ($paths as $path) {
-            if (strpos($path, '.js') === false) {
+            $pos = strrpos($path, $suffix);
+            $expectedPos = strlen($path) - strlen($suffix);
+            if ($pos !== $expectedPos) {
                 continue;
             }
 
-            if (!preg_match("/{$file}(\d+|\.)/", $path)) {
+            $regex = str_replace('.', '\.', "/{$file}(\d+)?{$suffix}/");
+            if (!preg_match($regex, $path)) {
                 continue;
             }
 
