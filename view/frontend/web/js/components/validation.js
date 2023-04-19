@@ -34,6 +34,10 @@
 
         reset: function () {
             return this.validator.reset();
+        },
+
+        clearError: function () {
+            return this.validator.removeErrorNodes();
         }
     });
 
