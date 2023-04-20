@@ -36,12 +36,20 @@ class SwatchesHelper
 
         $baseImage = null;
         $mediaGallery = $product->getMediaGalleryEntries();
+        if (!$mediaGallery) {
+            return $result;
+        }
+
         $sizes = [
             'medium' => 'product_swatch_image_medium',
             'small' => 'product_swatch_image_small',
         ];
 
         foreach ($mediaGallery as $image) {
+            if ($image->getDisabled()) {
+                continue;
+            }
+
             if (!$baseImage || in_array('image', $image->getTypes(), true)) {
                 $baseImage = $image;
             }

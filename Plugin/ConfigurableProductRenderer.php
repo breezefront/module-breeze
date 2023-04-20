@@ -45,12 +45,20 @@ class ConfigurableProductRenderer
 
         foreach ($renderer->getAllowProducts() as $product) {
             $images = $product->getMediaGalleryEntries();
+            if (!$images) {
+                continue;
+            }
+
             if ($images instanceof \Magento\Framework\Data\Collection) {
                 $images = $images->getItems();
             }
             $images = array_values($images);
 
             foreach ($images as $i => $image) {
+                if (!empty($image['disabled']) || empty($data['images'][$product->getId()][$i])) {
+                    continue;
+                }
+
                 $data['images'][$product->getId()][$i]['srcset'] = [
                     'medium' => $this->imageHelper->getSrcset($image, 'product_page_image_medium'),
                     'small' => $this->imageHelper->getSrcset($image, 'product_swatch_image_small'),
