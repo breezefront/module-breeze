@@ -36,8 +36,14 @@
             return this.validator.reset();
         },
 
-        clearError: function () {
-            return this.validator.removeErrorNodes();
+        clearError: function (...args) {
+            var elements = null;
+
+            if (args) {
+                elements = args.map(arg => $(arg));
+            }
+
+            return this.validator.reset(elements);
         }
     });
 
