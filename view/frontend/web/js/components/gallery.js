@@ -220,7 +220,7 @@
             }
 
             // scroll to hidden thumbnail only if we will not affect page scroll offset
-            if (fullscreen || this.thumbsWrapper.isInViewport()) {
+            if (fullscreen || (this.thumbs.length && this.thumbsWrapper.isInViewport())) {
                 // timeout is used to fix scroll when swipe is used
                 setTimeout(function () {
                     this.thumbs.eq(index).focus();
