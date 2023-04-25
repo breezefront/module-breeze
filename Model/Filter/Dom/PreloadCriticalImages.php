@@ -16,7 +16,7 @@ class PreloadCriticalImages extends AbstractFilter
         $content = $document->getElementById('maincontent');
 
         if ($this->isHomePage($body)) {
-            $this->walkSliderNodes($xpath->query('(//div[contains(@class, "pagebuilder-slide-wrapper")])[1]', $content));
+            $this->walkSliderNodes($xpath->query('(//div[@data-background-images])[1]', $content));
             $this->walkImgNodes($xpath->query('//img[@class="product-image-photo"]', $content));
         } elseif ($this->isProductPage($body)) {
             $this->walkImgNodes($xpath->query('(//img[@class="main-image"])[1]', $content));
