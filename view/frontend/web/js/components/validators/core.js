@@ -34,6 +34,10 @@
             (value, el, max) => value.length <= +max,
             (value, el, max) => $t('Please enter no more than {0} characters.').replace('{0}', max)
         ],
+        pattern: [
+            (value, el, settings) => new RegExp(settings.pattern || settings).test(value),
+            (value, el, settings) => settings.message || $t('Invalid format.')
+        ],
         'required-entry': 'required',
         'validate-email': 'email',
         'validate-select': [

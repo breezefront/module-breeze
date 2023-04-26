@@ -177,6 +177,14 @@
 
                 if (value !== undefined && !data[attr]) {
                     data[attr] = value;
+
+                    // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/url#pattern_validation
+                    if (attr === 'pattern' && $(element).attr('title')) {
+                        data[attr] = {
+                            pattern: value,
+                            message: $(element).attr('title')
+                        };
+                    }
                 }
             });
 
