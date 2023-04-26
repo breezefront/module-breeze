@@ -333,5 +333,6 @@
     $.validator = function (element, options) {
         return new Validator(element, options);
     };
+    $.validator.regex = {};
     $.validator.validators = {};
 })();

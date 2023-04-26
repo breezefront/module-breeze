@@ -1,13 +1,17 @@
 (function () {
     'use strict';
 
+    // eslint-disable-next-line max-len
+    $.validator.regex.email = /^([a-z0-9,!\#\$%&'\*\+\/=\?\^_`\{\|\}~-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z0-9,!\#\$%&'\*\+\/=\?\^_`\{\|\}~-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*@([a-z0-9-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z0-9-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*\.(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]){2,})$/i;
+
     $.validator.validators = _.extend($.validator.validators, {
         required: [
             (value) => !(value === '' || value == null || value.length === 0 || /^\s+$/.test(value)),
             $t('This is a required field.')
         ],
         email: [
-            (value) => $('<input type="email" required>').val(value).get(0).checkValidity(),
+            // eslint-disable-next-line max-len
+            (value) => $('<input type="email" required>').val(value).get(0).checkValidity() && $.validator.regex.email.test(value),
             $t('Please enter a valid email address (Ex: johndoe@domain.com).')
         ],
         equalTo: [
