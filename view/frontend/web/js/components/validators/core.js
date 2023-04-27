@@ -6,7 +6,7 @@
 
     $.validator.validators = _.extend($.validator.validators, {
         required: [
-            (value) => !(value === '' || value == null || value.length === 0 || /^\s+$/.test(value)),
+            (value) => !$.validator.utils.isEmpty(value),
             $t('This is a required field.')
         ],
         email: [
@@ -35,7 +35,8 @@
             (value, el, max) => $t('Please enter no more than {0} characters.').replace('{0}', max)
         ],
         pattern: [
-            (value, el, settings) => new RegExp(settings.pattern || settings).test(value),
+            // eslint-disable-next-line max-len
+            (value, el, settings) => $.validator.utils.isEmpty(value) || new RegExp(settings.pattern || settings).test(value),
             (value, el, settings) => settings.message || $t('Invalid format.')
         ],
         'required-entry': 'required',

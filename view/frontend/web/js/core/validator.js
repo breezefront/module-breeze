@@ -343,4 +343,15 @@
     };
     $.validator.regex = {};
     $.validator.validators = {};
+    $.validator.utils = {
+        isEmpty: function (value) {
+            return value === '' || value == null || value.length === 0 || /^\s+$/.test(value);
+        },
+
+        isEmptyNoTrim: function (value) {
+            return value === '' || value == null || value.length === 0;
+        }
+    };
+
+    $.breezemap['Magento_Ui/js/lib/validation/utils'] = $.validator.utils;
 })();
