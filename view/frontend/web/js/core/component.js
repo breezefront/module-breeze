@@ -687,6 +687,7 @@ $.registry = (function () {
             $.view(name, proto);
         }
     };
+    $.breezemap.uiComponent = $.uiComponent;
 
     /** Wrap prototype with mixins */
     $.mixin = function (name, mixins) {

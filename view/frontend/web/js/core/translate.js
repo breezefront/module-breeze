@@ -20,4 +20,5 @@
     };
 
     $.mage.__ = $.__ = window.$t = window.__ = $.translation.translate;
+    $.breezemap['mage/translate'] = $.__;
 })();

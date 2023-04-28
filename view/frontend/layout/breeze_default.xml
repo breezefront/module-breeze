@@ -47,8 +47,8 @@
                             <item name="range-slider" xsi:type="string">Swissup_Breeze::js/lib/range-slider-1.0.0.min.js</item>
                             <item name="dayjs" xsi:type="string">Swissup_Breeze::js/lib/dayjs-1.11.7.min.js</item>
                             <item name="breeze-globals" xsi:type="string">Swissup_Breeze::js/core/globals.js</item>
-                            <item name="breeze-object" xsi:type="string">Swissup_Breeze::js/core/component.js</item>
                             <item name="breeze-define" xsi:type="string">Swissup_Breeze::js/core/define.js</item>
+                            <item name="breeze-object" xsi:type="string">Swissup_Breeze::js/core/component.js</item>
                             <item name="breeze-load-script" xsi:type="string">Swissup_Breeze::js/core/load-script.js</item>
                             <item name="breeze-async" xsi:type="string">Swissup_Breeze::js/core/async.js</item>
                             <item name="breeze-date" xsi:type="string">Swissup_Breeze::js/core/date.js</item>

@@ -4,11 +4,6 @@
     $.breezemap = {
         'jquery': $,
         'ko': ko,
-        'mage/cookies': $.cookies,
-        'mage/translate': $.__,
-        'Magento_Customer/js/customer-data': $.sections,
-        'Magento_Ui/js/lib/view/utils/async': $,
-        'uiComponent': $.uiComponent,
         'underscore': _,
     };
 

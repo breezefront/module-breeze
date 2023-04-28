@@ -121,4 +121,6 @@
 
         (mapping[selector] = mapping[selector] || []).push(data);
     };
+
+    $.breezemap['Magento_Ui/js/lib/view/utils/async'] = $;
 })();
