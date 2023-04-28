@@ -49,10 +49,10 @@
 
     $.fn.validation = $.fn.validator;
 
-    $.fn.valid = function () {
+    $.fn.valid = function (inputs, silent) {
         $(this).validator();
 
-        return $(this).validator('instance').isValid();
+        return $(this).validator('instance').isValid(inputs, silent);
     };
 
     $(document).on('breeze:mount:Magento_Customer/js/block-submit-on-send', function (event, data) {
