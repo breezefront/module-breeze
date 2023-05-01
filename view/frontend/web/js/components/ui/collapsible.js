@@ -31,17 +31,11 @@
                 this.trigger = this.header;
             }
 
-            this.header.attr('role', 'tab');
             this.header.removeAttr('aria-level');
             this.trigger.attr('data-trigger', true);
             this.trigger.attr('tabindex', 0);
             this.trigger.children('a').attr('tabindex', -1);
             this.element.attr('data-collapsible', true);
-            this.content.attr('role', 'tabpanel');
-
-            if (this.header.parent().attr('role') !== 'presentation') {
-                this.header.parent().attr('role', 'tablist');
-            }
 
             if (this.options.active) {
                 this.open();
@@ -111,13 +105,15 @@
                 $(this.options.collateral.element).addClass(this.options.collateral.openedState);
             }
 
-            this.header.attr({
-                'aria-selected': true,
-                'aria-expanded': true
-            });
-            this.content.attr({
-                'aria-hidden': false
-            });
+            if (this.header.length && this.content.length) {
+                this.header.attr({
+                    'aria-selected': true,
+                    'aria-expanded': true
+                });
+                this.content.attr({
+                    'aria-hidden': false
+                });
+            }
             this.content.show();
 
             // constraint dropdown into the visible viewport
@@ -139,13 +135,15 @@
                 $(this.options.collateral.element).removeClass(this.options.collateral.openedState);
             }
 
-            this.header.attr({
-                'aria-selected': false,
-                'aria-expanded': false
-            });
-            this.content.attr({
-                'aria-hidden': true
-            });
+            if (this.header.length && this.content.length) {
+                this.header.attr({
+                    'aria-selected': false,
+                    'aria-expanded': false
+                });
+                this.content.attr({
+                    'aria-hidden': true
+                });
+            }
             this.content.hide();
 
             this.element.trigger('dimensionsChanged', {
