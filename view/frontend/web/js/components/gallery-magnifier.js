@@ -51,7 +51,7 @@
                 .appendTo(this.element);
 
             this.lensImageWrapper = $('<div>').appendTo(this.lens);
-            this.lensImage = $('<img>').appendTo(this.lensImageWrapper);
+            this.lensImage = $('<img alt="">').appendTo(this.lensImageWrapper);
 
             this.stage = $('<div data-breeze-temporary>')
                 .css({ position: 'absolute', visibility: 'hidden' })
@@ -59,7 +59,7 @@
                 .appendTo(document.body);
 
             this.stageImageWrapper = $('<div>').appendTo(this.stage);
-            this.stageImage = $('<img>').appendTo(this.stageImageWrapper);
+            this.stageImage = $('<img alt="">').appendTo(this.stageImageWrapper);
 
             this.options.timeout = parseFloat(this.stageImageWrapper.css('transition-duration')) * 1000;
         },
