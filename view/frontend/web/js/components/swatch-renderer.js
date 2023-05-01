@@ -1106,17 +1106,12 @@
          * @param {Array} images
          */
         _setImageType: function (images) {
-            var initial = this.options.mediaGalleryInitial[0].img;
 
-            if (images[0].img === initial) {
-                images = $.extend(true, [], this.options.mediaGalleryInitial);
-            } else {
-                images.map(function (img) {
-                    if (!img.type) {
-                        img.type = 'image';
-                    }
-                });
-            }
+            images.map(function (img) {
+                if (!img.type) {
+                    img.type = 'image';
+                }
+            });
 
             return images;
         },
