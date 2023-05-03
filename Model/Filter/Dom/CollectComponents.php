@@ -76,5 +76,15 @@ class CollectComponents extends AbstractFilter
         if (count($nodes)) {
             $this->addComponent('breeze-lite-youtube');
         }
+
+        $nodes = $xpath->query('//*[@data-enable-parallax="1"]', $document);
+        if (count($nodes)) {
+            $this->addComponent('parallax');
+        }
+
+        $nodes = $xpath->query('//*[@data-background-type="video"]', $document);
+        if (count($nodes)) {
+            $this->addComponent('video-background');
+        }
     }
 }
