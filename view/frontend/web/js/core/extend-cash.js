@@ -187,13 +187,11 @@
             ];
 
             $.each(keys, function (i, widgetName) {
-                if (typeof collection[widgetName] !== 'function') {
-                    return;
+                result = $.registry.get(widgetName, collection[0]);
+
+                if (result) {
+                    return false;
                 }
-
-                result = collection[widgetName]('instance');
-
-                return false;
             });
         }
 
