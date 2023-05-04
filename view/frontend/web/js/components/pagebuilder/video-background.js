@@ -2,20 +2,30 @@
 (function () {
     'use strict';
 
-    jarallaxVideo();
+    $(document).on('breeze:load', () => {
+        jarallaxVideo();
 
-    $('[data-background-type="video"]').each((i, el) => {
-        var $el = $(el),
-            parallaxSpeed = $el.data('enableParallax') ? parseFloat($el.data('parallaxSpeed')) : 1;
+        $('[data-background-type="video"]').each((i, el) => {
+            var $el = $(el).addClass('jarallax'),
+                parallaxSpeed = $el.data('enableParallax') ? parseFloat($el.data('parallaxSpeed')) : 1;
 
-        jarallax(el, {
-            imgSrc: $el.data('videoFallbackSrc'),
-            speed: !isNaN(parallaxSpeed) ? parallaxSpeed : 0.5,
-            videoLoop: $el.data('videoLoop'),
-            videoPlayOnlyVisible: $el.data('videoPlayOnlyVisible'),
-            videoLazyLoading: $el.data('videoLazyLoad'),
-            elementInViewport: $el.data('elementInViewport') &&
-                $el[0].querySelector($el.data('elementInViewport'))
+            jarallax(el, {
+                onCoverImage: () => $(el).addClass('jarallax-ready'),
+                imgSrc: $el.data('videoFallbackSrc'),
+                speed: !isNaN(parallaxSpeed) ? parallaxSpeed : 0.5,
+                videoLoop: $el.data('videoLoop'),
+                videoPlayOnlyVisible: $el.data('videoPlayOnlyVisible'),
+                videoLazyLoading: $el.data('videoLazyLoad'),
+                elementInViewport: $el.data('elementInViewport') &&
+                    $el[0].querySelector($el.data('elementInViewport'))
+            });
+        });
+    });
+
+    $(document).on('breeze:destroy', () => {
+        $('[data-background-type="video"]').each((i, el) => {
+            $(el).removeClass('jarallax jarallax-ready');
+            jarallax(el, 'destroy');
         });
     });
 })();
