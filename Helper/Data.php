@@ -79,7 +79,7 @@ class Data extends AbstractHelper
 
         $excludedUrls[] = '/sendfriend/product/';
         $excludedUrls[] = '/redirect/';
-        $excludedUrls[] = '/checkout/';
+        // $excludedUrls[] = '/checkout/';
         $excludedUrls[] = '/multishipping/';
 
         return $excludedUrls;
@@ -139,6 +139,10 @@ class Data extends AbstractHelper
             if ($referer && $this->isUrlExcluded($referer)) {
                 return false;
             }
+        }
+
+        if ($page === 'checkout_cart_index') {
+            return true;
         }
 
         return strpos($page, 'checkout_') === false

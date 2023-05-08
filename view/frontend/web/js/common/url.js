@@ -14,6 +14,10 @@
             }
 
             return baseUrl + path;
+        },
+
+        rest: function (path) {
+            return this.build(`rest/${window.checkoutConfig.storeCode}/V1${path}`);
         }
     };
 
