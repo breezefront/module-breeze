@@ -118,7 +118,7 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
 
 <script type="text/x-magento-init">
     {
-        "[data-gallery-id='<?= $galleryId ?>'": {
+        "[data-gallery-id='<?= $galleryId ?>']": {
             "mage/gallery/gallery": {
                 "data": <?= /* @noEscape */ $block->getGalleryImagesJson() ?>,
                 "options": <?= /* @noEscape */ $block->getGalleryOptions()->getOptionsJson() ?>,
