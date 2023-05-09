@@ -36,7 +36,7 @@ if ($block->getQuote()->isVirtual()) {
                                        optionsValue: 'value'"></select>
                     </div>
                 </div>
-                <div class="field" data-bind="visible: availableRegions().length" style="display:none">
+                <div class="field" data-bind="visible: hasAvailableRegions()" style="display:none">
                     <label class="label" for="estimate_region_id"><span><?= __('State/Province') ?></span></label>
                     <div class="control">
                         <select class="select" name="region_id" id="estimate_region_id"
@@ -46,7 +46,7 @@ if ($block->getQuote()->isVirtual()) {
                                        optionsValue: 'value'"></select>
                     </div>
                 </div>
-                <div class="field" data-bind="visible: !availableRegions().length">
+                <div class="field" data-bind="visible: !hasAvailableRegions()">
                     <label class="label" for="estimate_region"><span><?= __('State/Province') ?></span></label>
                     <div class="control">
                         <input type="text" class="input-text" name="region" id="estimate_region" data-bind="value: region"/>
@@ -58,6 +58,60 @@ if ($block->getQuote()->isVirtual()) {
                         <input type="text" class="input-text" name="postcode" id="estimate_postcode" data-bind="value: postcode"/>
                     </div>
                 </div>
+            </fieldset>
+        </form>
+
+        <form id="co-shipping-method-form" data-bind="blockLoader: isLoading, visible: isShippingBlockVisible()" style="display:none">
+            <p class="field note" data-bind="visible: (!isLoading() && shippingRates().length <= 0)">
+                <!-- ko text: $t('Sorry, no quotes are available for this order at this time')--><!-- /ko -->
+            </p>
+            <fieldset class="fieldset rate" data-bind="visible: (shippingRates().length > 0)">
+                <dl class="items methods" data-bind="foreach: shippingRateGroups()">
+                    <dt class="item-title"><span data-bind="text: $data"></span></dt>
+                    <dd class="item-options" data-bind="foreach: { data: $parent.getRatesForGroup($data), as: 'method' }">
+                        <div data-bind="css: {'field choice item': available, 'message error': !available} ">
+                            <!-- ko ifnot: (available) -->
+                            <div data-bind="text: error_message"></div>
+                            <!-- /ko -->
+                            <!-- ko if: (available) -->
+                            <input type="radio"
+                                   class="radio"
+                                   data-bind="
+                                        click: $parents[1].selectShippingMethod.bind($parents[1]),
+                                        checked: $parents[1].shippingMethod,
+                                        attr: {
+                                            value: carrier_code + '_' + method_code,
+                                            id: 's_method_' + carrier_code + '_' + method_code
+                                        }"/>
+                            <label class="label" data-bind="attr: { for: 's_method_' + carrier_code + '_' + method_code }">
+                                <!-- ko text: $data.method_title --><!-- /ko -->
+
+                                <!-- ko if: $parents[1].isDisplayShippingPriceExclTax -->
+                                <span class="price"><span class="price" data-bind="text: $parents[1].getFormattedPrice(method.price_excl_tax)"></span></span>
+                                <!-- /ko -->
+
+                                <!-- ko ifnot: $parents[1].isDisplayShippingPriceExclTax -->
+                                    <!-- ko if: ($parents[1].isDisplayShippingBothPrices && (method.price_excl_tax != method.price_incl_tax))-->
+                                    <span class="price-including-tax" data-bind = "attr: {'data-label': $t('Incl. Tax')}">
+                                        <span class="price"><span class="price" data-bind="text: $parents[1].getFormattedPrice(method.price_incl_tax)"></span></span>
+                                    </span>
+                                    <!-- /ko -->
+
+                                    <!-- ko ifnot: ($parents[1].isDisplayShippingBothPrices && (method.price_excl_tax != method.price_incl_tax))-->
+                                    <span class="price"><span class="price" data-bind="text: $parents[1].getFormattedPrice(method.price_incl_tax)"></span></span>
+                                    <!-- /ko -->
+                                <!-- /ko -->
+
+                                <!-- ko if: ($parents[1].isDisplayShippingBothPrices && (method.price_excl_tax != method.price_incl_tax))-->
+                                <span class="price-excluding-tax" data-bind = "attr: {'data-label': $t('Excl. Tax')}">
+                                    <span class="price"><span class="price" data-bind="text: $parents[1].getFormattedPrice(method.price_excl_tax)"></span></span>
+                                </span>
+                                <!-- /ko -->
+                            </label>
+                            <!-- /ko -->
+                        </div>
+                    </dd>
+                </dl>
             </fieldset>
         </form>
     </div>

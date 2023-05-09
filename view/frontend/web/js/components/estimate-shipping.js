@@ -12,16 +12,38 @@
             postcode: '',
             availableCountries: [],
             availableRegions: [],
+            rates: storage.get('cart-data')?.rates || [],
+            isShippingBlockVisible: storage.get('cart-data')?.rates?.length > 0,
+            isDisplayShippingPriceExclTax: window.checkoutConfig.isDisplayShippingPriceExclTax,
+            isDisplayShippingBothPrices: window.checkoutConfig.isDisplayShippingBothPrices,
+            shippingMethod: window.checkoutConfig.selectedShippingMethod
         },
 
         create: function () {
-            Object.entries(storage.get('cart-data')?.address || {}).forEach(([key, value]) => {
+            var cartData = storage.get('cart-data') || {};
+
+            Object.entries(cartData.address || {}).forEach(([key, value]) => {
                 if (this[key] !== undefined) {
                     this[key] = value;
                 }
             });
 
-            this.observe('countryId regionId region postcode availableCountries availableRegions');
+            if (cartData.shippingCarrierCode) {
+                this.shippingMethod = cartData.shippingCarrierCode + '_' + cartData.shippingMethodCode;
+            }
+
+            this.observe([
+                'countryId',
+                'regionId',
+                'region',
+                'postcode',
+                'availableCountries',
+                'availableRegions',
+                'rates',
+                'isLoading',
+                'isShippingBlockVisible',
+                'shippingMethod'
+            ]);
             this.onDirectoryDataUpdate();
 
             this.countryId.subscribe(this.onCountryChange.bind(this));
@@ -30,6 +52,10 @@
             this.postcode.subscribe(this.updateShippingAddress.bind(this));
 
             $.sections.get('directory-data').subscribe(this.onDirectoryDataUpdate.bind(this));
+
+            if (!cartData.rates) {
+                this.updateShippingAddress();
+            }
         },
 
         onCountryChange: function () {
@@ -60,16 +86,16 @@
         },
 
         updateAvailableRegions: function () {
-            var countries = $.sections.get('directory-data')(),
+            var countries = $.sections.get('directory-data')() || {},
                 regions = countries[this.countryId()]?.regions;
 
             this.availableRegions.removeAll();
+            this.availableRegions.push({ label: $t('Please select a region, state or province'), value: '' });
 
             if (!regions) {
                 return;
             }
 
-            this.availableRegions.push({ label: $t('Please select a region, state or province'), value: '' });
             Object.entries(regions).map(([id, item]) => {
                     return {
                         label: item.name,
@@ -80,15 +106,22 @@
                 .map((item) => this.availableRegions.push(item));
         },
 
+        hasAvailableRegions: function () {
+            return this.availableRegions().length > 1;
+        },
+
         updateShippingAddress: _.debounce(function () {
-            var countries = $.sections.get('directory-data')(),
-                regions = countries[this.countryId()]?.regions,
+            var countries = $.sections.get('directory-data')() || {},
+                regions = countries[this.countryId()]?.regions || {},
                 address = {
-                    countryId: this.countryId(),
                     regionCode: '',
                     region: this.region(),
                     postcode: ''
                 };
+
+            if (this.countryId()) {
+                address.countryId = this.countryId();
+            }
 
             if (this.regionId()) {
                 address.regionId = this.regionId();
@@ -100,7 +133,7 @@
                 address: address
             });
 
-            this.fetchShippingRates().then(this.fetchTotals);
+            this.fetchShippingRates().then(this.fetchTotals.bind(this));
         }, 200),
 
         fetchShippingRates: function () {
@@ -108,40 +141,90 @@
                 '/carts/mine/estimate-shipping-methods'
                 : `/guest-carts/${window.checkoutConfig.quoteData.entity_id}/estimate-shipping-methods`;
 
+            this.isLoading(true);
+
             return $.post($.breeze.url.rest(url), {
                 global: false,
                 data: {
                     address: storage.get('cart-data').address
-                }
+                },
+                success: rates => {
+                    this.isShippingBlockVisible(true);
+                    this.rates(rates);
+                    this.updateCartData({
+                        rates: rates
+                    });
+                },
+                always: () => this.isLoading(false)
             });
         },
 
         fetchTotals: function () {
             var url = window.checkoutConfig.isCustomerLoggedIn ?
-                '/carts/mine/totals-information'
-                : `/guest-carts/${window.checkoutConfig.quoteData.entity_id}/totals-information`;
+                    '/carts/mine/totals-information'
+                    : `/guest-carts/${window.checkoutConfig.quoteData.entity_id}/totals-information`,
+                cartData = storage.get('cart-data') || {};
+
+            this.isLoading(true);
 
             return $.post($.breeze.url.rest(url), {
                 global: false,
                 data: {
                     addressInformation: {
-                        address: storage.get('cart-data').address,
-                        shipping_carrier_code: '',
-                        shipping_method_code: ''
+                        address: cartData.address,
+                        shipping_carrier_code: cartData.shippingCarrierCode,
+                        shipping_method_code: cartData.shippingMethodCode
                     }
-                }
+                },
+                always: () => this.isLoading(false)
             });
         },
 
+        shippingRates: function () {
+            return this.rates();
+        },
+
+        shippingRateGroups: function () {
+            return [...new Set(this.rates().map(rate => rate.carrier_title))];
+        },
+
+        getRatesForGroup: function (group) {
+            return this.rates().filter(rate => rate.carrier_title === group);
+        },
+
+        selectShippingMethod: function (method) {
+            this.shippingMethod(method.carrier_code + '_' + method.method_code);
+            this.updateCartData({
+                shippingCarrierCode: method.carrier_code,
+                shippingMethodCode: method.method_code,
+            });
+            this.fetchTotals();
+
+            return true;
+        },
+
+        getFormattedPrice: function (price) {
+            return $.catalog.priceUtils.formatPriceLocale(price, window.checkoutConfig.priceFormat);
+        },
+
         updateCartData: function (data) {
-            storage.set('cart-data', _.extend({
-                // totals: null,
-                address: null,
-                // cartVersion: null,
-                shippingMethodCode: null,
-                shippingCarrierCode: null,
-                // rates: null
-            }, data));
+            storage.set('cart-data', _.extend(storage.get('cart-data') || {}, data));
+
+            if (data.address) {
+                this.updateCheckoutData({
+                    shippingAddressFromData: data.address
+                });
+            }
+
+            if (data.shippingCarrierCode) {
+                this.updateCheckoutData({
+                    selectedShippingRate: this.shippingMethod()
+                });
+            }
+        },
+
+        updateCheckoutData: function (data) {
+            storage.set('checkout-data', _.extend(storage.get('checkout-data') || {}, data));
         }
     });
 })();
