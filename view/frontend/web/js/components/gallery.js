@@ -339,19 +339,11 @@
 
         updateData: function (data) {
             var thumbnails = [],
-                activeIndex = this.activeIndex,
-                index = 0,
-                currentThumb = this.options.data[activeIndex].thumb,
                 template = $('#gallery-thumbnail').html();
 
             this.options.data = data;
 
-            _.each(data, function (picture, i) {
-                // keep currently selected image if it's not the first (default) one
-                if (activeIndex > 0 && picture.thumb === currentThumb) {
-                    index = i;
-                }
-
+            _.each(data, function (picture) {
                 if (!template) {
                     return;
                 }
@@ -366,10 +358,8 @@
             });
 
             this.thumbsWrapper.html(thumbnails.join(''));
-
             this.thumbs = this.thumbsWrapper.find('a');
-
-            this.activate(index);
+            this.activate(data.findIndex(img => img.isMain));
         },
 
         /**
