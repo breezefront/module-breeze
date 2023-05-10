@@ -116,7 +116,7 @@
                 address = {
                     regionCode: '',
                     region: this.region(),
-                    postcode: ''
+                    postcode: this.postcode()
                 };
 
             if (this.countryId()) {
