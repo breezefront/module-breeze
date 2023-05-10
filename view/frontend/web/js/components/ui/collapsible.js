@@ -6,6 +6,7 @@
         options: {
             active: false,
             openedState: 'active',
+            saveState: false,
             collapsible: true,
             header: '[data-role=title]',
             content: '[data-role=content]',
@@ -36,6 +37,7 @@
             this.trigger.attr('tabindex', 0);
             this.trigger.children('a').attr('tabindex', -1);
             this.element.attr('data-collapsible', true);
+            this.processState();
 
             if (this.options.active) {
                 this.open();
@@ -56,6 +58,25 @@
 
         init: function () {
             this.disabled = false;
+        },
+
+        processState: function () {
+            var urlPath = window.location.pathname.replace(/\./g, ''),
+                state;
+
+            this.stateKey = encodeURIComponent(urlPath + this.element.attr('id'));
+
+            if (!this.options.saveState || this.options.disabled) {
+                return;
+            }
+
+            state = $.storage.get(this.stateKey);
+
+            if (!state && state !== false) {
+                $.storage.set(this.stateKey, this.options.active);
+            } else {
+                this.options.active = !!state;
+            }
         },
 
         /** Hide expanded widgets */
@@ -97,6 +118,10 @@
                 this.loadContent();
             }
 
+            if (this.options.saveState) {
+                $.storage.set(this.stateKey, true);
+            }
+
             if (this.options.openedState) {
                 this.element.addClass(this.options.openedState);
             }
@@ -127,6 +152,10 @@
         },
 
         close: function () {
+            if (this.options.saveState) {
+                $.storage.set(this.stateKey, false);
+            }
+
             if (this.options.openedState) {
                 this.element.removeClass(this.options.openedState);
             }
