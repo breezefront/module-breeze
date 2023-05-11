@@ -5,19 +5,20 @@ $.storage = $.localStorage = (function () {
         data = {};
 
     return {
-        /**
-         * @param {String} key
-         * @return {String}
-         */
         get: function (key) {
-            return storage.getItem(key);
+            var result = storage.getItem(key);
+
+            try {
+                result = JSON.parse(result);
+            } catch (e) {}
+
+            return result;
         },
 
-        /**
-         * @param {String} key
-         * @param {String} value
-         */
         set: function (key, value) {
+            if (value && typeof value === 'object') {
+                value = JSON.stringify(value);
+            }
             storage.setItem(key, value);
         },
 
