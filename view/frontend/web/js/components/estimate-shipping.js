@@ -121,6 +121,7 @@
 
             if (this.countryId()) {
                 address.countryId = this.countryId();
+                address.country_id = this.countryId();
             }
 
             if (this.regionId()) {
