@@ -1,0 +1,65 @@
+define([
+    'Magento_Checkout/js/checkout-data',
+    'Magento_Checkout/js/model/cart/cache'
+], function (checkoutData, cartData) {
+    'use strict';
+
+    var processTotalsData = function (data) {
+            if (_.isObject(data) && _.isObject(data.extension_attributes)) {
+                _.each(data.extension_attributes, function (element, index) {
+                    data[index] = element;
+                });
+            }
+
+            return data;
+        },
+        shippingAddress = ko.observable(null),
+        shippingMethod = ko.observable(null),
+        totals = ko.observable(processTotalsData(window.checkoutConfig.totalsData));
+
+    if (cartData.get('totals')) {
+        totals(cartData.get('totals'));
+    }
+
+    if (checkoutData.getShippingAddressFromData() || cartData.get('address')) {
+        shippingAddress(checkoutData.getShippingAddressFromData() || cartData.get('address'));
+    }
+
+    (() => {
+        var rates = cartData.get('rates') || [],
+            preferredRate = checkoutData.getSelectedShippingRate();
+
+        if (rates.length === 1) {
+            shippingMethod(rates[0]);
+        } else if (rates.length > 1 && preferredRate) {
+            shippingMethod(rates.find(method => {
+                return method.carrier_code + '_' + method.method_code === preferredRate;
+            }));
+        }
+    })();
+
+    totals.subscribe(data => cartData.set('totals', data));
+    shippingAddress.subscribe(address => {
+        cartData.set('address', address);
+        checkoutData.setShippingAddressFromData(address);
+    });
+    shippingMethod.subscribe(method => {
+        checkoutData.setSelectedShippingRate(method ? method.carrier_code + '_' + method.method_code : null);
+        cartData.set('shippingCarrierCode', method?.carrier_code);
+        cartData.set('shippingMethodCode', method?.method_code);
+    });
+
+    $.breezemap['Magento_Checkout/js/model/quote'] = {
+        totals: totals,
+        shippingAddress: shippingAddress,
+        shippingMethod: shippingMethod,
+        getQuoteId: () => window.checkoutConfig.quoteData.entity_id,
+        isVirtual: () => !!Number(window.checkoutConfig.quoteData.is_virtual),
+        getPriceFormat: () => window.checkoutConfig.priceFormat,
+        getBasePriceFormat: () => window.checkoutConfig.basePriceFormat,
+        getItems: () => window.checkoutConfig.quoteItemData,
+        getTotals: () => totals,
+        setTotals: (data) => totals(processTotalsData(data)),
+        getStoreCode: () => window.checkoutConfig.storeCode
+    };
+});

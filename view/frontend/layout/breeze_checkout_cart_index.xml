@@ -3,5 +3,11 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="checkout.cart.shipping" template="Swissup_Breeze::checkout/cart/shipping.phtml"/>
+
+        <referenceContainer name="breeze.container">
+            <block class="Swissup\Breeze\Block\HtmlTemplate" template="Magento_Checkout::cart/totals.html"/>
+            <block class="Swissup\Breeze\Block\HtmlTemplate" template="Magento_Tax::checkout/summary/subtotal.html"/>
+            <block class="Swissup\Breeze\Block\HtmlTemplate" template="Magento_Tax::checkout/cart/totals/shipping.html"/>
+        </referenceContainer>
     </body>
 </page>

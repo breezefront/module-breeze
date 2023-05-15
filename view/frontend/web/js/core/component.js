@@ -682,13 +682,11 @@ $.registry = (function () {
     $.uiComponent = {
         counter: 1,
         extend: function (proto) {
-            var name = proto.component;
-
-            if (!name) {
-                name = 'uiComponent' + this.counter++;
-            }
-
-            $.view(name, proto);
+            $.view(...[
+                proto.component || ('uiComponent' + this.counter++), // name
+                proto.parentComponent, // parent name
+                proto // object
+            ].filter(arg => arg));
         }
     };
     $.breezemap.uiComponent = $.uiComponent;

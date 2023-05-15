@@ -1,9 +1,12 @@
-(() => {
+define([
+    'uiComponent',
+    'Magento_Checkout/js/model/quote',
+    'Magento_Checkout/js/model/cart/cache',
+    'Swissup_Breeze/js/components/cart/estimation-services'
+], function (Component, quote, cartData, estimation) {
     'use strict';
 
-    var storage = $.storage.ns('mage-cache-storage');
-
-    $.view('estimateShipping', {
+    Component.extend({
         component: 'Swissup_Breeze/js/components/estimate-shipping',
         defaults: {
             countryId: window.checkoutConfig.defaultCountryId,
@@ -12,25 +15,18 @@
             postcode: '',
             availableCountries: [],
             availableRegions: [],
-            rates: storage.get('cart-data')?.rates || [],
-            isShippingBlockVisible: storage.get('cart-data')?.rates?.length > 0,
+            rates: cartData.get('rates') || [],
+            isShippingBlockVisible: cartData.get('rates')?.length > 0,
             isDisplayShippingPriceExclTax: window.checkoutConfig.isDisplayShippingPriceExclTax,
             isDisplayShippingBothPrices: window.checkoutConfig.isDisplayShippingBothPrices,
-            shippingMethod: window.checkoutConfig.selectedShippingMethod
         },
 
         create: function () {
-            var cartData = storage.get('cart-data') || {};
-
-            Object.entries(cartData.address || {}).forEach(([key, value]) => {
+            Object.entries(quote.shippingAddress() || {}).forEach(([key, value]) => {
                 if (this[key] !== undefined) {
                     this[key] = value;
                 }
             });
-
-            if (cartData.shippingCarrierCode) {
-                this.shippingMethod = cartData.shippingCarrierCode + '_' + cartData.shippingMethodCode;
-            }
 
             this.observe([
                 'countryId',
@@ -42,7 +38,6 @@
                 'rates',
                 'isLoading',
                 'isShippingBlockVisible',
-                'shippingMethod'
             ]);
             this.onDirectoryDataUpdate();
 
@@ -53,7 +48,7 @@
 
             $.sections.get('directory-data').subscribe(this.onDirectoryDataUpdate.bind(this));
 
-            if (!cartData.rates) {
+            if (!cartData.get('rates') || !quote.shippingAddress()) {
                 this.updateShippingAddress();
             }
         },
@@ -130,54 +125,23 @@
                 address.region = regions[this.regionId()]?.name;
             }
 
-            this.updateCartData({
-                address: address
-            });
+            quote.shippingAddress(address);
 
-            this.fetchShippingRates().then(this.fetchTotals.bind(this));
+            this.isLoading(true);
+
+            estimation.getShippingRates().then(result => {
+                cartData.set('rates', result.body);
+                this.isLoading(false);
+                this.isShippingBlockVisible(true);
+                this.rates(result.body);
+                this.shippingMethodToQuote();
+                this.fetchTotals();
+            });
         }, 200),
 
-        fetchShippingRates: function () {
-            var url = window.checkoutConfig.isCustomerLoggedIn ?
-                '/carts/mine/estimate-shipping-methods'
-                : `/guest-carts/${window.checkoutConfig.quoteData.entity_id}/estimate-shipping-methods`;
-
-            this.isLoading(true);
-
-            return $.post($.breeze.url.rest(url), {
-                global: false,
-                data: {
-                    address: storage.get('cart-data').address
-                },
-                success: rates => {
-                    this.isShippingBlockVisible(true);
-                    this.rates(rates);
-                    this.updateCartData({
-                        rates: rates
-                    });
-                },
-                always: () => this.isLoading(false)
-            });
-        },
-
         fetchTotals: function () {
-            var url = window.checkoutConfig.isCustomerLoggedIn ?
-                    '/carts/mine/totals-information'
-                    : `/guest-carts/${window.checkoutConfig.quoteData.entity_id}/totals-information`,
-                cartData = storage.get('cart-data') || {};
-
-            this.isLoading(true);
-
-            return $.post($.breeze.url.rest(url), {
-                global: false,
-                data: {
-                    addressInformation: {
-                        address: cartData.address,
-                        shipping_carrier_code: cartData.shippingCarrierCode,
-                        shipping_method_code: cartData.shippingMethodCode
-                    }
-                },
-                always: () => this.isLoading(false)
+            return estimation.getTotals().then(result => {
+                quote.setTotals(result.body);
             });
         },
 
@@ -193,39 +157,38 @@
             return this.rates().filter(rate => rate.carrier_title === group);
         },
 
-        selectShippingMethod: function (method) {
-            this.shippingMethod(method.carrier_code + '_' + method.method_code);
-            this.updateCartData({
-                shippingCarrierCode: method.carrier_code,
-                shippingMethodCode: method.method_code,
-            });
-            this.fetchTotals();
+        shippingMethod: ko.computed(function () {
+            var method = quote.shippingMethod();
 
+            if (!method) {
+                return null;
+            }
+
+            return method.carrier_code + '_' + method.method_code;
+        }),
+
+        selectShippingMethod: function (method) {
+            quote.shippingMethod(method);
+            this.fetchTotals();
             return true;
         },
 
+        shippingMethodToQuote: function () {
+            var method = null;
+
+            if (this.rates().length === 1) {
+                method = this.rates()[0];
+            } else if (this.shippingMethod() && this.rates().length > 1) {
+                method = this.rates().find(rate => {
+                    return rate.carrier_code + '_' + rate.method_code === this.shippingMethod();
+                });
+            }
+
+            quote.shippingMethod(method);
+        },
+
         getFormattedPrice: function (price) {
-            return $.catalog.priceUtils.formatPriceLocale(price, window.checkoutConfig.priceFormat);
-        },
-
-        updateCartData: function (data) {
-            storage.set('cart-data', _.extend(storage.get('cart-data') || {}, data));
-
-            if (data.address) {
-                this.updateCheckoutData({
-                    shippingAddressFromData: data.address
-                });
-            }
-
-            if (data.shippingCarrierCode) {
-                this.updateCheckoutData({
-                    selectedShippingRate: this.shippingMethod()
-                });
-            }
-        },
-
-        updateCheckoutData: function (data) {
-            storage.set('checkout-data', _.extend(storage.get('checkout-data') || {}, data));
+            return $.catalog.priceUtils.formatPriceLocale(price, quote.getPriceFormat());
         }
     });
-})();
+});

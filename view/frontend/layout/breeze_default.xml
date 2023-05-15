@@ -327,6 +327,9 @@
                     </item>
                     <item name="checkout" xsi:type="array">
                         <item name="items" xsi:type="array">
+                            <item name="Magento_Checkout/js/checkout-data" xsi:type="string">Swissup_Breeze/js/components/cart/checkout-data</item>
+                            <item name="Magento_Checkout/js/model/quote" xsi:type="string">Swissup_Breeze/js/components/cart/quote</item>
+                            <item name="Swissup_Breeze/js/components/cart/estimation-services" xsi:type="string">Swissup_Breeze/js/components/cart/estimation-services</item>
                             <item name="orderReview" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/paypal-order-review</item>
                                 <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isAnyEnabled">
@@ -337,10 +340,10 @@
                                     <param name="4">payment/paypal_express_bml/active</param>
                                 </item>
                             </item>
-                            <item name="discountCode" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/discount-code</item>
-                            </item>
-                            <item name="Swissup_Breeze/js/components/estimate-shipping" xsi:type="string">Swissup_Breeze/js/components/estimate-shipping</item>
+                            <item name="discountCode" xsi:type="string">Swissup_Breeze/js/components/cart/discount-code</item>
+                            <item name="Swissup_Breeze/js/components/estimate-shipping" xsi:type="string">Swissup_Breeze/js/components/cart/estimate-shipping</item>
+                            <item name="Magento_Checkout/js/view/cart/totals" xsi:type="string">Swissup_Breeze/js/components/cart/totals</item>
+                            <item name="Magento_Tax/js/view/checkout/summary/subtotal" xsi:type="string">Swissup_Breeze/js/components/cart/tax</item>
                         </item>
                     </item>
                 </argument>
