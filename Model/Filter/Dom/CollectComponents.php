@@ -54,17 +54,7 @@ class CollectComponents extends AbstractFilter
             foreach ($value as $selector => $components) {
                 foreach ($components as $component => $config) {
                     if ($component === 'Magento_Ui/js/core/app') {
-                        if (!isset($config['components'])) {
-                            continue;
-                        }
-
-                        foreach ($config['components'] as $key => $settings) {
-                            if (empty($settings['component'])) {
-                                continue;
-                            }
-
-                            $this->addComponent($settings['component']);
-                        }
+                        $this->collectNestedComponents($config['components'] ?? []);
                     } else {
                         $this->addComponent($component);
                     }
@@ -80,6 +70,16 @@ class CollectComponents extends AbstractFilter
         $nodes = $xpath->query('//*[@data-background-type="video"]', $document);
         if (count($nodes)) {
             $this->addComponent('video-background');
+        }
+    }
+
+    private function collectNestedComponents($components)
+    {
+        foreach ($components as $key => $settings) {
+            if (!empty($settings['component'])) {
+                $this->addComponent($settings['component']);
+            }
+            $this->collectNestedComponents($settings['children'] ?? []);
         }
     }
 }

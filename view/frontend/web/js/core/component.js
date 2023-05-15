@@ -634,6 +634,10 @@ $.registry = (function () {
             return found || templates[0];
         },
 
+        elems: function () {
+            return this.getRegion(null);
+        },
+
         getRegion: function (code) {
             var self = this,
                 result = ko.observableArray();
@@ -645,7 +649,7 @@ $.registry = (function () {
             _.each(this.options.children, function (config) {
                 var cmp;
 
-                if (config.displayArea !== code) {
+                if (code && config.displayArea !== code) {
                     return;
                 }
 
