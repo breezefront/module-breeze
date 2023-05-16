@@ -1,6 +1,7 @@
 define([
-    'Magento_Checkout/js/model/quote'
-], function (quote) {
+    'Magento_Checkout/js/model/quote',
+    'Magento_Checkout/js/model/totals'
+], function (quote, totals) {
     'use strict';
 
     var states = {},
@@ -39,6 +40,7 @@ define([
                     : `/guest-carts/${quote.getQuoteId()}/totals-information`;
 
             isLoading('totals', true);
+            totals.isLoading(true);
 
             return $.post($.breeze.url.rest(url), {
                 global: false,
@@ -49,7 +51,10 @@ define([
                         shipping_method_code: quote.shippingMethod()?.method_code
                     }
                 },
-                always: () => isLoading('totals', false)
+                always: () => {
+                    isLoading('totals', true);
+                    totals.isLoading(false);
+                }
             });
         }
     };

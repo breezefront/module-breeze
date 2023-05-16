@@ -8,6 +8,12 @@
             <block class="Swissup\Breeze\Block\HtmlTemplate" template="Magento_Checkout::cart/totals.html"/>
             <block class="Swissup\Breeze\Block\HtmlTemplate" template="Magento_Tax::checkout/summary/subtotal.html"/>
             <block class="Swissup\Breeze\Block\HtmlTemplate" template="Magento_Tax::checkout/cart/totals/shipping.html"/>
+            <block class="Swissup\Breeze\Block\HtmlTemplate" template="Magento_Tax::checkout/cart/totals/tax.html"/>
+            <block class="Swissup\Breeze\Block\HtmlTemplate" template="Magento_Tax::checkout/summary/grand-total.html"/>
+            <block class="Swissup\Breeze\Block\HtmlTemplate" template="Magento_Tax::checkout/cart/totals/grand-total.html"/>
+            <block class="Swissup\Breeze\Block\HtmlTemplate" template="Magento_Weee::checkout/summary/weee.html"/>
+            <block class="Swissup\Breeze\Block\HtmlTemplate" template="Magento_SalesRule::summary/discount.html"/>
+            <block class="Swissup\Breeze\Block\HtmlTemplate" template="Magento_SalesRule::cart/totals/discount.html"/>
         </referenceContainer>
     </body>
 </page>

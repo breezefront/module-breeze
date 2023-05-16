@@ -3,18 +3,19 @@ define([
     'uiComponent',
     'Magento_Catalog/js/price-utils',
     'Magento_Checkout/js/model/quote',
-    'Swissup_Breeze/js/components/cart/estimation-services'
-], function ($, Component, priceUtils, quote, estimation) {
+    'Magento_Checkout/js/model/totals'
+], function ($, Component, priceUtils, quote, totals) {
     'use strict';
 
     Component.extend({
         component: 'Magento_Checkout/js/view/cart/totals',
-        isLoading: estimation.isLoading('totals')
+        isLoading: totals.isLoading
     });
 
     Component.extend({
         component: 'Magento_Checkout/js/view/summary/abstract-total',
-        getFormattedPrice: (price) => priceUtils.formatPriceLocale(price, quote.getPriceFormat())
+        getFormattedPrice: (price) => priceUtils.formatPriceLocale(price, quote.getPriceFormat()),
+        totals: quote.getTotals()
     });
 
     Component.extend({
@@ -24,7 +25,6 @@ define([
             template: 'Magento_Checkout/summary/shipping'
         },
         quoteIsVirtual: quote.isVirtual(),
-        totals: quote.getTotals(),
 
         getShippingMethodTitle: function () {
             var shippingMethod,
@@ -61,8 +61,7 @@ define([
         },
 
         haveToShowCoupon: function () {
-            // eslint-disable-next-line max-len
-            return this.totals().coupon_code;// && !discountView().isDisplayed(); //Magento_SalesRule/js/view/summary/discount
+            return this.totals().coupon_code && !this.totals()?.discount_amount;
         },
 
         getCouponDescription: function () {
@@ -71,6 +70,46 @@ define([
             }
 
             return '(' + this.totals().coupon_code + ')';
+        }
+    });
+
+    Component.extend({
+        component: 'Magento_SalesRule/js/view/summary/discount',
+        parentComponent: 'Magento_Checkout/js/view/summary/abstract-total',
+        defaults: {
+            template: 'Magento_SalesRule/summary/discount'
+        },
+
+        isDisplayed: function () {
+            return this.getPureValue();
+        },
+
+        getCouponCode: function () {
+            return this.totals()?.coupon_code;
+        },
+
+        getCouponLabel: function () {
+            return this.totals()?.coupon_label;
+        },
+
+        getTitle: function () {
+            return totals.getSegment('discount')?.title;
+        },
+
+        getPureValue: function () {
+            return parseFloat(this.totals()?.discount_amount || 0);
+        },
+
+        getValue: function () {
+            return this.getFormattedPrice(this.getPureValue());
+        }
+    });
+
+    Component.extend({
+        component: 'Magento_SalesRule/js/view/cart/totals/discount',
+        parentComponent: 'Magento_SalesRule/js/view/summary/discount',
+        defaults: {
+            template: 'Magento_SalesRule/cart/totals/discount'
         }
     });
 });

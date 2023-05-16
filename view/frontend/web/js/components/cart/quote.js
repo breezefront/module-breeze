@@ -62,4 +62,17 @@ define([
         setTotals: (data) => totals(processTotalsData(data)),
         getStoreCode: () => window.checkoutConfig.storeCode
     };
+
+    (() => {
+        var quoteItems = ko.observable(totals().items);
+
+        totals.subscribe(newValue => quoteItems(newValue.items));
+
+        $.breezemap['Magento_Checkout/js/model/totals'] = {
+            totals: totals,
+            isLoading: ko.observable(false),
+            getItems: () => quoteItems,
+            getSegment: (code) => totals().total_segments?.find(item => item.code === code)
+        };
+    })();
 });
