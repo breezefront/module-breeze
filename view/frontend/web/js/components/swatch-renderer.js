@@ -199,7 +199,8 @@
             // tier prise selectors end
 
             // A price label selector
-            normalPriceLabelSelector: '.product-info-main .normal-price .price-label'
+            normalPriceLabelSelector: '.product-info-main .normal-price .price-label',
+            qtyInfo: '#qty'
         },
 
         /**
@@ -282,8 +283,9 @@
                 }];
             }
 
-            this.productForm = this.element.parents(this.options.selectorProductTile).find('form').first('first');
+            this.productForm = this.element.parents(this.options.selectorProductTile).find('form').first();
             this.inProductList = this.productForm.length > 0;
+            $(this.options.qtyInfo).on('input', this._onQtyChanged.bind(this));
         },
 
         /**
@@ -403,6 +405,27 @@
                 $widget._EmulateSelected($.parseQuery());
                 $widget._EmulateSelected($widget._getSelectedAttributes());
             }, 80);
+        },
+
+        disableSwatchForOutOfStockProducts: function () {
+            let $widget = this, container = this.element;
+
+            $.each(this.options.jsonConfig.attributes, function () {
+                let item = this;
+
+                if ($widget.options.jsonConfig.canDisplayShowOutOfStockStatus) {
+                    let salableProducts = $widget.options.jsonConfig.salable[item.id],
+                        swatchOptions = $(container).find(`[data-attribute-id='${item.id}']`).find('.swatch-option');
+
+                    swatchOptions.each(function (key, value) {
+                        let optionId = $(value).data('option-id');
+
+                        if (!salableProducts.hasOwnProperty(optionId)) {
+                            $(value).attr('disabled', true).addClass('disabled');
+                        }
+                    });
+                }
+            });
         },
 
         /**
@@ -775,6 +798,7 @@
                 .attr('disabled', true)
                 .addClass('disabled')
                 .attr('tabindex', '-1');
+            this.disableSwatchForOutOfStockProducts();
         },
 
         _Rebuild: function () {
@@ -1263,6 +1287,18 @@
 
                 this.options.mediaCache[JSON.stringify(mediaCallData)] = this.options.jsonConfig.preSelectedGallery;
             }
+        },
+
+        _onQtyChanged: function () {
+            var $price = this.element.parents(this.options.selectorProduct)
+                .find(this.options.selectorProductPrice);
+
+            $price.trigger(
+                'updatePrice',
+                {
+                    'prices': this._getPrices(this._getNewPrices(), $price.priceBox('option').prices)
+                }
+            );
         }
     });
 })();
