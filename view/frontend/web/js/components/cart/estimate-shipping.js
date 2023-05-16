@@ -50,6 +50,8 @@ define([
 
             if (!cartData.get('rates') || !quote.shippingAddress()) {
                 this.updateShippingAddress();
+            } else {
+                this.fetchTotals();
             }
         },
 
