@@ -640,22 +640,24 @@ $.registry = (function () {
 
         getRegion: function (code) {
             var self = this,
-                result = ko.observableArray();
+                result = ko.observableArray(),
+                children = this.options.children;
 
             if (this._regions[code]) {
                 return this._regions[code];
             }
 
-            _.each(this.options.children, function (config) {
-                var cmp;
+            Object.keys(this.options.children).sort((a, b) => {
+                return children[a].sortOrder - children[b].sortOrder;
+            }).forEach(key => {
+                var config = children[key],
+                    cmp;
 
                 if (code && config.displayArea !== code) {
                     return;
                 }
 
-                cmp = self.mount(config);
-
-                if (cmp) {
+                if ((cmp = self.mount(config))) {
                     result.push(cmp);
                 }
             });
