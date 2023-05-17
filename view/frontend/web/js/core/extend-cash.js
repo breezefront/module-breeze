@@ -286,6 +286,10 @@
         }
 
         return Object.entries(params).map(([key, value]) => {
+            if (value === undefined) {
+                return false;
+            }
+
             if (params.constructor === Array) {
                 key = `${prefix}[]`;
             } else if (params.constructor === Object) {
@@ -297,7 +301,7 @@
             }
 
             return `${key}=${encodeURIComponent(value)}`;
-        }).join('&');
+        }).filter(item => item).join('&');
     };
 
     /** Parse url query params */
