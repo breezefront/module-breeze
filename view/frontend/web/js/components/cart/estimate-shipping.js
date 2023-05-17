@@ -1,9 +1,11 @@
 define([
     'uiComponent',
     'Magento_Checkout/js/model/quote',
+    'Magento_Checkout/js/checkout-data',
     'Magento_Checkout/js/model/cart/cache',
+    'Magento_Checkout/js/model/new-customer-address',
     'Swissup_Breeze/js/components/cart/estimation-services'
-], function (Component, quote, cartData, estimation) {
+], function (Component, quote, checkoutData, cartData, addressModel, estimation) {
     'use strict';
 
     Component.extend({
@@ -127,7 +129,9 @@ define([
                 address.region = regions[this.regionId()]?.name;
             }
 
-            quote.shippingAddress(address);
+            cartData.set('address', address);
+            checkoutData.setShippingAddressFromData(address);
+            quote.shippingAddress(addressModel(address));
 
             this.isLoading(true);
 
@@ -170,6 +174,9 @@ define([
         }),
 
         selectShippingMethod: function (method) {
+            checkoutData.setSelectedShippingRate(method ? method.carrier_code + '_' + method.method_code : null);
+            cartData.set('shippingCarrierCode', method?.carrier_code);
+            cartData.set('shippingMethodCode', method?.method_code);
             quote.shippingMethod(method);
             this.fetchTotals();
             return true;

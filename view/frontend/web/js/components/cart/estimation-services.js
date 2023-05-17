@@ -1,7 +1,8 @@
 define([
     'Magento_Checkout/js/model/quote',
-    'Magento_Checkout/js/model/totals'
-], function (quote, totals) {
+    'Magento_Checkout/js/model/totals',
+    'Magento_Checkout/js/model/cart/cache'
+], function (quote, totals, cartData) {
     'use strict';
 
     var states = {},
@@ -46,7 +47,7 @@ define([
                 global: false,
                 data: {
                     addressInformation: {
-                        address: quote.shippingAddress(),
+                        address: _.pick(quote.shippingAddress(), cartData.requiredFields),
                         shipping_carrier_code: quote.shippingMethod()?.carrier_code,
                         shipping_method_code: quote.shippingMethod()?.method_code
                     }

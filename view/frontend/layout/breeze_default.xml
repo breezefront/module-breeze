@@ -328,6 +328,7 @@
                     <item name="checkout" xsi:type="array">
                         <item name="items" xsi:type="array">
                             <item name="Magento_Checkout/js/checkout-data" xsi:type="string">Swissup_Breeze/js/components/cart/checkout-data</item>
+                            <item name="Magento_Checkout/js/model/new-customer-address" xsi:type="string">Swissup_Breeze/js/components/cart/new-customer-address</item>
                             <item name="Magento_Checkout/js/model/quote" xsi:type="string">Swissup_Breeze/js/components/cart/quote</item>
                             <item name="Swissup_Breeze/js/components/cart/estimation-services" xsi:type="string">Swissup_Breeze/js/components/cart/estimation-services</item>
                             <item name="orderReview" xsi:type="array">

@@ -1,7 +1,8 @@
 define([
     'Magento_Checkout/js/checkout-data',
-    'Magento_Checkout/js/model/cart/cache'
-], function (checkoutData, cartData) {
+    'Magento_Checkout/js/model/cart/cache',
+    'Magento_Checkout/js/model/new-customer-address'
+], function (checkoutData, cartData, addressModel) {
     'use strict';
 
     var processTotalsData = function (data) {
@@ -22,7 +23,7 @@ define([
     }
 
     if (checkoutData.getShippingAddressFromData() || cartData.get('address')) {
-        shippingAddress(checkoutData.getShippingAddressFromData() || cartData.get('address'));
+        shippingAddress(addressModel(checkoutData.getShippingAddressFromData() || cartData.get('address')));
     }
 
     (() => {
@@ -39,15 +40,6 @@ define([
     })();
 
     totals.subscribe(data => cartData.set('totals', data));
-    shippingAddress.subscribe(address => {
-        cartData.set('address', address);
-        checkoutData.setShippingAddressFromData(address);
-    });
-    shippingMethod.subscribe(method => {
-        checkoutData.setSelectedShippingRate(method ? method.carrier_code + '_' + method.method_code : null);
-        cartData.set('shippingCarrierCode', method?.carrier_code);
-        cartData.set('shippingMethodCode', method?.method_code);
-    });
 
     $.breezemap['Magento_Checkout/js/model/quote'] = {
         totals: totals,
