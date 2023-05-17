@@ -7,7 +7,7 @@
 
         // eslint-disable-next-line eqeqeq
         if (countryId && !regionId && countryId == window.checkoutConfig.defaultCountryId) {
-            regionId = window.checkoutConfig.defaultRegionId;
+            regionId = window.checkoutConfig.defaultRegionId || undefined;
         }
 
         return {
