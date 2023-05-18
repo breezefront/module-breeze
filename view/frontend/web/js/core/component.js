@@ -641,13 +641,13 @@ $.registry = (function () {
         getRegion: function (code) {
             var self = this,
                 result = ko.observableArray(),
-                children = this.options.children;
+                children = this.options.children || [];
 
             if (this._regions[code]) {
                 return this._regions[code];
             }
 
-            Object.keys(this.options.children).sort((a, b) => {
+            Object.keys(children).sort((a, b) => {
                 return children[a].sortOrder - children[b].sortOrder;
             }).forEach(key => {
                 var config = children[key],
