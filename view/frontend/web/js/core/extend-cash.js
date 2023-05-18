@@ -280,7 +280,7 @@
     $.proxy = _.bind;
 
     /** Serialize object to query string */
-    $.param = $.params = function (params, prefix) {
+    $.param = $.params = function (params, prefix, doNotEncode) {
         if (params instanceof FormData) {
             return new URLSearchParams(params).toString();
         }
@@ -297,10 +297,10 @@
             }
 
             if (value && typeof value === 'object') {
-                return $.params(value, key);
+                return $.params(value, key, doNotEncode);
             }
 
-            return `${key}=${encodeURIComponent(value)}`;
+            return doNotEncode ? `${key}=${value}` : `${key}=${encodeURIComponent(value)}`;
         }).filter(item => item).join('&');
     };
 

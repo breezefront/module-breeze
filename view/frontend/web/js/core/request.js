@@ -140,7 +140,7 @@
                     key = key.includes('[') ? key : key + '[]';
                     value.map((val) => formData.append(key, val));
                 } else if (_.isObject(value)) {
-                    $.params({[key]: value}).split('&').map(pair => {
+                    $.params({[key]: value}, false, true).split('&').map(pair => {
                         var parts = pair.split('='),
                             v = parts.pop(),
                             k = parts.join('=');
