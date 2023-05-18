@@ -12,7 +12,7 @@ define([
         initialize: function () {
             var message = this.itemId
                 ? messageConfig.itemLevel?.[this.itemId]?.message
-                : messageConfig[this.itemId];
+                : messageConfig.orderLevel;
 
             this.index = this.__scope;
             this.itemId = this.itemId || 'orderLevel';
@@ -99,6 +99,7 @@ define([
             $('body').spinner(true);
 
             return $.post($.breeze.url.rest(url), {
+                global: false,
                 data: {
                     gift_message: {
                         recipient: remove ? '' : this.recipient(),
