@@ -347,6 +347,7 @@
                             <item name="Magento_Tax/js/view/checkout/summary/subtotal" xsi:type="string">Swissup_Breeze/js/components/cart/tax</item>
                             <item name="Magento_Weee/js/view/cart/totals/weee" xsi:type="string">Swissup_Breeze/js/components/cart/weee</item>
                             <item name="Magento_SalesRule/js/view/cart/totals/discount" xsi:type="string">Swissup_Breeze/js/components/cart/totals</item>
+                            <item name="Magento_GiftMessage/js/view/gift-message" xsi:type="string">Swissup_Breeze/js/components/cart/gift-message</item>
                         </item>
                     </item>
                 </argument>

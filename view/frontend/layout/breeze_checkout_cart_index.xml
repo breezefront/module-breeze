@@ -14,6 +14,13 @@
             <block class="Swissup\Breeze\Block\HtmlTemplate" template="Magento_Weee::checkout/summary/weee.html"/>
             <block class="Swissup\Breeze\Block\HtmlTemplate" template="Magento_SalesRule::summary/discount.html"/>
             <block class="Swissup\Breeze\Block\HtmlTemplate" template="Magento_SalesRule::cart/totals/discount.html"/>
+            <block class="Swissup\Breeze\Block\HtmlTemplate" template="Magento_GiftMessage::gift-message.html"/>
+            <block class="Swissup\Breeze\Block\HtmlTemplate" template="Magento_GiftMessage::gift-message-form.html">
+                <arguments>
+                    <argument name="id" xsi:type="string">Magento_GiftMessage/gift-message-form</argument>
+                </arguments>
+            </block>
+            <block class="Swissup\Breeze\Block\HtmlTemplate" template="Magento_GiftMessage::gift-message-item-level.html"/>
         </referenceContainer>
     </body>
 </page>
