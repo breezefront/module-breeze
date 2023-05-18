@@ -20,7 +20,7 @@ define([
             this.observe({
                 formBlockVisibility: false,
                 resultBlockVisibility: false,
-                alreadyAdded: !!message,
+                alreadyAdded: _.isObject(message),
                 recipient: message?.recipient || '',
                 sender: message?.sender || '',
                 message: message?.message || ''
