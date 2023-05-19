@@ -72,11 +72,11 @@
      * RequestEnd event is used to minify unstyled blink effect.
      */
     function onRequestEnd(event) {
-        updateLoadedScripts();
-
         if (isResourceVersionChanged('merged') || isResourceVersionChanged('static')) {
             event.preventDefault();
             window.location.reload();
+        } else {
+            updateLoadedScripts();
         }
     }
 

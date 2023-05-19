@@ -277,8 +277,9 @@
             $('body').spinner(true);
         }, 200);
 
-        /** [onScriptLoad description] */
-        function onScriptLoad() {
+        function onScriptLoad(src) {
+            $.breeze.loadedScripts[src] = true;
+
             if (++i < newScripts.length) {
                 return;
             }
@@ -290,10 +291,11 @@
 
         newScripts.each(function () {
             if (this.async) {
-                return onScriptLoad();
+                return onScriptLoad(this.src);
             }
 
-            $(this).on('load error', onScriptLoad);
+            // eslint-disable-next-line max-nested-callbacks
+            $(this).on('load error', () => onScriptLoad(this.src));
         });
     });
 
