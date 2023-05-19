@@ -4,15 +4,13 @@ define([
 ], function (Component, quote) {
     'use strict';
 
-    var messageConfig = window.giftOptionsConfig.giftMessage;
-
     Component.extend({
         component: 'Magento_GiftMessage/js/view/gift-message',
 
         initialize: function () {
             var message = this.itemId
-                ? messageConfig.itemLevel?.[this.itemId]?.message
-                : messageConfig.orderLevel;
+                ? window.giftOptionsConfig.giftMessage.itemLevel?.[this.itemId]?.message
+                : window.giftOptionsConfig.giftMessage.orderLevel;
 
             this.index = this.__scope;
             this.itemId = this.itemId || 'orderLevel';
@@ -65,7 +63,7 @@ define([
         },
 
         isActive: function () {
-            var itemConfig = messageConfig.itemLevel[this.itemId] || {};
+            var itemConfig = window.giftOptionsConfig.giftMessage.itemLevel[this.itemId] || {};
 
             if (this.itemId === 'orderLevel') {
                 return window.giftOptionsConfig.isOrderLevelGiftOptionsEnabled;
