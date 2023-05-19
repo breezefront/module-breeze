@@ -72,6 +72,8 @@
      * RequestEnd event is used to minify unstyled blink effect.
      */
     function onRequestEnd(event) {
+        updateLoadedScripts();
+
         if (isResourceVersionChanged('merged') || isResourceVersionChanged('static')) {
             event.preventDefault();
             window.location.reload();
@@ -95,11 +97,15 @@
             .find('script:not([type]), script[type="text/javascript"], script[type="module"]')
             .attr('type', 'text/breeze');
 
+        updateLoadedScripts();
+
+        $(document).trigger('breeze:destroy');
+    }
+
+    function updateLoadedScripts() {
         $('script[src]').each(function () {
             $.breeze.loadedScripts[this.src] = true;
         });
-
-        $(document).trigger('breeze:destroy');
     }
 
     /**
