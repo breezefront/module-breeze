@@ -6,14 +6,14 @@
     (() => {
         var cacheKey = 'checkout-data',
             updateCheckoutData = (data) => storage.set(cacheKey, _.extend(storage.get(cacheKey) || {}, data)),
-            kebabCase = (string) => string.replace(/([A-Z])/g, ($1) => '_' + $1.toLowerCase());
+            snakeCase = (string) => string.replace(/([A-Z])/g, ($1) => '_' + $1.toLowerCase());
 
         $.breezemap['Magento_Checkout/js/checkout-data'] = {
             setShippingAddressFromData: (address) => {
                 var data = {};
 
                 $.each(address, (key, value) => {
-                    data[kebabCase(key)] = value;
+                    data[snakeCase(key)] = value;
                 });
 
                 updateCheckoutData({ shippingAddressFromData: data });
