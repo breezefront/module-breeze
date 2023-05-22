@@ -189,11 +189,12 @@
         handleTierAddToCart: function (ev) {
             ev.preventDefault();
 
-            if (this.options.addToCartButton &&
+            if (this.options.addToCartButton && this.getAddToCartButton().length &&
                 this.options.inputQty && !isNaN(this.tierOptions.qty)
             ) {
                 $(this.options.inputQty).val(this.tierOptions.qty);
-                $(this.options.addToCartButton).click();
+                this.getAddToCartButton().click();
+                this.getAddToCartButton().get(0).click();
                 this.closePopup();
             }
         },
