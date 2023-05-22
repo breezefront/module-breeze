@@ -58,6 +58,10 @@
                 dataType: 'json',
                 complete: function () {
                     self.enableAddToCartButton(form);
+
+                    if (self.isLoaderEnabled()) {
+                        $('body').trigger(self.options.processStop);
+                    }
                 },
                 success: function (data, response) {
                     data = self.getResponseData(response);
@@ -68,10 +72,6 @@
                         'form': form,
                         'response': response
                     });
-
-                    if (self.isLoaderEnabled()) {
-                        $('body').trigger(self.options.processStop);
-                    }
 
                     if (data.backUrl) {
                         if (data.backUrl === window.location.href) {
@@ -90,6 +90,8 @@
                     if (data.minicart) {
                         $(self.options.minicartSelector).replaceWith(data.minicart);
                         $(self.options.minicartSelector).trigger('contentUpdated');
+                    } else {
+                        $(self.options.minicartSelector).trigger('contentSkipped');
                     }
 
                     if (data.product && data.product.statusText) {

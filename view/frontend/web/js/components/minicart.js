@@ -285,6 +285,10 @@
                 .on('contentLoading', function () {
                     self.addToCartCalls++;
                     self.isLoading(true);
+                })
+                .on('contentSkipped', function () {
+                    self.addToCartCalls--;
+                    self.isLoading(self.addToCartCalls > 0);
                 });
 
             if (cartData().website_id !== window.checkout.websiteId && cartData().website_id !== undefined ||
