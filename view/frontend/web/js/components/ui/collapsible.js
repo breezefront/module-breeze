@@ -81,7 +81,7 @@
 
         /** Hide expanded widgets */
         destroy: function () {
-            if (!this.options.active) {
+            if (!this.options.saveState && !this.options.active) {
                 this.close();
             }
             this._super();
