@@ -40,7 +40,9 @@
             if ($(this.options.priceHolderSelector).priceBox('instance')) {
                 this._onPriceFormatReady();
             } else {
-                $(this.options.priceHolderSelector).on('price-box-initialized', this._onPriceFormatReady.bind(this));
+                $(this.options.priceHolderSelector)
+                    .first()
+                    .one('price-box-initialized', this._onPriceFormatReady.bind(this));
             }
         },
 
