@@ -48,7 +48,17 @@
         'validate-not-negative-number': [
             (value) => value === '' || parseFloat(value) > 0,
             $t('Please enter a number 0 or greater in this field.')
-        ]
+        ],
+        'validate-one-required-by-name': [
+            function (value, el, selector) {
+                var name = el.name.replace(/([\\"])/g, '\\$1');
+
+                selector = selector === true ? 'input[name="' + name + '"]:checked' : selector;
+
+                return !!this.form.find(selector).length;
+            },
+            $t('Please select one of the options.')
+        ],
     });
 
     // Validate Date
