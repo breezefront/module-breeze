@@ -15,8 +15,8 @@ $scriptString = <<<script
     {$localeString}
     var BASE_URL = '{$block->escapeJs($block->getBaseUrl())}';
     var VIEW_URL = '{$block->escapeJs($block->getViewFileUrl("/"))}';
-    var required = [];
-    var require = (deps, callback) => required.push([deps, callback]);
+    window.required = window.required || [];
+    window.require = window.require || ((deps, callback) => required.push([deps, callback]));
 
 script;
 
