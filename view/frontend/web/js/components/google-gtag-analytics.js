@@ -32,10 +32,7 @@
             if (!window.gtag) {
                 $.lazy(() => $.loadScript('https://www.googletagmanager.com/gtag/js?id=' + measurementId));
                 window.dataLayer = window.dataLayer || [];
-
-                // eslint-disable-next-line no-inner-declarations
-                function gtag() { dataLayer.push(arguments); }
-
+                window.gtag = () => dataLayer.push(arguments);
                 gtag('js', new Date());
                 gtag('set', 'developer_id.dYjhlMD', true);
             }
