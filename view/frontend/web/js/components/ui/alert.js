@@ -24,11 +24,7 @@
         }
     });
 
-    /**
-     * @param {Object} config
-     * @return {Cash}
-     */
-    $.alert = function (config) {
+    $.breezemap['Magento_Ui/js/modal/alert'] = $.alert = function (config) {
         return $('<div></div>').html(config.content).alert(config);
     };
 })();
