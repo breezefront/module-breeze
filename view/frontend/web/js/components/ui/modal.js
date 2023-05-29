@@ -132,6 +132,10 @@
          * Call handler function if it exists
          */
         keyEventSwitcher: function (event) {
+            if (!event.key) {
+                return;
+            }
+
             var key = event.key.toLowerCase() + 'Key';
 
             if (this.options.keyEventHandlers.hasOwnProperty(key)) {
