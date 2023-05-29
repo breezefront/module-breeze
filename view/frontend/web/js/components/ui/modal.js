@@ -190,6 +190,12 @@
             this.modal.one('transitionend', _.bind(this._trigger, this, 'opened'));
             this.modal.addClass(this.options.modalVisibleClass);
 
+            if (this.options.focus) {
+                this.modal.one('transitionend', () => {
+                    this.element.find(this.options.focus).focus();
+                });
+            }
+
             return this.element;
         },
 
