@@ -277,6 +277,10 @@
         return getComputedStyle(el).getPropertyValue(name);
     };
 
+    $.fn.serializeJSON = function () {
+        return JSON.stringify(Object.fromEntries((new FormData(this[0])).entries()));
+    };
+
     $.proxy = _.bind;
 
     /** Serialize object to query string */
