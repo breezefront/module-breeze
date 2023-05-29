@@ -76,6 +76,7 @@
             event.preventDefault();
             window.location.reload();
         } else {
+            $.registry.delete();
             updateLoadedScripts();
         }
     }
