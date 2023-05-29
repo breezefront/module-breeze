@@ -177,6 +177,7 @@
                                     <param name="module">Magento_LoginAsCustomerFrontendUi</param>
                                 </item>
                             </item>
+                            <item name="Magento_Customer/js/view/authentication-popup" xsi:type="string">Swissup_Breeze/js/components/authentication-popup</item>
                             <item name="captcha" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/captcha</item>
                                 <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
@@ -354,7 +355,6 @@
         <referenceBlock name="requirejs-config" remove="true"/>
         <referenceBlock name="cookie-status-check" remove="true"/>
         <referenceBlock name="js_cookies" remove="true"/>
-        <referenceBlock name="authentication-popup" remove="true"/>
         <referenceBlock name="product.info.addtocart.instantPurchase" remove="true"/>
         <referenceBlock name="product.info.addtocart.instantPurchase.additional" remove="true"/>
 
@@ -395,6 +395,7 @@
                     </container>
                 </block>
                 <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.Magento_ReCaptchaFrontendUi_reCaptcha" template="Magento_ReCaptchaFrontendUi::reCaptcha.html"/>
+                <block class="Swissup\Breeze\Block\HtmlTemplate" template="Magento_Customer::authentication-popup.html"/>
 
                 <block class="Swissup\Breeze\Block\Turbo" name="breeze.turbo"/>
             </container>

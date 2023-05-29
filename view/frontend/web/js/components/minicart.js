@@ -32,12 +32,12 @@
                 if (!customer().firstname && cart().isGuestCheckoutAllowed === false) {
                     $.cookies.set('login_redirect', self.options.url.checkout);
 
-                    // if (self.options.url.isRedirectRequired) {
-                    $(this).prop('disabled', true);
-                    location.href = self.options.url.loginUrl;
-                    // } else {
-                    //     authenticationPopup.showModal();
-                    // }
+                    if (self.options.url.isRedirectRequired) {
+                        $(this).prop('disabled', true);
+                        location.href = self.options.url.loginUrl;
+                    } else {
+                        $.registry.first('Magento_Customer/js/view/authentication-popup').showModal();
+                    }
 
                     return false;
                 }
