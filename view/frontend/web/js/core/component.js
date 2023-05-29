@@ -4,6 +4,10 @@ $.registry = (function () {
     var data = {};
 
     return {
+        first: function (name) {
+            return this.get(name)[0];
+        },
+
         /**
          * @param {String} name
          * @param {Element} element
