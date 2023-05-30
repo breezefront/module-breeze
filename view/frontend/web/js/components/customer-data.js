@@ -110,7 +110,7 @@
                 return this.invalidate(sections);
             }
 
-            sections = sections || [];
+            sections = $.sections.filterClientSideSections(sections || []);
 
             if (sections.length) {
                 params.sections = sections.join(',');
