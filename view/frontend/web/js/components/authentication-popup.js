@@ -37,7 +37,8 @@ define([
         },
 
         login: function (component, event) {
-            var formElement = $(event.currentTarget);
+            var formElement = $(event.currentTarget),
+                loginData = formElement.serializeJSON();
 
             if (!formElement.validation() || !formElement.validation('isValid')) {
                 return false;
@@ -47,7 +48,7 @@ define([
 
             $.post(window.authenticationPopup.customerLoginUrl, {
                 global: false,
-                data: formElement.serializeJSON(),
+                data: loginData,
                 done: (response) => {
                     if (response.errors) {
                         return $.registry.first('uiMessages').removeAll().addErrorMessage(response.message);
@@ -66,7 +67,12 @@ define([
                         $t('Could not authenticate. Please try again later')
                     );
                 },
-                always: () => this.isLoading(false)
+                always: () => {
+                    this.isLoading(false);
+                    this._trigger('afterLogin', {
+                        loginData: loginData
+                    });
+                }
             });
         }
     });
