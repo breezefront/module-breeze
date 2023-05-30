@@ -50,7 +50,7 @@ define([
                 data: formElement.serializeJSON(),
                 done: (response) => {
                     if (response.errors) {
-                        return $.registry.first('uiMessages').addErrorMessage(response.message);
+                        return $.registry.first('uiMessages').removeAll().addErrorMessage(response.message);
                     }
 
                     customerData.invalidate(['customer']);
@@ -62,7 +62,7 @@ define([
                     }
                 },
                 fail: () => {
-                    $.registry.first('uiMessages').addErrorMessage(
+                    $.registry.first('uiMessages').removeAll().addErrorMessage(
                         $t('Could not authenticate. Please try again later')
                     );
                 },
