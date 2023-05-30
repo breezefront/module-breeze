@@ -24,6 +24,7 @@
         removeAll: function () {
             this.errorMessages.removeAll();
             this.successMessages.removeAll();
+            return this;
         },
 
         addErrorMessage: function (message) {
