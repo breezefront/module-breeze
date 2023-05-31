@@ -47,7 +47,6 @@ define([
             this.isLoading(true);
 
             $.post(window.authenticationPopup.customerLoginUrl, {
-                global: false,
                 data: loginData,
                 done: (response) => {
                     if (response.errors) {

@@ -68,6 +68,10 @@ define([
     captchaList = (() => {
         var list = [];
 
+        $(document).on('breeze:destroy', () => {
+            list = [];
+        });
+
         return {
             add: (item) => list.push(item),
             getCaptchaByFormId: formId => list.find(item => item.formId === formId),
@@ -99,6 +103,8 @@ define([
 
         destroy: function () {
             this.captchaSubscriptions.map(subscription => subscription.dispose());
+            this.captchaSubscriptions = [];
+            this.subscribedFormIds = [];
             this._super();
         },
 
