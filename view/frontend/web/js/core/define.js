@@ -1,11 +1,27 @@
 (function () {
     'use strict';
 
+    var counter = 0;
+
     $.breezemap = {
         'jquery': $,
         'ko': ko,
         'underscore': _,
     };
+
+    function register(value, key) {
+        if (value === undefined) {
+            return;
+        }
+
+        key = key || value?.component || `__component${counter++}`;
+
+        if ($.breezemap[key] === undefined) {
+            $.breezemap[key] = value;
+        }
+
+        return value;
+    }
 
     function resolve(alias) {
         var result;
@@ -21,9 +37,7 @@
             result = $.loadScript(alias);
         }
 
-        $.breezemap[alias] = result;
-
-        return $.breezemap[alias];
+        return register(result, alias);
     }
 
     /**
@@ -45,10 +59,10 @@
 
         // If there is a promise in arguments - wait for it.
         // Otherwise, execute it immediately.
-        if (args.some((arg) => arg && arg.then)) {
+        if (args.some(arg => arg && arg.then)) {
             Promise.all(args)
-                .then((values) => success.apply(this, values))
-                .catch((reason) => {
+                .then(values => register(success.apply(this, values)))
+                .catch(reason => {
                     if (error) {
                         error(reason);
                     } else {
@@ -56,7 +70,7 @@
                     }
                 });
         } else {
-            success.apply(this, args);
+            register(success.apply(this, args));
         }
     };
 
