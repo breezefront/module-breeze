@@ -10,8 +10,8 @@
     };
 
     function register(value, key) {
-        if (value === undefined) {
-            return;
+        if (value === undefined || typeof value === 'function' && !value.component && !key) {
+            return value;
         }
 
         key = key || value?.component || `__component${counter++}`;
