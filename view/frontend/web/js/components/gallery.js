@@ -155,6 +155,14 @@
             this._super();
         },
 
+        first: function () {
+            this.activate(0);
+        },
+
+        last: function () {
+            this.activate(Math.max(0, this.thumbs.length - 1));
+        },
+
         /** Activate prev image */
         prev: function () {
             var index = this.activeIndex - 1;
