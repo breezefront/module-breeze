@@ -334,7 +334,7 @@
             if ($.isPlainObject(value)) {
                 destination[key] = $.extendProps(own[key], inherited[key] || {});
             } else {
-                destination[key] = value;
+                destination[key] = $.copyProp(value);
             }
         });
 
@@ -346,11 +346,23 @@
             if ($.isPlainObject(value)) {
                 destination[key] = $.extendProps(own[key] || {}, inherited[key]);
             } else {
-                destination[key] = value;
+                destination[key] = $.copyProp(value);
             }
         });
 
         return destination;
+    };
+
+    $.copyProp = function (value) {
+        if ($.isPlainObject(value)) {
+            return $.extendProps(value, {});
+        }
+
+        if (Array.isArray(value)) {
+            return Array.from(value);
+        }
+
+        return value;
     };
 
     // eslint-disable-next-line no-undef

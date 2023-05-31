@@ -379,10 +379,8 @@ $.registry = (function () {
          * @param {Object} values
          */
         _defaults: function (values) {
-            var self = this;
-
-            _.each(this.defaults || {}, function (value, key) {
-                self[key] = _.has(values, key) ? values[key] : value;
+            _.each(this.defaults || {}, (value, key) => {
+                this[key] = $.copyProp(_.has(values, key) ? values[key] : value);
             });
         },
 
@@ -598,12 +596,10 @@ $.registry = (function () {
          * @param {Object} values
          */
         _defaults: function (values) {
-            var self = this;
-
             this._super(values);
 
-            _.each(values, function (value, key) {
-                self[key] = value;
+            _.each(values, (value, key) => {
+                this[key] = $.copyProp(value);
             });
         },
 
