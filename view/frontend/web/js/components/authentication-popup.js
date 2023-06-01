@@ -40,7 +40,10 @@ define([
             var formElement = $(event.currentTarget),
                 loginData = formElement.serializeJSON();
 
-            if (!formElement.validation() || !formElement.validation('isValid')) {
+            if (formElement.data('prevent-submit')
+                || !formElement.validation()
+                || !formElement.validation('isValid')
+            ) {
                 return false;
             }
 
