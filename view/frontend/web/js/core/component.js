@@ -219,6 +219,14 @@ $.registry = (function () {
             component;
 
         if (!alias) {
+            component = $.breezemap[data.__component];
+
+            if (component && _.isFunction(component)) {
+                component(data.settings, data.el);
+            } else if (component && _.isObject(component) && _.isFunction(component[data.__component])) {
+                component[data.__component].bind(component)(data.settings, data.el);
+            }
+
             return;
         }
 
