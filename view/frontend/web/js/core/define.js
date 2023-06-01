@@ -48,7 +48,7 @@
         var args = [];
 
         if (!_.isArray(deps)) {
-            return;
+            return resolve(deps);
         }
 
         deps.forEach((alias) => {
