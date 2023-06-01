@@ -11,6 +11,10 @@
 
     /** Init 'data-mage-init' and 'text/x-magento-init' scripts */
     function mount(component, data, now) {
+        if (data.settings?.componentDisabled === true) {
+            return;
+        }
+
         /** Callback to run while browser is resting */
         function callback() {
             $(document).trigger('breeze:mount', $.extend({}, data, {

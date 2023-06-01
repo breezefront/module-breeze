@@ -55,7 +55,7 @@ class CollectComponents extends AbstractFilter
                 foreach ($components as $component => $config) {
                     if ($component === 'Magento_Ui/js/core/app') {
                         $this->collectNestedComponents($config['components'] ?? []);
-                    } else {
+                    } elseif (empty($config['componentDisabled'])) {
                         $this->addComponent($component);
                     }
                 }
@@ -76,7 +76,7 @@ class CollectComponents extends AbstractFilter
     private function collectNestedComponents($components)
     {
         foreach ($components as $key => $settings) {
-            if (!empty($settings['component'])) {
+            if (!empty($settings['component']) && empty($settings['componentDisabled'])) {
                 $this->addComponent($settings['component']);
             }
             $this->collectNestedComponents($settings['children'] ?? []);
