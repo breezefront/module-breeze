@@ -28,6 +28,7 @@ define([
                 if (this[key] !== undefined) {
                     this[key] = value;
                 }
+                this.addressField(key).val(value);
             });
 
             this.observe([
@@ -47,6 +48,7 @@ define([
             this.regionId.subscribe(this.updateShippingAddress.bind(this));
             this.region.subscribe(this.updateShippingAddress.bind(this));
             this.postcode.subscribe(this.updateShippingAddress.bind(this));
+            this.addressForm().on('input', this.updateShippingAddress.bind(this));
 
             $.sections.get('directory-data').subscribe(this.onDirectoryDataUpdate.bind(this));
 
@@ -55,6 +57,14 @@ define([
             } else {
                 this.fetchTotals();
             }
+        },
+
+        addressForm: function () {
+            return this.element.find('#shipping-zip-form');
+        },
+
+        addressField: function (name) {
+            return this.addressForm().find(`[name="${name}"]`);
         },
 
         onCountryChange: function () {
@@ -112,11 +122,12 @@ define([
         updateShippingAddress: _.debounce(function () {
             var countries = $.sections.get('directory-data')() || {},
                 regions = countries[this.countryId()]?.regions || {},
-                address = {
+                address = _.extend(this.addressForm().serializeJSON(), {
                     regionCode: '',
+                    region_id: undefined,
                     region: this.region(),
                     postcode: this.postcode()
-                };
+                });
 
             if (this.countryId()) {
                 address.countryId = this.countryId();

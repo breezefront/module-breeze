@@ -1,0 +1,10 @@
+<div class="field">
+    <label class="label" for="estimate_country"><span><?= __('Country') ?></span></label>
+    <div class="control">
+        <select class="select" name="country_id" id="estimate_country"
+            data-bind="value: countryId,
+                       options: availableCountries,
+                       optionsText: 'label',
+                       optionsValue: 'value'"></select>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+<div class="field">
+    <label class="label" for="estimate_<?= $block->getName() ?>"><span><?= $block->getLabel() ?></span></label>
+    <div class="control">
+        <?php if ($block->getOptions()): ?>
+            <select class="select" name="<?= $block->getName() ?>" id="estimate_<?= $block->getName() ?>">
+                <?php foreach ($block->getOptions() as $option): ?>
+                    <option value="<?= $option['value'] ?? '' ?>"><?= $option['label'] ?? '' ?></option>
+                <?php endforeach ?>
+           </select>
+        <?php else: ?>
+            <input type="text" class="input-text" name="<?= $block->getName() ?>" id="estimate_<?= $block->getName() ?>"/>
+        <?php endif ?>
+    </div>
+</div>

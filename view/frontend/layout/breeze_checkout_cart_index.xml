@@ -2,11 +2,17 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
-        <!-- disable turbo cache since this page is changed often -->
+        <!-- disable turbo cache since this page is oftenly changed -->
         <meta name="turbolinks-cache-control" content="no-cache"/>
     </head>
     <body>
-        <referenceBlock name="checkout.cart.shipping" template="Swissup_Breeze::checkout/cart/shipping.phtml"/>
+        <referenceBlock name="checkout.cart.shipping" template="Swissup_Breeze::checkout/cart/shipping.phtml">
+            <container name="checkout.cart.shipping.fields">
+                <block class="Magento\Framework\View\Element\Template" name="checkout.cart.shipping.fields.country" template="Swissup_Breeze::checkout/cart/shipping/country.phtml"/>
+                <block class="Magento\Framework\View\Element\Template" name="checkout.cart.shipping.fields.region" template="Swissup_Breeze::checkout/cart/shipping/region.phtml"/>
+                <block class="Magento\Framework\View\Element\Template" name="checkout.cart.shipping.fields.postcode" template="Swissup_Breeze::checkout/cart/shipping/postcode.phtml"/>
+            </container>
+        </referenceBlock>
 
         <referenceContainer name="breeze.container">
             <block class="Swissup\Breeze\Block\HtmlTemplate" template="Magento_Checkout::cart/totals.html"/>
