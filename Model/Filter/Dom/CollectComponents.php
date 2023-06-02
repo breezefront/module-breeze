@@ -51,6 +51,9 @@ class CollectComponents extends AbstractFilter
         $nodes = $xpath->query('//*[@type="text/x-magento-init"]', $document);
         foreach ($nodes as $node) {
             $value = json_decode($node->textContent, true);
+            if (!$value) {
+                continue;
+            }
             foreach ($value as $selector => $components) {
                 foreach ($components as $component => $config) {
                     if ($component === 'Magento_Ui/js/core/app') {
