@@ -27,12 +27,21 @@
             return this;
         },
 
+        clear: function () {
+            return this.removeAll();
+        },
+
+        add: function (message, type) {
+            this.removeAll();
+            type.push(message);
+        },
+
         addErrorMessage: function (message) {
-            this.errorMessages.push(message);
+            this.add(message, this.errorMessages);
         },
 
         addSuccessMessage: function (message) {
-            this.successMessages.push(message);
+            this.add(message, this.successMessages);
         },
 
         getErrorMessages: function () {
