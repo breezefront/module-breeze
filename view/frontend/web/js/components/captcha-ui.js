@@ -1,8 +1,9 @@
 define([
     'uiComponent',
     'mage/url',
-    'Magento_Customer/js/customer-data'
-], (Component, urlBuilder, customerData) => {
+    'Magento_Customer/js/customer-data',
+    'Magento_Customer/js/action/login'
+], (Component, urlBuilder, customerData, loginAction) => {
     'use strict';
 
     var Captcha, captchaList;
@@ -198,8 +199,8 @@ define([
             if (currentCaptcha) {
                 currentCaptcha.setIsVisible(true);
                 this.setCurrentCaptcha(currentCaptcha);
-                $(document).on('Magento_Customer/js/view/authentication-popup:afterLogin', (e, data) => {
-                    if (data?.loginData?.captcha_form_id === self.formId && this.isRequired()) {
+                loginAction.registerLoginCallback(loginData => {
+                    if (loginData.captcha_form_id === this.formId && this.isRequired()) {
                         this.refresh();
                     }
                 });
