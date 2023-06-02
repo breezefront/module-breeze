@@ -278,7 +278,7 @@
     };
 
     $.fn.serializeJSON = function () {
-        return JSON.stringify(Object.fromEntries((new FormData(this[0])).entries()));
+        return Object.fromEntries((new FormData(this[0])).entries());
     };
 
     $.proxy = _.bind;
