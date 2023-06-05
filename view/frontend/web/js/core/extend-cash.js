@@ -178,7 +178,7 @@
             Array.prototype.slice.call(arguments, 1)
         );
 
-        if (result === undefined) {
+        if (result === undefined && collection[0]) {
             cleanKey = key.replace(/^[^A-Z]+/, ''); // mageSwatchRenderer => SwatchRenderer
             keys = [
                 key,
