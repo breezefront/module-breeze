@@ -11,7 +11,7 @@
                 event.preventDefault();
 
                 if (!customer().firstname && cart().isGuestCheckoutAllowed === false) {
-                    return $.registry.first('Magento_Customer/js/view/authentication-popup').showModal();
+                    return $('.block-authentication').modal('openModal');
                 }
 
                 location.href = this.options.checkoutUrl;

@@ -36,7 +36,7 @@
                         $(this).prop('disabled', true);
                         location.href = self.options.url.loginUrl;
                     } else {
-                        $.registry.first('Magento_Customer/js/view/authentication-popup').showModal();
+                        $('.block-authentication').modal('openModal');
                     }
 
                     return false;

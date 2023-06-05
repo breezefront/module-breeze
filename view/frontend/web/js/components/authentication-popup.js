@@ -63,10 +63,14 @@ define([
                 'trigger': '.proceed-to-checkout',
                 'buttons': []
             }, $(this.modalWindow));
+
+            $(this.modalWindow).on('modal:opened', () => {
+                $(this.modalWindow).trigger('contentUpdated');
+            });
         },
 
         showModal: function () {
-            $(this.modalWindow).modal('openModal').trigger('contentUpdated');
+            $(this.modalWindow).modal('openModal');
         },
 
         login: function (component, event) {
