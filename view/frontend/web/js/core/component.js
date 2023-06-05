@@ -584,7 +584,7 @@ $.registry = (function () {
 
         _applyBindings: function (element) {
             if (!element.children?.length || !ko.dataFor(element.children[0])) {
-                if (this.beforeRender() === false) {
+                if (!element.isConnected || this.beforeRender() === false) {
                     return;
                 }
 
