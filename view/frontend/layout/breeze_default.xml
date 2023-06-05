@@ -5,6 +5,9 @@
         <remove src="mage/calendar.css"/>
         <remove src="mage/gallery/gallery.css"/>
         <remove src="requirejs/require.js"/>
+        <remove src="Magento_Checkout::js/view/configure/product-customer-data.js"/>
+        <remove src="Magento_ConfigurableProduct::js/configurable-customer-data.js"/>
+        <remove src="Magento_Swatches::js/configurable-customer-data.js"/>
     </head>
     <body>
         <referenceContainer name="before.body.end">
