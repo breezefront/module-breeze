@@ -120,6 +120,7 @@
                 }, this);
             }
 
+            this.element.trigger('priceUpdated', this.cache.displayPrices);
             this.element.trigger('reloadPrice');
         },
 
@@ -176,29 +177,36 @@
         },
 
         updateProductTierPrice: function () {
-            var productQty = $(this.qtyInfo).val(),
-                originalPrice = this.options.prices.finalPrice.amount,
-                tierPrice;
+            var originalPrice,
+                prices = {'prices': {}};
 
-            if (!this.options.priceConfig || !this.options.priceConfig.tierPrices) {
-                return;
+            if (this.options.prices.finalPrice) {
+                originalPrice = this.options.prices.finalPrice.amount;
+                prices.prices.finalPrice = {'amount': this.getPrice('price') - originalPrice};
             }
 
-            _.find(this.options.priceConfig.tierPrices, function (rule) {
-                if (productQty < rule.qty) {
-                    return true;
-                }
+            if (this.options.prices.basePrice) {
+                originalPrice = this.options.prices.basePrice.amount;
+                prices.prices.basePrice = {'amount': this.getPrice('basePrice') - originalPrice};
+            }
 
-                tierPrice = rule.price;
-            });
+            this.updatePrice(prices);
+        },
 
-            this.updatePrice({
-                prices: {
-                    finalPrice: {
-                        amount: tierPrice - originalPrice
-                    }
+        getPrice: function (priceKey) {
+            var productQty = $(this.qtyInfo).val(),
+                result,
+                tierPriceItem,
+                i;
+
+            for (i = 0; i < this.options.priceConfig.tierPrices.length; i++) {
+                tierPriceItem = this.options.priceConfig.tierPrices[i];
+                if (productQty >= tierPriceItem.qty && tierPriceItem[priceKey]) {
+                    result = tierPriceItem[priceKey];
                 }
-            });
+            }
+
+            return result;
         }
     });
 })();
