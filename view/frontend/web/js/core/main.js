@@ -222,6 +222,7 @@
             .forEach(convertLazyInitToDataMageInit);
 
         $(node).find('[data-mage-init],[type="text/x-magento-init"]')
+            .add($(node).is('[data-mage-init],[type="text/x-magento-init"]') ? node : $())
             .not('[data-breeze-processed]')
             .each(function () {
                 processElement(this);
