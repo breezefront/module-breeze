@@ -693,6 +693,10 @@
 
             if ($priceBox.priceBox('instance')) {
                 $widget._UpdatePrice();
+            } else {
+                $priceBox.on('price-box-initialized', () => {
+                    $widget._UpdatePrice();
+                });
             }
 
             $(document).trigger('updateMsrpPriceBlock',
