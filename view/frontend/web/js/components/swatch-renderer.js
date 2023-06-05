@@ -285,7 +285,7 @@
 
             this.productForm = this.element.parents(this.options.selectorProductTile).find('form').first();
             this.inProductList = this.productForm.length > 0;
-            $(this.options.qtyInfo).on('input', this._onQtyChanged.bind(this));
+            $(this.options.qtyInfo).on('input', () => _.defer(this._onQtyChanged.bind(this)));
         },
 
         /**

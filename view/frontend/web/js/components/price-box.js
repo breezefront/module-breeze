@@ -62,7 +62,7 @@
          * Empty option-hash object or empty price-code object treats as zero amount.
          * @param {Object} newPrices
          */
-        updatePrice: function (newPrices) {
+        updatePrice: _.debounce(function (newPrices) {
             var prices = this.cache.displayPrices,
                 additionalPrice = {},
                 pricesCode = [],
@@ -95,6 +95,7 @@
                         };
                     additionalPrice[priceCode].amount =  0 + (additionalPrice[priceCode].amount || 0) +
                         priceValue.amount;
+                    // eslint-disable-next-line max-nested-callbacks
                     _.each(priceValue.adjustments, function (adValue, adCode) {
                         additionalPrice[priceCode].adjustments[adCode] = 0 +
                             (additionalPrice[priceCode].adjustments[adCode] || 0) + adValue;
@@ -122,7 +123,7 @@
 
             this.element.trigger('priceUpdated', this.cache.displayPrices);
             this.element.trigger('reloadPrice');
-        },
+        }, 10),
 
         /*eslint-disable no-extra-parens*/
         reloadPrice: function () {
