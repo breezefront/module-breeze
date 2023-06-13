@@ -140,10 +140,6 @@
 
             if (!_.isUndefined(productData)) {
                 $(document).trigger('ajax:updateCartItemQty');
-
-                if (window.location.href === this.shoppingCartUrl) {
-                    window.location.reload(false);
-                }
             }
 
             this._hideItemButton(elem);
@@ -173,10 +169,6 @@
                         'id': productData.product_id
                     }]
                 });
-
-                if (window.location.href.indexOf(this.shoppingCartUrl) === 0) {
-                    window.location.reload();
-                }
             }
         },
 
