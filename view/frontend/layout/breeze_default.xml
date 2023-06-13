@@ -292,6 +292,7 @@
                             </item>
                             <item name="Magento_Sales/js/view/last-ordered-items" xsi:type="string">Swissup_Breeze/js/components/last-ordered-items</item>
                             <item name="Magento_Customer/js/logout-redirect" xsi:type="string">Swissup_Breeze/js/components/logout-redirect</item>
+                            <item name="ordersReturns" xsi:type="string">Swissup_Breeze/js/components/orders-returns</item>
                         </item>
                     </item>
                     <item name="cms" xsi:type="array">
