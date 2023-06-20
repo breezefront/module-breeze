@@ -32,4 +32,15 @@ define([
         component: 'Magento_Weee/js/view/cart/totals/weee',
         parentComponent: 'Magento_Weee/js/view/checkout/summary/weee'
     });
+
+    $.widget('taxToggle', {
+        component: 'taxToggle',
+        create: function () {
+            this._on('click', this.toggle);
+        },
+        toggle: function () {
+            this.element.toggleClass(this.options.expandedClassName || 'cart-tax-total-expanded');
+            $(this.options.itemTaxId).toggle();
+        }
+    });
 });
