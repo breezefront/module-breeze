@@ -15,7 +15,7 @@
         create: function () {
             var self = this,
                 activeIndex,
-                expanded = true;
+                allExpanded = true;
 
             this.collapsibles = this.element.find(this.options.collapsibleElement);
             this.headers = this.element.find(this.options.header);
@@ -53,7 +53,7 @@
                 }
 
                 if (!isActive) {
-                    expanded = false;
+                    allExpanded = false;
                 }
 
                 $(el).collapsible($.extend({}, self.options, {
@@ -64,7 +64,7 @@
                 }));
             });
 
-            if (expanded) {
+            if (allExpanded && this.component === 'tabs') {
                 this.triggers.attr('tabIndex', -1);
                 this.collapsibles.removeAttr('data-collapsible', true);
             }
