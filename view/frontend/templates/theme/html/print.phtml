@@ -1,0 +1,24 @@
+<?php
+
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+
+$scriptString = <<<script
+
+    require(
+        [
+            'jquery'
+        ],
+        function($) {
+            $(function() {
+                window.print();
+            });
+        }
+    );
+
+script;
+
+if (isset($secureRenderer)) {
+    echo $secureRenderer->renderTag('script', ['data-breeze' => true], $scriptString, false);
+} else {
+    echo "<script data-breeze>{$scriptString}</script>";
+}
