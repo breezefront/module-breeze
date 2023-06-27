@@ -62,7 +62,7 @@ $.registry = (function () {
          * @param {String} name
          * @param {Element} element
          */
-        delete: function (name, element) {
+        delete: function (name, element, skipDestroy) {
             var instance, index;
 
             if (name && element) {
@@ -73,7 +73,7 @@ $.registry = (function () {
                     data[name].elements.splice(index, 1);
                 }
 
-                if (instance && instance.destroy) {
+                if (instance && instance.destroy && !skipDestroy) {
                     instance.destroy();
                 }
 
@@ -563,6 +563,8 @@ $.registry = (function () {
             this.element.off(this.__eventNamespace);
             this.__bindings.off(this.__eventNamespace);
             this._super();
+
+            $.registry.delete(this.__name, this.element[0], true);
         }
     });
 
