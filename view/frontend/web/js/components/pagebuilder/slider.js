@@ -52,6 +52,7 @@
             this.buildPagination();
             this.addEventListeners();
             this.element.addClass('slick-initialized');
+            this.updateScrollOffset();
 
             if (this.element.hasClass('containered') && matchMedia('(min-width: 1024px)').matches) {
                 this.scrollToPage(1, true); // hide empty space before first slide
@@ -100,6 +101,8 @@
                 return;
             }
 
+            this.handleMouseDrag();
+
             this.element
                 .on('click', this.stop.bind(this))
                 .on('click', '.slick-next, .slick-prev', function (event) {
@@ -121,6 +124,69 @@
             this.slider.on('scroll', _.debounce(this.updateCurrentPage.bind(this), 40));
 
             new ResizeObserver(this.update.bind(this)).observe(this.slider.get(0));
+        },
+
+        handleMouseDrag: function () {
+            var touching = false,
+                timer;
+
+            this._on({
+                touchstart: () => { touching = true; },
+                touchend: () => { touching = false; },
+            });
+
+            this._on('mousedown', event => {
+                var pos = {
+                    dx: 0,
+                    left: this.slider[0].scrollLeft,
+                    x: event.clientX,
+                };
+
+                if (touching) {
+                    return;
+                }
+
+                $(document)
+                    .on('mousemove.sliderMouseDrag', e => {
+                        e.preventDefault();
+
+                        clearTimeout(timer);
+                        pos.dx = e.clientX - pos.x;
+                        this.slider[0].scrollLeft = pos.left - pos.dx;
+                        this.element.css('user-select', 'none');
+                        this.slider.css({
+                            'scroll-behavior': 'auto',
+                            'scroll-snap-type': 'none',
+                        });
+                    })
+                    .on('mouseup.sliderMouseDrag', () => {
+                        var scrollTo = this.page,
+                            percent = pos.dx / (this.slider.width() || 1);
+
+                        if (percent > 0.1 && scrollTo) {
+                            scrollTo--;
+                        } else if (percent < -0.1 && scrollTo < this.pages.length - 1) {
+                            scrollTo++;
+                        }
+
+                        $(document).off('.sliderMouseDrag');
+
+                        if (pos.dx) {
+                            this.scrollToPage(scrollTo, 'smooth');
+                            $(document).one('click', e => e.preventDefault());
+                        }
+
+                        this.element.css('user-select', '');
+
+                        // restore styles after scroll (onscrollend)
+                        timer = setTimeout(() => {
+                            this.slider.css({
+                                'scroll-behavior': '',
+                                'scroll-snap-type': '',
+                            });
+                        }, 800);
+                    });
+            });
         },
 
         buildPagination: function () {
@@ -285,7 +351,12 @@
         scrollToPage: function (page, instant) {
             var slider = this.slider.get(0),
                 slide = this.slides.eq(this.pages[page].slides[0]),
-                pageUpdated = false;
+                pageUpdated = false,
+                behavior = 'auto';
+
+            if (instant) {
+                behavior = instant === 'smooth' ? 'smooth' : 'instant';
+            }
 
             this.dots.removeClass('slick-active')
                 .eq(page)
@@ -293,8 +364,9 @@
             slider.scrollTo({
                 left: slider.scrollLeft -
                     parseFloat(getComputedStyle(slider).getPropertyValue('padding-left')) +
-                    slide.position().left,
-                behavior: instant ? 'instant' : 'auto'
+                    slide.position().left +
+                    this.scrollOffset || 0, // offset when scroll-snap-align: center is used
+                behavior: behavior
             });
 
             if (this.page !== page) {
@@ -336,8 +408,14 @@
             clearTimeout(this.timer);
         },
 
+        updateScrollOffset() {
+            this.scrollOffset = this.slider.offset().left
+                - this.slides.eq(this.pages[this.page].slides[0]).offset().left;
+        },
+
         update: function () {
             this.slides = this.slider.children();
+            this.updateScrollOffset();
             this.buildPagination();
         },
 
