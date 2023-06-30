@@ -73,10 +73,15 @@
         options: globalOptions,
 
         _init: function () {
-            // timout is used to wait until price-box widget will be mounted
-            setTimeout(function () {
+            var priceBox = $(this.options.priceHolderSelector, $(this.options.optionsSelector).element);
+
+            if (priceBox.priceBox('instance')) {
                 $(this.options.optionsSelector, this.element).trigger('change');
-            }.bind(this), 80);
+            } else {
+                priceBox.on('price-box-initialized', () => {
+                    $(this.options.optionsSelector, this.element).trigger('change');
+                });
+            }
         },
 
         _create: function () {
