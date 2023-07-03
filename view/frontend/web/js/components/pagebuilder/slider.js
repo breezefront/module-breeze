@@ -184,7 +184,6 @@
                             $(document).one('click', e => e.preventDefault());
                         }
 
-                        this.element.css('overflow', '');
                         this.element.css('user-select', '');
                         this.slider.css('transition', 'transform 100ms ease-in-out');
                         this.slider.css('transform', '');
@@ -195,6 +194,7 @@
 
                         // restore styles after scroll (onscrollend)
                         timer = setTimeout(() => {
+                            this.element.css('overflow', '');
                             this.slider.css({
                                 'scroll-behavior': '',
                                 'scroll-snap-type': '',
