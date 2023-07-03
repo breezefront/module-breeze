@@ -153,6 +153,14 @@
                         clearTimeout(timer);
                         pos.dx = e.clientX - pos.x;
                         this.slider[0].scrollLeft = pos.left - pos.dx;
+
+                        if (this.slider[0].scrollLeft !== pos.left - pos.dx) {
+                            this.slider.css('transform', `translateX(
+                                ${(this.slider[0].scrollLeft + pos.dx - pos.left) / 5}px
+                            )`);
+                            this.element.css('overflow', 'hidden');
+                        }
+
                         this.element.css('user-select', 'none');
                         this.slider.css({
                             'scroll-behavior': 'auto',
@@ -176,7 +184,9 @@
                             $(document).one('click', e => e.preventDefault());
                         }
 
+                        this.element.css('overflow', '');
                         this.element.css('user-select', '');
+                        this.slider.css('transform', '');
 
                         // restore styles after scroll (onscrollend)
                         timer = setTimeout(() => {
