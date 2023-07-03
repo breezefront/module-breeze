@@ -186,7 +186,12 @@
 
                         this.element.css('overflow', '');
                         this.element.css('user-select', '');
+                        this.slider.css('transition', 'transform 100ms ease-in-out');
                         this.slider.css('transform', '');
+
+                        setTimeout(() => {
+                            this.slider.css('transition', '');
+                        }, 100);
 
                         // restore styles after scroll (onscrollend)
                         timer = setTimeout(() => {
