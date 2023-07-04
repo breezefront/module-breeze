@@ -123,7 +123,10 @@
 
             this.slider.on('scroll', _.debounce(this.updateCurrentPage.bind(this), 40));
 
-            new ResizeObserver(this.update.bind(this)).observe(this.slider.get(0));
+            new ResizeObserver(() => {
+                this.updateScrollOffset();
+                this.update();
+            }).observe(this.slider.get(0));
         },
 
         handleMouseDrag: function () {
@@ -430,7 +433,6 @@
 
         update: function () {
             this.slides = this.slider.children();
-            this.updateScrollOffset();
             this.buildPagination();
         },
 
