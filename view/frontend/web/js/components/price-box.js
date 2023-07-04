@@ -62,7 +62,7 @@
          * Empty option-hash object or empty price-code object treats as zero amount.
          * @param {Object} newPrices
          */
-        updatePrice: _.debounce(function (newPrices) {
+        updatePrice: function (newPrices) {
             var prices = this.cache.displayPrices,
                 additionalPrice = {},
                 pricesCode = [],
@@ -123,7 +123,7 @@
 
             this.element.trigger('priceUpdated', this.cache.displayPrices);
             this.element.trigger('reloadPrice');
-        }, 10),
+        },
 
         /*eslint-disable no-extra-parens*/
         reloadPrice: function () {
