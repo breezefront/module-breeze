@@ -146,8 +146,8 @@
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/google-analytics</item>
                                 <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\GoogleAnalytics::isUniversalAnalyticsEnabled"/>
                                 <item name="configPaths" xsi:type="array">
-                                    <param name="0" xsi:type="string">google/analytics/type</param>
-                                    <param name="1" xsi:type="string">google/analytics/active</param>
+                                    <item name="0" xsi:type="string">google/analytics/type</item>
+                                    <item name="1" xsi:type="string">google/analytics/active</item>
                                 </item>
                             </item>
                             <item name="Magento_GoogleGtag/js/google-analytics" xsi:type="array">
@@ -159,16 +159,16 @@
                             <item name="Magento_GoogleGtag/js/google-adwords" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/google-gtag-adwords</item>
                                 <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isAllEnabled">
-                                    <param name="0" xsi:type="string">google/gtag/adwords/active</param>
-                                    <param name="1" xsi:type="string">google/gtag/adwords/conversion_label</param>
+                                    <param name="0">google/gtag/adwords/active</param>
+                                    <param name="1">google/gtag/adwords/conversion_label</param>
                                 </item>
                             </item>
                             <item name="Magento_GoogleTagManager/js/google-tag-manager" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/google-tag-manager</item>
                                 <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\GoogleAnalytics::isTagManagerAnalyticsEnabled"/>
                                 <item name="configPaths" xsi:type="array">
-                                    <param name="0" xsi:type="string">google/analytics/type</param>
-                                    <param name="1" xsi:type="string">google/analytics/active</param>
+                                    <item name="0" xsi:type="string">google/analytics/type</item>
+                                    <item name="1" xsi:type="string">google/analytics/active</item>
                                 </item>
                                 <item name="import" xsi:type="array">
                                     <item name="google-tag-manager-universal" xsi:type="string">Swissup_Breeze/js/components/google-tag-manager-universal</item>

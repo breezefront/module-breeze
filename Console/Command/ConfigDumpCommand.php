@@ -149,8 +149,6 @@ class ConfigDumpCommand extends Command
 
         $xpath = implode('|', [
             '//*[@name="breeze.js"]//item[@name="enabled"]/param',
-            '//*[@name="breeze.js"]//item[@name="enabled"]/item',
-            '//*[@name="breeze.js"]//item[@name="configPaths"]/param',
             '//*[@name="breeze.js"]//item[@name="configPaths"]/item',
         ]);
         $configPaths = [];
