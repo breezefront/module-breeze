@@ -53,6 +53,7 @@
             <argument name="commands" xsi:type="array">
                 <item name="swissupBreezeModuleCreate" xsi:type="object">Swissup\Breeze\Console\Command\ModuleCreateCommand</item>
                 <item name="swissupBreezeThemeCreate" xsi:type="object">Swissup\Breeze\Console\Command\ThemeCreateCommand</item>
+                <item name="swissupBreezeConfigDump" xsi:type="object">Swissup\Breeze\Console\Command\ConfigDumpCommand</item>
             </argument>
         </arguments>
     </type>
