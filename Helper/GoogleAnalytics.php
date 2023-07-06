@@ -39,19 +39,6 @@ class GoogleAnalytics extends AbstractHelper
         return $this->isEnabled() && (!$type || $type === 'universal');
     }
 
-    // Magento 2.4.5 Gtag module
-    public function isGtagAnalyticsEnabled()
-    {
-        return $this->configHelper->isEnabled('google/gtag/analytics4/active');
-    }
-
-    // Magento 2.4.5 Gtag module
-    public function isGtagAdwordsEnabled()
-    {
-        return $this->configHelper->isEnabled('google/gtag/adwords/active')
-            && $this->configHelper->isEnabled('google/gtag/adwords/conversion_label');
-    }
-
     // Magento Commerce
     public function isTagManagerAnalyticsEnabled()
     {
