@@ -60,6 +60,20 @@
         return this.hidden().length > 0;
     };
 
+    $.fn.uniqueId = function () {
+        if (this.attr('id')) {
+            return this;
+        }
+        return this.attr('id', 'ui-id-' + $.guid++);
+    };
+
+    $.fn.removeUniqueId = function () {
+        if (!this.attr('id') || !this.attr('id').startsWith('ui-id-')) {
+            return this;
+        }
+        return this.removeAttr('id');
+    };
+
     function inViewport(i, el) {
         var rect = el.getBoundingClientRect();
 
