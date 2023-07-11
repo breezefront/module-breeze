@@ -88,7 +88,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
     protected function _prepareLayout()
     {
         if (!$this->getData('assets')) {
-            return;
+            return $this;
         }
 
         $properties = [
@@ -114,6 +114,8 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                 );
             }
         }
+
+        return $this;
     }
 
     /**
