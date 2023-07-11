@@ -587,12 +587,12 @@ $.registry = (function () {
         _applyBindings: function (element) {
             var koEl = element.firstChild;
 
-            do {
+            while (koEl) {
                 if (koEl.nodeType === 1 || (koEl.nodeType === 8 && koEl.nodeValue.match(/\s*ko\s+/))) {
                     break;
                 }
                 koEl = koEl.nextSibling;
-            } while (koEl);
+            }
 
             if (!koEl || !ko.dataFor(koEl)) {
                 if (!element.isConnected || this.beforeRender() === false) {
