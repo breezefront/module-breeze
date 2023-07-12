@@ -11,7 +11,7 @@
         ],
         email: [
             // eslint-disable-next-line max-len
-            (value) => $('<input type="email" required>').val(value).get(0).checkValidity() && $.validator.regex.email.test(value),
+            (value) => $.validator.utils.isEmpty(value) || $('<input type="email" required>').val(value).get(0).checkValidity() && $.validator.regex.email.test(value),
             $t('Please enter a valid email address (Ex: johndoe@domain.com).')
         ],
         equalTo: [
