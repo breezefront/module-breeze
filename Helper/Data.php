@@ -92,6 +92,7 @@ class Data extends AbstractHelper
     {
         return [
             'checkout/cart/configure',
+            'customer/section/load',
         ];
     }
 
