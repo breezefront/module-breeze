@@ -38,9 +38,9 @@ define([
         component: 'Magento_Customer/js/view/authentication-popup',
         defaults: {
             template: 'Magento_Customer/authentication-popup',
-            registerUrl: window.authenticationPopup.customerRegisterUrl,
-            forgotPasswordUrl: window.authenticationPopup.customerForgotPasswordUrl,
-            autocomplete: window.authenticationPopup.autocomplete,
+            registerUrl: window.authenticationPopup?.customerRegisterUrl,
+            forgotPasswordUrl: window.authenticationPopup?.customerForgotPasswordUrl,
+            autocomplete: window.authenticationPopup?.autocomplete,
             isLoading: ko.observable(false)
         },
 
