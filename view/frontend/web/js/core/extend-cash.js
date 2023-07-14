@@ -180,7 +180,7 @@
             if (result !== undefined) {
                 return result;
             }
-        } else if (value instanceof Node || value instanceof $) {
+        } else if (typeof value === 'object') {
             return this.each(function () {
                 this.__breeze = this.__breeze || {};
                 this.__breeze[key] = value;
