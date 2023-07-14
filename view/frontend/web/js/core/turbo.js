@@ -27,7 +27,7 @@
         var newConfig = $(event.data.newBody).find('#breeze-turbo').data('config'),
             shouldReload;
 
-        shouldReload = !newConfig || config.store !== newConfig.store;
+        shouldReload = !newConfig || config.store !== newConfig.store || !newConfig.enabled;
 
         if (shouldReload) {
             event.preventDefault();
