@@ -4,6 +4,8 @@
     $.widget('shoppingCart', {
         component: 'shoppingCart',
         _create: function () {
+            var initialData = $.customerData.get('cart')();
+
             this._on(document, {
                 [`click ${this.options.emptyCartButton}`]: this._confirmClearCart,
                 [`click ${this.options.continueShoppingButton}`]: () => {
@@ -11,8 +13,12 @@
                 },
             });
 
-            this.cartSubscription = $.customerData.get('cart').subscribe(() => {
-                location.reload();
+            this.cartSubscription = $.customerData.get('cart').subscribe((data) => {
+                if (_.isEmpty(initialData)) {
+                    initialData = data;
+                } else {
+                    location.reload();
+                }
             });
         },
 
