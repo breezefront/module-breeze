@@ -526,7 +526,8 @@ $.registry = (function () {
                 if (selector) {
                     el.on(eventName, selector, function (e) {
                         e.handleObj = {
-                            selector: selector
+                            selector: selector,
+                            el: this,
                         };
 
                         fn(e);
