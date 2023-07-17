@@ -283,8 +283,9 @@
                     self.isLoading(self.addToCartCalls > 0);
                 });
 
-            if (cartData().website_id !== window.checkout.websiteId && cartData().website_id !== undefined ||
-                cartData().storeId !== window.checkout.storeId && cartData().storeId !== undefined
+            if (window.checkout &&
+                (cartData().website_id !== window.checkout.websiteId && cartData().website_id !== undefined ||
+                cartData().storeId !== window.checkout.storeId && cartData().storeId !== undefined)
             ) {
                 $.sections.reload(['cart'], false);
             }
