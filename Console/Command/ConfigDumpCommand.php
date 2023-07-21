@@ -40,7 +40,7 @@ class ConfigDumpCommand extends Command
         DeploymentConfig $deploymentConfig,
         Files $files,
         ConfigSetProcessorFactory $configSetProcessorFactory,
-        ManagerInterface $eventManager,
+        ManagerInterface $eventManager
     ) {
         $this->collectionFactory = $collectionFactory;
         $this->scopeCodeResolver = $scopeCodeResolver;
