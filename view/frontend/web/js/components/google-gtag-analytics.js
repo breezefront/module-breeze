@@ -32,7 +32,7 @@
             if (!window.gtag) {
                 $.lazy(() => $.loadScript('https://www.googletagmanager.com/gtag/js?id=' + measurementId));
                 window.dataLayer = window.dataLayer || [];
-                window.gtag = () => dataLayer.push(arguments);
+                window.gtag = function () { dataLayer.push(arguments); };
                 gtag('js', new Date());
             }
 
