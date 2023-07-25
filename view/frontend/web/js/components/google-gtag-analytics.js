@@ -34,7 +34,6 @@
                 window.dataLayer = window.dataLayer || [];
                 window.gtag = () => dataLayer.push(arguments);
                 gtag('js', new Date());
-                gtag('set', 'developer_id.dYjhlMD', true);
             }
 
             gtag('config', measurementId, { 'anonymize_ip': true });
