@@ -70,15 +70,16 @@
             }
 
             $(this.element).on('collapsible:beforeOpen', function (event, data) {
-                var activeTab = self.getActiveTab(),
+                var oldActiveTab = self.getActiveTab(),
+                    newActiveTab = data.instance.element,
                     prevContent;
 
-                if (self.collapsibles.index(data.instance.element.get(0)) === -1) {
+                if (self.collapsibles.index(newActiveTab.get(0)) === -1) {
                     return; // nested tabs
                 }
 
-                if (activeTab) {
-                    prevContent = activeTab.collapsible('instance').content;
+                if (oldActiveTab) {
+                    prevContent = oldActiveTab.collapsible('instance').content;
                 }
 
                 if (data.instance.options.multipleCollapsible) {
@@ -86,10 +87,10 @@
                 }
 
                 self.prevHeight = prevContent ? $(prevContent).outerHeight() : false;
-                self.collapsibles.not(data.instance.element).collapsible('close');
+                self.collapsibles.not(newActiveTab).collapsible('close');
 
-                if (activeTab && !activeTab.isInViewport()) {
-                    activeTab.get(0).scrollIntoView();
+                if (newActiveTab && !newActiveTab.isInViewport()) {
+                    newActiveTab.get(0).scrollIntoView();
                 }
             });
 
