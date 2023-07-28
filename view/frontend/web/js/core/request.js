@@ -13,7 +13,11 @@
         }
 
         $(document).trigger('ajaxComplete', {
-            response: response
+            response: response,
+            responseText: response.text,
+            settings: {
+                url: response.req.url,
+            }
         });
     }
 
