@@ -53,8 +53,8 @@ $.registry = (function () {
             if (!component) {
                 data[name] = element; // element is a component here
             } else {
-                data[name].objects.set(element, component);
-                data[name].elements.push(element);
+                data[name].objects.set(element || document.body, component);
+                data[name].elements.push(element || document.body);
             }
         },
 
@@ -226,6 +226,8 @@ $.registry = (function () {
             } else if (component && _.isObject(component) && _.isFunction(component[data.__component])) {
                 component[data.__component].bind(component)(data.settings, data.el);
             }
+
+            $.registry.set(data.__component, data.el, component);
 
             return;
         }
