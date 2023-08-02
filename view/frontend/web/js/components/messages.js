@@ -112,7 +112,7 @@
         }
 
         $.async('.message', (el) => {
-            $(el).append('<button class="button-close"></div>');
+            $(el).append('<button type="button" class="button-close"></button>');
 
             setTimeout(() => {
                 $(el).addClass('shown');
