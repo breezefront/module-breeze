@@ -108,6 +108,12 @@
             delete params.headers['Content-Type'];
         }
 
+        _.each(params.headers, (value, key) => {
+            if (value === null || value === false) {
+                delete params.headers[key];
+            }
+        });
+
         // cache: true/false is not supported
         if (typeof params.cache !== 'string') {
             delete params.cache;
@@ -256,8 +262,9 @@
          */
         send: function (url, params) {
             params = prepareParams(url, params);
+            params.method = params.method || 'get';
 
-            return this[params.method || 'get'](params);
+            return send(params);
         },
 
         /**
