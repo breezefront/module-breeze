@@ -10,3 +10,5 @@
 "Allows to force breeze status via query parameter: ?breeze=1 or ?breeze=0","Allows to force breeze status via query parameter: ?breeze=1 or ?breeze=0"
 "The valid format is {0}. For example, the valid date for ""May 4, 2001"" is {1}","The valid format is {0}. For example, the valid date for ""May 4, 2001"" is {1}"
 "View Image","View Image"
+"Next Image","Next Image"
+"Previous Image","Previous Image"
