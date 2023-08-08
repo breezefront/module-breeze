@@ -26,6 +26,7 @@ $thumbHeight = (int) $block->getImageAttribute('product_page_image_small', 'heig
 $thumbHeight = $thumbHeight ?: $thumbWidth;
 
 $navType = $block->getGalleryOptions()->getVar('gallery/nav');
+$showCaption = $block->getGalleryOptions()->getVar('gallery/caption');
 
 $responsiveImageHelper = $this->helper(\Swissup\Breeze\Helper\Image::class);
 $srcset = $responsiveImageHelper->getSrcset($block->getProduct(), 'product_page_image_medium');
@@ -36,8 +37,10 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
 ?>
 
 <div class="breeze-gallery <?= $block->escapeHtmlAttr($block->getGalleryOptions()->getVar('gallery/navdir')) ?>">
-    <div class="stage <?= $mainImage && $mainImage->getVideoUrl() ? 'video' : '' ?>"
-        data-gallery-id="<?= $galleryId ?>" data-gallery-role="gallery-placeholder">
+    <div class="stage <?= $mainImage && $mainImage->getVideoUrl() ? 'video' : '' ?> <?= $showCaption ? 'caption' : '' ?>"
+        data-gallery-id="<?= $galleryId ?>"
+        data-gallery-role="gallery-placeholder"
+        data-caption="<?= $block->escapeHtmlAttr($mainImageLabel) ?>">
         <div class="main-image-wrapper">
             <img alt="<?= $block->escapeHtmlAttr($mainImageLabel) ?>"
                 fetchpriority="high"

@@ -220,6 +220,7 @@
 
             this.image.attr('src', fullscreen ? data.full : data.img);
             this.stage.toggleClass('video', !!data.videoUrl);
+            this.stage.attr('data-caption', data.caption);
 
             if (this.image.get(0) && !this.image.get(0).complete) {
                 this.stage.spinner(true, {

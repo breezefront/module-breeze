@@ -213,6 +213,17 @@
 
 & when (@media-common = true) {
 & when (@critical = unsure), (@critical = false) {
+    .breeze-gallery {
+        .stage.caption:not([data-caption=""]) {
+            &::after {
+                content: attr(data-caption);
+                position: absolute;
+                bottom: 0;
+                padding: 1px 5px;
+                background: ~"rgb(var(--base-bg, 255, 255, 255))";
+            }
+        }
+    }
     .breeze-gallery.opened {
         top: 0;
         left: 0;
