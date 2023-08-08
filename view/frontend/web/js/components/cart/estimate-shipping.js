@@ -99,7 +99,7 @@ define([
                 regions = countries[this.countryId()]?.regions;
 
             this.availableRegions.removeAll();
-            this.availableRegions.push({ label: $t('Please select a region, state or province'), value: '' });
+            this.availableRegions.push({ label: $t('Please select a region, state or province.'), value: '' });
 
             if (!regions) {
                 return;
