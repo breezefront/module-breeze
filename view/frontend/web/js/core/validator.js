@@ -341,6 +341,9 @@
     $.validator = function (element, options) {
         return new Validator(element, options);
     };
+    $.validator.validateElement = (element) => {
+        return ($(element).parents('form').data('validator') || $.validator(element)).isValid(element);
+    };
     $.validator.regex = {};
     $.validator.validators = {};
     $.validator.utils = {
