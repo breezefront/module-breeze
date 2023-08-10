@@ -31,6 +31,7 @@ class Script
             }
 
             if ($node->textContent &&
+                // @todo: remove next line to allow inline `require()` scripts
                 strpos($node->textContent, 'require(') === false &&
                 strpos($node->textContent, 'requirejs(') === false &&
                 strpos($node->textContent, 'require.') === false
