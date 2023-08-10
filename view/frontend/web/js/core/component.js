@@ -227,7 +227,9 @@ $.registry = (function () {
                 component[data.__component].bind(component)(data.settings, data.el);
             }
 
-            $.registry.set(data.__component, data.el, component);
+            if (component) {
+                $.registry.set(data.__component, data.el, component);
+            }
 
             return;
         }
