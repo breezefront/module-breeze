@@ -22,6 +22,23 @@
         return $(el);
     }
 
+    // fix to execute js scripts
+    ko.utils.setHtml = ko.a.fc = function (node, html) {
+        while (node.firstChild) {
+            ko.removeNode(node.firstChild);
+        }
+
+        html = ko.utils.unwrapObservable(html);
+
+        if (html !== null && html !== undefined) {
+            if (typeof html !== 'string') {
+                html = html.toString();
+            }
+
+            $(node).html(html);
+        }
+    };
+
     ko.bindingHandlers.blockLoader = {
         /**
          * @param {String} element
