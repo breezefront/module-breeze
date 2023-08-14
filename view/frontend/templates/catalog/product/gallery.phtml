@@ -88,7 +88,7 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
         </a>
     </div>
 
-    <div class="thumbnails <?php echo $navType ? '' : 'hidden' ?>">
+    <div class="thumbnails <?= $navType ?: 'hidden' ?>">
         <?php if (count($images) > 1) : // empty parent wrapper may be used at configurable product page ?>
             <?php foreach ($images as $image) : ?>
                 <?php

@@ -100,7 +100,7 @@
 
                 if (index !== self.activeIndex) {
                     self.activate($(this).index());
-                } else {
+                } else if (!self.thumbsWrapper.hasClass('dots')) {
                     self.open();
                 }
             });
