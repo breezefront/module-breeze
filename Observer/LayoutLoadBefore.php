@@ -40,9 +40,9 @@ class LayoutLoadBefore implements ObserverInterface
 
         // Add additional handles for breeze theme
         if ($this->customerSession->isLoggedIn()) {
-            $update->addHandle('customer_logged_in');
+            $update->addHandle('breeze_customer_logged_in');
         } else {
-            $update->addHandle('customer_logged_out');
+            $update->addHandle('breeze_customer_logged_out');
         }
 
         if (!$this->helper->isEnabled()) {
