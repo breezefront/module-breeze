@@ -80,7 +80,8 @@
                     this.activateTimer = clearTimeout(this.activateTimer);
                 }
 
-                $('body').add(this.stage).add(this.lens).removeClass('magnifier-active');
+                $('body').add(this.element).add(this.stage).add(this.lens)
+                    .removeClass('magnifier-active');
                 this.state.current = null;
             }
         },
@@ -143,7 +144,8 @@
                 this.touchActive = false;
 
                 setTimeout(() => {
-                    $('body').add(this.stage).add(this.lens).removeClass('magnifier-active');
+                    $('body').add(this.element).add(this.stage).add(this.lens)
+                        .removeClass('magnifier-active');
                 }, this.options.timeout);
             });
 
@@ -181,7 +183,9 @@
 
             if (!this.activateTimer) {
                 this.activateTimer = setTimeout(() => {
-                    $('body').add(this.stage).add(this.lens).addClass('magnifier-active');
+                    this.element.removeAttr('title');
+                    $('body').add(this.element).add(this.stage).add(this.lens)
+                        .addClass('magnifier-active');
                 }, this.options.timeout);
             }
         },

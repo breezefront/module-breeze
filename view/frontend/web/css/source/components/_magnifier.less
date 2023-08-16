@@ -53,7 +53,7 @@
             -webkit-touch-callout: none;
         }
         .main-image,
-        .images a > img {
+        .images .item > img {
             backface-visibility: hidden;
         }
     }
@@ -93,12 +93,12 @@
             }
             :not(.magnifier-stage-inner)& {
                 .stage,
-                .images a {
+                .images .item {
                     z-index: 100;
                 }
             }
             .main-image,
-            .images a:has(.magnifier-active) > img {
+            .images .magnifier-active > img {
                 & when not (@critical = unsure) {
                     & when not (@product-image__filter = false) {
                         filter: ~"@{product-image__filter} grayscale(100%) opacity(60%)";
