@@ -165,7 +165,7 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
 
 <?php if ($mode === 'expanded') : ?>
     <script type="text/x-magento-template" id="gallery-image">
-        <a class="<%- classes %>" href="<%- full %>">
+        <a class="<%- classes %>" href="<%- full %>" data-caption="<%- caption %>">
             <img loading="lazy" alt="<%- caption %>"
                 src="<%- img %>"
                 srcset="<%- srcset ? srcset.medium : '' %>"
