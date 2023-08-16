@@ -105,7 +105,7 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
                 <a class="<?= implode(' ', $classes) ?>"
                     href="<?= $block->escapeUrl($image->getLargeImageUrl()) ?>"
                     title="<?= $block->escapeHtmlAttr($image->getLabel() ?: __('View Image')) ?>"
-                    data-caption="<?= $block->escapeHtmlAttr($image->getLabel()) ?>">
+                    data-caption="<?= $block->escapeHtmlAttr($image->getLabel() ?: $block->getProduct()->getName()) ?>">
                     <img <?= $lazy ? 'loading="lazy"' : '' ?>
                         alt="<?= $block->escapeHtmlAttr($image->getLabel()) ?>"
                         src="<?= $block->escapeUrl($image->getMediumImageUrl()) ?>"
