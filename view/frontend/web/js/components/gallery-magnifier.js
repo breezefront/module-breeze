@@ -457,8 +457,6 @@
             return;
         }
 
-        options.gallery = data.instance;
-
         getMagnifierElement(data.instance).magnifier(options);
     });
     $(document).on('gallery:beforeOpen', (e, data) => {
