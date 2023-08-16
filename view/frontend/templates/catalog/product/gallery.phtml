@@ -38,8 +38,8 @@ $thumbSizes = $responsiveImageHelper->getSizes('product_page_image_small');
 $galleryId = 'gallery-' . $block->getProduct()->getId();
 ?>
 
-<div class="breeze-gallery <?= $block->escapeHtmlAttr($mode) ?> <?= $block->escapeHtmlAttr($navDir) ?>">
-    <div class="stage <?= $mainImage && $mainImage->getVideoUrl() ? 'video' : '' ?> <?= $showCaption ? 'caption' : '' ?>"
+<div class="breeze-gallery <?= $block->escapeHtmlAttr($mode) ?> <?= $block->escapeHtmlAttr($navDir) ?> <?= $showCaption ? 'caption' : '' ?>">
+    <div class="stage <?= $mainImage && $mainImage->getVideoUrl() ? 'video' : '' ?>"
         data-gallery-id="<?= $galleryId ?>"
         data-gallery-role="gallery-placeholder"
         data-caption="<?= $block->escapeHtmlAttr($mainImageLabel) ?>">
@@ -104,7 +104,8 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
                 ?>
                 <a class="<?= implode(' ', $classes) ?>"
                     href="<?= $block->escapeUrl($image->getLargeImageUrl()) ?>"
-                    title="<?= $block->escapeHtmlAttr($image->getLabel() ?: __('View Image')) ?>">
+                    title="<?= $block->escapeHtmlAttr($image->getLabel() ?: __('View Image')) ?>"
+                    data-caption="<?= $block->escapeHtmlAttr($image->getLabel()) ?>">
                     <img <?= $lazy ? 'loading="lazy"' : '' ?>
                         alt="<?= $block->escapeHtmlAttr($image->getLabel()) ?>"
                         src="<?= $block->escapeUrl($image->getMediumImageUrl()) ?>"
