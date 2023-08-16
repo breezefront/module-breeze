@@ -97,8 +97,13 @@
             max-height: none;
         }
 
+        .item {
+            position: relative;
+            flex-shrink: 0;
+        }
+
         .stage.video .main-image-wrapper,
-        .thumbnails .item.video {
+        .item.video {
             &::before {
                 content: '';
                 z-index: 10;
@@ -186,8 +191,6 @@
             }
 
             .item {
-                position: relative;
-                flex-shrink: 0;
                 background: ~"rgba(var(--muted-bg, 244, 244, 244))";
                 &:focus {
                     outline: none;
@@ -225,8 +228,50 @@
                 background-color: @active__color;
             }
         }
+
+        // expanded mode (all images at once, not thumbnails)
+        &.expanded {
+            &:not(.opened) {
+                .stage,
+                .thumbnails {
+                    display: none;
+                }
+            }
+            &.opened .images {
+                display: none;
+            }
+        }
+        .images {
+            --columns-count: @bz-gallery-expanded__columns-count;
+            --columns-gap: @bz-gallery-expanded__gap;
+            display: flex;
+            position: relative;
+            gap: var(--columns-gap);
+            overflow: auto;
+            scroll-snap-type: x mandatory;
+            scroll-snap-stop: always;
+            .item {
+                max-width: 100%;
+                scroll-snap-align: center;
+                text-align: center;
+            }
+        }
     }
 }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    & when (@critical = unsure), (@critical) {
+        .breeze-gallery {
+            .images {
+                overflow: visible;
+                flex-wrap: wrap;
+                .item {
+                    width: ~"calc((100% - (var(--columns-gap) * var(--columns-count) - var(--columns-gap))) / var(--columns-count))";
+                }
+            }
+        }
+    }
 }
 
 & when (@media-common = true) {

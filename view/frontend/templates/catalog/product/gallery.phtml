@@ -25,7 +25,9 @@ $thumbWidth = (int) $block->getImageAttribute('product_page_image_small', 'width
 $thumbHeight = (int) $block->getImageAttribute('product_page_image_small', 'height');
 $thumbHeight = $thumbHeight ?: $thumbWidth;
 
+$mode = $block->getGalleryOptions()->getVar('gallery/mode');
 $navType = $block->getGalleryOptions()->getVar('gallery/nav');
+$navDir = $block->getGalleryOptions()->getVar('gallery/navdir');
 $showCaption = $block->getGalleryOptions()->getVar('gallery/caption');
 
 $responsiveImageHelper = $this->helper(\Swissup\Breeze\Helper\Image::class);
@@ -36,7 +38,7 @@ $thumbSizes = $responsiveImageHelper->getSizes('product_page_image_small');
 $galleryId = 'gallery-' . $block->getProduct()->getId();
 ?>
 
-<div class="breeze-gallery <?= $block->escapeHtmlAttr($block->getGalleryOptions()->getVar('gallery/navdir')) ?>">
+<div class="breeze-gallery <?= $block->escapeHtmlAttr($mode) ?> <?= $block->escapeHtmlAttr($navDir) ?>">
     <div class="stage <?= $mainImage && $mainImage->getVideoUrl() ? 'video' : '' ?> <?= $showCaption ? 'caption' : '' ?>"
         data-gallery-id="<?= $galleryId ?>"
         data-gallery-role="gallery-placeholder"
@@ -88,6 +90,35 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
         </a>
     </div>
 
+    <?php if ($mode === 'expanded') : ?>
+        <div class="images">
+            <?php $i = 0; foreach ($images as $image) : ?>
+                <?php
+                    $lazy = (bool) $i++;
+                    $classes = array_filter([
+                        'item',
+                        $image->getVideoUrl() ? 'video' : ''
+                    ]);
+
+                    $srcset = $responsiveImageHelper->getSrcset($image, 'product_page_image_medium');
+                ?>
+                <a class="<?= implode(' ', $classes) ?>"
+                    href="<?= $block->escapeUrl($image->getLargeImageUrl()) ?>"
+                    title="<?= $block->escapeHtmlAttr($image->getLabel() ?: __('View Image')) ?>">
+                    <img <?= $lazy ? 'loading="lazy"' : '' ?>
+                        alt="<?= $block->escapeHtmlAttr($image->getLabel()) ?>"
+                        src="<?= $block->escapeUrl($image->getMediumImageUrl()) ?>"
+                        <?php if ($srcset) : ?>
+                            srcset="<?= $block->escapeHtmlAttr($srcset) ?>"
+                            sizes="<?= $block->escapeHtmlAttr($sizes) ?>"
+                        <?php endif ?>
+                        width="<?= $width ?>"
+                        height="<?= $height ?>"/>
+                </a>
+            <?php endforeach ?>
+        </div>
+    <?php endif ?>
+
     <div class="thumbnails <?= $navType ?: 'hidden' ?>">
         <?php if (count($images) > 1) : // empty parent wrapper may be used at configurable product page ?>
             <?php foreach ($images as $image) : ?>
@@ -130,6 +161,20 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
         }
     }
 </script>
+
+<?php if ($mode === 'expanded') : ?>
+    <script type="text/x-magento-template" id="gallery-image">
+        <a class="<%- classes %>" href="<%- full %>">
+            <img loading="lazy" alt="<%- caption %>"
+                src="<%- img %>"
+                srcset="<%- srcset ? srcset.medium : '' %>"
+                sizes="<?= $sizes ?>"
+                width="<?= $width ?>"
+                height="<?= $height ?>"
+            />
+        </a>
+    </script>
+<?php endif ?>
 
 <script type="text/x-magento-template" id="gallery-thumbnail">
     <a class="<%- classes %>" href="<%- full %>">

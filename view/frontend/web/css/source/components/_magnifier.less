@@ -48,10 +48,12 @@
     }
 
     .magnifier {
-        .breeze-gallery:not(.opened) .stage {
+        .breeze-gallery:not(.opened) .stage,
+        .breeze-gallery .images {
             -webkit-touch-callout: none;
         }
-        .main-image {
+        .main-image,
+        .images a > img {
             backface-visibility: hidden;
         }
     }
@@ -90,11 +92,13 @@
                 }
             }
             :not(.magnifier-stage-inner)& {
-                .stage {
+                .stage,
+                .images a {
                     z-index: 100;
                 }
             }
-            .main-image {
+            .main-image,
+            .images a:has(.magnifier-active) > img {
                 & when not (@critical = unsure) {
                     & when not (@product-image__filter = false) {
                         filter: ~"@{product-image__filter} grayscale(100%) opacity(60%)";

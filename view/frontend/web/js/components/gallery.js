@@ -44,6 +44,7 @@
             this.cache = $('<div data-breeze-temporary>').hide().appendTo(document.body);
             this.gallery = this.element.parent();
             this.parent = this.gallery.parent();
+            this.imagesWrapper = this.gallery.find('.images');
             this.thumbsWrapper = this.gallery.find('.thumbnails');
             this.thumbs = this.gallery.find('.thumbnails a');
             this.stage = this.gallery.find('.stage');
@@ -57,6 +58,7 @@
 
             this.activate(this.activeIndex);
             this.addEventListeners();
+            this.showImageLoaders();
 
             this._trigger('loaded');
         },
@@ -93,7 +95,7 @@
                     }
                 });
 
-            this.thumbsWrapper.on('click', 'a', function (event) {
+            this.gallery.on('click', '.item', function (event) {
                 var index = $(this).index();
 
                 event.preventDefault();
@@ -102,6 +104,13 @@
                     self.activate($(this).index());
                 } else if (!self.thumbsWrapper.hasClass('dots')) {
                     self.open();
+                }
+
+                if (self.gallery.hasClass('expanded')) {
+                    self.open();
+                    if (self.options.data[self.activeIndex].videoUrl) {
+                        self.play();
+                    }
                 }
             });
 
@@ -147,6 +156,28 @@
                         break;
                 }
             });
+        },
+
+        showImageLoaders: function () {
+            var self = this;
+
+            this.imagesWrapper.find('img')
+                .off('load error')
+                .on('load error', function () {
+                    $(this).parent().spinner(false);
+                })
+                .on('load', function () {
+                    if (!self.cache.find(`[src="${this.src}"]`).length) {
+                        self.cache.append($(this).clone().removeAttr('alt id class fetchpriority'));
+                    }
+                })
+                .each(function () {
+                    if (!this.complete) {
+                        $(this).parent().spinner(true, {
+                            delay: 200
+                        });
+                    }
+                });
         },
 
         destroy: function () {
@@ -348,27 +379,35 @@
 
         updateData: function (data) {
             var thumbnails = [],
-                template = $('#gallery-thumbnail').html();
+                images = [],
+                thumbTemplate = $('#gallery-thumbnail').html(),
+                imageTemplate = $('#gallery-image').html();
 
             this.options.data = data;
 
             _.each(data, function (picture) {
-                if (!template) {
-                    return;
-                }
-
-                thumbnails.push(_.template(template)($.extend({}, {
+                var pictureData = $.extend({}, {
                     srcset: '',
                     classes: [
                         'item',
                         picture.videoUrl ? 'video' : ''
                     ].join(' ')
-                }, picture)));
+                }, picture);
+
+                if (thumbTemplate) {
+                    thumbnails.push(_.template(thumbTemplate)(pictureData));
+                }
+
+                if (imageTemplate) {
+                    images.push(_.template(imageTemplate)(pictureData));
+                }
             });
 
             this.thumbsWrapper.html(thumbnails.join(''));
+            this.imagesWrapper.html(images.join(''));
             this.thumbs = this.thumbsWrapper.find('a');
             this.activate(data.findIndex(img => img.isMain));
+            this.showImageLoaders();
         },
 
         /**
@@ -386,12 +425,12 @@
             return images;
         },
 
-        getData: function () {
-            return this.options.data[this.activeIndex];
+        getData: function (index) {
+            return this.options.data[isNaN(index) ? this.activeIndex : index];
         },
 
-        loadFullImage: function () {
-            var src = this.getData().full;
+        loadFullImage: function (index) {
+            var src = this.getData(index).full;
 
             if (this.promises[src]) {
                 return this.promises[src];
@@ -409,7 +448,7 @@
                     });
                 };
 
-                image.src = this.getData().full;
+                image.src = this.getData(index).full;
 
                 this.cache.append(image);
             });
