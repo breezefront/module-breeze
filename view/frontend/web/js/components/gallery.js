@@ -270,6 +270,11 @@
                 this.thumbs.eq(this.activeIndex).blur();
             }
 
+            this.imagesWrapper[0]?.scrollTo(
+                this.imagesWrapper.find('.item').eq(index).offsetLeft,
+                0
+            );
+
             if (this.activeIndex !== index) {
                 this.stage.find('.video-wrapper').remove();
             }
