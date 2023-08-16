@@ -47,6 +47,8 @@
         },
 
         prepareMarkup: function () {
+            var container = $('.magnifier-container');
+
             $('body').addClass('magnifier').addClass(`magnifier-stage-${this.options.stage.position}`);
 
             this.lens = $('<div data-breeze-temporary>')
@@ -57,13 +59,24 @@
             this.lensImageWrapper = $('<div>').appendTo(this.lens);
             this.lensImage = $('<img alt="">').appendTo(this.lensImageWrapper);
 
-            this.stage = $('<div data-breeze-temporary>')
-                .css({ position: 'absolute', visibility: 'hidden' })
-                .addClass(`image-magnifier-stage image-magnifier-stage-${this.options.stage.position}`)
-                .appendTo(document.body);
+            if (!container.length) {
+                container = $('<div data-breeze-temporary>')
+                    .addClass('magnifier-container')
+                    .appendTo(document.body);
+            }
 
-            this.stageImageWrapper = $('<div>').appendTo(this.stage);
-            this.stageImage = $('<img alt="">').appendTo(this.stageImageWrapper);
+            this.stage = container.find(`[data-url="${this.image.attr('src')}"]`);
+
+            if (!this.stage.length) {
+                this.stage = $(`<div data-breeze-temporary data-url="${this.image.attr('src')}">`)
+                    .css({ position: 'absolute', visibility: 'hidden' })
+                    .addClass(`image-magnifier-stage image-magnifier-stage-${this.options.stage.position}`)
+                    .appendTo(container)
+                    .append('<div><img alt=""></div>');
+            }
+
+            this.stageImageWrapper = this.stage.find('div');
+            this.stageImage = this.stage.find('img');
 
             this.options.timeout = parseFloat(this.stageImageWrapper.css('transition-duration')) * 1000;
         },
@@ -434,11 +447,18 @@
     }
 
     function onGalleryChange(gallery) {
-        var magnifierElement = getMagnifierElement(gallery);
+        var magnifierElement = getMagnifierElement(gallery),
+            options = gallery.options.magnifierOpts || {};
 
-        if (gallery.opened()) {
+        if (options.enabled === false || gallery.opened()) {
             return;
         }
+
+        magnifierElement.each((i, el) => {
+            if (!$(el).magnifier('instance')) {
+                $(el).magnifier(options);
+            }
+        });
 
         magnifierElement.magnifier('status', false);
 
