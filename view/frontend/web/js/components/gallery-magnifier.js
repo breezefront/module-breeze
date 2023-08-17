@@ -229,9 +229,9 @@
             this.lensImage.attr('src', '');
 
             this.memo[src] = {};
-            this.gallery.stage.spinner(true, { delay: 200 });
+            this.element.spinner(true, { delay: 200 });
             this.memo[src] = await this.gallery.loadFullImage(this.imageIndex);
-            this.gallery.stage.spinner(false);
+            this.element.spinner(false);
             this.apply();
         },
 
