@@ -161,6 +161,7 @@
 
                 this.touchTimer = clearTimeout(this.touchTimer);
                 this.touchActive = false;
+                this.isMouseOver = false;
 
                 $('body').add(this.element).removeClass('magnifier-active');
 
@@ -178,6 +179,7 @@
         },
 
         onMouseMove: async function (e) {
+            this.isMouseOver = true;
             this.pageX = e.changedTouches ? e.changedTouches[0].pageX : e.pageX;
             this.pageY = e.changedTouches ? e.changedTouches[0].pageY : e.pageY;
 
@@ -191,7 +193,7 @@
                 this.apply();
             }
 
-            if (!this.status()) {
+            if (!this.status() || !this.isMouseOver) {
                 return;
             }
 
