@@ -143,6 +143,10 @@
                 this.touchActive = false;
             });
 
+            this._on(document, 'scroll', _.debounce(() => {
+                this.updateSizeAndPosition();
+            }, 500));
+
             this._on('.breeze-gallery .images', 'scroll', () => {
                 this.touchTimer = clearTimeout(this.touchTimer);
                 this.touchActive = false;
