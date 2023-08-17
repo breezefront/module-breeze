@@ -355,8 +355,9 @@
             }
 
             // eslint-disable-next-line one-var, vars-on-top
-            var leftPosition = this.element.offset().left - this.element.width() - 10,
-                rightPosition = this.element.offset().left + this.element.width() + 10,
+            var shift = parseFloat(window.getComputedStyle(this.element[0]).getPropertyValue('--magnifier-gap')),
+                leftPosition = this.element.offset().left - this.element.width() - shift,
+                rightPosition = this.element.offset().left + this.element.width() + shift,
                 result = {
                     width: this.convertSize(stage.width),
                     height: this.convertSize(stage.height),
@@ -365,10 +366,10 @@
                 };
 
             if (result.left < 0) {
-                result.width += result.left - 10;
-                result.left = 10;
+                result.width += result.left - shift;
+                result.left = shift;
             } else if (result.left + result.width > $(window).width()) {
-                result.width -= result.left + result.width - $(window).width() + 10;
+                result.width -= result.left + result.width - $(window).width() + shift;
             }
 
             return result;

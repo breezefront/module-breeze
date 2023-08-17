@@ -79,11 +79,11 @@
     display: none;
 }
 .breeze-gallery .images {
-    --columns-count: 2;
-    --columns-gap: 10px;
+    --gallery-columns-count: 2;
+    --gallery-columns-gap: 10px;
     display: flex;
     position: relative;
-    gap: var(--columns-gap);
+    gap: var(--gallery-columns-gap);
     overflow: auto;
     scroll-snap-type: x mandatory;
     scroll-snap-stop: always;
@@ -110,6 +110,6 @@
         flex-wrap: wrap;
     }
     .breeze-gallery .images .item {
-        width: calc((100% - (var(--columns-gap) * var(--columns-count) - var(--columns-gap))) / var(--columns-count));
+        width: calc((100% - (var(--gallery-columns-gap) * var(--gallery-columns-count) - var(--gallery-columns-gap))) / var(--gallery-columns-count));
     }
 }

@@ -1,5 +1,8 @@
 & when (@media-common = true) {
 & when (@critical = unsure), (@critical = false) {
+    :root {
+        --magnifier-gap: var(--gallery-columns-gap, 10px);
+    }
     .image-magnifier-lens,
     .image-magnifier-stage {
         direction: ltr;
