@@ -26,16 +26,13 @@
      * @throws {Exception}
      */
     function onError(error, params) {
-        var failFn = params.fail || params.error,
-            alwaysFn = params.always || params.complete;
+        var response = error.response || error.original.response;
 
-        if (failFn) {
-            failFn(error.response || error.original.response, error);
-        }
+        params.fail.push(params.error);
+        params.always.push(params.complete);
 
-        if (alwaysFn) {
-            alwaysFn(error.response || error.original.response);
-        }
+        params.fail.filter(fn => fn).forEach(fn => fn(response, error));
+        params.always.filter(fn => fn).forEach(fn => fn(response));
     }
 
     /**
@@ -43,16 +40,11 @@
      * @return {Object}
      */
     function onSuccess(response, params) {
-        var doneFn = params.done || params.success,
-            alwaysFn = params.always || params.complete;
+        params.done.push(params.success);
+        params.always.push(params.complete);
 
-        if (doneFn) {
-            doneFn(response.body || response.text, response);
-        }
-
-        if (alwaysFn) {
-            alwaysFn(response);
-        }
+        params.done.filter(fn => fn).forEach(fn => fn(response.body || response.text, response));
+        params.always.filter(fn => fn).forEach(fn => fn(response));
 
         return response;
     }
@@ -202,7 +194,8 @@
 
         $.active++;
 
-        return fetch(params.url, params)
+        // eslint-disable-next-line vars-on-top
+        var result = fetch(params.url, params)
             .then(function (response) {
                 var error;
 
@@ -253,6 +246,14 @@
             .catch(function (error) {
                 return onError(error, params);
             });
+
+        // Emulate jQuery's functions that are not avaialble in native Promise
+        ['done', 'fail', 'always'].forEach(name => {
+            params[name] = params[name] ? [params[name]] : [];
+            result[name] = function (fn) { params[name].push(fn); };
+        });
+
+        return result;
     }
 
     $.request = {
