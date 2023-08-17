@@ -144,7 +144,9 @@
             });
 
             this._on(document, 'scroll', _.debounce(() => {
-                this.updateSizeAndPosition();
+                if (this.isLoaded()) {
+                    this.updateSizeAndPosition();
+                }
             }, 500));
 
             this._on('.breeze-gallery .images', 'scroll', () => {
