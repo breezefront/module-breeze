@@ -156,9 +156,10 @@
                 this.touchTimer = clearTimeout(this.touchTimer);
                 this.touchActive = false;
 
+                $('body').add(this.element).removeClass('magnifier-active');
+
                 setTimeout(() => {
-                    $('body').add(this.element).add(this.stage).add(this.lens)
-                        .removeClass('magnifier-active');
+                    this.stage.add(this.lens).removeClass('magnifier-active');
                 }, this.options.timeout);
             });
 
