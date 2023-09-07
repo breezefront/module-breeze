@@ -208,12 +208,17 @@
         node.querySelectorAll('[data-mage-init-lazy]')
             .forEach(convertLazyInitToDataMageInit);
 
-        $(node).find('[data-mage-init],[type="text/x-magento-init"]')
-            .add($(node).is('[data-mage-init],[type="text/x-magento-init"]') ? node : $())
-            .not('[data-breeze-processed]')
-            .each(function () {
-                processElement(this);
-            });
+        $(node).find(`
+                [data-mage-init]:not([data-breeze-processed]),
+                [type="text/x-magento-init"]:not([data-breeze-processed])
+            `)
+            .add(
+                $(node).is(`
+                    [data-mage-init]:not([data-breeze-processed]),
+                    [type="text/x-magento-init"]:not([data-breeze-processed])
+                `) ? node : $()
+            )
+            .each((i, el) => setTimeout(() => processElement(el), 0));
     }
 
     // convert 'ko scope:' into 'data-bind scope'
@@ -247,10 +252,11 @@
         scriptsContainer = $('.breeze-container');
         scopedElements = $('[data-bind*="scope:"]');
 
-        $(document).trigger('breeze:beforeLoad');
-        $(document).trigger('breeze:load');
-
-        walk(document);
+        setTimeout(() => {
+            $(document).trigger('breeze:beforeLoad');
+            $(document).trigger('breeze:load');
+            walk(document);
+        }, 0);
     }
 
     function onDomDocumentLoad() {
