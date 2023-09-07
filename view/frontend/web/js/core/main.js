@@ -197,17 +197,6 @@
         $(el).attr('data-mage-init', $(el).attr('data-mage-init-lazy'));
     }
 
-    /** Get event name to listen */
-    function loadEventName() {
-        var name = 'DOMContentLoaded';
-
-        if (typeof Turbo !== 'undefined' || typeof Turbolinks !== 'undefined') {
-            name = 'turbo:load turbolinks:load';
-        }
-
-        return name;
-    }
-
     /**
      * @param {Element} node
      */
@@ -266,7 +255,7 @@
         walk(document);
     }
 
-    $(document).on(loadEventName(), function () {
+    function onDomDocumentLoad() {
         var newScripts = _.isEmpty($.breeze.loadedScripts) ? [] : $('script[src]').filter(function () {
                 return !$.breeze.loadedScripts[this.src];
             }),
@@ -302,7 +291,19 @@
             // eslint-disable-next-line max-nested-callbacks
             $(this).on('load error', () => onScriptLoad(this.src));
         });
-    });
+    }
+
+    function loadEventName() {
+        var name = 'DOMContentLoaded';
+
+        if (typeof Turbo !== 'undefined' || typeof Turbolinks !== 'undefined') {
+            name = 'turbo:load turbolinks:load';
+        }
+
+        return name;
+    }
+
+    $(document).on(loadEventName(), onDomDocumentLoad);
 
     $(document).on('contentUpdated', function (event) {
         scopedElements = $('[data-bind*="scope:"]');
