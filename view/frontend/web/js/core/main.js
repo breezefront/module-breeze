@@ -25,10 +25,8 @@
 
         if (now) {
             callback();
-        } else if (window.requestIdleCallback) {
-            window.requestIdleCallback(callback);
         } else {
-            window.setTimeout(callback, 1);
+            window.setTimeout(callback, 0);
         }
     }
 

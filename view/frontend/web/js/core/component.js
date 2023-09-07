@@ -581,12 +581,7 @@ $.registry = (function () {
             this._regions = {};
             this._markup = $(element).html();
             this._super(name, options, element);
-
-            if (window.requestIdleCallback) {
-                window.requestIdleCallback(this._applyBindings.bind(this, element));
-            } else {
-                window.setTimeout(this._applyBindings.bind(this, element), 1);
-            }
+            window.setTimeout(this._applyBindings.bind(this, element), 0);
         },
 
         _applyBindings: function (element) {
