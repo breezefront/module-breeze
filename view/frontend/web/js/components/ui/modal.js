@@ -70,24 +70,11 @@
             this.options.id = $.guid++;
             this._elMarkup = this.element.get(0).outerHTML;
             this._elParent = this.element.parent();
-            this._createWrapper();
-            this._renderModal();
-            this._createButtons();
-            this.focusTrap = this.createFocusTrap(this.modal);
 
             if (this.options.trigger) {
                 listeners['click ' + this.options.trigger] = this.toggleModal.bind(this);
                 this._on(document, listeners);
             }
-
-            listeners = {
-                'openModal': this.openModal,
-                'closeModal': this.closeModal
-            };
-            listeners['click ' + this.options.modalCloseBtn] =
-                this.options.modalCloseBtnHandler ? this.options.modalCloseBtnHandler : this.closeModal;
-
-            this._on(this.modal, listeners);
 
             if (this.options.autoOpen) {
                 this.openModal();
@@ -95,7 +82,7 @@
         },
 
         destroy: function () {
-            this.modalWrapper.remove();
+            this.modalWrapper?.remove();
             $(this.options.appendTo).removeClass(this.options.parentModalClass);
             this._elParent.append(this._elMarkup);
             this._super();
@@ -182,6 +169,11 @@
                 return this.element;
             }
 
+            if (!this._preparedMarkup) {
+                this._preparedMarkup = true;
+                this._prepareMarkup();
+            }
+
             this.options.isOpen = true;
             this._createOverlay();
             this._setActive();
@@ -197,6 +189,22 @@
             }
 
             return this.element;
+        },
+
+        _prepareMarkup: function () {
+            this._createWrapper();
+            this._renderModal();
+            this._createButtons();
+
+            this.focusTrap = this.createFocusTrap(this.modal);
+
+            this._on(this.modal, {
+                'openModal': this.openModal,
+                'closeModal': this.closeModal,
+                ['click ' + this.options.modalCloseBtn]: this.options.modalCloseBtnHandler
+                    ? this.options.modalCloseBtnHandler
+                    : this.closeModal
+            });
         },
 
         /**

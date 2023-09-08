@@ -57,14 +57,12 @@ define([
 
             this.modalWindow = element;
 
-            setTimeout(() => {
-                modal({
-                    'modalClass': 'popup-authentication',
-                    'focus': '[name=username]',
-                    'trigger': '.proceed-to-checkout',
-                    'buttons': []
-                }, $(this.modalWindow));
-            }, 0);
+            modal({
+                'modalClass': 'popup-authentication',
+                'focus': '[name=username]',
+                'trigger': '.proceed-to-checkout',
+                'buttons': []
+            }, $(this.modalWindow));
 
             $(this.modalWindow).on('modal:opened', () => {
                 $(this.modalWindow).trigger('contentUpdated');
