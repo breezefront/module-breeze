@@ -76,6 +76,11 @@
                 this._on(document, listeners);
             }
 
+            this._on({
+                openModal: this.openModal,
+                closeModal: this.closeModal,
+            });
+
             if (this.options.autoOpen) {
                 this.openModal();
             }
@@ -198,6 +203,8 @@
 
             this.focusTrap = this.createFocusTrap(this.modal);
 
+            this._off('openModal');
+            this._off('closeModal');
             this._on(this.modal, {
                 'openModal': this.openModal,
                 'closeModal': this.closeModal,
