@@ -85,7 +85,7 @@
 
             if (!loader) {
                 loader = $(_.template(template)({
-                    loaderImageHref: href
+                    loaderImageHref: _.isObject(href) ? false : href
                 }));
             }
         },
