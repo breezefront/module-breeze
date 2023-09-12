@@ -26,7 +26,7 @@
      * @throws {Exception}
      */
     function onError(error, params) {
-        var response = error.response || error.original.response;
+        var response = error.response || error.original?.response;
 
         params.fail.push(params.error);
         params.always.push(params.complete);
