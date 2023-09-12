@@ -4,6 +4,7 @@
     var html,
         scriptsContainer,
         scopedElements,
+        parsedSettings = {},
         oldDimensions = {
             width: $(window).width(),
             height: $(window).height()
@@ -69,11 +70,15 @@
             el = false;
         }
 
-        try {
-            settings = JSON.parse(settings);
-        } catch (e) {
-            console.error(e);
+        if (typeof parsedSettings[settings] === 'undefined') {
+            try {
+                parsedSettings[settings] = JSON.parse(settings);
+            } catch (e) {
+                return console.error(e);
+            }
         }
+
+        settings = parsedSettings[settings];
 
         $.each(settings, function (component, config) {
             var selector = false;
