@@ -50,20 +50,21 @@
     }
 
     /**
-     * @param {Object} params
+     * @param {String|Object} url
+     * @param {Object|Function} params
      * @return {Object}
      */
     function prepareParams(url, params) {
+        var success = typeof params === 'function' ? params : false;
+
         if (typeof url === 'object') {
             params = url;
-        } else if (!params) {
+        } else if (!params || success) {
             params = {};
         }
 
-        if (typeof params === 'function') {
-            params = {
-                success: params
-            };
+        if (success) {
+            params.success = success;
         }
 
         if (params.each || params instanceof Element) {
