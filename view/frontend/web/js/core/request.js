@@ -163,6 +163,12 @@
     }
 
     function send(params) {
+        var controller = new AbortController();
+
+        if (!params.signal) {
+            params.signal = controller.signal;
+        }
+
         if (params.method === 'get' && params.data) {
             params.url += params.url.indexOf('?') === -1 ? '?' : '&';
 
@@ -194,7 +200,7 @@
 
         $.active++;
 
-        // eslint-disable-next-line vars-on-top
+        // eslint-disable-next-line one-var, vars-on-top
         var result = fetch(params.url, params)
             .then(function (response) {
                 var error;
@@ -252,6 +258,8 @@
             params[name] = params[name] ? [params[name]] : [];
             result[name] = function (fn) { params[name].push(fn); };
         });
+
+        result.abort = () => controller.abort();
 
         return result;
     }
