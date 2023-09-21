@@ -62,7 +62,7 @@ class ThemeCreateCommand extends AbstractCreateCommand
                 ]));
 
                 if (!$confirm) {
-                    return;
+                    return \Magento\Framework\Console\Cli::RETURN_SUCCESS;
                 }
             }
 
