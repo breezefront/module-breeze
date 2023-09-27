@@ -289,6 +289,10 @@
                 }
             }
 
+            if (['Home', 'End'].includes(e.key) && this.element.is(':focus')) {
+                return; // use keys to jump around search query
+            }
+
             if (navKeys.indexOf(e.key) !== -1) {
                 if (!this.canUseNavKeys()) {
                     return;
