@@ -72,6 +72,7 @@
                     self.stage.spinner(false);
                 })
                 .on('load', function () {
+                    self.thumbsWrapper.css('max-height', self.stage.height());
                     if (!self.cache.find(`[src="${self.image.attr('src')}"]`).length) {
                         self.cache.append(self.image.clone().removeAttr('alt id class fetchpriority'));
                     }
@@ -157,6 +158,13 @@
                         break;
                 }
             });
+
+            $(document).on('breeze:resize-x.gallery', () => {
+                if (this.opened() || !this.gallery.hasClass('vertical')) {
+                    return;
+                }
+                this.thumbsWrapper.css('max-height', this.stage.height());
+            });
         },
 
         showImageLoaders: function () {
@@ -182,7 +190,7 @@
         },
 
         destroy: function () {
-            $(document).off('keydown.gallery');
+            $(document).off('keydown.gallery breeze:resize-x.gallery');
             this.close();
             this._super();
         },
