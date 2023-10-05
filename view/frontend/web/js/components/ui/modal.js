@@ -90,7 +90,9 @@
         destroy: function () {
             this.modalWrapper?.remove();
             $(this.options.appendTo).removeClass(this.options.parentModalClass);
-            this._elParent.append(this._elMarkup);
+            if (this.modalWrapper) {
+                this._elParent.append(this._elMarkup);
+            }
             this._super();
         },
 
