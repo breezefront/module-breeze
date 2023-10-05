@@ -124,8 +124,10 @@
             this.slider.on('scroll', _.debounce(this.updateCurrentPage.bind(this), 40));
 
             new ResizeObserver(() => {
-                this.updateScrollOffset();
-                this.update();
+                setTimeout(() => {
+                    this.updateScrollOffset();
+                    this.update();
+                }, 450);
             }).observe(this.slider.get(0));
         },
 
