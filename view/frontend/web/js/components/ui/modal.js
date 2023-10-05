@@ -70,6 +70,7 @@
             this.options.id = $.guid++;
             this._elMarkup = this.element.get(0).outerHTML;
             this._elParent = this.element.parent();
+            this.element.hide();
 
             if (this.options.trigger) {
                 listeners['click ' + this.options.trigger] = this.toggleModal.bind(this);
