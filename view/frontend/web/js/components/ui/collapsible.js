@@ -156,6 +156,13 @@
                 $.storage.set(this.stateKey, false);
             }
 
+            if (this.content.css('position') !== 'absolute') {
+                this.content.css('width', this.content.css('width'));
+                setTimeout(() => {
+                    this.content.css('width', '');
+                }, 400);
+            }
+
             if (this.options.openedState) {
                 this.element.removeClass(this.options.openedState);
             }
