@@ -10,7 +10,7 @@
 
             if (!reviewTab.length) {
                 this.loadReviews();
-            } else if (reviewTab.attr('role') === 'tab' && reviewTab.hasClass('active')) {
+            } else if (reviewTab.hasClass('active')) {
                 this.loadReviews();
             } else {
                 reviewTab.one('collapsible:beforeOpen', function () {
