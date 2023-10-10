@@ -36,6 +36,7 @@
                 .attr('role', 'tablist');
 
             this.triggers.attr('role', 'tab');
+            this.triggers.last().addClass('last');
 
             activeIndex = this.findActiveTabIndex(location.hash);
 
