@@ -268,16 +268,6 @@
                 });
             }
 
-            // scroll to hidden thumbnail only if we will not affect page scroll offset
-            if (fullscreen || (this.thumbs.length && this.thumbsWrapper.isInViewport())) {
-                // timeout is used to fix scroll when swipe is used
-                setTimeout(function () {
-                    this.thumbs.eq(index).focus();
-                }.bind(this), 50);
-            } else {
-                this.thumbs.eq(this.activeIndex).blur();
-            }
-
             this.imagesWrapper[0]?.scrollTo(
                 this.imagesWrapper.find('.item').eq(index).offsetLeft,
                 0
