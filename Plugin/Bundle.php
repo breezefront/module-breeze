@@ -96,7 +96,7 @@ class Bundle
 
                 $block = $layout->getBlock('breeze.js');
                 if ($block) {
-                    $block->deployBundledAssets([
+                    $block->setRedeploy(true)->deployBundledAssets([
                         'assetRepo' => $assetRepo,
                     ]);
                 }

@@ -51,6 +51,8 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
      */
     protected $allBundles = null;
 
+    protected $redeploy = false;
+
     /**
      * @param \Magento\Backend\Block\Context $context
      * @param \Magento\Framework\View\Asset\ConfigInterface $assetConfig
@@ -173,10 +175,15 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         $builds = [];
         foreach ($this->getAllBundles() as $name => $bundle) {
             $builds[$name] = $this->jsBuildFactory->create(array_merge([
-                    'name' => 'Swissup_Breeze/bundles/' . $this->storeManager->getStore()->getId() . '/' . $name,
-                    'items' => $bundle['items'],
-                ], $jsBuildParams))
-                ->publishIfNotExist();
+                'name' => 'Swissup_Breeze/bundles/' . $this->storeManager->getStore()->getId() . '/' . $name,
+                'items' => $bundle['items'],
+            ], $jsBuildParams));
+
+            if ($this->redeploy) {
+                $builds[$name]->publish();
+            } else {
+                $builds[$name]->publishIfNotExist();
+            }
         }
 
         $assets = [];
@@ -185,6 +192,12 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         }
 
         return $assets;
+    }
+
+    public function setRedeploy(bool $flag)
+    {
+        $this->redeploy = $flag;
+        return $this;
     }
 
     /**
