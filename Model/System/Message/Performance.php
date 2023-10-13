@@ -15,7 +15,7 @@ class Performance implements MessageInterface
      * @var \Magento\Framework\FlagManager
      */
     private $flagManager;
-    
+
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
@@ -46,8 +46,11 @@ class Performance implements MessageInterface
     {
         return $this->isDismissed() && !$this->checkConfigs();
     }
-    
-    private function checkConfigs() 
+
+    /**
+     * @return bool
+     */
+    private function checkConfigs()
     {
         $configs = [
             'dev/template/minify_html' => true,
@@ -68,7 +71,7 @@ class Performance implements MessageInterface
                 break;
             }
         }
-        
+
         return $result;
     }
 
@@ -89,17 +92,13 @@ class Performance implements MessageInterface
     {
         $message = __(
             '<b>Swissup Breeze:</b> '
-        );        
+        );
         $message .= __(
-            "Breeze Warning: Your store's page speed settings are not optimized. When your store is ready to sell, optimize Magento settings and enable production mode." 
-            . 'Click <a href="%1" target="_blank" rel="noopener noreferer">here</a> for detailed instructions. ', 
+            "Breeze Warning: Your store's page speed settings are not optimized. When your store is ready to sell, optimize Magento settings and enable production mode."
+            . 'Click <a href="%1" target="_blank" rel="noopener noreferer">here</a> for detailed instructions. ',
             'https://breezefront.com/docs/performance'
         );
-        $dismissUrl = $this->urlBuilder->getUrl(
-            'adminhtml/system_messages/dismiss', 
-            ['message_code' => $this->getIdentity()]
-        );
-        $message .= __('<a href="%1">Dismiss message</a>.', $dismissUrl);
+
         return $message;
     }
 
@@ -108,6 +107,6 @@ class Performance implements MessageInterface
      */
     public function getSeverity()
     {
-        return MessageInterface::SEVERITY_MINOR;
+        return MessageInterface::SEVERITY_MAJOR;
     }
 }
