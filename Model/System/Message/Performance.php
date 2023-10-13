@@ -91,8 +91,8 @@ class Performance implements MessageInterface
             '<b>Swissup Breeze:</b> '
         );        
         $message .= __(
-            'When your store is ready to sell, do not forget properly configure Magento and enable production mode. ' 
-            . 'Click <a href="%1" target="_blank" rel="noopener noreferer">here</a> for more info. ', 
+            "Breeze Warning: Your store's page speed settings are not optimized. When your store is ready to sell, optimize Magento settings and enable production mode." 
+            . 'Click <a href="%1" target="_blank" rel="noopener noreferer">here</a> for detailed instructions. ', 
             'https://breezefront.com/docs/performance'
         );
         $dismissUrl = $this->urlBuilder->getUrl(
