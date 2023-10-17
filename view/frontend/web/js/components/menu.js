@@ -31,6 +31,7 @@
 
             this._setActiveMenu(); // varnish fix
 
+            $('.li-item').addClass('ui-menu-item');
             $('li.parent > ul', this.element).hide();
             $('li.parent', this.element)
                 .children('a')
