@@ -131,7 +131,7 @@
 
             this.slides.each((i, slide) => {
                 new MutationObserver(function (records) {
-                    if (records[0].oldValue.match(/display:\s*none/)) {
+                    if (records[0].oldValue?.match(/display:\s*none/)) {
                         updateScrollOffsetAndPagination();
                     }
                 }).observe(slide, {
