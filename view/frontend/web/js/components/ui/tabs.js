@@ -115,6 +115,10 @@
                     return;
                 }
 
+                if ($(this).parent().collapsible('instance')) {
+                    return;
+                }
+
                 index = self.findActiveTabIndex('#' + anchor);
 
                 if (index === -1) {
