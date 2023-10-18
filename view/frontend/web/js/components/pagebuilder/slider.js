@@ -95,7 +95,11 @@
         },
 
         addEventListeners: function () {
-            var self = this;
+            var self = this,
+                updateScrollOffsetAndPagination = _.debounce(() => {
+                    this.updateScrollOffset();
+                    this.update();
+                }, 200);
 
             if (!this.slider.length) {
                 return;
@@ -123,12 +127,18 @@
 
             this.slider.on('scroll', _.debounce(this.updateCurrentPage.bind(this), 40));
 
-            new ResizeObserver(() => {
-                setTimeout(() => {
-                    this.updateScrollOffset();
-                    this.update();
-                }, 450);
-            }).observe(this.slider.get(0));
+            new ResizeObserver(updateScrollOffsetAndPagination).observe(this.slider.get(0));
+
+            this.slides.each((i, slide) => {
+                new MutationObserver(function (records) {
+                    if (records[0].oldValue.match(/display:\s*none/)) {
+                        updateScrollOffsetAndPagination();
+                    }
+                }).observe(slide, {
+                    attributeFilter: ['style'],
+                    attributeOldValue: true
+                });
+            });
         },
 
         handleMouseDrag: function () {
@@ -428,7 +438,7 @@
             clearTimeout(this.timer);
         },
 
-        updateScrollOffset() {
+        updateScrollOffset: function () {
             this.scrollOffset = this.slider.offset().left
                 - this.slides.eq(this.pages[this.page].slides[0]).offset().left;
         },
