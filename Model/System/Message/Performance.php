@@ -90,16 +90,12 @@ class Performance implements MessageInterface
      */
     public function getText()
     {
-        $message = __(
-            '<b>Swissup Breeze:</b> '
-        );
-        $message .= __(
-            "Breeze Warning: Your store's page speed settings are not optimized. When your store is ready to sell, optimize Magento settings and enable production mode."
-            . 'Click <a href="%1" target="_blank" rel="noopener noreferer">here</a> for detailed instructions. ',
+        return __(
+            "<b>Swissup Breeze:</b> Warning! Your store's page speed settings are not optimized."
+                . ' When your store is ready to sell, optimize Magento settings and enable production mode.'
+                . ' <a href="%1" target="_blank" rel="noopener noreferer">Open detailed instructions</a>',
             'https://breezefront.com/docs/performance'
         );
-
-        return $message;
     }
 
     /**
