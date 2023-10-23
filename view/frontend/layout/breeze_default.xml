@@ -89,6 +89,7 @@
                             <item name="breeze-calendar" xsi:type="string">Swissup_Breeze/js/components/calendar</item>
                             <item name="breeze-lite-youtube" xsi:type="string">Swissup_Breeze/js/lib/lite-yt-embed</item>
 
+                            <item name="lineClamp" xsi:type="string">Swissup_Breeze/js/components/line-clamp</item>
                             <item name="dropdown" xsi:type="string">Swissup_Breeze/js/components/ui/dropdown</item>
                             <item name="dropdownDialog" xsi:type="string">Swissup_Breeze/js/components/ui/dropdown-dialog</item>
                             <item name="collapsible" xsi:type="string">Swissup_Breeze/js/components/ui/collapsible</item>
