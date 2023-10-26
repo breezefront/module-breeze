@@ -1,0 +1,14 @@
+& when (@media-common = true) {
+& when (@critical = unsure), (@critical) {
+    .jarallax-container {
+        video,
+        iframe {
+            opacity: 0;
+            transition: 80ms opacity ease-in;
+            &[style*="translate3d"] {
+                opacity: 1;
+            }
+        }
+    }
+}
+}
