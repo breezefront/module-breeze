@@ -64,7 +64,7 @@
     // Validate Date
     (function () {
         $.validator.validators['validate-date'] = [
-            (value, el, settings) => $.date(value, settings.dateFormat).isValid(),
+            (value, el, settings) => $.validator.utils.isEmpty(value) || $.date(value, settings.dateFormat).isValid(),
             (value, el, settings) => {
                 var format = $.date.normalizeFormat(settings.dateFormat);
 
@@ -76,6 +76,10 @@
 
         $.validator.validators['validate-dob'] = [
             (value, el, settings) => {
+                if ($.validator.utils.isEmpty(value)) {
+                    return true;
+                }
+
                 var date = $.date(value, settings.dateFormat);
 
                 if (!date.isValid()) {
