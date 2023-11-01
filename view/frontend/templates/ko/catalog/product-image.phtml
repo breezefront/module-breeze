@@ -1,13 +1,13 @@
 <span class="product-image-container" data-bind="style: {
-    width: (typeof retina === 'undefined' || retina) ? width/2 + 'px' : width + 'px'
+    width: width/2 + 'px'
 }">
     <span class="product-image-wrapper"  data-bind="style: {'padding-bottom': height/width*100 + '%'}">
         <img class="product-image-photo" data-bind="
             attr: {
                 src: src,
                 alt: alt,
-                width: (typeof retina === 'undefined' || retina) ? width/2 : width,
-                height: (typeof retina === 'undefined' || retina) ? height/2 : height
+                width: width/2,
+                height: height/2
             }"
         />
     </span>
