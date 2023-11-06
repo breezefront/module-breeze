@@ -279,7 +279,7 @@
         updateCurrentPage: function () {
             var pageNum = this.page,
                 page = this.pages[pageNum],
-                offset = this.slider.get(0).scrollLeft,
+                offset = this.slider.get(0).scrollLeft - (this.scrollOffset || 0),
                 delta = 2,
                 width = this.slider.outerWidth(),
                 diffStart = Math.abs(page.start - offset),
