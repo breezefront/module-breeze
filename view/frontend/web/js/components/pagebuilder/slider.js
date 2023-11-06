@@ -96,6 +96,7 @@
 
         addEventListeners: function () {
             var self = this,
+                lastResize = new Date(),
                 updateScrollOffsetAndPagination = _.debounce(() => {
                     this.updateScrollOffset();
                     this.update();
@@ -125,9 +126,20 @@
                 })
                 .hover(this.pause.bind(this), this.start.bind(this));
 
-            this.slider.on('scroll', _.debounce(this.updateCurrentPage.bind(this), 40));
+            this.slider.on('scroll', _.debounce(() => {
+                var now = new Date();
 
-            new ResizeObserver(updateScrollOffsetAndPagination).observe(this.slider.get(0));
+                if (now - lastResize <= 200) {
+                    return;
+                }
+
+                this.updateCurrentPage();
+            }, 40));
+
+            new ResizeObserver(() => {
+                lastResize = new Date();
+                updateScrollOffsetAndPagination();
+            }).observe(this.slider.get(0));
 
             this.slides.each((i, slide) => {
                 new MutationObserver(function (records) {
@@ -307,6 +319,7 @@
                 }
 
                 this.page = pageNum;
+                this.slide = this.pages[pageNum].slides[0];
             }
 
             this.dots.removeClass('slick-active')
