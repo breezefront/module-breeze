@@ -23,8 +23,10 @@
         settings = settings || {};
 
         if (position !== 'absolute' && position !== 'fixed') {
-            element.addClass('_block-content-loading');
+            element.css('position', position);
         }
+
+        element.addClass('_block-content-loading');
 
         if (settings.css) {
             spinner.css(settings.css);
@@ -71,6 +73,7 @@
         }
 
         if (loaders.length === 1) {
+            element.css('position', '');
             element.removeClass('_block-content-loading');
         }
 
