@@ -86,7 +86,7 @@
         create: function () {
             var href = this.options;
 
-            if (!loader) {
+            if (!loader || href && !loader.find('img').length) {
                 loader = $(_.template(template)({
                     loaderImageHref: _.isObject(href) ? false : href
                 }));
