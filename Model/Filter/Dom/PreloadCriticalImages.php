@@ -16,8 +16,9 @@ class PreloadCriticalImages extends AbstractFilter
         $content = $document->getElementById('maincontent');
 
         if ($this->isHomePage($body)) {
-            $this->walkSliderNodes($xpath->query('(//div[@data-background-images])[1]', $content));
-            $this->walkImgNodes($xpath->query('//img[@class="product-image-photo"]', $content));
+            if (!$this->walkBackgroundImgNodes($xpath->query('//div[@data-background-images]', $content))) {
+                $this->walkImgNodes($xpath->query('//img[@class="product-image-photo"]', $content));
+            }
         } elseif ($this->isProductPage($body)) {
             $this->walkImgNodes($xpath->query('(//img[@class="main-image"])[1]', $content));
         } else {
@@ -47,9 +48,15 @@ class PreloadCriticalImages extends AbstractFilter
         }
     }
 
-    private function walkSliderNodes($nodes, $limit = 1)
+    private function walkBackgroundImgNodes($nodes, $maxLinksToAdd = 1, $maxNodesToProcess = 4)
     {
+        $linksAdded = 0;
+
         foreach ($nodes as $i => $node) {
+            if ($i >= $maxNodesToProcess || $linksAdded >= $maxLinksToAdd) {
+                break;
+            }
+
             $attr = (string) $node->getAttribute('data-background-images');
             $attr = json_decode(stripslashes($attr), true);
             if (!$attr || empty($attr['desktop_image'])) {
@@ -66,12 +73,11 @@ class PreloadCriticalImages extends AbstractFilter
                 $attributes['imagesizes'] = '100vw';
             }
 
+            $linksAdded++;
             $this->addPreloadLink($attributes);
-
-            if ($i + 1 >= $limit) {
-                break;
-            }
         }
+
+        return $linksAdded;
     }
 
     private function isHomePage($body): bool
