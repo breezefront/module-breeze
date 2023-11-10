@@ -25,7 +25,7 @@ class PreloadCriticalImages extends AbstractFilter
         }
     }
 
-    private function walkImgNodes($nodes, $limit = 2)
+    private function walkImgNodes($nodes, $maxLinksToAdd = 2)
     {
         foreach ($nodes as $i => $node) {
             if (!$node->getAttribute('src')) {
@@ -41,7 +41,7 @@ class PreloadCriticalImages extends AbstractFilter
                 'imagesizes' => $node->getAttribute('sizes'),
             ]);
 
-            if ($i + 1 >= $limit) {
+            if ($i + 1 >= $maxLinksToAdd) {
                 break;
             }
         }
