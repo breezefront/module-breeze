@@ -22,7 +22,7 @@
 
         settings = settings || {};
 
-        if (position !== 'absolute' && position !== 'fixed') {
+        if (position !== 'static') {
             element.css('position', position);
         }
 
