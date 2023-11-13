@@ -110,28 +110,34 @@
     $.fn.fadeOut = $.fn.hide;
     $.fn.bind = $.fn.on;
 
-    /** Get/Set scroll top position */
-    $.fn.scrollTop = function (val) {
-        var el = this.get(0),
-            isWindow = el === window,
-            prop = isWindow ? 'pageYOffset' : 'scrollTop';
+    $.each({ scrollLeft: 'pageXOffset', scrollTop: 'pageYOffset' }, function (method, prop) {
+        var top = prop === 'pageYOffset';
 
-        if (val === undefined) {
-            return el ? el[prop] : null;
-        }
+        $.fn[method] = function (val) {
+            var win, el = this.get(0);
 
-        if (el) {
-            if (isWindow) {
-                el.scroll({
-                    top: val
-                });
-            } else {
-                el[prop] = val;
+            if (el.window === el) {
+                win = el;
+            } else if (el.nodeType === 9) {
+                win = el.defaultView;
             }
-        }
 
-        return this;
-    };
+            if (val === undefined) {
+                return win ? win[prop] : el?.[method];
+            }
+
+            if (win) {
+                win.scroll(
+                    !top ? val : win.pageXOffset,
+                    top ? val : win.pageYOffset
+                );
+            } else if (el) {
+                el[method] = val;
+            }
+
+            return this;
+        };
+    });
 
     /** Evaluates bindings specified in each DOM element of collection. */
     $.fn.applyBindings = function () {
@@ -210,6 +216,58 @@
         }
 
         return result;
+    });
+
+    function setOffset(elem, options, i) {
+        var curPosition, curLeft, curCSSTop, curTop, curOffset, curCSSLeft, calculatePosition,
+            curElem = $(elem),
+            position = curElem.css('position'),
+            props = {};
+
+        if (position === 'static') {
+            elem.style.position = 'relative';
+        }
+
+        curOffset = curElem.offset();
+        curCSSTop = curElem.css('top');
+        curCSSLeft = curElem.css('left');
+        calculatePosition = (position === 'absolute' || position === 'fixed') &&
+            (curCSSTop + curCSSLeft).indexOf('auto') > -1;
+
+        if (calculatePosition) {
+            curPosition = curElem.position();
+            curTop = curPosition.top;
+            curLeft = curPosition.left;
+        } else {
+            curTop = parseFloat(curCSSTop) || 0;
+            curLeft = parseFloat(curCSSLeft) || 0;
+        }
+
+        if (typeof options === 'function') {
+            options = options.call(elem, i, $.extend({}, curOffset));
+        }
+
+        if (options.top != null) {
+            props.top = (options.top - curOffset.top) + curTop;
+        }
+        if (options.left != null) {
+            props.left = (options.left - curOffset.left) + curLeft;
+        }
+
+        if ('using' in options) {
+            options.using.call(elem, props);
+        } else {
+            curElem.css(props);
+        }
+    }
+
+    $.fn.offset = _.wrap($.fn.offset, function (original, options) {
+        if (arguments.length > 1) {
+            return options === undefined ? this : this.each(function (i) {
+                setOffset(this, options, i);
+            });
+        }
+        return original.bind(this)();
     });
 
     $.fn.hover = function (mouseenter, mouseleave) {
