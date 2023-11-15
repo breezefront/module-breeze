@@ -398,7 +398,7 @@
                     ].join(' ')
                 }, picture);
 
-                if (thumbTemplate) {
+                if (thumbTemplate && data.length > 1) {
                     thumbnails.push(_.template(thumbTemplate)(pictureData));
                 }
 
