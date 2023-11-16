@@ -1,6 +1,10 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\View\Result\Layout">
+        <plugin name="asyncCssLoad" disabled="true"/>
+        <plugin name="swissup_breeze_asyncCssLoad" type="Swissup\Breeze\Plugin\AsyncCssPlugin" sortOrder="-20" />
+    </type>
     <type name="Magento\Framework\View\Result\Page">
         <plugin name="swissup_breeze" type="Swissup\Breeze\Plugin\ViewResultPage" sortOrder="-1"/>
     </type>
