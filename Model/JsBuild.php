@@ -161,7 +161,6 @@ class JsBuild
         $loadedDeps = [];
 
         foreach ($this->items as $name => $item) {
-            $build[$name] = '';
             $path = $item;
             $deps = [];
 
@@ -177,7 +176,7 @@ class JsBuild
                     continue;
                 }
 
-                $build[$name] .= $this->getContents($depPath);
+                $build[$name . '-' . $key] = $this->getContents($depPath);
                 $loadedDeps[$depPath] = $depPath;
             }
 
@@ -185,7 +184,7 @@ class JsBuild
                 continue;
             }
 
-            $build[$name] .= $this->getContents($path);
+            $build[$name] = $this->getContents($path);
         }
 
         $build = array_values(array_filter($build));
