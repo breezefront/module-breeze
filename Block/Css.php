@@ -39,7 +39,7 @@ class Css extends \Magento\Framework\View\Element\AbstractBlock
             }
             if (!isset($data['deferred']) || $data['deferred']) {
                 if ($inlineCss) {
-                    // magento will defer this style on it's own when inlineCss is used
+                    // We will defer this style in Swissup\Breeze\Plugin\AsyncCssPlugin
                     $items[] = $this->renderLink('deferred-' . $name, $data);
                 } else {
                     $items[] = $this->renderLink($name, $data, true);
