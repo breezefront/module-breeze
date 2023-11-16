@@ -80,6 +80,8 @@ class Filter
     {
         return [
             '—' => 'bz-mdash',
+            '“' => 'bz-ldquo',
+            '”' => 'bz-rdquo',
         ];
     }
 
