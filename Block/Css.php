@@ -79,7 +79,7 @@ class Css extends \Magento\Framework\View\Element\AbstractBlock
      * @param string $name
      * @return string
      */
-    private function renderCSS($name)
+    private function renderCss($name)
     {
         try {
             $asset = $this->assetRepo->createAsset('css/' . $name . '.css', ['_secure' => 'false']);
