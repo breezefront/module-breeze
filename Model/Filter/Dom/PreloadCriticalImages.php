@@ -15,13 +15,15 @@ class PreloadCriticalImages extends AbstractFilter
         $body = $document->getElementsByTagName('body')->item(0);
         $content = $document->getElementById('maincontent');
 
-        if ($this->isHomePage($body)) {
+        if ($this->isHomePage($body) || $this->isCmsPage($body)) {
             if (!$this->walkBackgroundImgNodes($xpath->query('//div[@data-background-images]', $content))) {
+                $this->walkImgNodes($xpath->query('//div[@class="column main"]//img', $content), 1);
                 $this->walkImgNodes($xpath->query('//img[@class="product-image-photo"]', $content));
             }
         } elseif ($this->isProductPage($body)) {
             $this->walkImgNodes($xpath->query('(//img[@class="main-image"])[1]', $content));
         } else {
+            $this->walkImgNodes($xpath->query('//div[@class="category-image"]//img', $content), 1);
             $this->walkImgNodes($xpath->query('//img[@class="product-image-photo"]', $content));
         }
     }
@@ -78,6 +80,11 @@ class PreloadCriticalImages extends AbstractFilter
         }
 
         return $linksAdded;
+    }
+
+    private function isCmsPage($body): bool
+    {
+        return $body && strpos($body->getAttribute('class'), 'cms-page-view') !== false;
     }
 
     private function isHomePage($body): bool
