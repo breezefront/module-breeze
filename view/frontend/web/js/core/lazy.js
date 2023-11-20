@@ -1,17 +1,14 @@
 (function () {
     'use strict';
 
-    $.lazy = function (callback) {
-        var processed = false;
+    var interacted = false,
+        callbacks = [];
 
-        $(document).one([
-            'touchstart', 'scroll', 'mousemove', 'click', 'mousewheel', 'keyup'
-        ].join('.lazy '), () => {
-            if (!processed) {
-                processed = true;
-                callback();
-            }
-        });
+    $.lazy = function (callback) {
+        if (interacted) {
+            return window.setTimeout(callback, 0);
+        }
+        callbacks.push(callback);
     };
 
     function process(selector) {
@@ -25,13 +22,28 @@
         });
     }
 
-    $(() => {
-        process('head script[type=lazy]');
-    });
+    $(() => process('head script[type=lazy]'));
     $(document).on('breeze:load', () => {
         process('body script[type=lazy]');
+
+        $(document).one([
+            'touchstart', 'scroll', 'mousemove', 'click', 'mousewheel', 'keyup'
+        ].join('.lazy '), () => {
+            if (interacted) {
+                return;
+            }
+
+            interacted = true;
+            $('body').removeClass('breeze-inactive');
+
+            while (callbacks.length > 0) {
+                callbacks.shift()();
+            }
+        });
     });
     $(document).on('breeze:destroy', () => {
         $(document).off('.lazy');
+        interacted = false;
+        callbacks = [];
     });
 })();

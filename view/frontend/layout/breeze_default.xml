@@ -10,6 +10,8 @@
         <remove src="Magento_Swatches::js/configurable-customer-data.js"/>
     </head>
     <body>
+        <attribute name="class" value="breeze-inactive"/>
+
         <referenceContainer name="before.body.end">
             <block class="Swissup\Breeze\Block\JsTranslations" name="breeze.translations">
                 <arguments>
