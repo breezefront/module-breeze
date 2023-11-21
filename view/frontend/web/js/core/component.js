@@ -561,9 +561,7 @@ $.registry = (function () {
 
         /** Destroy all event listeners */
         destroy: function () {
-            if (this.focusTrap) {
-                this.focusTrap.deactivate();
-            }
+            this.focusTrap?.deactivate();
 
             this.element.off(this.__eventNamespace);
             this.__bindings.off(this.__eventNamespace);
