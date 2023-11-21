@@ -159,7 +159,8 @@
                     });
             }
 
-            $('#send2').prop('disabled', false);
+            // do not change selector to #send2 as it will return first element only
+            $('body #send2').prop('disabled', false);
         },
 
         validateReCaptcha: function (state) {
