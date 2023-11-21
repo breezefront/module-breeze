@@ -235,7 +235,10 @@
 
             this._markup = this.element.html();
             $(this.element).attr('data-rendered', true);
+            this.onReveal(this._initAsVisible.bind(this));
+        },
 
+        _initAsVisible: function () {
             if (_.isEmpty(this.options.jsonConfig.images)) {
                 this.options.useAjax = true;
                 this._debouncedLoadProductMedia = _.debounce(this._LoadProductMedia.bind(this), 500);
