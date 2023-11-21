@@ -34,7 +34,7 @@ define([
     $.breezemap['Magento_Customer/js/action/login'] = loginAction;
     $(document).on('breeze:destroy', () => (loginCallbacks = []) && true);
 
-    Component.extend({
+    $.view('authPopup', {
         component: 'Magento_Customer/js/view/authentication-popup',
         defaults: {
             template: 'Magento_Customer/authentication-popup',
@@ -46,6 +46,10 @@ define([
 
         create: function () {
             loginAction.registerLoginCallback(() => this.isLoading(false));
+        },
+
+        _applyBindings: function (element) {
+            $.lazy(this._super.bind(this, element));
         },
 
         isActive: () => !customerData.get('customer')(),
@@ -70,6 +74,7 @@ define([
         },
 
         showModal: function () {
+            $(document).trigger('wakeup');
             $(this.modalWindow).modal('openModal');
         },
 
