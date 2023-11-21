@@ -27,7 +27,7 @@
         process('body script[type=lazy]');
 
         $(document).one([
-            'touchstart', 'scroll', 'mousemove', 'click', 'mousewheel', 'keyup'
+            'touchstart', 'scroll', 'mousemove', 'click', 'mousewheel', 'keyup', 'wakeup'
         ].join('.lazy '), () => {
             if (interacted) {
                 return;
