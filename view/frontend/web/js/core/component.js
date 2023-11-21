@@ -477,6 +477,24 @@ $.registry = (function () {
             }, options || {}));
         },
 
+        onReveal: function (element, callback) {
+            if (!callback) {
+                callback = element;
+                element = this.element;
+            }
+
+            this.revealObserver = new IntersectionObserver(entries => {
+                if (entries.some(entry => entry.isIntersecting)) {
+                    callback();
+                    this.revealObserver.disconnect();
+                }
+            });
+
+            $(element).each((i, el) => this.revealObserver.observe(el));
+
+            return this.revealObserver;
+        },
+
         /**
          * @param {String} event
          * @param {Object} data
@@ -562,6 +580,7 @@ $.registry = (function () {
         /** Destroy all event listeners */
         destroy: function () {
             this.focusTrap?.deactivate();
+            this.revealObserver?.disconnect();
 
             this.element.off(this.__eventNamespace);
             this.__bindings.off(this.__eventNamespace);
