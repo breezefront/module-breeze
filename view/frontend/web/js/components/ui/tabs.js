@@ -133,7 +133,7 @@
                     element = self.contents.eq(index);
                 }
 
-                element.get(0).scrollIntoView();
+                element.show().get(0).scrollIntoView();
             });
         },
 
