@@ -57,7 +57,9 @@
         component: 'Magento_Theme/js/view/messages',
 
         create: function () {
+            this.observe({'cookieMessagesObservable': []});
             this.cookieMessages = _.unique($.cookies.getJson('mage-messages') || [], 'text');
+            this.cookieMessagesObservable(this.cookieMessages);
             this.messages = $.sections.get('messages');
 
             // cleanup possible duplicates
