@@ -354,6 +354,7 @@
     };
 
     $.proxy = _.bind;
+    $.map = _.map;
 
     /** Serialize object to query string */
     $.param = $.params = function (params, prefix, doNotEncode) {
