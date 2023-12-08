@@ -124,6 +124,7 @@
     document.addEventListener('turbolinks:request-end', onRequestEnd);
     document.addEventListener('turbolinks:before-cache', onBeforeCache);
     document.addEventListener('turbolinks:before-visit', onBeforeVisit);
+    document.addEventListener('breeze:disable-turbo', () => config.enabled = false);
 
     // Fix for document.referrer when using turbo.
     // Since it's readonly - use $.breeze.referrer instead.
