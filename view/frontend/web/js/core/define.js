@@ -9,7 +9,7 @@
     };
 
     function register(value, key) {
-        if (value === undefined || typeof value === 'function' && !value.component && !key) {
+        if (value === undefined) {
             return value;
         }
 
