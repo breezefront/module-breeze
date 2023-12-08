@@ -1,12 +1,11 @@
 (function () {
     'use strict';
 
-    var counter = 0;
-
     $.breezemap = {
         'jquery': $,
         'ko': ko,
         'underscore': _,
+        __counter: 1,
     };
 
     function register(value, key) {
@@ -14,7 +13,7 @@
             return value;
         }
 
-        key = key || value?.component || `__component${counter++}`;
+        key = key || value?.component || `__component${$.breezemap.__counter++}`;
 
         if ($.breezemap[key] === undefined) {
             $.breezemap[key] = value;
