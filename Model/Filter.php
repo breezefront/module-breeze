@@ -82,6 +82,7 @@ class Filter
             '—' => 'bz-mdash',
             '“' => 'bz-ldquo',
             '”' => 'bz-rdquo',
+            '@' => 'bz-at',
         ];
     }
 
