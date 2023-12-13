@@ -438,6 +438,19 @@
         return value;
     };
 
+    $.onReveal = function (element, callback) {
+        var revealObserver = new IntersectionObserver(entries => {
+            if (entries.some(entry => entry.isIntersecting)) {
+                callback();
+                revealObserver.disconnect();
+            }
+        });
+
+        $(element).each((i, el) => revealObserver.observe(el));
+
+        return revealObserver;
+    };
+
     // eslint-disable-next-line no-undef
     $.focusTrap = focusTrap;
 })();

@@ -483,16 +483,7 @@ $.registry = (function () {
                 element = this.element;
             }
 
-            this.revealObserver = new IntersectionObserver(entries => {
-                if (entries.some(entry => entry.isIntersecting)) {
-                    callback();
-                    this.revealObserver.disconnect();
-                }
-            });
-
-            $(element).each((i, el) => this.revealObserver.observe(el));
-
-            return this.revealObserver;
+            return $.onReveal(element, callback);
         },
 
         /**
