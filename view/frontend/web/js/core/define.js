@@ -9,7 +9,7 @@
     };
 
     function register(value, key) {
-        if (value === undefined) {
+        if (value === undefined || value instanceof Promise) {
             return value;
         }
 
