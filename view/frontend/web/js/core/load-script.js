@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    $.loadScript = function (src, callback) {
+    $.loadScript = function (src, success) {
         return new Promise((resolve, reject) => {
             var script = document.createElement('script');
 
@@ -9,18 +9,15 @@
                 return resolve();
             }
 
-            script.onload = resolve;
+            script.onload = () => {
+                $.breeze.loadedScripts[src] = true;
+                resolve();
+            };
             script.onerror = reject;
             script.async = false;
             script.src = src;
 
             document.head.appendChild(script);
-        }).then(() => {
-            $.breeze.loadedScripts[src] = true;
-
-            if (callback) {
-                callback();
-            }
-        });
+        }).then(success || _.noop);
     };
 })();
