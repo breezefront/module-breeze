@@ -216,21 +216,19 @@ $.registry = (function () {
     // automatically mount components
     $(document).on('breeze:mount', function (event, data) {
         var alias = mapping[data.__component],
-            component;
-
-        if (!alias) {
             component = $.breezemap[data.__component];
 
-            if (component && _.isFunction(component)) {
+        if (!alias && component) {
+            if (_.isFunction(component)) {
                 component(data.settings, data.el);
-            } else if (component && _.isObject(component) && _.isFunction(component[data.__component])) {
+            } else if (_.isObject(component) && _.isFunction(component[data.__component])) {
                 component[data.__component].bind(component)(data.settings, data.el);
             }
 
-            if (component) {
-                $.registry.set(data.__component, data.el, component);
-            }
+            $.registry.set(data.__component, data.el || document.body, component);
+        }
 
+        if (!alias) {
             return;
         }
 
