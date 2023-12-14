@@ -11,6 +11,7 @@
 
             script.onload = resolve;
             script.onerror = reject;
+            script.async = false;
             script.src = src;
 
             document.head.appendChild(script);
