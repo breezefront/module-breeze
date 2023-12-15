@@ -709,7 +709,7 @@ $.registry = (function () {
     $.uiComponent = {
         counter: 1,
         extend: function (proto) {
-            $.view(...[
+            return $.view(...[
                 proto.component || ('uiComponent' + this.counter++), // name
                 proto.parentComponent, // parent name
                 proto // object
