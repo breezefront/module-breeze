@@ -219,6 +219,10 @@ $.registry = (function () {
             component = $.breezemap[data.__component];
 
         if (!alias && component) {
+            if ($.registry.get(data.__component, data.el || document.body)) {
+                return;
+            }
+
             if (_.isFunction(component)) {
                 component(data.settings, data.el);
             } else if (_.isObject(component) && _.isFunction(component[data.__component])) {
@@ -241,6 +245,10 @@ $.registry = (function () {
         if (!data.el) {
             $.fn[alias](data.settings);
         } else {
+            if ($(data.el).component(component)) {
+                return;
+            }
+
             $(data.el)[alias](data.settings);
             $(data.el).component(component, $(data.el)[alias]('instance'));
         }
