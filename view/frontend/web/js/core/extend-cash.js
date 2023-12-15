@@ -190,7 +190,7 @@
             if (result !== undefined) {
                 return result;
             }
-        } else if (typeof value === 'object') {
+        } else if (typeof value === 'object' || typeof value === 'function') {
             return this.each(function () {
                 this.__breeze = this.__breeze || {};
                 this.__breeze[key] = value;
