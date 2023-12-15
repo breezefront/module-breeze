@@ -168,6 +168,10 @@
         return original.bind(this)(selector);
     });
 
+    $.fn.component = function (key, value) {
+        return value === undefined ? this.data(`component:${key}`) : this.data(`component:${key}`, value);
+    };
+
     $.fn.data = _.wrap($.fn.data, function (original, key, value) {
         var collection = this,
             result,

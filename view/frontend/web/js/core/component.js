@@ -242,7 +242,7 @@ $.registry = (function () {
             $.fn[alias](data.settings);
         } else {
             $(data.el)[alias](data.settings);
-            $(data.el).get(0)['breeze:' + component] = $(data.el)[alias]('instance');
+            $(data.el).component(component, $(data.el)[alias]('instance'));
         }
     });
 
@@ -699,7 +699,7 @@ $.registry = (function () {
                 settings: config
             }, true);
 
-            return this.element.get(0)['breeze:' + config.component];
+            return this.element.component(config.component);
         }
     });
 
