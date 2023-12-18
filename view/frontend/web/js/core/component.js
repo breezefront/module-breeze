@@ -122,7 +122,8 @@ $.registry = (function () {
     }
 
     function registerComponent(factory, fullname, prototype) {
-        var name = fullname.split('.').pop();
+        var name = fullname.split('.').pop(),
+            constructor;
 
         /** @param {Object|Function|String} settings */
         $.fn[name] = function (settings) {
@@ -206,11 +207,13 @@ $.registry = (function () {
             };
         })();
 
+        constructor = (settings, element) => $(element || '<div>')[name](settings)[name]('instance');
+
         if (prototype.prototype.hasOwnProperty('component') && prototype.prototype.component) {
             mapping[prototype.prototype.component] = name;
         }
 
-        return $.fn[name];
+        return constructor;
     }
 
     // automatically mount components
