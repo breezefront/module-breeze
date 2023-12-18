@@ -225,12 +225,12 @@ $.registry = (function () {
             component = $.breezemap[name],
             instance = component;
 
-        if (!component) {
+        if (!component || component._proto?.prototype.component === false) {
             return;
         }
 
         $(data.el || document.body).each((i, el) => {
-            if (component._proto?.prototype.component === false || $.registry.get(name, el)) {
+            if ($.registry.get(name, el)) {
                 return;
             }
 
