@@ -208,9 +208,12 @@ $.registry = (function () {
         })();
 
         constructor = (settings, element) => $(element || '<div>')[name](settings)[name]('instance');
+        constructor._proto = prototype;
+        $.breezemap[name] = constructor;
 
         if (prototype.prototype.hasOwnProperty('component') && prototype.prototype.component) {
             mapping[prototype.prototype.component] = name;
+            $.breezemap[prototype.prototype.component] = constructor;
         }
 
         return constructor;
@@ -218,43 +221,33 @@ $.registry = (function () {
 
     // automatically mount components
     $(document).on('breeze:mount', function (event, data) {
-        var alias = mapping[data.__component],
-            component = $.breezemap[data.__component];
+        var name = mapping[data.__component] || data.__component,
+            component = $.breezemap[name],
+            instance = component;
 
-        if (!alias && component) {
-            if ($.registry.get(data.__component, data.el || document.body)) {
+        if (!component) {
+            return;
+        }
+
+        $(data.el || document.body).each((i, el) => {
+            if (component._proto?.prototype.component === false || $.registry.get(name, el)) {
                 return;
             }
 
             if (_.isFunction(component)) {
-                component(data.settings, data.el);
-            } else if (_.isObject(component) && _.isFunction(component[data.__component])) {
-                component[data.__component].bind(component)(data.settings, data.el);
-            }
-
-            $.registry.set(data.__component, data.el || document.body, component);
-        }
-
-        if (!alias) {
-            return;
-        }
-
-        component = prototypes[alias].prototype.component;
-
-        if (component === false) {
-            return;
-        }
-
-        if (!data.el) {
-            $.fn[alias](data.settings);
-        } else {
-            if ($(data.el).component(component)) {
+                instance = component(data.settings, el);
+                if (!instance || !instance.component) {
+                    instance = component;
+                }
+            } else if (_.isObject(component) && _.isFunction(component[name])) {
+                component[name].bind(component)(data.settings, data.el);
+            } else {
                 return;
             }
 
-            $(data.el)[alias](data.settings);
-            $(data.el).component(component, $(data.el)[alias]('instance'));
-        }
+            $(el).component(name, instance);
+            $.registry.set(name, el, instance);
+        });
     });
 
     /** Abstract function to create components */
