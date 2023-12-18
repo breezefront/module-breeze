@@ -99,7 +99,6 @@ $.registry = (function () {
     'use strict';
 
     var Base, Widget, View,
-        mapping = {},
         prototypes = {},
         pending = {
             mixins: {},
@@ -211,43 +210,15 @@ $.registry = (function () {
         constructor._proto = prototype;
         $.breezemap[name] = constructor;
 
-        if (prototype.prototype.hasOwnProperty('component') && prototype.prototype.component) {
-            mapping[prototype.prototype.component] = name;
+        if (prototype.prototype.hasOwnProperty('component') &&
+            prototype.prototype.component &&
+            prototype.prototype.component !== name
+        ) {
+            $.breezemap.__aliases[prototype.prototype.component] = name;
         }
 
         return constructor;
     }
-
-    // automatically mount components
-    $(document).on('breeze:mount', function (event, data) {
-        var name = mapping[data.__component] || data.__component,
-            component = $.breezemap[name],
-            instance = component;
-
-        if (!component || component._proto?.prototype.component === false) {
-            return;
-        }
-
-        $(data.el || document.body).each((i, el) => {
-            if ($.registry.get(name, el)) {
-                return;
-            }
-
-            if (_.isFunction(component)) {
-                instance = component(data.settings, el);
-                if (!instance || !instance.component) {
-                    instance = component;
-                }
-            } else if (_.isObject(component) && _.isFunction(component[name])) {
-                component[name].bind(component)(data.settings, data.el);
-            } else {
-                return;
-            }
-
-            $(el).component(name, instance);
-            $.registry.set(name, el, instance);
-        });
-    });
 
     /** Abstract function to create components */
     function createComponent(factory) {

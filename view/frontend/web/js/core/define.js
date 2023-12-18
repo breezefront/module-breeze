@@ -6,6 +6,7 @@
         'ko': ko,
         'underscore': _,
         __counter: 1,
+        __aliases: {},
     };
 
     function register(value, key) {

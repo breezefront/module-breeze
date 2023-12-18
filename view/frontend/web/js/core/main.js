@@ -321,6 +321,37 @@
         walk(event.target);
     });
 
+    // automatically mount components
+    $(document).on('breeze:mount', function (event, data) {
+        var name = $.breezemap.__aliases[data.__component] || data.__component,
+            component = $.breezemap[name],
+            instance = component;
+
+        if (!component || component._proto?.prototype.component === false) {
+            return;
+        }
+
+        $(data.el || document.body).each((i, el) => {
+            if ($.registry.get(name, el)) {
+                return;
+            }
+
+            if (_.isFunction(component)) {
+                instance = component(data.settings, el);
+                if (!instance || !instance.component) {
+                    instance = component;
+                }
+            } else if (_.isObject(component) && _.isFunction(component[name])) {
+                component[name].bind(component)(data.settings, data.el);
+            } else {
+                return;
+            }
+
+            $(el).component(name, instance);
+            $.registry.set(name, el, instance);
+        });
+    });
+
     $(window).on('resize', _.debounce(function () {
         var events = ['breeze:resize'],
             newDimensions = {
