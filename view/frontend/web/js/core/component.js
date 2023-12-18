@@ -586,11 +586,13 @@ $.registry = (function () {
     View = Widget.extend({
         beforeRender: _.noop,
         afterRender: _.noop,
+        initObservable: _.noop,
 
         _initialize: function (name, options, element) {
             this._regions = {};
             this._markup = $(element).html();
             this._super(name, options, element);
+            this.initObservable();
             window.setTimeout(this._applyBindings.bind(this, element), 0);
         },
 
