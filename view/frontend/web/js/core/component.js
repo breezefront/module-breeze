@@ -213,7 +213,6 @@ $.registry = (function () {
 
         if (prototype.prototype.hasOwnProperty('component') && prototype.prototype.component) {
             mapping[prototype.prototype.component] = name;
-            $.breezemap[prototype.prototype.component] = constructor;
         }
 
         return constructor;
