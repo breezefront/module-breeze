@@ -277,7 +277,7 @@
                     this.element.parents('.product-item-info');
 
             if (productData.isInProductView) {
-                gallery.gallery('instance') ?
+                gallery.gallery?.('instance') ?
                     this._onGalleryLoaded(gallery) :
                     gallery.on('gallery:loaded', this._onGalleryLoaded.bind(this, gallery));
             } else {
