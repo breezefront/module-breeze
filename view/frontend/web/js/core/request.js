@@ -195,6 +195,9 @@
             });
         }
 
+        $(document).trigger('ajaxSend', {
+            settings: params,
+        });
         if (params.beforeSend) {
             params.beforeSend(params);
         }
