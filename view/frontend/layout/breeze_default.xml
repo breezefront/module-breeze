@@ -238,12 +238,12 @@
                             <item name="Magento_Catalog/js/product/view/provider" xsi:type="string">Swissup_Breeze/js/components/register-viewed-products</item>
                             <item name="priceOptions" xsi:type="string">Swissup_Breeze/js/components/price-options</item>
                             <item name="breadcrumbs" xsi:type="string">Swissup_Breeze/js/components/breadcrumbs</item>
-                            <item name="mage/gallery/gallery" xsi:type="string">Swissup_Breeze/js/components/gallery</item>
-                            <item name="mage/gallery/gallery-magnifier" xsi:type="string">Swissup_Breeze/js/components/gallery-magnifier</item>
-                            <item name="gallery-panzoom" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/gallery-panzoom</item>
+                            <item name="mage/gallery/gallery" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/gallery</item>
                                 <item name="import" xsi:type="array">
-                                    <item name="panzoom" xsi:type="string">Swissup_Breeze/js/lib/panzoom-4.5.1.min.js</item>
+                                    <item name="magnifier" xsi:type="string">Swissup_Breeze/js/components/gallery-magnifier</item>
+                                    <item name="panzoom" xsi:type="string">Swissup_Breeze/js/components/gallery-panzoom</item>
+                                    <item name="panzoom-lib" xsi:type="string">Swissup_Breeze/js/lib/panzoom-4.5.1.min.js</item>
                                 </item>
                             </item>
                             <item name="reviews" xsi:type="array">
