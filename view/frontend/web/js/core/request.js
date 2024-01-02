@@ -82,18 +82,22 @@
             params.url = url;
         }
 
-        if (params.type && ['post', 'get', 'put', 'delete', 'head'].indexOf(params.type.toLowerCase()) > -1) {
-            params.method = params.type.toLowerCase();
+        if (params.type) {
+            if (['post', 'get', 'put', 'delete', 'head'].includes(params.type.toLowerCase())) {
+                params.method = params.type.toLowerCase();
+            } else if (!params.dataType) {
+                params.dataType = params.type;
+            }
+
+            if (params.type === 'json') {
+                params.headers['Content-Type'] = 'application/json';
+            }
         }
 
         params.headers = Object.assign({
             'X-Requested-With': 'XMLHttpRequest',
             'Content-Type': 'application/x-www-form-urlencoded'
         }, params.headers || {});
-
-        if (params.type === 'json') {
-            params.headers['Content-Type'] = 'application/json';
-        }
 
         if (params.contentType) {
             params.headers['Content-Type'] = params.contentType;
@@ -229,10 +233,7 @@
                     try {
                         return JSON.parse(text);
                     } catch (e) {
-                        if (!params.dataType && !params.type ||
-                            params.dataType && params.dataType !== 'json' ||
-                            params.type && params.type !== 'json'
-                        ) {
+                        if (!params.dataType || params.dataType !== 'json') {
                             return text;
                         }
 
@@ -275,7 +276,7 @@
          */
         send: function (url, params) {
             params = prepareParams(url, params);
-            params.method = params.method || 'get';
+            params.type = params.method = params.method || 'get';
 
             return send(params);
         },
@@ -286,7 +287,7 @@
          */
         post: function (url, params) {
             params = prepareParams(url, params);
-            params.method = 'post';
+            params.type = params.method = 'post';
 
             return send(params);
         },
@@ -297,7 +298,7 @@
          */
         get: function (url, params) {
             params = prepareParams(url, params);
-            params.method = 'get';
+            params.type = params.method = 'get';
 
             return send(params);
         }
