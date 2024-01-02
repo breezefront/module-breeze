@@ -15,9 +15,7 @@
         $(document).trigger('ajaxComplete', {
             response: response,
             responseText: response.text,
-            settings: {
-                url: response.req.url,
-            }
+            settings: params,
         });
     }
 
