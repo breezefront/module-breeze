@@ -125,6 +125,7 @@ $.sections = $.customerData = window.customerData = (function () {
 })();
 
 $.breezemap['Magento_Customer/js/customer-data'] = $.sections;
+$.breezemap['Magento_Customer/js/section-config'] = $.sections;
 
 (function () {
     'use strict';
