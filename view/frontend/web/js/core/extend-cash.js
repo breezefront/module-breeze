@@ -146,6 +146,14 @@
         });
     };
 
+    $.fn.on = _.wrap($.fn.on, function (original, eventName, handler) {
+        if (typeof eventName === 'string' && eventName === 'breeze:load' && $.breeze.ready) {
+            handler?.();
+        }
+
+        return original.apply(this, Array.prototype.slice.call(arguments, 1));
+    });
+
     $.fn.is = _.wrap($.fn.is, function (original, selector) {
         switch (selector) {
             case ':visible':

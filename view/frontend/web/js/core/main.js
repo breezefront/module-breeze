@@ -352,6 +352,10 @@
         });
     });
 
+    $(document).on('breeze:load', () => {
+        $.breeze.ready = true;
+    });
+
     $(window).on('resize', _.debounce(function () {
         var events = ['breeze:resize'],
             newDimensions = {
