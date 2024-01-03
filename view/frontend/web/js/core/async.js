@@ -102,11 +102,11 @@
 
         if (_.isObject(selector)) {
             callback = ctx;
-            ctx = selector.ctx || document.body;
+            ctx = selector.ctx || document;
             selector = selector.selector;
         } else if (!callback) {
             callback = ctx;
-            ctx = document.body;
+            ctx = document;
         }
 
         data = {
