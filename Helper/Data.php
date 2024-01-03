@@ -57,8 +57,16 @@ class Data extends AbstractHelper
 
         if ($this->getConfig('design/breeze/debug')) {
             $flag = $this->_getRequest()->getParam('breeze');
+            $isAjax = $this->_request->isAjax();
+            $referer = $this->_request->getServer('HTTP_REFERER');
+
             if ($flag !== null) {
                 $this->isEnabled = (bool) $flag;
+            } elseif ($isAjax && $referer && $query = parse_url($referer, PHP_URL_QUERY)) {
+                parse_str($query, $params);
+                if (isset($params['breeze'])) {
+                    $this->isEnabled = (bool) $params['breeze'];
+                }
             }
         }
 
