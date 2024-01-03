@@ -86,16 +86,16 @@
             } else if (!params.dataType) {
                 params.dataType = params.type;
             }
-
-            if (params.type === 'json') {
-                params.headers['Content-Type'] = 'application/json';
-            }
         }
 
         params.headers = Object.assign({
             'X-Requested-With': 'XMLHttpRequest',
             'Content-Type': 'application/x-www-form-urlencoded'
         }, params.headers || {});
+
+        if (params.type === 'json') {
+            params.headers['Content-Type'] = 'application/json';
+        }
 
         if (params.contentType) {
             params.headers['Content-Type'] = params.contentType;
