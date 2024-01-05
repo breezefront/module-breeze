@@ -4,6 +4,7 @@ namespace Swissup\Breeze\Block;
 
 class Js extends \Magento\Framework\View\Element\AbstractBlock
 {
+    const TEMPLATE_DYNAMIC = '<script type="breeze/dynamic-js">%s</script>';
     const TEMPLATE = '<script data-breeze defer src="%s"></script>';
 
     /**
@@ -138,7 +139,53 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
             $scripts[$asset->getUrl()] = sprintf(self::TEMPLATE, $asset->getUrl());
         }
 
-        return implode("\n", $scripts);
+        return implode("\n", $scripts)
+            . "\n"
+            . sprintf(self::TEMPLATE_DYNAMIC, json_encode($this->generateBreezemap()));
+    }
+
+    private function generateBreezemap()
+    {
+        $result = [
+            'map' => [],
+            'rules'=> [],
+        ];
+        $activeBundles = array_keys($this->getActiveBundles());
+
+        foreach ($this->getAllBundles() as $name => $bundle) {
+            foreach ($bundle['items'] as $alias => $item) {
+                $item['path'] = str_replace('::', '/', $item['path']);
+                $item['load'] = array_filter($item['load'] ?? []);
+
+                if (!empty($item['load']) || !in_array($name, $activeBundles)) {
+                    $result['map'][$alias] = $item['path'];
+                    foreach ($item['names'] ?? [] as $anotherName) {
+                        $result['map'][$anotherName] = $item['path'];
+                    }
+
+                    $result['rules'][$item['path']] = array_filter([
+                        'import' => array_map(
+                            fn ($string) => str_replace('::', '/', $string),
+                            array_values($item['import'] ?? [])
+                        ),
+                    ]);
+                }
+
+                if (!empty($item['load'])) {
+                    $result['rules'][$item['path']] += array_filter([
+                        'load' => array_filter([
+                            'onInteraction' => !empty($item['load']['onInteraction']),
+                            'onEvent' => array_values($item['load']['onEvent'] ?? []),
+                            'onReveal' => array_values($item['load']['onReveal'] ?? []),
+                        ]),
+                    ]);
+                }
+            }
+        }
+
+        $result['rules'] = array_filter($result['rules']);
+
+        return $result;
     }
 
     public function deployAssets(): array
@@ -147,22 +194,19 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
         foreach ($this->getActiveBundles() as $name => $bundle) {
             foreach ($bundle['items'] as $item) {
-                $path = $item;
-                $paths = [];
+                $paths = $item['deps'] ?? []; // deps are deprecated. Use import instead
+                $paths += $item['import'] ?? [];
+                $paths[] = $item['path'];
 
-                if (is_array($item)) {
-                    $path = $item['path'];
-                    $paths = $item['deps'] ?? [];
-                    $paths += $item['import'] ?? [];
-                }
-
-                $paths[] = $path;
                 foreach ($paths as $key => $path) {
                     if (strpos($key, '::') !== false) {
                         continue;
                     }
 
-                    $assets[] = $this->jsBuildFactory->create(['name' => $path])->getAsset();
+                    $asset = $this->jsBuildFactory->create(['name' => $path])->getAsset();
+                    if (empty(array_filter($item['load'] ?? []))) {
+                        $assets[] = $asset;
+                    }
                 }
             }
         }
@@ -174,15 +218,21 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
     {
         $builds = [];
         foreach ($this->getAllBundles() as $name => $bundle) {
+            $staticItems = array_filter($bundle['items'], fn ($item) => empty(array_filter($item['load'] ?? [])));
             $builds[$name] = $this->jsBuildFactory->create(array_merge([
                 'name' => 'Swissup_Breeze/bundles/' . $this->storeManager->getStore()->getId() . '/' . $name,
-                'items' => $bundle['items'],
+                'items' => $staticItems,
             ], $jsBuildParams));
 
             if ($this->redeploy) {
                 $builds[$name]->publish();
             } else {
                 $builds[$name]->publishIfNotExist();
+            }
+
+            $dynamicItems = array_filter($bundle['items'], fn ($item) => !empty(array_filter($item['load'] ?? [])));
+            foreach ($dynamicItems as $item) {
+                $this->jsBuildFactory->create(['name' => $item['path']])->getAsset();
             }
         }
 
@@ -253,12 +303,16 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                 continue;
             }
 
-            $registeredNames = array_keys($bundle['items']);
-            foreach ($bundle['items'] as $item) {
-                if (!is_array($item) || empty($item['names'])) {
+            $registeredNames = [];
+            foreach ($bundle['items'] as $key => $item) {
+                // do not activate bundle if item uses dynamic-js rules
+                if (!empty(array_filter($item['load'] ?? []))) {
                     continue;
                 }
-                $registeredNames += $item['names'];
+
+                $registeredNames[] = $key;
+                $registeredNames += $item['names'] ?? []; // deprecated, use export instead
+                $registeredNames += $item['export'] ?? [];
             }
 
             if (array_intersect($registeredNames, $this->activeItems)) {
@@ -293,14 +347,30 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
         $this->allBundles = $this->bundles;
 
-        // unset disabled components
         foreach ($this->allBundles as $bundleName => $bundle) {
             foreach ($bundle['items'] as $itemName => $item) {
                 if (!is_array($item)) {
-                    continue;
+                    $item = ['path' => $item];
+                    $this->allBundles[$bundleName]['items'][$itemName] = $item;
                 }
 
-                $names = $item['names'] ?? [];
+                // add import/load to mixins
+                foreach ($item['mixins'] ?? [] as $mixinItemName) {
+                    $mixinBundleName = $this->findBundleName($mixinItemName);
+                    if (!$mixinBundleName) {
+                        continue;
+                    }
+
+                    $this->allBundles[$mixinBundleName]['items'][$mixinItemName]['import'][] = $itemName;
+
+                    if (isset($this->bundles[$mixinBundleName]['items'][$mixinItemName]['load'])) {
+                        $this->allBundles[$bundleName]['items'][$itemName]['load']['onRequire'] = true;
+                    }
+                }
+
+                // unset disabled bundles
+                $names = $item['names'] ?? []; // deprecated, use export instead
+                $names += $item['export'] ?? [];
                 if ($names && array_intersect($names, $this->activeItems)) {
                     continue; // do not check enabled state for the items from dom structure
                 }
@@ -324,25 +394,14 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
     {
         foreach ($bundles as $bundle) {
             foreach ($bundle['items'] as $item) {
-                if (!is_array($item) || empty($item['import'])) {
+                if (empty($item['import'])) {
                     continue;
                 }
 
                 foreach ($item['import'] as $key => $value) {
-                    if (strpos($key, '::') === false) {
-                        continue; // file dependency will be processed later
-                    }
+                    $bundleName = $this->findBundleName($value);
 
-                    if (strpos($key, 'item::') === 0) {
-                        $bundleName = $this->findBundleName($value);
-                    } else {
-                        $bundleName = $value;
-                    }
-
-                    if ($bundleName &&
-                        empty($this->activeBundles[$bundleName]) &&
-                        !empty($this->bundles[$bundleName])
-                    ) {
+                    if ($bundleName && empty($this->activeBundles[$bundleName])) {
                         $this->activeBundles[$bundleName] = $this->bundles[$bundleName];
                         $this->processImports([$bundleName => $this->bundles[$bundleName]]);
                     }

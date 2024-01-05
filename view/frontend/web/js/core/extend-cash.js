@@ -177,6 +177,7 @@
     });
 
     $.fn.component = function (key, value) {
+        key = $.breezemap.__aliases[key] || key;
         return value === undefined ? this.data(`component:${key}`) : this.data(`component:${key}`, value);
     };
 
@@ -462,7 +463,4 @@
 
         return revealObserver;
     };
-
-    // eslint-disable-next-line no-undef
-    $.focusTrap = focusTrap;
 })();

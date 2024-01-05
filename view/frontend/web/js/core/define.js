@@ -7,6 +7,7 @@
         'underscore': _,
         __counter: 1,
         __aliases: {},
+        __get: key => $.breezemap[$.breezemap.__aliases[key] || key],
     };
 
     function register(value, key) {
@@ -24,17 +25,19 @@
     }
 
     function resolve(alias) {
-        var result;
+        var result = $.breezemap.__get(alias);
 
-        if ($.breezemap.hasOwnProperty(alias)) {
-            return $.breezemap[alias];
+        if (result !== undefined) {
+            return result;
         }
 
         if (alias.indexOf('text!') === 0) {
-            result = alias.substr(5).replace(/[\/.]/g, '_');
+            result = alias.substr(5).replace(/[/.]/g, '_');
             result = $('#' + result).html();
         } else if (alias.includes('//')) {
             result = $.loadScript(alias);
+        } else if ($.breeze.jsconfig.map[alias]) {
+            result = $.loadComponent(alias);
         }
 
         return register(result, alias);
@@ -51,7 +54,7 @@
             return resolve(deps);
         }
 
-        deps.forEach((alias) => {
+        deps.forEach(alias => {
             args.push(resolve(alias));
         });
 
