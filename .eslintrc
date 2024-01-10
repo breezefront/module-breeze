@@ -1,9 +1,19 @@
 {
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "ecmaVersion": "latest"
+    },
     "globals": {
         "_": "readonly",
+        "$": "readonly",
         "$t": "readonly",
         "breeze": "readonly",
         "dayjs": "readonly",
+        "define": "readonly",
         "ko": "readonly",
         "Turbolinks": "readonly"
     },
