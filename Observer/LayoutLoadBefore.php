@@ -37,6 +37,10 @@ class LayoutLoadBefore implements ObserverInterface
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         $update = $observer->getLayout()->getUpdate();
+        $handles = $update->getHandles();
+        if (array_intersect($handles, ['breeze_customer_logged_in', 'breeze_customer_logged_out'])) {
+            return;
+        }
 
         // Add additional handles for breeze theme
         if ($this->customerSession->isLoggedIn()) {
