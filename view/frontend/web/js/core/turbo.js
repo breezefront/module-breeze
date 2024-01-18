@@ -2,22 +2,18 @@
     'use strict';
 
     var config = $('#breeze-turbo').data('config'),
-        mergedRe = /\/_cache\/merged\/([a-z0-9]+)/,
         staticRe = /\/static\/version([a-z0-9]+)/,
-        mergedVersion = ($('link[href*="/_cache/merged/"]').attr('href') || '').match(mergedRe),
         staticVersion = ($('link[href*="/static/version"]').attr('href') || '').match(staticRe),
         restoreInlineScripts = true;
 
-    function isResourceVersionChanged(type) {
-        var regex = type === 'static' ? staticRe : mergedRe,
-            oldVersion = type === 'static' ? staticVersion : mergedVersion,
-            newVersion = event.data.xhr.responseText.match(regex);
+    function isResourceVersionChanged(responseText) {
+        var newVersion = responseText.match(staticRe);
 
-        if (!oldVersion) {
+        if (!staticVersion) {
             return !!newVersion;
         }
 
-        return !newVersion || oldVersion[1] !== newVersion[1];
+        return !newVersion || staticVersion[1] !== newVersion[1];
     }
 
     /**
@@ -60,7 +56,7 @@
      * RequestEnd event is used to minify unstyled blink effect.
      */
     function onRequestEnd(event) {
-        if (isResourceVersionChanged('merged') || isResourceVersionChanged('static')) {
+        if (isResourceVersionChanged(event.data.xhr.responseText)) {
             event.preventDefault();
             window.location.reload();
         } else {
