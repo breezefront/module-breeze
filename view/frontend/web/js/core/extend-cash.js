@@ -463,4 +463,10 @@
 
         return revealObserver;
     };
+
+    $.fn.onReveal = function (callback) {
+        return this.each(function () {
+            $.onReveal(this, () => callback(this));
+        });
+    };
 })();
