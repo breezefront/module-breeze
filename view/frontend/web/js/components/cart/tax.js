@@ -1,13 +1,15 @@
 define([
-    'uiComponent',
+    'Magento_Checkout/js/view/summary/abstract-total',
+    'Magento_Checkout/js/view/summary/shipping',
     'Magento_Checkout/js/model/quote',
     'Magento_Checkout/js/model/totals'
-], function (Component, quote, totals) {
+], function (AbstractTotal, ShippingTotal, quote, totals) {
     'use strict';
 
-    Component.extend({
+    var ShippingSummary, GrandTotalSummary, TaxSummary;
+
+    AbstractTotal.extend({
         component: 'Magento_Tax/js/view/checkout/summary/subtotal',
-        parentComponent: 'Magento_Checkout/js/view/summary/abstract-total',
         defaults: {
             displaySubtotalMode: window.checkoutConfig.reviewTotalsDisplayMode,
             template: 'Magento_Tax/checkout/summary/subtotal'
@@ -30,9 +32,8 @@ define([
         }
     });
 
-    Component.extend({
+    ShippingSummary = ShippingTotal.extend({
         component: 'Magento_Tax/js/view/checkout/summary/shipping',
-        parentComponent: 'Magento_Checkout/js/view/summary/shipping',
         defaults: {
             displayMode: window.checkoutConfig.reviewShippingDisplayMode,
             template: 'Magento_Tax/checkout/summary/shipping'
@@ -67,18 +68,16 @@ define([
         }
     });
 
-    Component.extend({
+    ShippingSummary.extend({
         component: 'Magento_Tax/js/view/checkout/cart/totals/shipping',
-        parentComponent: 'Magento_Tax/js/view/checkout/summary/shipping',
         isCalculated: () => !!quote.shippingMethod(),
         getShippingMethodTitle: function () {
             return '(' + this._super() + ')';
         }
     });
 
-    Component.extend({
+    GrandTotalSummary = AbstractTotal.extend({
         component: 'Magento_Tax/js/view/checkout/summary/grand-total',
-        parentComponent: 'Magento_Checkout/js/view/summary/abstract-total',
         defaults: {
             isFullTaxSummaryDisplayed: window.checkoutConfig.isFullTaxSummaryDisplayed || false,
             isTaxDisplayedInGrandTotal: window.checkoutConfig.includeTaxInGrandTotal || false,
@@ -116,15 +115,13 @@ define([
         }
     });
 
-    Component.extend({
+    GrandTotalSummary.extend({
         component: 'Magento_Tax/js/view/checkout/cart/totals/grand-total',
-        parentComponent: 'Magento_Tax/js/view/checkout/summary/grand-total',
         isDisplayed: () => true
     });
 
-    Component.extend({
+    TaxSummary = AbstractTotal.extend({
         component: 'Magento_Tax/js/view/checkout/summary/tax',
-        parentComponent: 'Magento_Checkout/js/view/summary/abstract-total',
         defaults: {
             isTaxDisplayedInGrandTotal: window.checkoutConfig.includeTaxInGrandTotal,
             isFullTaxSummaryDisplayed: window.checkoutConfig.isFullTaxSummaryDisplayed,
@@ -185,8 +182,7 @@ define([
         }
     });
 
-    Component.extend({
-        component: 'Magento_Tax/js/view/checkout/cart/totals/tax',
-        parentComponent: 'Magento_Tax/js/view/checkout/summary/tax'
+    TaxSummary.extend({
+        component: 'Magento_Tax/js/view/checkout/cart/totals/tax'
     });
 });

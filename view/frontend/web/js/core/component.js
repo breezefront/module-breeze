@@ -105,12 +105,13 @@ $.registry = (function () {
             components: {}
         };
 
-    /** Class factory */
-    function createFactory(Root) {
-        return {
-            /** Extends Base prototype with Parent or Root */
+    function createComponentFn(BaseClass) {
+        var componentFn, registerFn, factory;
+
+        factory = {
+            /** Extends Base prototype with Parent or BaseClass */
             extend: function (BasePrototype, Parent) {
-                return (Parent || Root).extend(BasePrototype);
+                return (Parent || BaseClass).extend(BasePrototype);
             },
 
             /** Creates a new instance of Base prototype */
@@ -118,117 +119,103 @@ $.registry = (function () {
                 return new BasePrototype(name, settings || {}, el);
             }
         };
-    }
 
-    function registerComponent(factory, fullname, prototype) {
-        var name = fullname.split('.').pop(),
-            constructor;
+        registerFn = function (fullname, prototype) {
+            var parts = fullname.split('.'),
+                name = parts.pop(),
+                ns = parts.shift(),
+                constructor;
 
-        /** @param {Object|Function|String} settings */
-        $.fn[name] = function (settings) {
-            var result = this,
-                args = arguments;
+            /** @param {Object|Function|String} settings */
+            $.fn[name] = function (settings) {
+                var result = this,
+                    args = arguments;
 
-            if ($.isPlainObject(this)) {
-                // object without element: $.fn.dataPost().send()
-                result = factory.create(name, prototype, settings, window);
-            } else if (typeof settings === 'string') {
-                // object instance or method: $(el).dropdown('open')
-                args = Array.prototype.slice.call(args, 1);
-
-                if (settings === 'instance') {
-                    result = undefined;
-                }
-
-                this.each(function () {
-                    var tmp,
-                        instance = $.registry.get(name, this);
+                if ($.isPlainObject(this)) {
+                    // object without element: $.fn.dataPost().send()
+                    result = factory.create(name, prototype, settings, window);
+                } else if (typeof settings === 'string') {
+                    // object instance or method: $(el).dropdown('open')
+                    args = Array.prototype.slice.call(args, 1);
 
                     if (settings === 'instance') {
+                        result = undefined;
+                    }
+
+                    this.each(function () {
+                        var tmp,
+                            instance = $.registry.get(name, this);
+
+                        if (settings === 'instance') {
+                            if (!instance) {
+                                return;
+                            }
+
+                            result = instance;
+
+                            return false;
+                        }
+
                         if (!instance) {
                             return;
                         }
 
-                        result = instance;
+                        tmp = instance[settings].apply(instance, args);
 
-                        return false;
-                    }
+                        if (tmp !== instance && tmp !== undefined) {
+                            result = tmp;
 
-                    if (!instance) {
-                        return;
-                    }
+                            return false;
+                        }
+                    });
+                } else {
+                    // object initialization: $(el).dropdown({...})
+                    this.each(function () {
+                        var el = this,
+                            instance = $.registry.get(name, el);
 
-                    tmp = instance[settings].apply(instance, args);
+                        if (!instance) {
+                            instance = factory.create(name, prototype, settings, el);
+                        } else {
+                            instance._options(settings).init();
+                        }
+                    });
+                }
 
-                    if (tmp !== instance && tmp !== undefined) {
-                        result = tmp;
+                return result;
+            };
 
-                        return false;
-                    }
-                });
-            } else {
-                // object initialization: $(el).dropdown({...})
-                this.each(function () {
-                    var el = this,
-                        instance = $.registry.get(name, el);
+            constructor = (settings, element) => $(element || '<div>')[name](settings)[name]('instance');
+            constructor._proto = prototype;
+            constructor.extend = obj => componentFn(
+                obj.component || `__component${$.breezemap.__counter++}`,
+                prototype,
+                obj
+            );
+            $.breezemap[name] = constructor;
 
-                    if (!instance) {
-                        instance = factory.create(name, prototype, settings, el);
-                    } else {
-                        instance._options(settings).init();
-                    }
-                });
+            if (prototype.prototype.hasOwnProperty('component') &&
+                prototype.prototype.component &&
+                prototype.prototype.component !== name
+            ) {
+                $.breezemap.__aliases[prototype.prototype.component] = name;
             }
 
-            return result;
+            if (ns) {
+                $[ns] = $[ns] || {};
+                $[ns][name] = constructor;
+            }
+
+            return constructor;
         };
 
-        /**
-         * Alternative widget access. Example:
-         *
-         * $.widget('mage.tabs') accessible via $(selector).tabs and $.mage.tabs
-         * $.widget('argento.argentoTabs') accessible via $(selector).argentoTabs and $.argento.argentoTabs
-         */
-        (function () {
-            var parts = fullname.split('.'),
-                ns = parts.shift(),
-                fn = parts.pop();
-
-            if (!ns || !fn) {
-                return;
-            }
-
-            $[ns] = $[ns] || {};
-
-            /** Alternative widget access. Example: $.mage.tabs */
-            $[ns][fn] = function (settings, element) {
-                return factory.create(name, prototypes[name], settings, element);
-            };
-        })();
-
-        constructor = (settings, element) => $(element || '<div>')[name](settings)[name]('instance');
-        constructor._proto = prototype;
-        $.breezemap[name] = constructor;
-
-        if (prototype.prototype.hasOwnProperty('component') &&
-            prototype.prototype.component &&
-            prototype.prototype.component !== name
-        ) {
-            $.breezemap.__aliases[prototype.prototype.component] = name;
-        }
-
-        return constructor;
-    }
-
-    /** Abstract function to create components */
-    function createComponent(factory) {
         /**
          * @param {String} fullname
          * @param {String} parent
          * @param {Object} prototype
          * @return {Object}
          */
-        function invoke(fullname, parent, prototype) {
+        componentFn = function (fullname, parent, prototype) {
             var name = fullname.split('.').pop();
 
             if (!prototype) {
@@ -239,34 +226,24 @@ $.registry = (function () {
             if (typeof prototype === 'undefined') {
                 return {
                     /**
+                     * Examples:
+                     *     $.widget('dropdown').each(dropdown => {});
+                     *
                      * @param {Function} callback
                      */
                     each: function (callback) {
-                        var collection = $.registry.get(name);
-
-                        if (!collection) {
-                            return;
-                        }
-
-                        collection.forEach(callback);
+                        $.registry.get(name)?.forEach(callback);
                     },
 
                     /**
-                     * Example:
-                     *
+                     * Examples:
                      *     $.view('messages').invoke('removeCookieMessages');
                      *     $.widget('dropdown').invoke('close');
                      *
                      * @param {String} method
                      */
                     invoke: function (method) {
-                        var collection = $.registry.get(name);
-
-                        if (!collection) {
-                            return;
-                        }
-
-                        collection.forEach(function (instance) {
+                        $.registry.get(name)?.forEach(function (instance) {
                             if (instance[method]) {
                                 instance[method]();
                             }
@@ -274,8 +251,7 @@ $.registry = (function () {
                     },
 
                     /**
-                     * Example:
-                     *
+                     * Examples:
                      *     $.view('messages').destroy();
                      *     $.widget('dropdown').destroy();
                      *
@@ -287,7 +263,7 @@ $.registry = (function () {
                 };
             }
 
-            if (parent) {
+            if (typeof parent === 'string') {
                 if (!prototypes[parent]) {
                     // eslint-disable-next-line max-depth
                     if (!pending.components[parent]) {
@@ -321,15 +297,15 @@ $.registry = (function () {
             // create pending components
             if (pending.components[name]) {
                 $.each(pending.components[name], function () {
-                    invoke(this.fullname, this.parent, this.prototype);
+                    componentFn(this.fullname, this.parent, this.prototype);
                 });
                 delete pending.components[name];
             }
 
-            return registerComponent(factory, fullname, prototype);
-        }
+            return registerFn(fullname, prototype);
+        };
 
-        return invoke;
+        return componentFn;
     }
 
     Base = Class.extend({
@@ -680,16 +656,11 @@ $.registry = (function () {
     });
 
     $.Base = Base;
-    $.widget = createComponent(createFactory(Widget));
-    $.view = createComponent(createFactory(View));
+    $.widget = createComponentFn(Widget);
+    $.view = createComponentFn(View);
     $.uiComponent = {
-        counter: 1,
         extend: function (proto) {
-            return $.view(...[
-                proto.component || ('uiComponent' + this.counter++), // name
-                proto.parentComponent, // parent name
-                proto // object
-            ].filter(arg => arg));
+            return $.view(proto.component || `__component${$.breezemap.__counter++}`, proto);
         }
     };
     $.breezemap.uiComponent = $.uiComponent;

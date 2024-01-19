@@ -6,7 +6,7 @@ define([
 ], (Component, urlBuilder, customerData, loginAction) => {
     'use strict';
 
-    var Captcha, captchaList;
+    var Captcha, captchaList, DefaultCaptcha;
 
     Captcha = function (captchaData) {
         var formId = captchaData.formId,
@@ -80,7 +80,7 @@ define([
         };
     })();
 
-    Component.extend({
+    DefaultCaptcha = Component.extend({
         component: 'Magento_Captcha/js/view/checkout/defaultCaptcha',
         defaults: {
             template: 'Magento_Captcha/checkout/captcha',
@@ -186,9 +186,8 @@ define([
         }
     });
 
-    Component.extend({
+    DefaultCaptcha.extend({
         component: 'Magento_Captcha/js/view/checkout/loginCaptcha',
-        parentComponent: 'Magento_Captcha/js/view/checkout/defaultCaptcha',
         initialize: function () {
             var currentCaptcha;
 

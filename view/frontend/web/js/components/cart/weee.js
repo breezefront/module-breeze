@@ -1,13 +1,12 @@
 define([
-    'uiComponent',
+    'Magento_Checkout/js/view/summary/abstract-total',
     'Magento_Checkout/js/model/quote',
     'Magento_Checkout/js/model/totals'
-], function (Component, quote, totals) {
+], function (AbstractTotal, quote, totals) {
     'use strict';
 
-    Component.extend({
+    var WeeeTotal = AbstractTotal.extend({
         component: 'Magento_Weee/js/view/checkout/summary/weee',
-        parentComponent: 'Magento_Checkout/js/view/summary/abstract-total',
         defaults: {
             template: 'Magento_Weee/checkout/summary/weee'
         },
@@ -28,9 +27,8 @@ define([
         }
     });
 
-    Component.extend({
-        component: 'Magento_Weee/js/view/cart/totals/weee',
-        parentComponent: 'Magento_Weee/js/view/checkout/summary/weee'
+    WeeeTotal.extend({
+        component: 'Magento_Weee/js/view/cart/totals/weee'
     });
 
     $.widget('taxToggle', {

@@ -7,20 +7,21 @@ define([
 ], function ($, Component, priceUtils, quote, totals) {
     'use strict';
 
+    var AbstractTotal, DiscountTotal;
+
     Component.extend({
         component: 'Magento_Checkout/js/view/cart/totals',
         isLoading: totals.isLoading
     });
 
-    Component.extend({
+    AbstractTotal = Component.extend({
         component: 'Magento_Checkout/js/view/summary/abstract-total',
         getFormattedPrice: (price) => priceUtils.formatPriceLocale(price, quote.getPriceFormat()),
         totals: quote.getTotals()
     });
 
-    Component.extend({
+    AbstractTotal.extend({
         component: 'Magento_Checkout/js/view/summary/shipping',
-        parentComponent: 'Magento_Checkout/js/view/summary/abstract-total',
         defaults: {
             template: 'Magento_Checkout/summary/shipping'
         },
@@ -73,9 +74,8 @@ define([
         }
     });
 
-    Component.extend({
+    DiscountTotal = AbstractTotal.extend({
         component: 'Magento_SalesRule/js/view/summary/discount',
-        parentComponent: 'Magento_Checkout/js/view/summary/abstract-total',
         defaults: {
             template: 'Magento_SalesRule/summary/discount'
         },
@@ -105,9 +105,8 @@ define([
         }
     });
 
-    Component.extend({
+    DiscountTotal.extend({
         component: 'Magento_SalesRule/js/view/cart/totals/discount',
-        parentComponent: 'Magento_SalesRule/js/view/summary/discount',
         defaults: {
             template: 'Magento_SalesRule/cart/totals/discount'
         }
