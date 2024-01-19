@@ -2,6 +2,7 @@
     'use strict';
 
     var html,
+        checkScriptState,
         scriptsContainer,
         scopedElements,
         parsedSettings = {},
@@ -25,12 +26,18 @@
         }
 
         if (now) {
-            callback();
-        } else if (window.requestIdleCallback) {
-            window.requestIdleCallback(callback);
-        } else {
-            window.setTimeout(callback, 0);
+            return callback();
         }
+
+        // will load components from non-active bundle if needed (product.js on homepage)
+        // will not load components with dynamic load rules (onReveal, onEvent, onInteraction)
+        $.loadComponent(component, true).then(() => {
+            if (window.requestIdleCallback) {
+                window.requestIdleCallback(callback);
+            } else {
+                window.setTimeout(callback, 0);
+            }
+        });
     }
 
     $.breeze.mount = mount;
@@ -60,8 +67,6 @@
     function processElement(el) {
         var isScript = el.tagName === 'SCRIPT',
             settings = isScript ? el.textContent : el.dataset.mageInit;
-
-        $(el).data('breeze-processed', true);
 
         if (isScript) {
             // Move script to the bottom so it will not break :nth-child, and ~ selectors
@@ -215,16 +220,8 @@
         node.querySelectorAll('[data-mage-init-lazy]')
             .forEach(convertLazyInitToDataMageInit);
 
-        $(node).find(`
-                [data-mage-init]:not([data-breeze-processed]),
-                [type="text/x-magento-init"]:not([data-breeze-processed])
-            `)
-            .add(
-                $(node).is(`
-                    [data-mage-init]:not([data-breeze-processed]),
-                    [type="text/x-magento-init"]:not([data-breeze-processed])
-                `) ? node : $()
-            )
+        $(node).find('[data-mage-init],[type="text/x-magento-init"]')
+            .add($(node).is('[data-mage-init],[type="text/x-magento-init"]') ? node : $())
             .each((i, el) => setTimeout(() => processElement(el), 0));
     }
 
@@ -267,9 +264,10 @@
     }
 
     function onDomDocumentLoad() {
-        var newScripts = _.isEmpty($.breeze.loadedScripts) ? [] : $('script[src]').filter(function () {
-                return !$.breeze.loadedScripts[this.src];
-            }),
+        var newScripts = !checkScriptState || _.isEmpty($.breeze.loadedScripts)
+                ? [] : $('script[src]').filter(function () {
+                    return !$.breeze.loadedScripts[this.src];
+                }),
             spinnerTimeout,
             i = 0;
 
@@ -315,11 +313,11 @@
     }
 
     $(document).on(loadEventName(), onDomDocumentLoad);
-
     $(document).on('contentUpdated', function (event) {
         scopedElements = $('[data-bind*="scope:"]');
         walk(event.target);
     });
+    document.addEventListener('turbolinks:before-render', () => !(checkScriptState = true));
 
     // automatically mount components
     $(document).on('breeze:mount', function (event, data) {

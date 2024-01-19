@@ -16,6 +16,12 @@
         return !newVersion || staticVersion[1] !== newVersion[1];
     }
 
+    function updateLoadedScripts() {
+        $('script[src]').each(function () {
+            $.breeze.loadedScripts[this.src] = true;
+        });
+    }
+
     /**
      * Refresh the page if store was changed or breeze was disabled during visit
      */
@@ -73,10 +79,6 @@
             .find('[data-breeze-temporary]')
             .remove();
 
-        $(document)
-            .find('[data-breeze-processed]')
-            .removeAttr('data-breeze-processed');
-
         // prevent multiple calls of the same script when page is restored by turbo cache
         $(document.body)
             .find('script:not([type]), script[type="text/javascript"], script[type="module"]')
@@ -85,12 +87,6 @@
         updateLoadedScripts();
 
         $(document).trigger('breeze:destroy');
-    }
-
-    function updateLoadedScripts() {
-        $('script[src]').each(function () {
-            $.breeze.loadedScripts[this.src] = true;
-        });
     }
 
     /**
@@ -120,7 +116,7 @@
     document.addEventListener('turbolinks:request-end', onRequestEnd);
     document.addEventListener('turbolinks:before-cache', onBeforeCache);
     document.addEventListener('turbolinks:before-visit', onBeforeVisit);
-    document.addEventListener('breeze:disable-turbo', () => config.enabled = false);
+    document.addEventListener('breeze:disable-turbo', () => !(config.enabled = false));
 
     // Fix for document.referrer when using turbo.
     // Since it's readonly - use $.breeze.referrer instead.
