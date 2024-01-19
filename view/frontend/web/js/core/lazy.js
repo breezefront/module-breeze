@@ -29,12 +29,13 @@
         $(document).one([
             'touchstart', 'scroll', 'mousemove', 'click', 'mousewheel', 'keyup', 'wakeup'
         ].join('.lazy '), () => {
+            $('body').removeClass('breeze-inactive');
+
             if (interacted) {
                 return;
             }
 
             interacted = true;
-            $('body').removeClass('breeze-inactive');
 
             while (callbacks.length > 0) {
                 callbacks.shift()();
