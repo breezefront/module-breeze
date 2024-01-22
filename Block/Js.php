@@ -141,7 +141,10 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
         return implode("\n", $scripts)
             . "\n"
-            . sprintf(self::TEMPLATE_DYNAMIC, json_encode($this->generateBreezemap()));
+            . sprintf(
+                self::TEMPLATE_DYNAMIC,
+                json_encode($this->generateBreezemap(), JSON_UNESCAPED_SLASHES)
+            );
     }
 
     private function generateBreezemap()
