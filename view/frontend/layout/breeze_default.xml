@@ -287,6 +287,76 @@
                                     <param name="paypal_payflowpro">recaptcha_frontend/type_for/paypal_payflowpro</param>
                                 </item>
                             </item>
+                            <item name="Magento_PageBuilder/js/widget-initializer" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/initializer</item>
+                            </item>
+                            <item name="Magento_PageBuilder/js/content-type/slider/appearance/default/widget" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/slider</item>
+                                <item name="names" xsi:type="array">
+                                    <item name="pagebuilderSlider" xsi:type="string">pagebuilderSlider</item>
+                                </item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onReveal" xsi:type="array">
+                                        <item name="0" xsi:type="string">[data-content-type="slider"]</item>
+                                    </item>
+                                </item>
+                            </item>
+                            <item name="Magento_PageBuilder/js/content-type/products/appearance/carousel/widget" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/carousel</item>
+                                <item name="names" xsi:type="array">
+                                    <item name="pagebuilderCarousel" xsi:type="string">pagebuilderCarousel</item>
+                                </item>
+                                <item name="import" xsi:type="array">
+                                    <item name="slider" xsi:type="string">pagebuilderSlider</item>
+                                </item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onReveal" xsi:type="array">
+                                        <item name="0" xsi:type="string">[data-content-type="products"][data-appearance="carousel"]</item>
+                                    </item>
+                                </item>
+                            </item>
+                            <item name="Magento_PageBuilder/js/content-type/tabs/appearance/default/widget" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/tabs</item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onReveal" xsi:type="array">
+                                        <item name="0" xsi:type="string">[data-content-type="tabs"]</item>
+                                    </item>
+                                </item>
+                            </item>
+                            <item name="Magento_PageBuilder/js/content-type/map/appearance/default/widget" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/map</item>
+                                <item name="names" xsi:type="array">
+                                    <item name="pagebuilderMap" xsi:type="string">pagebuilderMap</item>
+                                </item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onReveal" xsi:type="array">
+                                        <item name="0" xsi:type="string">[data-content-type="map"]</item>
+                                    </item>
+                                </item>
+                            </item>
+                            <item name="parallax" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/parallax</item>
+                                <item name="import" xsi:type="array">
+                                    <item name="jarallax" xsi:type="string">Swissup_Breeze/js/lib/jarallax-2.1.3.min.js</item>
+                                </item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onReveal" xsi:type="array">
+                                        <item name="0" xsi:type="string">[data-enable-parallax="1"]</item>
+                                    </item>
+                                </item>
+                            </item>
+                            <item name="video-background" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/video-background</item>
+                                <item name="import" xsi:type="array">
+                                    <item name="jarallax" xsi:type="string">Swissup_Breeze/js/lib/jarallax-2.1.3.min.js</item>
+                                    <item name="jarallax-video" xsi:type="string">Swissup_Breeze/js/lib/jarallax-video-2.1.3.min.js</item>
+                                </item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onReveal" xsi:type="array">
+                                        <item name="0" xsi:type="string">[data-background-type="video"]</item>
+                                    </item>
+                                </item>
+                            </item>
                         </item>
                     </item>
                     <item name="product" xsi:type="array">
@@ -411,78 +481,7 @@
                     </item>
                     <item name="cms" xsi:type="array">
                         <item name="sort_order" xsi:type="number">35</item>
-                        <item name="items" xsi:type="array">
-                            <item name="Magento_PageBuilder/js/widget-initializer" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/initializer</item>
-                            </item>
-                            <item name="Magento_PageBuilder/js/content-type/slider/appearance/default/widget" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/slider</item>
-                                <item name="names" xsi:type="array">
-                                    <item name="pagebuilderSlider" xsi:type="string">pagebuilderSlider</item>
-                                </item>
-                                <item name="load" xsi:type="array">
-                                    <item name="onReveal" xsi:type="array">
-                                        <item name="0" xsi:type="string">[data-content-type="slider"]</item>
-                                    </item>
-                                </item>
-                            </item>
-                            <item name="Magento_PageBuilder/js/content-type/products/appearance/carousel/widget" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/carousel</item>
-                                <item name="names" xsi:type="array">
-                                    <item name="pagebuilderCarousel" xsi:type="string">pagebuilderCarousel</item>
-                                </item>
-                                <item name="import" xsi:type="array">
-                                    <item name="slider" xsi:type="string">pagebuilderSlider</item>
-                                </item>
-                                <item name="load" xsi:type="array">
-                                    <item name="onReveal" xsi:type="array">
-                                        <item name="0" xsi:type="string">[data-content-type="products"][data-appearance="carousel"]</item>
-                                    </item>
-                                </item>
-                            </item>
-                            <item name="Magento_PageBuilder/js/content-type/tabs/appearance/default/widget" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/tabs</item>
-                                <item name="load" xsi:type="array">
-                                    <item name="onReveal" xsi:type="array">
-                                        <item name="0" xsi:type="string">[data-content-type="tabs"]</item>
-                                    </item>
-                                </item>
-                            </item>
-                            <item name="Magento_PageBuilder/js/content-type/map/appearance/default/widget" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/map</item>
-                                <item name="names" xsi:type="array">
-                                    <item name="pagebuilderMap" xsi:type="string">pagebuilderMap</item>
-                                </item>
-                                <item name="load" xsi:type="array">
-                                    <item name="onReveal" xsi:type="array">
-                                        <item name="0" xsi:type="string">[data-content-type="map"]</item>
-                                    </item>
-                                </item>
-                            </item>
-                            <item name="parallax" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/parallax</item>
-                                <item name="import" xsi:type="array">
-                                    <item name="jarallax" xsi:type="string">Swissup_Breeze/js/lib/jarallax-2.1.3.min.js</item>
-                                </item>
-                                <item name="load" xsi:type="array">
-                                    <item name="onReveal" xsi:type="array">
-                                        <item name="0" xsi:type="string">[data-enable-parallax="1"]</item>
-                                    </item>
-                                </item>
-                            </item>
-                            <item name="video-background" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/video-background</item>
-                                <item name="import" xsi:type="array">
-                                    <item name="jarallax" xsi:type="string">Swissup_Breeze/js/lib/jarallax-2.1.3.min.js</item>
-                                    <item name="jarallax-video" xsi:type="string">Swissup_Breeze/js/lib/jarallax-video-2.1.3.min.js</item>
-                                </item>
-                                <item name="load" xsi:type="array">
-                                    <item name="onReveal" xsi:type="array">
-                                        <item name="0" xsi:type="string">[data-background-type="video"]</item>
-                                    </item>
-                                </item>
-                            </item>
-                        </item>
+                        <item name="items" xsi:type="array"></item>
                     </item>
                     <item name="checkout" xsi:type="array">
                         <item name="items" xsi:type="array">
