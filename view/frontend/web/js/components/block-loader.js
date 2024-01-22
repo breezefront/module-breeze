@@ -35,51 +35,6 @@
         element.append(spinner);
     }
 
-    /**
-     * @param {Object} element
-     * @param {Object} settings
-     */
-    function delayedShow(element, settings) {
-        settings = settings || {};
-
-        if (!settings.delay) {
-            return show(element, settings);
-        }
-
-        if (element.data('spinner-timer')) {
-            return;
-        }
-
-        element.data('spinner-timer', setTimeout(function () {
-            element.data('spinner-timer', 0);
-            show(element, settings);
-        }, settings.delay));
-    }
-
-    /**
-     * @param {Object} element
-     */
-    function hide(element) {
-        var timerId = element.data('spinner-timer'),
-            loaders = element.find('.breeze-block-loader');
-
-        if (timerId) {
-            clearTimeout(timerId);
-            element.data('spinner-timer', 0);
-        }
-
-        if (!loaders.length) {
-            return;
-        }
-
-        if (loaders.length === 1) {
-            element.css('position', '');
-            element.removeClass('_block-content-loading');
-        }
-
-        loaders.first().remove();
-    }
-
     $.widget('blockLoader', {
         component: 'Magento_Ui/js/block-loader',
 
@@ -92,7 +47,47 @@
                 }));
             }
         },
-        show: delayedShow,
-        hide: hide
+
+        show: function (element, settings) {
+            element = element || this.element;
+            settings = settings || {};
+
+            if (!settings.delay) {
+                return show(element, settings);
+            }
+
+            if (element.data('spinner-timer')) {
+                return;
+            }
+
+            element.data('spinner-timer', setTimeout(function () {
+                element.data('spinner-timer', 0);
+                show(element, settings);
+            }, settings.delay));
+        },
+
+        hide: function (element) {
+            var timerId, loaders;
+
+            element = element || this.element;
+            timerId = element.data('spinner-timer');
+            loaders = element.find('.breeze-block-loader');
+
+            if (timerId) {
+                clearTimeout(timerId);
+                element.data('spinner-timer', 0);
+            }
+
+            if (!loaders.length) {
+                return;
+            }
+
+            if (loaders.length === 1) {
+                element.css('position', '');
+                element.removeClass('_block-content-loading');
+            }
+
+            loaders.first().remove();
+        }
     });
 })();
