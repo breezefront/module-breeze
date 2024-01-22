@@ -336,7 +336,7 @@
 
             if (_.isFunction(component)) {
                 instance = component(data.settings, el);
-                if (!instance || !instance.component) {
+                if (!component.extend && !instance?.component) {
                     instance = component;
                 }
             } else if (_.isObject(component) && _.isFunction(component[name])) {
@@ -345,8 +345,10 @@
                 return;
             }
 
-            $(el).component(name, instance);
-            $.registry.set(name, el, instance);
+            if (instance) {
+                $(el).component(name, instance);
+                $.registry.set(name, el, instance);
+            }
         });
     });
 
