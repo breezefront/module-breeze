@@ -369,6 +369,10 @@
     $.proxy = _.bind;
     $.map = _.map;
 
+    $.each = _.wrap($.each, function (original, object, callback) {
+        return original(object || [], callback);
+    });
+
     /** Serialize object to query string */
     $.param = $.params = function (params, prefix, doNotEncode) {
         if (params instanceof FormData) {
