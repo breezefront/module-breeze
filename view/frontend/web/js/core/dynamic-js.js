@@ -98,7 +98,7 @@
         });
     });
 
-    $.loadComponent = function (alias, respectLoadRules) {
+    $.breezemap.loadComponent = function (alias, respectLoadRules) {
         var path = $.breeze.jsconfig.map[alias] || alias,
             result = promises[alias],
             useMemo = true;

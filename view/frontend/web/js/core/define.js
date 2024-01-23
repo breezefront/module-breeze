@@ -37,7 +37,7 @@
         } else if (alias.includes('//')) {
             result = $.loadScript(alias);
         } else if ($.breeze.jsconfig.map[alias]) {
-            result = $.loadComponent(alias);
+            result = require('loadComponent')(alias);
         }
 
         return register(result, alias);
