@@ -77,7 +77,7 @@
         }
     };
 
-    window.define = window.require;
+    window.define = window.requirejs = window.require;
     window.require.toUrl = (path) => window.VIEW_URL + '/' + path;
     window.require.config = _.noop;
 })();
