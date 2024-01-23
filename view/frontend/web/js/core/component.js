@@ -312,6 +312,7 @@ $.registry = (function () {
         initialize: _.noop,
         create: _.noop,
         init: _.noop,
+        initObservable: _.noop,
         destroy: _.noop,
         _create: _.noop,
         _init: _.noop,
@@ -324,6 +325,7 @@ $.registry = (function () {
         _initialize: function (options) {
             this._options(options);
             this._defaults(this.options);
+            this.initObservable();
             this._trigger('beforeCreate');
             this.initialize();
             this.create();
@@ -532,13 +534,11 @@ $.registry = (function () {
     View = Widget.extend({
         beforeRender: _.noop,
         afterRender: _.noop,
-        initObservable: _.noop,
 
         _initialize: function (name, options, element) {
             this._regions = {};
             this._markup = $(element).html();
             this._super(name, options, element);
-            this.initObservable();
             window.setTimeout(this._applyBindings.bind(this, element), 0);
         },
 
