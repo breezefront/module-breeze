@@ -8,6 +8,7 @@
         __counter: 1,
         __aliases: {},
         __get: key => $.breezemap[$.breezemap.__aliases[key] || key],
+        __lastComponent: (offset = 0) => $.breezemap[`__component${$.breezemap.__counter - 1 - offset}`],
     };
 
     function register(value, key) {
