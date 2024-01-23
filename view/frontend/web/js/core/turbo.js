@@ -118,6 +118,25 @@
     document.addEventListener('turbolinks:before-visit', onBeforeVisit);
     document.addEventListener('breeze:disable-turbo', () => !(config.enabled = false));
 
+    // Fix for inline `require()` calls.
+    // The code below replaces require to postpone inline code execution until all head scripts will be loaded.
+    // When all head scripts are loaded, original function is restored.
+    document.addEventListener('turbolinks:before-visit', () => {
+        window.requireCopy = window.require;
+        window.define = window.requireCopy;
+        window.require = (deps, callback) => window.required.push([deps, callback]);
+        window.require.toUrl = window.requireCopy.toUrl;
+        window.require.config = window.requireCopy.config;
+    });
+    document.addEventListener('breeze:beforeLoad', () => {
+        if (!window.requireCopy) {
+            return;
+        }
+        window.require = window.requireCopy;
+        window.required.map((pair) => require(pair[0], pair[1]));
+        window.required = [];
+    });
+
     // Fix for document.referrer when using turbo.
     // Since it's readonly - use $.breeze.referrer instead.
     (function () {
