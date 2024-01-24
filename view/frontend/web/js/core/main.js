@@ -259,7 +259,7 @@
         setTimeout(() => {
             $(document).trigger('breeze:beforeLoad');
             $(document).trigger('breeze:load');
-            walk(document);
+            walk();
         }, 0);
     }
 
@@ -382,4 +382,15 @@
     }, 100));
 
     $.breeze.referrer = document.referrer;
+    $.breezemap['mage/apply/main'] = {
+        apply: walk,
+        applyFor: (el, config, component) => mount(component, {
+            el: el,
+            settings: config,
+        }),
+    };
+    $.mage.init = function () {
+        walk();
+        return this;
+    };
 })();

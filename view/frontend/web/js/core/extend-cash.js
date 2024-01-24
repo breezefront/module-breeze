@@ -146,6 +146,11 @@
         });
     };
 
+    $.fn.mage = function (component, config) {
+        this.each((i, el) => require('mage/apply/main').applyFor(el, config || {}, component));
+        return this;
+    };
+
     $.fn.on = _.wrap($.fn.on, function (original, eventName, handler) {
         if (typeof eventName === 'string' && eventName === 'breeze:load' && $.breeze.ready) {
             handler?.();
@@ -368,6 +373,7 @@
 
     $.proxy = _.bind;
     $.map = _.map;
+    $.inArray = (elem, arr, i) => arr == null ? -1 : Array.prototype.indexOf.call(arr, elem, i);
 
     $.each = _.wrap($.each, function (original, object, callback) {
         return original(object || [], callback);

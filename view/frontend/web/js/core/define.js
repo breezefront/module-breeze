@@ -5,6 +5,7 @@
         'jquery': $,
         'ko': ko,
         'underscore': _,
+        'mage/mage': $.mage,
         __counter: 1,
         __aliases: {},
         __get: key => $.breezemap[$.breezemap.__aliases[key] || key],
