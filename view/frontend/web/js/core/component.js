@@ -1,100 +1,3 @@
-$.registry = (function () {
-    'use strict';
-
-    var data = {};
-
-    return {
-        first: function (name) {
-            return this.get(name)[0];
-        },
-
-        /**
-         * @param {String} name
-         * @param {Element} element
-         * @return {Mixed}
-         */
-        get: function (name, element) {
-            var result = [];
-
-            if (!data[name] || !data[name].objects) {
-                return data[name];
-            }
-
-            if (element) {
-                return data[name].objects.get(element);
-            }
-
-            $.each(data[name].elements, function (index, el) {
-                var instance = $.registry.get(name, el);
-
-                if (!instance) {
-                    return;
-                }
-
-                result.push(instance);
-            });
-
-            return result;
-        },
-
-        /**
-         * @param {String} name
-         * @param {Element} element
-         * @param {Object} component
-         */
-        set: function (name, element, component) {
-            if (!data[name] && component) {
-                data[name] = {
-                    objects: new WeakMap(),
-                    elements: []
-                };
-            }
-
-            if (!component) {
-                data[name] = element; // element is a component here
-            } else {
-                data[name].objects.set(element || document.body, component);
-                data[name].elements.push(element || document.body);
-            }
-        },
-
-        /**
-         * @param {String} name
-         * @param {Element} element
-         */
-        delete: function (name, element, skipDestroy) {
-            var instance, index;
-
-            if (name && element) {
-                instance = data[name].objects.get(element);
-                index = data[name].elements.indexOf(element);
-
-                if (index !== -1) {
-                    data[name].elements.splice(index, 1);
-                }
-
-                if (instance && instance.destroy && !skipDestroy) {
-                    instance.destroy();
-                }
-
-                return data[name].objects.delete(element);
-            }
-
-            if (name) {
-                return $.each(data[name].elements, function (i, el) {
-                    $.registry.delete(name, el);
-                });
-            }
-
-            $.each(data, function (t) {
-                $.each(data[t].elements || [], function (i, el) {
-                    $.registry.delete(t, el);
-                });
-            });
-        }
-    };
-})();
-
 (function () {
     'use strict';
 
@@ -325,7 +228,7 @@ $.registry = (function () {
         _initialize: function (options) {
             this._options(options);
             this._defaults(this.options);
-            this.initObservable();
+            this.__scope && this.initObservable();
             this._trigger('beforeCreate');
             this.initialize(this.options);
             this.create();

@@ -116,7 +116,7 @@
 
                     // eslint-disable-next-line max-nested-callbacks
                     $.each(config[i].components, function (scope, cfg) {
-                        cfg.__scope = scope;
+                        cfg.name = cfg.index = cfg.ns = cfg.__scope = scope;
                         mountView(scope, cfg);
                     });
                 } else {

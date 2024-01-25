@@ -63,6 +63,7 @@
                             <item name="dayjs" xsi:type="string">Swissup_Breeze/js/lib/dayjs-1.11.7.min.js</item>
                             <item name="breeze-globals" xsi:type="string">Swissup_Breeze/js/core/globals.js</item>
                             <item name="breeze-define" xsi:type="string">Swissup_Breeze/js/core/define.js</item>
+                            <item name="breeze-registry" xsi:type="string">Swissup_Breeze/js/core/registry.js</item>
                             <item name="breeze-component" xsi:type="string">Swissup_Breeze/js/core/component.js</item>
                             <item name="breeze-load-script" xsi:type="string">Swissup_Breeze/js/core/load-script.js</item>
                             <item name="breeze-dynamic-js" xsi:type="string">Swissup_Breeze/js/core/dynamic-js.js</item>
