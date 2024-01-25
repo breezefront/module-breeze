@@ -327,7 +327,7 @@ $.registry = (function () {
             this._defaults(this.options);
             this.initObservable();
             this._trigger('beforeCreate');
-            this.initialize();
+            this.initialize(this.options);
             this.create();
             this._create();
             this.init();
