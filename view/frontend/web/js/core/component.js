@@ -215,7 +215,6 @@
         initialize: _.noop,
         create: _.noop,
         init: _.noop,
-        initObservable: _.noop,
         destroy: _.noop,
         _create: _.noop,
         _init: _.noop,
@@ -290,6 +289,10 @@
         _setOption: function (key, value) {
             this.options[key] = value;
 
+            return this;
+        },
+
+        initObservable: function () {
             return this;
         }
     });
