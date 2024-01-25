@@ -373,6 +373,8 @@
 
     $.proxy = _.bind;
     $.map = _.map;
+    $.now = Date.now;
+    $.isEmptyObject = _.isEmpty;
     $.inArray = (elem, arr, i) => arr == null ? -1 : Array.prototype.indexOf.call(arr, elem, i);
 
     $.each = _.wrap($.each, function (original, object, callback) {

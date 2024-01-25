@@ -283,7 +283,9 @@
          * @param {Object} params
          * @return {Promise}
          */
-        post: function (url, params) {
+        post: function (url, data, success) {
+            var params = success ? { data: data, success: success } : data;
+
             params = prepareParams(url, params);
             params.type = params.method = 'post';
 
@@ -294,7 +296,9 @@
          * @param {Object} params
          * @return {Promise}
          */
-        get: function (url, params) {
+        get: function (url, data, success) {
+            var params = success ? { data: data, success: success } : data;
+
             params = prepareParams(url, params);
             params.type = params.method = 'get';
 
@@ -306,11 +310,11 @@
         return $.request.send(url, params);
     };
 
-    $.get = function (url, params) {
-        return $.request.get(url, params);
+    $.get = function (url, data, success) {
+        return $.request.get(url, data, success);
     };
 
-    $.post = function (url, params) {
-        return $.request.post(url, params);
+    $.post = function (url, data, success) {
+        return $.request.post(url, data, success);
     };
 })();
