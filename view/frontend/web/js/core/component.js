@@ -573,7 +573,9 @@
 
     /** Wrap prototype with mixins */
     $.mixin = function (name, mixins) {
-        if (!prototypes[name]) {
+        var proto = prototypes[name]?.prototype || $.breezemap[name]?._proto.prototype;
+
+        if (!proto) {
             if (!pending.mixins[name]) {
                 pending.mixins[name] = [];
             }
@@ -582,8 +584,7 @@
         }
 
         _.each(mixins, function (mixin, key) {
-            var proto = prototypes[name].prototype,
-                mixinType = typeof mixin,
+            var mixinType = typeof mixin,
                 originalType = typeof proto[key];
 
             if (mixinType === 'function' && originalType === 'function') {
