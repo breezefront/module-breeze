@@ -197,15 +197,16 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
         foreach ($this->getActiveBundles() as $name => $bundle) {
             foreach ($bundle['items'] as $item) {
-                $paths = $item['deps'] ?? []; // deps are deprecated. Use import instead
-                $paths += $item['import'] ?? [];
-                $paths[] = $item['path'];
+                $paths = [];
+                foreach (['deps', 'import', 'path', 'importAfter'] as $key) {
+                    $pathsToAdd = $item[$key] ?? [];
+                    if (!is_array($pathsToAdd)) {
+                        $pathsToAdd = [$pathsToAdd];
+                    }
+                    $paths = array_merge($paths, array_values($pathsToAdd));
+                }
 
                 foreach ($paths as $key => $path) {
-                    if (strpos($key, '::') !== false) {
-                        continue;
-                    }
-
                     $asset = $this->jsBuildFactory->create(['name' => $path])->getAsset();
                     if (empty(array_filter($item['load'] ?? []))) {
                         $assets[] = $asset;
