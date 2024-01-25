@@ -172,10 +172,6 @@ class JsBuild
 
             $deps = array_diff($deps, $loadedDeps);
             foreach ($deps as $key => $depPath) {
-                if (strpos($key, '::') !== false) {
-                    continue;
-                }
-
                 $build[$name . '-' . $key] = $this->getContents($depPath);
                 $loadedDeps[$depPath] = $depPath;
             }
