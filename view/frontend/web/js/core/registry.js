@@ -82,8 +82,12 @@ $.registry = (function () {
                     data[name].elements.splice(index, 1);
                 }
 
-                if (instance && instance.destroy && !skipDestroy) {
+                if (instance?.destroy && !skipDestroy) {
                     instance.destroy();
+                }
+
+                if (instance?.__scope) {
+                    require('uiRegistry').remove(instance.__scope);
                 }
 
                 return data[name].objects.delete(element);
