@@ -198,7 +198,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         foreach ($this->getActiveBundles() as $name => $bundle) {
             foreach ($bundle['items'] as $item) {
                 $paths = [];
-                foreach (['deps', 'import', 'path', 'importAfter'] as $key) {
+                foreach (['deps', 'import', 'path'] as $key) {
                     $pathsToAdd = $item[$key] ?? [];
                     if (!is_array($pathsToAdd)) {
                         $pathsToAdd = [$pathsToAdd];

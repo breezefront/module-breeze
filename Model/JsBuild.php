@@ -161,21 +161,18 @@ class JsBuild
         $loadedDeps = [];
 
         foreach ($this->items as $name => $item) {
-            $path = $item;
             $deps = [];
-
-            if (is_array($item)) {
-                $path = $item['path'];
-                $deps = $item['deps'] ?? [];
-                $deps += $item['import'] ?? [];
+            foreach (['deps', 'import'] as $key) {
+                $deps = array_merge($deps, array_values($item[$key] ?? []));
             }
-
             $deps = array_diff($deps, $loadedDeps);
+
             foreach ($deps as $key => $depPath) {
                 $build[$name . '-' . $key] = $this->getContents($depPath);
                 $loadedDeps[$depPath] = $depPath;
             }
 
+            $path = $item['path'];
             if (isset($loadedDeps[$path])) {
                 continue;
             }
