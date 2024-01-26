@@ -121,7 +121,7 @@
     // Fix for inline `require()` calls.
     // The code below replaces require to postpone inline code execution until all head scripts will be loaded.
     // When all head scripts are loaded, original function is restored.
-    document.addEventListener('turbolinks:before-visit', () => {
+    document.addEventListener('turbolinks:before-render', () => {
         window.requireCopy = window.require;
         window.define = window.requireCopy;
         window.require = (deps, callback) => window.required.push([deps, callback]);
