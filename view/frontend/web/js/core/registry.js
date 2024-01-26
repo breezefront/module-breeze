@@ -263,12 +263,9 @@ $.breezemap.uiRegistry = (() => {
         },
 
         promise: function (query) {
-            var defer    = $.Deferred(),
-                callback = defer.resolve.bind(defer);
-
-            this.get(query, callback);
-
-            return defer.promise();
+            return new Promise(resolve => {
+                this.get(query, resolve);
+            });
         },
 
         async: function (query) {
