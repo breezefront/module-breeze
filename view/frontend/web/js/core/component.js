@@ -572,8 +572,12 @@
         extend: function (proto) {
             return $.view(proto.component || `__component${$.breezemap.__counter++}`, proto);
         },
-        registerLastAnonymous: (name, offset = 0) => {
-            $.breezemap[name] = $.breezemap.__lastComponent(offset);
+        register: (name, oldName) => {
+            if (!oldName || _.isNumber(oldName)) {
+                $.breezemap[name] = $.breezemap.__lastComponent(oldName);
+            } else {
+                $.breezemap[name] = $.breezemap[oldName];
+            }
         },
     };
     $.breezemap.uiComponent = $.uiComponent;
