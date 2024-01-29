@@ -259,6 +259,7 @@
         setTimeout(() => {
             $(document).trigger('breeze:beforeLoad');
             $(document).trigger('breeze:load');
+            $.breeze.ready = true;
             walk();
         }, 0);
     }
@@ -350,10 +351,6 @@
                 $.registry.set(name, el, instance);
             }
         });
-    });
-
-    $(document).on('breeze:load', () => {
-        $.breeze.ready = true;
     });
 
     $(window).on('resize', _.debounce(function () {
