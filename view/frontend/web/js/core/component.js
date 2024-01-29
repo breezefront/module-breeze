@@ -442,6 +442,10 @@
         afterRender: _.noop,
 
         _initialize: function (name, options, element) {
+            if (!element.isConnected) {
+                return;
+            }
+
             this._regions = {};
             this._markup = $(element).html();
             this._super(name, options, element);
