@@ -56,7 +56,7 @@ $.registry = (function () {
             }
 
             if (component.__scope) {
-                require('uiRegistry').set(component.__scope, component);
+                $.breezemap.uiRegistry.set(component.__scope, component);
             }
 
             if (!element) {
@@ -82,12 +82,13 @@ $.registry = (function () {
                     data[name].elements.splice(index, 1);
                 }
 
-                if (instance?.destroy && !skipDestroy) {
+                if (instance?.destroy && !instance.__destroyed && !skipDestroy) {
                     instance.destroy();
+                    instance.__destroyed = true;
                 }
 
                 if (instance?.__scope) {
-                    require('uiRegistry').remove(instance.__scope);
+                    $.breezemap.uiRegistry.remove(instance.__scope);
                 }
 
                 return data[name].objects.delete(element);

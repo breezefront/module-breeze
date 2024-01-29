@@ -122,8 +122,11 @@
     // The code below replaces require to postpone inline code execution until all head scripts will be loaded.
     // When all head scripts are loaded, original function is restored.
     document.addEventListener('turbolinks:before-render', () => {
-        window.requireCopy = window.require;
-        window.define = window.requireCopy;
+        if (!window.requireCopy) {
+            window.requireCopy = window.require;
+            window.define = window.requireCopy;
+        }
+        $.breeze.ready = false;
         window.require = (deps, callback) => window.required.push([deps, callback]);
         window.require.toUrl = window.requireCopy.toUrl;
         window.require.config = window.requireCopy.config;
