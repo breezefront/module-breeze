@@ -3,7 +3,7 @@
 
     $.widget('calendar', {
         create: function () {
-            this.element.addClass('abs-visually-hidden').attr('tabindex', -1);
+            this.element.hide().addClass('abs-visually-hidden').attr('tabindex', -1);
             this.calendar = this.element.parent().find('.input-breeze-calendar');
 
             if (!this.calendar.length) {
