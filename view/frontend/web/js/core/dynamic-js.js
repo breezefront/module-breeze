@@ -94,6 +94,20 @@
     }
 
     $(document).on('breeze:load', () => {
+        $.each($.breeze.jsconfig.map, alias => {
+            if (!/^[a-zA-Z_.]+$/.test(alias)) {
+                return;
+            }
+            $.fn[alias] = function () {
+                require([alias], () => {
+                    if (!this[alias].__dynamic) {
+                        this[alias]();
+                    }
+                });
+                return this;
+            };
+            $.fn[alias].__dynamic = true;
+        });
         $.each($.breeze.jsconfig.rules, (path, values) => {
             processOnRevealRules(values.load, path);
             processOnEventRules(values.load, path);
