@@ -65,6 +65,8 @@
                 }
 
                 processMatchedLoadRule(loadRules, path);
+            }, {
+                rootMargin: '120px',
             });
         });
     }
