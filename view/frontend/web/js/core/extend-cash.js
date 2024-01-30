@@ -463,22 +463,22 @@
         return value;
     };
 
-    $.onReveal = function (element, callback) {
+    $.onReveal = function (element, callback, options = {}) {
         var revealObserver = new IntersectionObserver(entries => {
             if (entries.some(entry => entry.isIntersecting)) {
                 callback();
                 revealObserver.disconnect();
             }
-        });
+        }, options);
 
         $(element).each((i, el) => revealObserver.observe(el));
 
         return revealObserver;
     };
 
-    $.fn.onReveal = function (callback) {
+    $.fn.onReveal = function (callback, options = {}) {
         return this.each(function () {
-            $.onReveal(this, () => callback(this));
+            $.onReveal(this, () => callback(this), options);
         });
     };
 })();
