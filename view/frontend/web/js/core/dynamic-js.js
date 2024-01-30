@@ -98,10 +98,10 @@
             if (!/^[a-zA-Z_.]+$/.test(alias)) {
                 return;
             }
-            $.fn[alias] = function () {
+            $.fn[alias] = function (settings) {
                 require([alias], () => {
                     if (!this[alias].__dynamic) {
-                        this[alias]();
+                        this[alias](settings);
                     }
                 });
                 return this;
