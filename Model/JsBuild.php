@@ -167,8 +167,8 @@ class JsBuild
             }
             $deps = array_diff($deps, $loadedDeps);
 
-            foreach ($deps as $key => $depPath) {
-                $build[$name . '-' . $key] = $this->getContents($depPath);
+            foreach ($deps as $depPath) {
+                $build[$name . '-' . $depPath] = $this->getContents($depPath);
                 $loadedDeps[$depPath] = $depPath;
             }
 

@@ -54,6 +54,8 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
     protected $redeploy = false;
 
+    protected $itemToBundleMap = [];
+
     /**
      * @param \Magento\Backend\Block\Context $context
      * @param \Magento\Framework\View\Asset\ConfigInterface $assetConfig
@@ -167,10 +169,10 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                     }
 
                     $result['rules'][$item['path']] = array_filter([
-                        'import' => array_map(
-                            fn ($string) => str_replace('::', '/', $string),
+                        'import' => array_filter(array_map(
+                            fn ($name) => str_replace('::', '/', $name),
                             array_values($item['import'] ?? [])
-                        ),
+                        ), fn ($name) => $this->findBundleName($name) === false),
                     ]);
                 }
 
@@ -396,18 +398,20 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
      */
     private function processImports($bundles)
     {
-        foreach ($bundles as $bundle) {
-            foreach ($bundle['items'] as $item) {
+        foreach ($bundles as $bundleName => $bundle) {
+            foreach ($bundle['items'] as $itemName => $item) {
                 if (empty($item['import'])) {
                     continue;
                 }
 
                 foreach ($item['import'] as $key => $value) {
-                    $bundleName = $this->findBundleName($value);
+                    $importBundle = $this->findBundleName($value);
 
-                    if ($bundleName && empty($this->activeBundles[$bundleName])) {
-                        $this->activeBundles[$bundleName] = $this->bundles[$bundleName];
-                        $this->processImports([$bundleName => $this->bundles[$bundleName]]);
+                    if ($importBundle && empty($this->activeBundles[$importBundle])) {
+                        unset($this->bundles[$bundleName]['items'][$itemName]['import'][$key]);
+                        unset($this->allBundles[$bundleName]['items'][$itemName]['import'][$key]);
+                        $this->activeBundles[$importBundle] = $this->bundles[$importBundle];
+                        $this->processImports([$importBundle => $this->bundles[$importBundle]]);
                     }
                 }
             }
@@ -420,12 +424,27 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
      */
     private function findBundleName($itemName)
     {
+        if (isset($this->itemToBundleMap[$itemName])) {
+            return $this->itemToBundleMap[$itemName];
+        }
+
+        $this->itemToBundleMap[$itemName] = false;
+
         foreach ($this->bundles as $name => $bundle) {
             if (isset($bundle['items'][$itemName])) {
-                return $name;
+                $this->itemToBundleMap[$itemName] = $name;
+                break;
+            }
+
+            foreach ($bundle['items'] as $item) {
+                $names = array_flip($item['names'] ?? []);
+                if (isset($names[$itemName])) {
+                    $this->itemToBundleMap[$itemName] = $name;
+                    break 2;
+                }
             }
         }
 
-        return false;
+        return $this->itemToBundleMap[$itemName];
     }
 }
