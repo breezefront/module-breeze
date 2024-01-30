@@ -93,21 +93,22 @@
         console.log(e);
     }
 
+    $.each($.breeze.jsconfig.map, alias => {
+        if (!/^[a-zA-Z_.]+$/.test(alias)) {
+            return;
+        }
+        $.fn[alias] = function (settings) {
+            require([alias], () => {
+                if (!this[alias].__dynamic) {
+                    this[alias](settings);
+                }
+            });
+            return this;
+        };
+        $.fn[alias].__dynamic = true;
+    });
+
     $(document).on('breeze:load', () => {
-        $.each($.breeze.jsconfig.map, alias => {
-            if (!/^[a-zA-Z_.]+$/.test(alias)) {
-                return;
-            }
-            $.fn[alias] = function (settings) {
-                require([alias], () => {
-                    if (!this[alias].__dynamic) {
-                        this[alias](settings);
-                    }
-                });
-                return this;
-            };
-            $.fn[alias].__dynamic = true;
-        });
         $.each($.breeze.jsconfig.rules, (path, values) => {
             processOnRevealRules(values.load, path);
             processOnEventRules(values.load, path);
