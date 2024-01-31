@@ -129,9 +129,10 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
     protected function _toHtml()
     {
         $assets = [];
+        $allAssets = [];
 
-        if ($this->assetConfig->isMergeJsFiles() || $this->assetConfig->isBundlingJsFiles()) {
-            $assets = $this->deployBundledAssets();
+        if ($this->isBundlingEnabled()) {
+            list($assets, $allAssets) = $this->deployBundledAssets();
         } else {
             $assets = $this->deployAssets();
         }
@@ -145,30 +146,53 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
             . "\n"
             . sprintf(
                 self::TEMPLATE_DYNAMIC,
-                json_encode($this->generateBreezemap(), JSON_UNESCAPED_SLASHES)
+                json_encode($this->generateBreezemap($allAssets), JSON_UNESCAPED_SLASHES)
             );
     }
 
-    private function generateBreezemap()
+    private function isBundlingEnabled()
+    {
+        return $this->assetConfig->isMergeJsFiles() || $this->assetConfig->isBundlingJsFiles();
+    }
+
+    private function generateBreezemap($bundledAssets)
     {
         $result = [
             'map' => [],
             'rules'=> [],
         ];
-        $activeBundles = array_keys($this->getActiveBundles());
 
+        $bundleIndexes = array_fill_keys(array_keys($this->getAllBundles()), 0);
+        foreach ($bundledAssets as $asset) {
+            $pathParts = explode('/', $asset->getUrl());
+            $filename = array_pop($pathParts);
+            preg_match("/(?<bundle>.*)(?<index>\d+)(\.min)?\.js$/", $filename, $matches);
+
+            if (!$matches || !isset($bundleIndexes[$matches['bundle']])) {
+                continue;
+            }
+
+            $bundleIndexes[$matches['bundle']] = $matches['index'];
+        }
+
+        $activeBundles = array_keys($this->getActiveBundles());
         foreach ($this->getAllBundles() as $name => $bundle) {
             foreach ($bundle['items'] as $alias => $item) {
                 $item['path'] = str_replace('::', '/', $item['path']);
                 $item['load'] = array_filter($item['load'] ?? []);
 
                 if (!empty($item['load']) || !in_array($name, $activeBundles)) {
-                    $result['map'][$alias] = $item['path'];
-                    foreach ($item['names'] ?? [] as $anotherName) {
-                        $result['map'][$anotherName] = $item['path'];
+                    $path = $item['path'];
+                    if (empty($item['load']) && $this->isBundlingEnabled()) {
+                        $path = "{$name}*{$bundleIndexes[$name]}";
                     }
 
-                    $result['rules'][$item['path']] = array_filter([
+                    $result['map'][$alias] = $path;
+                    foreach ($item['names'] ?? [] as $anotherName) {
+                        $result['map'][$anotherName] = $path;
+                    }
+
+                    $result['rules'][$path] = array_filter([
                         'import' => array_filter(array_map(
                             fn ($name) => str_replace('::', '/', $name),
                             array_values($item['import'] ?? [])
@@ -223,6 +247,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
     public function deployBundledAssets($jsBuildParams = []): array
     {
         $builds = [];
+        $allAssets = [];
         foreach ($this->getAllBundles() as $name => $bundle) {
             $staticItems = array_filter($bundle['items'], fn ($item) => empty(array_filter($item['load'] ?? [])));
             $builds[$name] = $this->jsBuildFactory->create(array_merge([
@@ -236,6 +261,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                 $builds[$name]->publishIfNotExist();
             }
 
+            $allAssets = array_merge($allAssets, $builds[$name]->getBundledAssets());
             $dynamicItems = array_filter($bundle['items'], fn ($item) => !empty(array_filter($item['load'] ?? [])));
             foreach ($dynamicItems as $item) {
                 $this->jsBuildFactory->create(['name' => $item['path']])->getAsset();
@@ -247,7 +273,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
             $assets = array_merge($assets, $builds[$name]->getBundledAssets());
         }
 
-        return $assets;
+        return [$assets, $allAssets];
     }
 
     public function setRedeploy(bool $flag)

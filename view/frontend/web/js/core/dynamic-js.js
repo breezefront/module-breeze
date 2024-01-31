@@ -3,6 +3,9 @@
 
     var promises = {},
         states = {},
+        bundlePrefixRe = /(?<prefix>Swissup_Breeze\/bundles\/\d+\/).*\.js$/,
+        bundlePrefix = $('script[src*="/Swissup_Breeze/bundles/"]').attr('src')
+            ?.match(bundlePrefixRe).groups.prefix,
         suffixRe = /Swissup_Breeze\/.*?(core|main)(?<suffix>\.min\.js|\.js)$/,
         jsSuffix = $('script[src*="/Swissup_Breeze/"]')
             .filter((i, el) => el.src.includes('/core.') || el.src.includes('/main.'))
@@ -27,18 +30,27 @@
     function loadScript(alias, aliasAsPath) {
         var path = aliasAsPath ? alias : $.breeze.jsconfig.map[alias] || alias,
             imports = $.breeze.jsconfig.rules[path]?.import || [],
-            index = imports.indexOf(alias);
+            index = imports.indexOf(alias),
+            [bundle, lastIndex] = path.split('*');
 
-        states[path] = 'loading';
+        if (!states[path]) {
+            if (path.includes('*')) {
+                lastIndex = parseInt(lastIndex, 10) || 0;
+                bundle = bundlePrefix + bundle;
+                path = bundle + (lastIndex || '');
+                imports = imports.concat(_.range(0, lastIndex).map(i => bundle + (i || '')));
+            }
 
-        return new Promise(resolve => {
-            Promise.all(imports.map((item, i) => loadScript(item, i === index))).then(() => {
-                $.loadScript(getUrl(path), () => {
-                    states[path] = 'loaded';
-                    resolve();
+            states[path] = new Promise(resolve => {
+                Promise.all(imports.map((item, i) => loadScript(item, i === index))).then(() => {
+                    $.loadScript(getUrl(path), () => {
+                        resolve();
+                    });
                 });
             });
-        });
+        }
+
+        return states[path];
     }
 
     function processMatchedLoadRule(loadRules, path) {
