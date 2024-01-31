@@ -172,7 +172,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                         'import' => array_filter(array_map(
                             fn ($name) => str_replace('::', '/', $name),
                             array_values($item['import'] ?? [])
-                        ), fn ($name) => $this->findBundleName($name) === false),
+                        ), fn ($name) => $name === $alias || $this->findBundleName($name) === false),
                     ]);
                 }
 
