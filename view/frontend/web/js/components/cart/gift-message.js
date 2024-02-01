@@ -4,6 +4,10 @@ define([
 ], function (Component, quote) {
     'use strict';
 
+    if (!window.giftOptionsConfig) {
+        return;
+    }
+
     Component.extend({
         component: 'Magento_GiftMessage/js/view/gift-message',
 
