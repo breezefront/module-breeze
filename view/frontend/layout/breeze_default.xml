@@ -507,7 +507,13 @@
                             <item name="Magento_Tax/js/view/checkout/summary/subtotal" xsi:type="string">Swissup_Breeze/js/components/cart/tax</item>
                             <item name="Magento_Weee/js/view/cart/totals/weee" xsi:type="string">Swissup_Breeze/js/components/cart/weee</item>
                             <item name="Magento_SalesRule/js/view/cart/totals/discount" xsi:type="string">Swissup_Breeze/js/components/cart/totals</item>
-                            <item name="Magento_GiftMessage/js/view/gift-message" xsi:type="string">Swissup_Breeze/js/components/cart/gift-message</item>
+                            <item name="Magento_GiftMessage/js/view/gift-message" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/cart/gift-message</item>
+                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isAnyEnabled">
+                                    <param name="0">sales/gift_options/allow_order</param>
+                                    <param name="1">sales/gift_options/allow_items</param>
+                                </item>
+                            </item>
                         </item>
                     </item>
                 </argument>
