@@ -322,6 +322,10 @@
             var anchor = $(element),
                 next = $(element).nextAll().last();
 
+            if (anchor.data('errors-message-box')) {
+                return $(anchor.data('errors-message-box')).empty().append(errorNodes);
+            }
+
             if (next.length) {
                 anchor = next;
             }
