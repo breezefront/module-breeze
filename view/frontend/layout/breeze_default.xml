@@ -405,6 +405,17 @@
                                     </item>
                                 </item>
                             </item>
+                            <item name="downloadable" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/downloadable</item>
+                                <item name="import" xsi:type="array">
+                                    <item name="parent" xsi:type="string">Magento_Downloadable/js/downloadable</item>
+                                </item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onReveal" xsi:type="array">
+                                        <item name="0" xsi:type="string">[data-mage-init*="downloadable"]</item>
+                                    </item>
+                                </item>
+                            </item>
                         </item>
                     </item>
                     <item name="product-bundle" xsi:type="array">
