@@ -54,7 +54,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
     protected $redeploy = false;
 
-    protected $itemToBundleMap = [];
+    protected $itemInfoMap = [];
 
     /**
      * @param \Magento\Backend\Block\Context $context
@@ -196,7 +196,15 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                         'import' => array_filter(array_map(
                             fn ($name) => str_replace('::', '/', $name),
                             array_values($item['import'] ?? [])
-                        ), fn ($name) => $name === $alias || $this->findBundleName($name) === false),
+                        ), function ($name) use ($alias) {
+                            if ($name === $alias) {
+                                return true;
+                            }
+
+                            $info = $this->findItemInfo($name);
+
+                            return !$info || !empty($info['item']['load']);
+                        })
                     ]);
                 }
 
@@ -388,14 +396,13 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
                 // add import/load to mixins
                 foreach ($item['mixins'] ?? [] as $mixinItemName) {
-                    $mixinBundleName = $this->findBundleName($mixinItemName);
-                    if (!$mixinBundleName) {
+                    if (!$info = $this->findItemInfo($mixinItemName)) {
                         continue;
                     }
 
-                    $this->allBundles[$mixinBundleName]['items'][$mixinItemName]['import'][] = $itemName;
+                    $this->allBundles[$info['bundle']]['items'][$info['itemName']]['import'][] = $itemName;
 
-                    if (isset($this->bundles[$mixinBundleName]['items'][$mixinItemName]['load'])) {
+                    if (isset($this->allBundles[$info['bundle']]['items'][$info['itemName']]['load'])) {
                         $this->allBundles[$bundleName]['items'][$itemName]['load']['onRequire'] = true;
                     }
                 }
@@ -431,9 +438,13 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                 }
 
                 foreach ($item['import'] as $key => $value) {
-                    $importBundle = $this->findBundleName($value);
+                    $info = $this->findItemInfo($value);
+                    if (!$info) {
+                        continue;
+                    }
 
-                    if ($importBundle && empty($this->activeBundles[$importBundle])) {
+                    $importBundle = $info['bundle'];
+                    if (empty($this->activeBundles[$importBundle])) {
                         unset($this->bundles[$bundleName]['items'][$itemName]['import'][$key]);
                         unset($this->allBundles[$bundleName]['items'][$itemName]['import'][$key]);
                         $this->activeBundles[$importBundle] = $this->bundles[$importBundle];
@@ -446,35 +457,39 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
     /**
      * @param string $itemName
-     * @return string|false
+     * @return array
      */
-    private function findBundleName($itemName)
+    private function findItemInfo($itemName)
     {
-        if (isset($this->itemToBundleMap[$itemName])) {
-            return $this->itemToBundleMap[$itemName];
+        if (isset($this->itemInfoMap[$itemName])) {
+            return $this->itemInfoMap[$itemName];
         }
 
-        $this->itemToBundleMap[$itemName] = false;
+        $this->itemInfoMap[$itemName] = false;
 
-        foreach ($this->bundles as $name => $bundle) {
+        foreach ($this->allBundles as $name => $bundle) {
             if (isset($bundle['items'][$itemName])) {
-                if (empty($bundle['items'][$itemName]['load'])) {
-                    $this->itemToBundleMap[$itemName] = $name;
-                }
+                $this->itemInfoMap[$itemName] = [
+                    'bundle' => $name,
+                    'itemName' => $itemName,
+                    'item' => $bundle['items'][$itemName],
+                ];
                 break;
             }
 
-            foreach ($bundle['items'] as $item) {
+            foreach ($bundle['items'] as $key => $item) {
                 $names = array_flip($item['names'] ?? []);
                 if (isset($names[$itemName])) {
-                    if (empty($item['load'])) {
-                        $this->itemToBundleMap[$itemName] = $name;
-                    }
+                    $this->itemInfoMap[$itemName] = [
+                        'bundle' => $name,
+                        'itemName' => $key,
+                        'item' => $item,
+                    ];
                     break 2;
                 }
             }
         }
 
-        return $this->itemToBundleMap[$itemName];
+        return $this->itemInfoMap[$itemName];
     }
 }
