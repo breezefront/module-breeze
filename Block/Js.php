@@ -458,14 +458,18 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
         foreach ($this->bundles as $name => $bundle) {
             if (isset($bundle['items'][$itemName])) {
-                $this->itemToBundleMap[$itemName] = $name;
+                if (empty($bundle['items'][$itemName]['load'])) {
+                    $this->itemToBundleMap[$itemName] = $name;
+                }
                 break;
             }
 
             foreach ($bundle['items'] as $item) {
                 $names = array_flip($item['names'] ?? []);
                 if (isset($names[$itemName])) {
-                    $this->itemToBundleMap[$itemName] = $name;
+                    if (empty($item['load'])) {
+                        $this->itemToBundleMap[$itemName] = $name;
+                    }
                     break 2;
                 }
             }
