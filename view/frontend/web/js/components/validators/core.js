@@ -59,6 +59,12 @@
             },
             $t('Please select one of the options.')
         ],
+        'validate-one-checkbox-required-by-name': [
+            function (value, el) {
+                return !!this.form.find('input[name="' + el.name + '"]:checked').length;
+            },
+            $t('Please select one of the options.')
+        ],
     });
 
     // Validate Date
