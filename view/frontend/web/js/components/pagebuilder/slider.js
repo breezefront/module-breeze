@@ -173,6 +173,8 @@
                     return;
                 }
 
+                event.preventDefault();
+
                 $(document)
                     .on('mousemove.sliderMouseDrag', e => {
                         e.preventDefault();
