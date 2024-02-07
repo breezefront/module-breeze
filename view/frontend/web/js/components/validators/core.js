@@ -68,13 +68,8 @@
         'validate-no-utf8mb4-characters': [
             (value) => !/(?:[\uD800-\uDBFF][\uDC00-\uDFFF])/g.test(value),
             (value) => {
-                var message = $t('Please remove invalid characters: {0}.'),
-                    matches = value.match(/(?:[\uD800-\uDBFF][\uDC00-\uDFFF])/g),
-                    result = matches === null;
-                if (!result) {
-                    message = message.replace('{0}', matches.join());
-                }
-                return message;
+                var matches = value.match(/(?:[\uD800-\uDBFF][\uDC00-\uDFFF])/g);
+                return $t('Please remove invalid characters: {0}.').replace('{0}', matches.join());
             }
         ],
     });
