@@ -4,8 +4,8 @@
         position: relative;
     }
     .breeze {
-        .products-grid.slick-initialized,
-        [data-content-type='products'][data-appearance='carousel'] {
+        [data-appearance='carousel'],
+        .products-grid.slick-initialized {
             position: relative;
             display: grid; // preserve proper arrows position when hover-reveal is used
 
@@ -60,12 +60,15 @@
                     }
                 }
             }
+        }
+    }
 
-            li.product-item {
-                flex-shrink: 0;
-                display: inline-block;
-                visibility: visible;
-            }
+    // reset Luma styles
+    .breeze [data-content-type='products'][data-appearance='carousel'] {
+        li.product-item {
+            flex-shrink: 0;
+            display: inline-block;
+            visibility: visible;
         }
     }
 }
