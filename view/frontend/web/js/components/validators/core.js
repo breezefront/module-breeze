@@ -65,6 +65,13 @@
             },
             $t('Please select one of the options.')
         ],
+        'validate-no-utf8mb4-characters': [
+            (value) => !/(?:[\uD800-\uDBFF][\uDC00-\uDFFF])/g.test(value),
+            (value) => {
+                var matches = value.match(/(?:[\uD800-\uDBFF][\uDC00-\uDFFF])/g);
+                return $t('Please remove invalid characters: {0}.').replace('{0}', matches.join());
+            }
+        ],
     });
 
     // Validate Date
