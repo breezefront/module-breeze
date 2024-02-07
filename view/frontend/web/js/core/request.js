@@ -225,8 +225,6 @@
                     req: params
                 };
 
-                $.active--;
-
                 response.body = (function () {
                     try {
                         return JSON.parse(text);
@@ -254,6 +252,9 @@
             })
             .catch(function (error) {
                 return onError(error, params);
+            })
+            .finally(() => {
+                $.active--;
             });
 
         // Emulate jQuery's functions that are not avaialble in native Promise
