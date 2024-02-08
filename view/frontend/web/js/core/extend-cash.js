@@ -181,6 +181,20 @@
         return original.bind(this)(selector);
     });
 
+    $.fn.find = _.wrap($.fn.find, function (original, selector) {
+        selector = selector.trim();
+
+        if (['>', '+', '~'].includes(selector[0])) {
+            selector = ':scope ' + selector;
+        }
+
+        ['button', 'checkbox', 'hidden', 'image', 'password', 'radio', 'submit', 'text'].forEach(type => {
+            selector = selector.replaceAll(`:${type}`, `[type="${type}"]`);
+        });
+
+        return original.bind(this)(selector);
+    });
+
     $.fn.component = function (key, value) {
         key = $.breezemap.__aliases[key] || key;
         return value === undefined ? this.data(`component:${key}`) : this.data(`component:${key}`, value);
