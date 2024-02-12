@@ -18,6 +18,10 @@
     };
 
     function getUrl(path) {
+        if (path.includes('//')) {
+            return path;
+        }
+
         if (path.endsWith('.min')) {
             path += '.js';
         } else if (!path.endsWith('.min.js')) {
