@@ -19,7 +19,7 @@
 
     function getUrl(path) {
         if (path.includes('//')) {
-            return path;
+            return path.endsWith('.js') || path.includes('?') ? path : path + '.js';
         }
 
         if (path.endsWith('.min')) {
