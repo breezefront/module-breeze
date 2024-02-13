@@ -10,6 +10,13 @@
         __aliases: {},
         __get: key => $.breezemap[$.breezemap.__aliases[key] || key],
         __lastComponent: (offset = 0) => $.breezemap[`__component${$.breezemap.__counter - 1 - offset}`],
+        __register: (name, oldName) => {
+            if (!oldName || _.isNumber(oldName)) {
+                $.breezemap[name] = $.breezemap.__lastComponent(oldName);
+            } else {
+                $.breezemap[name] = $.breezemap[oldName];
+            }
+        },
     };
 
     function register(value, key) {
