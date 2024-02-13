@@ -109,6 +109,12 @@
     $.fn.fadeIn = $.fn.show;
     $.fn.fadeOut = $.fn.hide;
     $.fn.bind = $.fn.on;
+    $.fn.unbind = $.fn.off;
+    $.fn.ajaxComplete = (handler) => {
+        $(document).on('ajaxComplete', (event, data) => {
+            handler(event, data, data.settings);
+        });
+    };
 
     $.each({ scrollLeft: 'pageXOffset', scrollTop: 'pageYOffset' }, function (method, prop) {
         var top = prop === 'pageYOffset';

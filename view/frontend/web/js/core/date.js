@@ -58,4 +58,6 @@
 
         return _.map(parts, part => mapping[part].dayjs).join(separator);
     };
+
+    $.breezemap.moment = dayjs;
 })();
