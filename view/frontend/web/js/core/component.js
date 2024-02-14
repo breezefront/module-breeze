@@ -512,6 +512,7 @@
         getTemplate: function () {
             var template = this.template || this.options.template,
                 templates = [
+                    template.replace(/[/.]/g, '_'),
                     template.replace(/\//g, '_'),
                     template + '.html',
                     template,
