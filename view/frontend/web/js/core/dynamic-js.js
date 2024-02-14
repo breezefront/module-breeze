@@ -31,25 +31,44 @@
         return window.require.toUrl(path);
     }
 
-    function loadScript(alias, aliasAsPath) {
-        var path = aliasAsPath ? alias : $.breeze.jsconfig.map[alias] || alias,
+    function collect(alias, aliasAsPath) {
+        var result = [],
+            path = aliasAsPath ? alias : $.breeze.jsconfig.map[alias] || alias,
             imports = $.breeze.jsconfig.rules[path]?.import || [],
             index = imports.indexOf(alias),
             [bundle, lastIndex] = path.split('*');
 
-        if (!states[path]) {
-            if (path.includes('*')) {
-                lastIndex = parseInt(lastIndex, 10) || 0;
-                bundle = bundlePrefix + bundle;
-                path = bundle + (lastIndex || '');
-                imports = imports.concat(_.range(0, lastIndex).map(i => bundle + (i || '')));
-            }
+        if (path.includes('*')) {
+            lastIndex = parseInt(lastIndex, 10) || 0;
+            bundle = bundlePrefix + bundle;
+            path = bundle + (lastIndex || '');
+            imports = imports.concat(_.range(0, lastIndex).map(i => bundle + (i || '')));
+        }
 
+        imports.forEach((item, i) => {
+            collect(item, i === index).forEach(dependency => {
+                result.push(dependency);
+            });
+        });
+
+        result.push(path);
+
+        return result.map(getUrl);
+    }
+
+    function loadScript(alias, aliasAsPath) {
+        var path = aliasAsPath ? alias : $.breeze.jsconfig.map[alias] || alias;
+
+        if (!states[path]) {
             states[path] = new Promise(resolve => {
-                Promise.all(imports.map((item, i) => loadScript(item, i === index))).then(() => {
-                    $.loadScript(getUrl(path), () => {
-                        resolve();
-                    });
+                var items = collect(alias);
+
+                // Load js in parallel, execute in sequence
+                Promise.all(items.map(item => $.preloadScript(item))).then(async () => {
+                    for (const item of items) {
+                        await $.loadScript(item);
+                    }
+                    resolve();
                 });
             });
         }
