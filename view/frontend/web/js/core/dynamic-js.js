@@ -172,6 +172,13 @@
 
             if (useMemo) {
                 promises[alias] = result;
+                result.then(() => {
+                    if (window.location.search.includes('breeze=1') &&
+                        $.breezemap.__get(alias) === undefined
+                    ) {
+                        console.log(alias);
+                    }
+                });
             }
         }
 

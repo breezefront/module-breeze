@@ -47,6 +47,8 @@
             result = $.loadScript(alias);
         } else if ($.breeze.jsconfig.map[alias]) {
             result = require('loadComponent')(alias);
+        } else if (window.location.search.includes('breeze=1')) {
+            console.log(alias);
         }
 
         return register(result, alias);
