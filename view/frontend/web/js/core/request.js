@@ -311,7 +311,7 @@
         return $.request.send(url, params);
     };
 
-    $.get = function (url, data, success) {
+    $.get = $.getJSON = function (url, data, success) {
         return $.request.get(url, data, success);
     };
 
