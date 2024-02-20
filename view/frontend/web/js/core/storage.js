@@ -45,7 +45,7 @@ $.storage = $.localStorage = (function () {
          * @param {Mixed} keys
          */
         remove: function (keys) {
-            if (typeof keys === 'string') {
+            if (typeof keys !== 'object') {
                 keys = [keys];
             }
 
@@ -105,7 +105,7 @@ $.storage = $.localStorage = (function () {
                 remove: function (keys) {
                     loadNamespace(namespace);
 
-                    if (typeof keys === 'string') {
+                    if (typeof keys !== 'object') {
                         keys = [keys];
                     }
 
