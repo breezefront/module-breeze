@@ -84,6 +84,22 @@
         };
     })();
 
+    $.cookie = (name, value, options) => {
+        if (value !== undefined) {
+            return $.cookies.set(name, value, options);
+        }
+        return $.cookies.get(name);
+    };
+    $.removeCookie = (name, options) => {
+        if ($.cookies.get(name) === undefined) {
+            return false;
+        }
+
+        $.cookies.remove(name, options);
+
+        return !$.cookies.get(name);
+    };
+
     $.mage = $.mage || {};
     $.mage.cookies = $.cookies;
     $.breezemap['mage/cookies'] = $.cookies;
