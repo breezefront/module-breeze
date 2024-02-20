@@ -260,7 +260,10 @@
         // Emulate jQuery's functions that are not avaialble in native Promise
         ['done', 'fail', 'always'].forEach(name => {
             params[name] = params[name] ? [params[name]] : [];
-            result[name] = function (fn) { params[name].push(fn); };
+            result[name] = function (fn) {
+                params[name].push(fn);
+                return this;
+            };
         });
 
         result.abort = () => controller.abort();
