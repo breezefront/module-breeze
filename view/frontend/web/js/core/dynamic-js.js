@@ -3,6 +3,7 @@
 
     var promises = {},
         states = {},
+        queue = [],
         bundlePrefixRe = /(?<prefix>Swissup_Breeze\/bundles\/\d+\/).*\.js$/,
         bundlePrefix = $('script[src*="/Swissup_Breeze/bundles/"]').attr('src')
             ?.match(bundlePrefixRe).groups.prefix,
@@ -60,15 +61,23 @@
         var path = aliasAsPath ? alias : $.breeze.jsconfig.map[alias] || alias;
 
         if (!states[path]) {
+            queue.push(path);
             states[path] = new Promise(resolve => {
                 var items = collect(alias);
 
                 // Load js in parallel, execute in sequence
                 Promise.all(items.map(item => $.preloadScript(item))).then(async () => {
-                    for (const item of items) {
-                        await $.loadScript(item);
-                    }
-                    resolve();
+                    (async function tryLoad() {
+                        if (queue[0] === path) {
+                            for (const item of items) {
+                                await $.loadScript(item);
+                            }
+                            resolve();
+                            queue.shift();
+                        } else {
+                            setTimeout(tryLoad, 50);
+                        }
+                    })();
                 });
             });
         }
