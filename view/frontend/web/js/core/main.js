@@ -48,9 +48,18 @@
     function mountView(scope, config) {
         var scopeRe = new RegExp(`scope:.*${scope}'`),
             elements = scopedElements.filter(function () {
-                var bind = $(this).attr('data-bind');
+                var bind = $(this).attr('data-bind').trim(),
+                    result = bind.includes('\'' + scope + '\'') || bind.match(scopeRe);
 
-                return bind.includes('\'' + scope + '\'') || bind.match(scopeRe);
+                if (result || !bind.includes('\\u')) {
+                    return result;
+                }
+
+                try {
+                    return JSON.parse(`{"val":"${bind}"}`).val.includes('\'' + scope + '\'');
+                } catch (e) {
+                    return false;
+                }
             });
 
         if (!elements.length) {
