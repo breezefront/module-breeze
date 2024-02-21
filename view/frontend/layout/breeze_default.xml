@@ -549,7 +549,6 @@
         <referenceBlock name="sales.order.print.js" template="Swissup_Breeze::theme/html/print.phtml"/>
         <referenceBlock name="customer.section.config" template="Swissup_Breeze::customer/js/section-config.phtml"/>
         <referenceBlock name="customer.customer.data" template="Swissup_Breeze::customer/js/customer-data.phtml"/>
-        <referenceBlock name="wishlist_sidebar" template="Swissup_Breeze::wishlist/sidebar.phtml"/>
         <referenceBlock name="minicart" template="Swissup_Breeze::checkout/minicart.phtml"/>
         <referenceBlock name="google.maps.api" template="Swissup_Breeze::pagebuilder/googlemaps.phtml"/>
 
@@ -560,7 +559,11 @@
                 <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.modal.slideTpl" template="Magento_Ui::modal/modal-slide.html"/>
                 <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.modal.customTpl" template="Magento_Ui::modal/modal-custom.html"/>
                 <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.uiMessages" template="Magento_Ui::messages.html"/>
-                <block class="Swissup\Breeze\Block\KoTemplate" name="breeze.productImage" template="Swissup_Breeze::ko/catalog/product-image.phtml"/>
+                <block class="Swissup\Breeze\Block\KoTemplate" name="breeze.image_with_borders" template="Swissup_Breeze::ko/catalog/product-image.phtml">
+                    <arguments>
+                        <argument name="id" xsi:type="string">Magento_Catalog/product/image_with_borders</argument>
+                    </arguments>
+                </block>
                 <block class="Swissup\Breeze\Block\KoTemplate" name="breeze.Magento_Checkout_minicart_content" template="Swissup_Breeze::ko/checkout/minicart.phtml">
                     <container name="subtotalContainer">
                         <block class="Magento\Framework\View\Element\Template" name="subtotal" template="Swissup_Breeze::ko/checkout/minicart/subtotal.phtml">
@@ -585,6 +588,9 @@
                 <block class="Swissup\Breeze\Block\HtmlTemplate" template="Magento_Captcha::checkout/captcha.html"/>
 
                 <block class="Swissup\Breeze\Block\Turbo" name="breeze.turbo"/>
+
+                <!-- deprecated, use 'Magento_Catalog/product/image_with_borders' instead -->
+                <block class="Swissup\Breeze\Block\KoTemplate" name="breeze.productImage" template="Swissup_Breeze::ko/catalog/product-image.phtml"/>
             </container>
         </referenceContainer>
     </body>

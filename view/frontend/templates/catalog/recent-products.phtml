@@ -35,7 +35,7 @@
                         <?php if (!empty($config['attributes']['image'])) : ?>
                             <a class="product-item-photo" data-bind="
                                 attr: { href: url, title: name },
-                                template: { name: 'productImage', data: $parent.getImageData($data) }
+                                template: { name: 'Magento_Catalog/product/image_with_borders', data: $parent.getImageData($data) }
                             "></a>
                         <?php endif ?>
 

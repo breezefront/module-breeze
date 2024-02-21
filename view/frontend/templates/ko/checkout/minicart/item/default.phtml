@@ -3,7 +3,7 @@
         <!-- ko if: product_has_url -->
         <a data-bind="
             attr: {href: product_url, title: product_name},
-            template: { name: 'productImage', data: item.product_image }"
+            template: { name: 'Magento_Catalog/product/image_with_borders', data: item.product_image }"
             tabindex="-1"
             class="product-item-photo"
         ></a>
@@ -11,7 +11,7 @@
         <!-- ko ifnot: product_has_url -->
         <span class="product-item-photo" data-bind="
             attr: {href: product_url, title: product_name},
-            template: { name: 'productImage', data: item.product_image }"
+            template: { name: 'Magento_Catalog/product/image_with_borders', data: item.product_image }"
         ></span>
         <!-- /ko -->
 
