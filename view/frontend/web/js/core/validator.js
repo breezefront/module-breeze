@@ -23,6 +23,10 @@
             return this.validate(elements, silent).valid;
         },
 
+        valid: function (elements, silent) {
+            return this.isValid(elements, silent);
+        },
+
         /**
          * Validate input(s) or whole form and return validation object
          *
@@ -71,6 +75,10 @@
                 this.options.onInvalid.call(this, result);
             }
 
+            if (!result.valid) {
+                $(this.form).trigger('invalid-form', this);
+            }
+
             $(this.form).trigger('validateAfter', {
                 result: result
             });
@@ -90,6 +98,10 @@
                 self.removeErrorClass(this);
                 self._overridable('removeErrorNodes', [this]);
             });
+        },
+
+        resetForm: function (elements) {
+            return this.reset(elements);
         },
 
         /**
