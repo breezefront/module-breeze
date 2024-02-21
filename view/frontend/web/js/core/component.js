@@ -455,6 +455,10 @@
         _applyBindings: function (element) {
             var koEl = element.firstChild;
 
+            if (element === document.body) {
+                return;
+            }
+
             while (koEl) {
                 if (koEl.nodeType === 1 || (koEl.nodeType === 8 && koEl.nodeValue.match(/\s*ko\s+/))) {
                     break;
