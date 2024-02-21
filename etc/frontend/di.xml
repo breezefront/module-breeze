@@ -44,6 +44,7 @@
                 <item name="inject_components" xsi:type="object">Swissup\Breeze\Model\Filter\Str\InjectComponents</item>
                 <item name="inject_preload_links" xsi:type="object">Swissup\Breeze\Model\Filter\Str\InjectPreloadLinks</item>
                 <item name="inject_inline_required" xsi:type="object">Swissup\Breeze\Model\Filter\Str\InjectInlineRequired</item>
+                <item name="replace_jquery_calls" xsi:type="object">Swissup\Breeze\Model\Filter\Str\ReplaceJqueryCalls</item>
             </argument>
         </arguments>
     </type>
