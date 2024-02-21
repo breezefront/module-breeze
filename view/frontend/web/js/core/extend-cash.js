@@ -483,6 +483,26 @@
         return value;
     };
 
+    $.Deferred = (fn) => {
+        var deferred = new function Defer() {
+            var promise = new Promise((resolve, reject) => {
+                this.resolve = resolve;
+                this.reject = reject;
+            });
+
+            this.always = promise.finally.bind(promise);
+            this.done = this.then = promise.then.bind(promise);
+            this.fail = promise.catch.bind(promise);
+            this.promise = () => promise;
+        };
+
+        if (fn) {
+            fn(deferred);
+        }
+
+        return deferred;
+    };
+
     $.onReveal = function (element, callback, options = {}) {
         var revealObserver = new IntersectionObserver(entries => {
             if (entries.some(entry => entry.isIntersecting)) {
