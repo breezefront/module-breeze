@@ -184,6 +184,8 @@
                 }
 
                 parent = prototypes[parent];
+            } else if (parent && parent._proto) {
+                parent = parent._proto;
             }
 
             prototype = factory.extend(prototype, parent);
