@@ -80,7 +80,9 @@
              */
             setJson: function (name, value, attributes) {
                 this.set(name, JSON.stringify(value), attributes);
-            }
+            },
+
+            setConf: () => {},
         };
     })();
 
