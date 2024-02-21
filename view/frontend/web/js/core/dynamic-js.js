@@ -166,14 +166,20 @@
 
         if (!result) {
             result = new Promise(resolve => {
-                if ($.breeze.jsconfig.rules[path]?.load && respectLoadRules) {
+                var callback = () => loadScript(alias).then(() => resolve($.breezemap.__get(alias))),
+                    loadRules = $.breeze.jsconfig.rules[path]?.load || {},
+                    hasLoadRules = !_.isEmpty(_.pick(loadRules, 'onReveal', 'onEvent'));
+
+                if (hasLoadRules && respectLoadRules) {
                     useMemo = false;
                 }
 
-                if ($.breeze.jsconfig.map[alias] &&
-                    (!$.breeze.jsconfig.rules[path]?.load || !respectLoadRules)
-                ) {
-                    loadScript(alias).then(() => resolve($.breezemap.__get(alias)));
+                if ($.breeze.jsconfig.map[alias] && (!hasLoadRules || !respectLoadRules)) {
+                    if (loadRules.onInteraction) {
+                        $.lazy(callback);
+                    } else {
+                        callback();
+                    }
                 } else {
                     resolve($.breezemap.__get(alias));
                 }
