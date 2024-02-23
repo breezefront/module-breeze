@@ -1,8 +1,7 @@
-$.storage = $.localStorage = (function () {
+var createStorage = function (storage) {
     'use strict';
 
-    var storage = window.localStorage || window.sessionStorage,
-        data = {},
+    var data = {},
         loadedNamespaces = [];
 
     function loadNamespace(namespace) {
@@ -125,7 +124,10 @@ $.storage = $.localStorage = (function () {
             };
         }
     };
-})();
+};
+
+$.storage = $.localStorage = createStorage(window.localStorage || window.sessionStorage);
+$.sessionStorage = createStorage(window.sessionStorage);
 
 /** Emulate jquery plugin for easier integrations */
 $.initNamespaceStorage = function (ns) {

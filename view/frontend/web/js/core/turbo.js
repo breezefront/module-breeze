@@ -145,7 +145,7 @@
     (function () {
         var referrers = {};
 
-        $.breeze.referrer = $.storage.ns('breeze').get('referrer') || document.referrer;
+        $.breeze.referrer = $.sessionStorage.ns('breeze').get('referrer') || document.referrer;
 
         // Since this event doesn't work when using back/forward buttons we use it to update referrers
         // $.on is not used because it's overwrite event.data property
@@ -155,7 +155,7 @@
 
         $(document).on('turbolinks:visit', function () {
             $.breeze.referrer = referrers[window.location.href] || document.referrer;
-            $.storage.ns('breeze').set('referrer', $.breeze.referrer);
+            $.sessionStorage.ns('breeze').set('referrer', $.breeze.referrer);
         });
     })();
 
