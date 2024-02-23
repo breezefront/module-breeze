@@ -16,10 +16,18 @@ class InjectPreloadLinks extends AbstractFilter
             return $html;
         }
 
-        return str_replace(
-            '</head>',
-            sprintf("\n%s\n</head>", $this->getPreloadBlock()->toHtml()),
-            $html
+        // insert preload before first "<link "
+        $needle = '<link ';
+        $pos = strpos($html, $needle);
+        if ($pos === false) {
+            return $html;
+        }
+
+        return substr_replace(
+            $html,
+            sprintf("\n%s\n%s", $this->getPreloadBlock()->toHtml(), $needle),
+            $pos,
+            strlen($needle)
         );
     }
 }
