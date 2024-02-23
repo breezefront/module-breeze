@@ -347,32 +347,47 @@
      * Constraint element inside visible viewport
      * @return {Cash}
      */
-    $.fn.contstraint = function () {
-        var viewportWidth = $(window).width(),
-            width = this.outerWidth(),
-            left,
-            right;
+    $.fn.contstraint = function (options) {
+        var left, right, top, bottom,
+            css = { top: '', left: '', right: '', bottom: '' };
 
         if (!this.length) {
             return this;
         }
 
-        left = Math.round(this.offset().left);
-        right = left + width;
+        this.css(css);
 
-        if (left < 0) {
-            this.css({
-                left: 'auto',
-                right: parseFloat(this.css('right')) + (left - 10)
-            });
-        } else if (left > 0 && right > viewportWidth) {
-            this.css({
-                left: 'auto',
-                right: Math.min(parseFloat(this.css('right')) + left, 0)
-            });
+        options = $.extend({
+            x: true,
+            y: true,
+        }, options);
+
+        if (options.x) {
+            left = Math.round(this.offset().left);
+            right = left + this.outerWidth();
+
+            if (left < 0) {
+                css.left = 'auto';
+                css.right = parseFloat(this.css('right')) + (left - 10);
+            } else if (left > 0 && right > $(window).width()) {
+                css.left = 'auto';
+                css.right = Math.min(parseFloat(this.css('right')) + left, 0);
+            }
         }
 
-        return this;
+        if (options.y) {
+            top = Math.round(this.offset().top);
+            bottom = top + this.outerHeight();
+
+            if (top > window.scrollY + this.outerHeight() + 50 && // is fully visible if expanded to top?
+                bottom > window.scrollY + $(window).height() + 10 // is more that 10px is invisible?
+            ) {
+                css.top = 'auto';
+                css.bottom = '100%';
+            }
+        }
+
+        return this.css(css);
     };
 
     $.fn.var = function (name, value) {
