@@ -188,15 +188,19 @@
     });
 
     $.fn.find = _.wrap($.fn.find, function (original, selector) {
-        selector = selector.trim();
+        if (typeof selector === 'string') {
+            selector = selector.trim();
 
-        if (['>', '+', '~'].includes(selector[0])) {
-            selector = ':scope ' + selector;
+            if (['>', '+', '~'].includes(selector[0])) {
+                selector = ':scope ' + selector;
+            }
+
+            ['button', 'checkbox', 'hidden', 'image', 'password', 'radio', 'submit', 'text'].forEach(type => {
+                selector = selector.replaceAll(`:${type}`, `[type="${type}"]`);
+            });
+        } else if (selector instanceof Node) {
+            return this[0].contains(selector) ? $(selector) : $();
         }
-
-        ['button', 'checkbox', 'hidden', 'image', 'password', 'radio', 'submit', 'text'].forEach(type => {
-            selector = selector.replaceAll(`:${type}`, `[type="${type}"]`);
-        });
 
         return original.bind(this)(selector);
     });
