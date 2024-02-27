@@ -157,6 +157,17 @@
         return this;
     };
 
+    $.fn.trigger = _.wrap($.fn.trigger, function (original, event, data) {
+        if (typeof event === 'string' && event === 'submit' && this.submit) {
+            this.one(event, function (e) {
+                if (!e.defaultPrevented) {
+                    this.submit();
+                }
+            });
+        }
+        return original.bind(this)(event, data);
+    });
+
     $.fn.on = _.wrap($.fn.on, function (original, eventName, handler) {
         if (typeof eventName === 'string' && eventName === 'breeze:load' && $.breeze.ready) {
             handler?.();
