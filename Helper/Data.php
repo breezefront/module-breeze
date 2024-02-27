@@ -100,6 +100,7 @@ class Data extends AbstractHelper
     {
         return [
             'checkout/cart/configure',
+            'checkout/cart/configureFailed',
             'customer/section/load',
         ];
     }
