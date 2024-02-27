@@ -1,8 +1,7 @@
 (function () {
     'use strict';
 
-    $.widget('confirm', 'modal', {
-        component: 'Magento_Ui/js/modal/confirm',
+    $.widget('mage.confirm', 'modal', {
         options: {
             modalClass: 'confirm',
             title: '',
@@ -53,11 +52,7 @@
         }
     });
 
-    /**
-     * @param {Object} config
-     * @return {Cash}
-     */
-    $.confirm = function (config) {
+    $.breezemap['Magento_Ui/js/modal/confirm'] = $.confirm = function (config) {
         return $('<div></div>').html(config.content).confirm(config);
     };
 })();

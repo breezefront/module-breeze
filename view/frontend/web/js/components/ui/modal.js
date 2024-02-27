@@ -1,8 +1,7 @@
 (function () {
     'use strict';
 
-    $.widget('modal', {
-        component: 'Magento_Ui/js/modal/modal',
+    $.widget('mage.modal', {
         options: {
             type: 'popup',
             title: '',
