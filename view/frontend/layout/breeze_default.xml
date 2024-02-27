@@ -128,6 +128,7 @@
                             <item name="modal" xsi:type="string">Swissup_Breeze/js/components/ui/modal</item>
                             <item name="confirm" xsi:type="string">Swissup_Breeze/js/components/ui/confirm</item>
                             <item name="alert" xsi:type="string">Swissup_Breeze/js/components/ui/alert</item>
+                            <item name="prompt" xsi:type="string">Swissup_Breeze/js/components/ui/prompt</item>
 
                             <item name="Magento_Customer/js/customer-data" xsi:type="string">Swissup_Breeze/js/components/customer-data</item>
                             <item name="Magento_Customer/js/view/customer" xsi:type="string">Swissup_Breeze/js/components/customer</item>
@@ -558,6 +559,7 @@
                 <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.modal.popupTpl" template="Magento_Ui::modal/modal-popup.html"/>
                 <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.modal.slideTpl" template="Magento_Ui::modal/modal-slide.html"/>
                 <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.modal.customTpl" template="Magento_Ui::modal/modal-custom.html"/>
+                <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.modal.promptTpl" template="Magento_Ui::modal/modal-prompt-content.html"/>
                 <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.uiMessages" template="Magento_Ui::messages.html"/>
                 <block class="Swissup\Breeze\Block\KoTemplate" name="breeze.image_with_borders" template="Swissup_Breeze::ko/catalog/product-image.phtml">
                     <arguments>
