@@ -27,7 +27,8 @@
             this._super();
         },
 
-        _confirmClearCart: function () {
+        _confirmClearCart: function (e) {
+            e.preventDefault();
             $.confirm({
                 content: $.mage.__('Are you sure you want to remove all items from your shopping cart?'),
                 actions: {
