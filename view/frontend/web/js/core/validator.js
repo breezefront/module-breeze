@@ -357,7 +357,7 @@
     $.validator = function (element, options) {
         return new Validator(element, options);
     };
-    $.validator.validateElement = (element) => {
+    $.validator.validateElement = $.validator.validateSingleElement = (element) => {
         return ($(element).parents('form').data('validator') || $.validator(element)).isValid(element);
     };
     $.validator.regex = {};
