@@ -188,7 +188,9 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                     }
 
                     $result['map'][$alias] = $path;
-                    foreach ($item['names'] ?? [] as $anotherName) {
+                    $names = $item['names'] ?? []; // deprecated, use export instead
+                    $names += $item['export'] ?? [];
+                    foreach ($names as $anotherName) {
                         $result['map'][$anotherName] = $path;
                     }
 
@@ -478,7 +480,8 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
             }
 
             foreach ($bundle['items'] as $key => $item) {
-                $names = array_flip($item['names'] ?? []);
+                $names = array_flip($item['names'] ?? []); // deprecated, use export instead
+                $names += array_flip($item['export'] ?? []);
                 if (isset($names[$itemName])) {
                     $this->itemInfoMap[$itemName] = [
                         'bundle' => $name,
