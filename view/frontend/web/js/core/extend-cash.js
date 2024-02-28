@@ -209,6 +209,8 @@
             ['button', 'checkbox', 'hidden', 'image', 'password', 'radio', 'submit', 'text'].forEach(type => {
                 selector = selector.replaceAll(`:${type}`, `[type="${type}"]`);
             });
+
+            selector = selector.replaceAll(':input', ':where(input, select, textarea, button)');
         } else if (selector instanceof Node) {
             return this[0].contains(selector) ? $(selector) : $();
         }
