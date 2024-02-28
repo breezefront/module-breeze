@@ -359,6 +359,30 @@
                                     </item>
                                 </item>
                             </item>
+
+                            <!-- Rarely used magento components -->
+                            <item name="deletableItem" xsi:type="array">
+                                <item name="path" xsi:type="string">mage/deletable-item</item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onRequire" xsi:type="boolean">true</item>
+                                </item>
+                            </item>
+                            <item name="fieldsetControls" xsi:type="array">
+                                <item name="path" xsi:type="string">mage/fieldset-controls</item>
+                                <item name="export" xsi:type="array">
+                                    <item name="fieldsetControls" xsi:type="string">fieldsetControls</item>
+                                    <item name="fieldsetResetControl" xsi:type="string">fieldsetResetControl</item>
+                                </item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onRequire" xsi:type="boolean">true</item>
+                                </item>
+                            </item>
+                            <item name="itemTable" xsi:type="array">
+                                <item name="path" xsi:type="string">mage/item-table</item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onRequire" xsi:type="boolean">true</item>
+                                </item>
+                            </item>
                         </item>
                     </item>
                     <item name="product" xsi:type="array">
