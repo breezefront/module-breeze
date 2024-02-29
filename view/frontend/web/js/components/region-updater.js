@@ -211,7 +211,7 @@
 
             // If country is in optionalzip list, make postcode input not required
             if (this.options.isZipRequired) {
-                if (this.options.countriesWithOptionalZip.indexOf(country) > -1) {
+                if (this.options.countriesWithOptionalZip?.indexOf(country) > -1) {
                     postcode.removeClass('required-entry').closest('.field').removeClass('required');
                 } else {
                     postcode.addClass('required-entry').closest('.field').addClass('required');
