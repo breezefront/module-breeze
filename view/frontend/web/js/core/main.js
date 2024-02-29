@@ -25,7 +25,7 @@
             $(document).trigger('breeze:mount:' + component, data);
         }
 
-        if (now) {
+        if (now && (!$.breeze.jsconfig.map[component] || $.breezemap.__get(component))) {
             return callback();
         }
 
