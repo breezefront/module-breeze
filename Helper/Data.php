@@ -154,8 +154,8 @@ class Data extends AbstractHelper
             return true;
         }
 
-        return strpos($page, 'checkout_') !== 0
-            && strpos($page, 'multishipping_') !== 0;
+        return strpos($page, 'checkout_') === false
+            && strpos($page, 'multishipping_') === false;
     }
 
     /**
