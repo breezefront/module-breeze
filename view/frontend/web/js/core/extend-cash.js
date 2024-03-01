@@ -176,6 +176,20 @@
         return original.apply(this, Array.prototype.slice.call(arguments, 1));
     });
 
+    function normalizeSelector(selector) {
+        selector = selector.trim();
+
+        if (['>', '+', '~'].includes(selector[0])) {
+            selector = ':scope ' + selector;
+        }
+
+        ['button', 'checkbox', 'hidden', 'image', 'password', 'radio', 'submit', 'text'].forEach(type => {
+            selector = selector.replaceAll(`:${type}`, `[type="${type}"]`);
+        });
+
+        return selector.replaceAll(':input', ':where(input, select, textarea, button)');
+    }
+
     $.fn.is = _.wrap($.fn.is, function (original, selector) {
         switch (selector) {
             case ':visible':
@@ -195,22 +209,12 @@
                 }).length > 0;
         }
 
-        return original.bind(this)(selector);
+        return original.bind(this)(normalizeSelector(selector));
     });
 
     $.fn.find = _.wrap($.fn.find, function (original, selector) {
         if (typeof selector === 'string') {
-            selector = selector.trim();
-
-            if (['>', '+', '~'].includes(selector[0])) {
-                selector = ':scope ' + selector;
-            }
-
-            ['button', 'checkbox', 'hidden', 'image', 'password', 'radio', 'submit', 'text'].forEach(type => {
-                selector = selector.replaceAll(`:${type}`, `[type="${type}"]`);
-            });
-
-            selector = selector.replaceAll(':input', ':where(input, select, textarea, button)');
+            selector = normalizeSelector(selector);
         } else if (selector instanceof Node) {
             return this[0].contains(selector) ? $(selector) : $();
         }
