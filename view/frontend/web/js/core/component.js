@@ -545,15 +545,13 @@
                 return children[a].sortOrder - children[b].sortOrder;
             }).forEach(key => {
                 var config = children[key],
-                    cmp;
+                    cmp = self.mount(config);
 
-                if (code && config.displayArea !== code) {
+                if (!cmp || code && cmp.displayArea !== code) {
                     return;
                 }
 
-                if ((cmp = self.mount(config))) {
-                    result.push(cmp);
-                }
+                result.push(cmp);
             });
 
             this._regions[code] = result;
