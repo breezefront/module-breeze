@@ -388,6 +388,10 @@
                                 <item name="import" xsi:type="array">
                                     <item name="parent" xsi:type="string">Magento_Theme/js/row-builder</item>
                                 </item>
+                                <item name="export" xsi:type="array">
+                                    <item name="row-builder" xsi:type="string">Magento_Theme/js/row-builder</item>
+                                    <item name="rowBuilder" xsi:type="string">rowBuilder</item>
+                                </item>
                                 <item name="load" xsi:type="array">
                                     <item name="onRequire" xsi:type="boolean">true</item>
                                 </item>
