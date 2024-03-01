@@ -109,7 +109,7 @@
             return;
         }
 
-        $.async('.message', (el) => {
+        $.async('.message:where(.warning, .success, .notice, .error, .info)', (el) => {
             $(el).append('<button type="button" class="button-close"></button>');
 
             setTimeout(() => {
