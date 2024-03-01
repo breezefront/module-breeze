@@ -31,6 +31,10 @@
             return null;
         }
 
+        if (match.groups.year.length === 2) {
+            match.groups.year = +match.groups.year + 2000;
+        }
+
         date = new Date(match.groups.year, match.groups.month - 1, match.groups.day);
 
         if (date.getFullYear() !== +match.groups.year ||
