@@ -177,6 +177,10 @@
     });
 
     function normalizeSelector(selector) {
+        if (typeof selector !== 'string') {
+            return selector;
+        }
+
         selector = selector.trim();
 
         if (['>', '+', '~'].includes(selector[0])) {
@@ -213,9 +217,9 @@
     });
 
     $.fn.find = _.wrap($.fn.find, function (original, selector) {
-        if (typeof selector === 'string') {
-            selector = normalizeSelector(selector);
-        } else if (selector instanceof Node) {
+        selector = normalizeSelector(selector);
+
+        if (selector instanceof Node) {
             return this[0].contains(selector) ? $(selector) : $();
         }
 
