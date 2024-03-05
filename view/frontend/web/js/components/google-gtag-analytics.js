@@ -2,6 +2,8 @@
 (function () {
     'use strict';
 
+    var loaded = false;
+
     $.widget('googleGtagAnalytics', {
         component: 'Magento_GoogleGtag/js/google-analytics',
 
@@ -29,10 +31,12 @@
             var measurementId = this.options.pageTrackingData.measurementId,
                 purchaseObject;
 
-            if (!window.gtag) {
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = window.gtag || function () { dataLayer.push(arguments); };
+
+            if (!loaded) {
+                loaded = true;
                 $.lazy(() => $.loadScript('https://www.googletagmanager.com/gtag/js?id=' + measurementId));
-                window.dataLayer = window.dataLayer || [];
-                window.gtag = function () { dataLayer.push(arguments); };
                 gtag('js', new Date());
             }
 
