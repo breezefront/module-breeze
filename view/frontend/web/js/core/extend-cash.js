@@ -369,12 +369,19 @@
     };
 
     /**
-     * Constraint element inside visible viewport
+     * Constraint element inside visible viewport or overflowed parent
      * @return {Cash}
      */
     $.fn.contstraint = function (options) {
         var left, right, top, bottom,
-            css = { top: '', left: '', right: '', bottom: '' };
+            css = { top: '', left: '', right: '', bottom: '' },
+            parent = this.parentsUntil('body', (i, el) => $(el).css('overflow') !== 'visible'),
+            parentRect = {
+                top: parent.offset()?.top || window.scrollY,
+                left: parent.offset()?.left || window.scrollX,
+                width: parent.outerWidth() || $(window).width(),
+                height: parent.outerHeight() || $(window).height(),
+            };
 
         if (!this.length) {
             return this;
@@ -388,24 +395,24 @@
         }, options);
 
         if (options.x) {
-            left = Math.round(this.offset().left);
+            left = Math.round(this.offset().left) - parentRect.left;
             right = left + this.outerWidth();
 
             if (left < 0) {
                 css.left = 'auto';
                 css.right = parseFloat(this.css('right')) + (left - 10);
-            } else if (left > 0 && right > $(window).width()) {
+            } else if (left > 0 && right > parentRect.width) {
                 css.left = 'auto';
                 css.right = Math.min(parseFloat(this.css('right')) + left, 0);
             }
         }
 
         if (options.y) {
-            top = Math.round(this.offset().top);
+            top = Math.round(this.offset().top) - parentRect.top;
             bottom = top + this.outerHeight();
 
-            if (top > window.scrollY + this.outerHeight() + 50 && // is fully visible if expanded to top?
-                bottom > window.scrollY + $(window).height() + 10 // is more that 10px is invisible?
+            if (top > this.outerHeight() + 50 && // is fully visible if expanded to top?
+                bottom > parentRect.height + 10 // is more that 10px is invisible?
             ) {
                 css.top = 'auto';
                 css.bottom = '100%';
