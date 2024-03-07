@@ -157,6 +157,15 @@
         return this;
     };
 
+    $.fn.text = _.wrap($.fn.text, function (original, text) {
+        if (typeof text === 'function') {
+            return $(this).each((i, el) => {
+                $(el).text(text(i, $(el).text()));
+            });
+        }
+        return original.bind(this)(text);
+    });
+
     $.fn.trigger = _.wrap($.fn.trigger, function (original, event, data) {
         if (typeof event === 'string' && event === 'submit' && this.submit) {
             this.one(event, function (e) {
