@@ -2,6 +2,7 @@
     'use strict';
 
     var customerData,
+        disposableSubscriptions = new WeakMap(),
         storage = $.storage.ns('mage-cache-storage'),
         storageInvalidation = $.storage.ns('mage-cache-storage-section-invalidation');
 
@@ -184,6 +185,35 @@
                 domain: false
             });
         }
+    };
+
+    ko.extenders.disposableCustomerData = function (target, sectionName) {
+        var sectionDataIds, newSectionDataIds = {};
+
+        if (!disposableSubscriptions.has(target)) {
+            disposableSubscriptions.set(target, {});
+        }
+
+        if (disposableSubscriptions.get(target)[sectionName]) {
+            return target;
+        }
+
+        disposableSubscriptions.get(target)[sectionName] = target.subscribe(function () {
+            setTimeout(function () {
+                storage.remove(sectionName);
+                sectionDataIds = $.cookieStorage.getJson('section_data_ids') || {};
+                _.each(sectionDataIds, function (data, name) {
+                    if (name !== sectionName) {
+                        newSectionDataIds[name] = data;
+                    }
+                });
+                $.cookieStorage.setJson('section_data_ids', newSectionDataIds, {
+                    domain: false
+                });
+            }, 3000);
+        });
+
+        return target;
     };
 
     $(document).on('customerData:reload', function (event, data) {

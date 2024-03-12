@@ -60,12 +60,19 @@
             this.observe({'cookieMessagesObservable': []});
             this.cookieMessages = _.unique($.cookies.getJson('mage-messages') || [], 'text');
             this.cookieMessagesObservable(this.cookieMessages);
-            this.messages = $.sections.get('messages');
+            this.messages = $.sections.get('messages').extend({
+                disposableCustomerData: 'messages'
+            });
 
             // cleanup possible duplicates
             this.cookieMessages = _.reject(this.cookieMessages, cookieMessage => {
                 return _.some(this.messages().messages, sectionMessage => sectionMessage.text === cookieMessage.text);
             });
+
+            // Force to clean obsolete messages
+            if (!_.isEmpty(this.messages().messages)) {
+                $.sections.set('messages', {});
+            }
 
             this.removeCookieMessages();
         },
@@ -86,7 +93,6 @@
 
         destroy: function () {
             $('.messages', this.element).remove();
-            this.messages([]);
             this._super();
         }
     });
