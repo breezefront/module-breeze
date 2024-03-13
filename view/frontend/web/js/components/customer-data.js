@@ -40,6 +40,7 @@
             invalidateCacheBySessionTimeOut(this.options);
             invalidateCacheByCloseCookieSession();
             this.create();
+            $(document).trigger('customerData:afterInitialize');
         },
 
         create: function () {

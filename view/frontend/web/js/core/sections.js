@@ -2,6 +2,7 @@ $.sections = $.customerData = window.customerData = (function () {
     'use strict';
 
     var data = {},
+        deferred = $.Deferred(),
         options = window.sectionsConfig;
 
     /**
@@ -19,6 +20,10 @@ $.sections = $.customerData = window.customerData = (function () {
 
         return route.replace(/^\/?index.php\/?/, '').toLowerCase();
     }
+
+    $(document).on('customerData:afterInitialize', () => {
+        deferred.resolve();
+    });
 
     return {
         /**
@@ -109,6 +114,10 @@ $.sections = $.customerData = window.customerData = (function () {
             $(document).trigger('customerData:invalidate', {
                 sections: names
             });
+        },
+
+        getInitCustomerData: function () {
+            return deferred.promise();
         },
 
         /**
