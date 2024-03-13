@@ -546,9 +546,9 @@
                 this.reject = reject;
             });
 
-            this.always = promise.finally.bind(promise);
-            this.done = this.then = promise.then.bind(promise);
-            this.fail = promise.catch.bind(promise);
+            this.always = promise.always = promise.finally.bind(promise);
+            this.done = this.then = promise.done = promise.then.bind(promise);
+            this.fail = promise.fail = promise.catch.bind(promise);
             this.promise = () => promise;
         };
 
