@@ -321,4 +321,22 @@
     $.post = function (url, data, success) {
         return $.request.post(url, data, success);
     };
+
+    function storageRequest(url, global, contentType, headers, method, data) {
+        return $.ajax(url, {
+            data, global, headers, method,
+            contentType: contentType || 'application/json',
+        });
+    }
+
+    $.breezemap['mage/storage'] = {
+        get: (url, global, contentType, headers) =>
+            storageRequest(url, global, contentType, headers, 'get'),
+        post: (url, data, global, contentType, headers) =>
+            storageRequest(url, global, contentType, headers, 'post', data),
+        put: (url, data, global, contentType, headers) =>
+            storageRequest(url, global, contentType, headers, 'put', data),
+        delete: (url, global, contentType, headers) =>
+            storageRequest(url, global, contentType, headers, 'delete'),
+    };
 })();
