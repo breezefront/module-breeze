@@ -167,11 +167,13 @@
     });
 
     $.fn.trigger = _.wrap($.fn.trigger, function (original, event, data) {
-        if (typeof event === 'string' && event === 'submit' && this.submit) {
+        if (typeof event === 'string' && event === 'submit' && this.closest('form')) {
             this.one(event, function (e) {
-                if (!e.defaultPrevented) {
-                    this.submit();
-                }
+                setTimeout(() => { // allow prevent default in document listener
+                    if (!e.defaultPrevented) {
+                        this.closest('form').submit();
+                    }
+                }, 10);
             });
         }
         return original.bind(this)(event, data);
