@@ -153,7 +153,7 @@
             referrers[event.data.url] = window.location.href;
         });
 
-        $(document).on('turbolinks:visit', function () {
+        $(document).on('breeze:load', function () {
             $.breeze.referrer = referrers[window.location.href] || document.referrer;
             $.sessionStorage.ns('breeze').set('referrer', $.breeze.referrer);
         });
