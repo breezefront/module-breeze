@@ -391,6 +391,11 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
         foreach ($this->allBundles as $bundleName => $bundle) {
             foreach ($bundle['items'] as $itemName => $item) {
+                if (!$item) {
+                    unset($this->allBundles[$bundleName]['items'][$itemName]);
+                    continue;
+                }
+
                 if (!is_array($item)) {
                     $item = ['path' => $item];
                     $this->allBundles[$bundleName]['items'][$itemName] = $item;
