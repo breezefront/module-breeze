@@ -29,8 +29,8 @@
         params.fail.push(params.error);
         params.always.push(params.complete);
 
-        params.fail.filter(fn => fn).forEach(fn => fn(response, error));
-        params.always.filter(fn => fn).forEach(fn => fn(response));
+        params.fail.filter(fn => fn).forEach(fn => fn(response, 'error', error));
+        params.always.filter(fn => fn).forEach(fn => fn(response, 'error', response));
     }
 
     /**
@@ -41,8 +41,8 @@
         params.done.push(params.success);
         params.always.push(params.complete);
 
-        params.done.filter(fn => fn).forEach(fn => fn(response.body || response.text, response));
-        params.always.filter(fn => fn).forEach(fn => fn(response));
+        params.done.filter(fn => fn).forEach(fn => fn(response.body || response.text, 'success', response));
+        params.always.filter(fn => fn).forEach(fn => fn(response.body || response, 'success', response));
 
         return response;
     }

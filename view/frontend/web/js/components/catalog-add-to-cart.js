@@ -63,7 +63,7 @@
                         $('body').trigger(self.options.processStop);
                     }
                 },
-                success: function (data, response) {
+                success: function (data, status, response) {
                     data = self.getResponseData(response);
 
                     $(document).trigger('ajax:addToCart', {
