@@ -8,9 +8,9 @@
         },
 
         create: function () {
-            this.errorMessages = ko.observableArray([]);
-            this.successMessages = ko.observableArray([]);
-            this.messageContainer = this;
+            this.messageContainer = this.options.messageContainer || this;
+            this.errorMessages = this.messageContainer.errorMessages || ko.observableArray([]);
+            this.successMessages = this.messageContainer.successMessages || ko.observableArray([]);
         },
 
         isVisible: function () {
