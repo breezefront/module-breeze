@@ -74,6 +74,22 @@
         });
     }
 
+    $.breezemap.uiLayout = (nodes) => {
+        $(document).on('breeze:load', () => {
+            nodes.forEach(node => {
+                node.index = node.ns = node.__scope = node.name;
+                if (node.parent) {
+                    // eslint-disable-next-line max-nested-callbacks
+                    $.breezemap.uiRegistry.get(node.parent, parent => {
+                        parent.getRegion(node.displayArea || null).push(parent.mount(node));
+                    });
+                } else {
+                    mountView(node.name, node);
+                }
+            });
+        });
+    };
+
     /** Process 'data-mage-init' and 'text/x-magento-init' scripts */
     function processElement(el) {
         var isScript = el.tagName === 'SCRIPT',
