@@ -583,6 +583,7 @@
         register: $.breezemap.__register,
     };
     $.breezemap.uiComponent = $.uiComponent;
+    $.breezemap.uiClass = $.Base;
 
     /** Wrap prototype with mixins */
     $.mixin = function (name, mixins) {

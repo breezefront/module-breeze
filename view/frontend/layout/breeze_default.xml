@@ -396,6 +396,15 @@
                                     <item name="onRequire" xsi:type="boolean">true</item>
                                 </item>
                             </item>
+                            <item name="Magento_Ui/js/model/messages" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/messages-model</item>
+                                <item name="import" xsi:type="array">
+                                    <item name="parent" xsi:type="string">Magento_Ui/js/model/messages</item>
+                                </item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onRequire" xsi:type="boolean">true</item>
+                                </item>
+                            </item>
                         </item>
                     </item>
                     <item name="product" xsi:type="array">
