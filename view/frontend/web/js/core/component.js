@@ -214,7 +214,6 @@
     }
 
     Base = Class.extend({
-        initialize: _.noop,
         create: _.noop,
         init: _.noop,
         destroy: _.noop,
@@ -238,6 +237,14 @@
             this._init();
             this._trigger('afterCreate');
 
+            return this;
+        },
+
+        initialize: function () {
+            return this;
+        },
+
+        initObservable: function () {
             return this;
         },
 
@@ -291,10 +298,6 @@
         _setOption: function (key, value) {
             this.options[key] = value;
 
-            return this;
-        },
-
-        initObservable: function () {
             return this;
         }
     });
