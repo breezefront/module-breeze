@@ -58,7 +58,8 @@
     }
 
     function loadScript(alias, aliasAsPath) {
-        var path = aliasAsPath ? alias : $.breeze.jsconfig.map[alias] || alias;
+        var counter,
+            path = aliasAsPath ? alias : $.breeze.jsconfig.map[alias] || alias;
 
         if (!states[path]) {
             queue.push(path);
@@ -69,8 +70,12 @@
                 Promise.all(items.map(item => $.preloadScript(item))).then(async () => {
                     (async function tryLoad() {
                         if (queue[0] === path) {
+                            counter = $.breezemap.__counter;
                             for (const item of items) {
                                 await $.loadScript(item);
+                            }
+                            if (counter !== $.breezemap.__counter && !$.breezemap.__get(alias)) {
+                                $.breezemap.__register(alias);
                             }
                             resolve();
                             queue.shift();
