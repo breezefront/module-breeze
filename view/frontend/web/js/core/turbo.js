@@ -4,7 +4,8 @@
     var config = $('#breeze-turbo').data('config'),
         staticRe = /\/static\/version([a-z0-9]+)/,
         staticVersion = ($('link[href*="/static/version"]').attr('href') || '').match(staticRe),
-        restoreInlineScripts = true;
+        restoreInlineScripts = true,
+        referrers = {};
 
     function isResourceVersionChanged(responseText) {
         var newVersion = responseText.match(staticRe);
@@ -142,9 +143,7 @@
 
     // Fix for document.referrer when using turbo.
     // Since it's readonly - use $.breeze.referrer instead.
-    (function () {
-        var referrers = {};
-
+    if (config.enabled) {
         $.breeze.referrer = $.sessionStorage.ns('breeze').get('referrer') || document.referrer;
 
         // Since this event doesn't work when using back/forward buttons we use it to update referrers
@@ -157,7 +156,7 @@
             $.breeze.referrer = referrers[window.location.href] || document.referrer;
             $.sessionStorage.ns('breeze').set('referrer', $.breeze.referrer);
         });
-    })();
+    }
 
     // Fixed jumping content on 404 page. Taken from https://github.com/turbolinks/turbolinks/issues/179
     Turbolinks.HttpRequest.prototype.requestLoaded = function () {
