@@ -48,8 +48,10 @@ define([
             loginAction.registerLoginCallback(() => this.isLoading(false));
         },
 
-        _applyBindings: function (element) {
-            $.lazy(this._super.bind(this, element));
+        _applyBindings: function (element, force) {
+            if (force) {
+                this._super(element);
+            }
         },
 
         isActive: () => !customerData.get('customer')(),
@@ -74,7 +76,7 @@ define([
         },
 
         showModal: function () {
-            $(document).trigger('wakeup');
+            this._applyBindings(this.element[0], true);
             $(this.modalWindow).modal('openModal');
         },
 
