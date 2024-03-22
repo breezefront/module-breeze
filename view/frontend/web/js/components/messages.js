@@ -116,6 +116,17 @@
             setTimeout(() => {
                 $(el).addClass('shown');
             }, 0);
+
+            $(el).on('animationend', (e) => {
+                var messages = $(el).parent('.messages');
+
+                if (e.animationName === 'message-hide') {
+                    $(el).remove();
+                    if (!messages.children().length) {
+                        messages.remove();
+                    }
+                }
+            });
         });
 
         $(document).on('click', '.message > .button-close', function () {
