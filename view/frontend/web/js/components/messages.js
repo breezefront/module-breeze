@@ -64,11 +64,6 @@
                 disposableCustomerData: 'messages'
             });
 
-            // cleanup possible duplicates
-            this.cookieMessages = _.reject(this.cookieMessages, cookieMessage => {
-                return _.some(this.messages().messages, sectionMessage => sectionMessage.text === cookieMessage.text);
-            });
-
             // Force to clean obsolete messages
             if (!_.isEmpty(this.messages().messages)) {
                 $.sections.set('messages', {});
