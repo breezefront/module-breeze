@@ -131,7 +131,7 @@ class JsTranslations extends \Magento\Framework\View\Element\AbstractBlock
      */
     private function getDictionaryUrl()
     {
-        return $this->_assetRepo->getUrl($this->getDictionaryPath());
+        return $this->_assetRepo->getUrl(Config::DICTIONARY_FILE_NAME);
     }
 
     /**
