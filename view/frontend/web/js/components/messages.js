@@ -64,11 +64,7 @@
                 disposableCustomerData: 'messages'
             });
 
-            // Force to clean obsolete messages
-            if (!_.isEmpty(this.messages().messages)) {
-                $.sections.set('messages', {});
-            }
-
+            this.purgeMessages(); // call for magento < 2.4.7
             this.removeCookieMessages();
         },
 
@@ -84,6 +80,12 @@
          */
         prepareMessageForHtml: function (message) {
             return message.replace(/\+/g, ' ');
+        },
+
+        purgeMessages: function () {
+            if (!_.isEmpty(this.messages().messages)) {
+                $.sections.set('messages', {});
+            }
         },
 
         destroy: function () {
