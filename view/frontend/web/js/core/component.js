@@ -230,7 +230,7 @@
             this._defaults(this.options);
             this.__scope && this.initObservable();
             this._trigger('beforeCreate');
-            this.initialize(this.options);
+            this.initialize(this.options, this.element?.[0]);
             this.create();
             this._create();
             this.init();
