@@ -70,7 +70,7 @@
                         'sku': form.data().productSku,
                         'productIds': [form.find('input[name=product]').val()],
                         'form': form,
-                        'response': response
+                        'response': data
                     });
 
                     if (data.backUrl) {
