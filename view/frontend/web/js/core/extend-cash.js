@@ -546,11 +546,18 @@
             var promise = new Promise((resolve, reject) => {
                 this.resolve = resolve;
                 this.reject = reject;
+            }).then(result => {
+                this.stateText = 'resolved';
+                return result;
+            }).catch(() => {
+                this.stateText = 'rejected';
             });
 
             this.always = promise.always = promise.finally.bind(promise);
             this.done = this.then = promise.done = promise.then.bind(promise);
             this.fail = promise.fail = promise.catch.bind(promise);
+            this.stateText = 'pending';
+            this.state = () => this.stateText;
             this.promise = () => promise;
         };
 
