@@ -6,12 +6,13 @@ define([
 ], function (AbstractTotal, ShippingTotal, quote, totals) {
     'use strict';
 
-    var ShippingSummary, GrandTotalSummary, TaxSummary;
+    var ShippingSummary, GrandTotalSummary, TaxSummary,
+        config = window.checkoutConfig || {};
 
     AbstractTotal.extend({
         component: 'Magento_Tax/js/view/checkout/summary/subtotal',
         defaults: {
-            displaySubtotalMode: window.checkoutConfig.reviewTotalsDisplayMode,
+            displaySubtotalMode: config.reviewTotalsDisplayMode,
             template: 'Magento_Tax/checkout/summary/subtotal'
         },
 
@@ -35,7 +36,7 @@ define([
     ShippingSummary = ShippingTotal.extend({
         component: 'Magento_Tax/js/view/checkout/summary/shipping',
         defaults: {
-            displayMode: window.checkoutConfig.reviewShippingDisplayMode,
+            displayMode: config.reviewShippingDisplayMode,
             template: 'Magento_Tax/checkout/summary/shipping'
         },
 
@@ -79,8 +80,8 @@ define([
     GrandTotalSummary = AbstractTotal.extend({
         component: 'Magento_Tax/js/view/checkout/summary/grand-total',
         defaults: {
-            isFullTaxSummaryDisplayed: window.checkoutConfig.isFullTaxSummaryDisplayed || false,
-            isTaxDisplayedInGrandTotal: window.checkoutConfig.includeTaxInGrandTotal || false,
+            isFullTaxSummaryDisplayed: config.isFullTaxSummaryDisplayed || false,
+            isTaxDisplayedInGrandTotal: config.includeTaxInGrandTotal || false,
             template: 'Magento_Tax/checkout/summary/grand-total'
         },
 
@@ -123,14 +124,14 @@ define([
     TaxSummary = AbstractTotal.extend({
         component: 'Magento_Tax/js/view/checkout/summary/tax',
         defaults: {
-            isTaxDisplayedInGrandTotal: window.checkoutConfig.includeTaxInGrandTotal,
-            isFullTaxSummaryDisplayed: window.checkoutConfig.isFullTaxSummaryDisplayed,
+            isTaxDisplayedInGrandTotal: config.includeTaxInGrandTotal,
+            isFullTaxSummaryDisplayed: config.isFullTaxSummaryDisplayed,
             notCalculatedMessage: $t('Not yet calculated'),
             template: 'Magento_Tax/checkout/summary/tax'
         },
 
         ifShowValue: function () {
-            return this.getPureValue() || window.checkoutConfig.isZeroTaxDisplayed;
+            return this.getPureValue() || config.isZeroTaxDisplayed;
         },
 
         ifShowDetails: function () {

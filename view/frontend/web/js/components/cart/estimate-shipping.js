@@ -8,19 +8,21 @@ define([
 ], function (Component, quote, checkoutData, cartData, addressModel, estimation) {
     'use strict';
 
+    var config = window.checkoutConfig || {};
+
     Component.extend({
         component: 'Swissup_Breeze/js/components/estimate-shipping',
         defaults: {
-            countryId: window.checkoutConfig.defaultCountryId,
-            regionId: window.checkoutConfig.defaultRegionId || '',
+            countryId: config.defaultCountryId,
+            regionId: config.defaultRegionId || '',
             region: '',
             postcode: '',
             availableCountries: [],
             availableRegions: [],
             rates: cartData.get('rates') || [],
             isShippingBlockVisible: cartData.get('rates')?.length > 0,
-            isDisplayShippingPriceExclTax: window.checkoutConfig.isDisplayShippingPriceExclTax,
-            isDisplayShippingBothPrices: window.checkoutConfig.isDisplayShippingBothPrices,
+            isDisplayShippingPriceExclTax: config.isDisplayShippingPriceExclTax,
+            isDisplayShippingBothPrices: config.isDisplayShippingBothPrices,
         },
 
         create: function () {
