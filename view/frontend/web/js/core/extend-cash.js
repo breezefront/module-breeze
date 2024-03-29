@@ -546,8 +546,14 @@
     $.Deferred = (fn) => {
         var deferred = new function Defer() {
             var promise = new Promise((resolve, reject) => {
-                this.resolve = resolve;
-                this.reject = reject;
+                this.resolve = (...args) => {
+                    resolve(...args);
+                    return promise;
+                };
+                this.reject = (...args) => {
+                    reject(...args);
+                    return promise;
+                };
             }).then(result => {
                 this.stateText = 'resolved';
                 return result;
