@@ -4,6 +4,7 @@
     var promises = {},
         states = {},
         queue = [],
+        componentNameRe = /\/[a-z]{2}_[A-Z]{2}\/(?<name>[a-zA-Z0-9]+_[a-zA-Z0-9]+\/.*)(.min)?.js$/,
         bundlePrefixRe = /(?<prefix>Swissup_Breeze\/bundles\/\d+\/).*\.js$/,
         bundlePrefix = $('script[src*="/Swissup_Breeze/bundles/"]').attr('src')
             ?.match(bundlePrefixRe).groups.prefix,
@@ -58,34 +59,43 @@
     }
 
     function loadScript(alias, aliasAsPath) {
-        var counter,
-            path = aliasAsPath ? alias : $.breeze.jsconfig.map[alias] || alias;
+        var path = aliasAsPath ? alias : $.breeze.jsconfig.map[alias] || alias;
 
-        if (!states[path]) {
-            queue.push(path);
-            states[path] = new Promise(resolve => {
-                var items = collect(alias);
-
-                // Load js in parallel, execute in sequence
-                Promise.all(items.map(item => $.preloadScript(item))).then(async () => {
-                    (async function tryLoad() {
-                        if (queue[0] === path) {
-                            counter = $.breezemap.__counter;
-                            for (const item of items) {
-                                await $.loadScript(item);
-                            }
-                            if (counter !== $.breezemap.__counter && !$.breezemap.__get(alias)) {
-                                $.breezemap.__register(alias);
-                            }
-                            resolve();
-                            queue.shift();
-                        } else {
-                            setTimeout(tryLoad, 50);
-                        }
-                    })();
-                });
-            });
+        if (states[path]) {
+            return states[path];
         }
+
+        queue.push(path);
+        states[path] = new Promise(resolve => {
+            var items = collect(alias);
+
+            // Load js in parallel, execute in sequence
+            Promise.all(items.map(item => $.preloadScript(item))).then(async function tryLoad() {
+                var counter, match;
+
+                if (queue[0] !== path) {
+                    return setTimeout(tryLoad, 50);
+                }
+
+                for (const item of items) {
+                    match = item.match(componentNameRe);
+                    counter = $.breezemap.__counter;
+
+                    await $.loadScript(item);
+
+                    if (match && counter !== $.breezemap.__counter && !$.breezemap.__get(match.groups.name)) {
+                        $.breezemap.__register(match.groups.name);
+                    }
+                }
+
+                if (counter !== $.breezemap.__counter && !$.breezemap.__get(alias)) {
+                    $.breezemap.__register(alias);
+                }
+
+                resolve();
+                queue.shift();
+            });
+        });
 
         return states[path];
     }
