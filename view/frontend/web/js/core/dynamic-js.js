@@ -58,6 +58,18 @@
         return result.map(getUrl);
     }
 
+    function registerComponent(component) {
+        var aliases = Object.entries($.breeze.jsconfig.map).map(([key, value]) => {
+            return value === component ? key : false;
+        });
+
+        [component, ...aliases].filter(name => name).forEach(name => {
+            if (!$.breezemap.__get(name)) {
+                $.breezemap.__register(name);
+            }
+        });
+    }
+
     function loadScript(alias, aliasAsPath) {
         var path = aliasAsPath ? alias : $.breeze.jsconfig.map[alias] || alias;
 
@@ -83,13 +95,13 @@
 
                     await $.loadScript(item);
 
-                    if (match && counter !== $.breezemap.__counter && !$.breezemap.__get(match.groups.name)) {
-                        $.breezemap.__register(match.groups.name);
+                    if (match && counter !== $.breezemap.__counter) {
+                        registerComponent(match.groups.name);
                     }
                 }
 
-                if (counter !== $.breezemap.__counter && !$.breezemap.__get(alias)) {
-                    $.breezemap.__register(alias);
+                if (counter !== $.breezemap.__counter) {
+                    registerComponent(alias);
                 }
 
                 resolve();
