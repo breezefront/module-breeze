@@ -2,12 +2,12 @@
     'use strict';
 
     var address = function (data) {
-        var countryId = data.country_id || data.countryId || window.checkoutConfig.defaultCountryId,
+        var countryId = data.country_id || data.countryId || window.checkoutConfig?.defaultCountryId,
             regionId = data.region?.region_id || data.regionId || data.region_id;
 
         // eslint-disable-next-line eqeqeq
-        if (countryId && !regionId && countryId == window.checkoutConfig.defaultCountryId) {
-            regionId = window.checkoutConfig.defaultRegionId || undefined;
+        if (countryId && !regionId && countryId == window.checkoutConfig?.defaultCountryId) {
+            regionId = window.checkoutConfig?.defaultRegionId || undefined;
         }
 
         return {
