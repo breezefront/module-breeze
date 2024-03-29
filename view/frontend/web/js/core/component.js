@@ -587,7 +587,11 @@
 
     /** Wrap prototype with mixins */
     $.mixin = function (name, mixins) {
-        var proto = prototypes[name]?.prototype || $.breezemap[name]?._proto?.prototype || $.breezemap[name];
+        var proto = name;
+
+        if (typeof name === 'string') {
+            proto = prototypes[name]?.prototype || $.breezemap[name]?._proto?.prototype || $.breezemap[name];
+        }
 
         if (!proto) {
             if (!pending.mixins[name]) {
