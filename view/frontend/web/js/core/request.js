@@ -292,7 +292,7 @@
          * @return {Promise}
          */
         post: function (url, data, success) {
-            var params = success ? { data: data, success: success } : data;
+            var params = data ? _.pick({ data: data, success: success }, v => v) : data;
 
             params = prepareParams(url, params);
             params.type = params.method = 'post';
@@ -305,7 +305,7 @@
          * @return {Promise}
          */
         get: function (url, data, success) {
-            var params = success ? { data: data, success: success } : data;
+            var params = data ? _.pick({ data: data, success: success }, v => v) : data;
 
             params = prepareParams(url, params);
             params.type = params.method = 'get';

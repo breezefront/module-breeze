@@ -100,7 +100,8 @@ define([
 
             $('body').spinner(true);
 
-            return $.post($.breeze.url.rest(url), {
+            return $.post({
+                url: $.breeze.url.rest(url),
                 global: false,
                 data: {
                     gift_message: {

@@ -26,7 +26,8 @@ define([
 
             isLoading('shippingRates', true);
 
-            return $.post($.breeze.url.rest(url), {
+            return $.post({
+                url: $.breeze.url.rest(url),
                 global: false,
                 data: {
                     address: quote.shippingAddress()
@@ -43,7 +44,8 @@ define([
             isLoading('totals', true);
             totals.isLoading(true);
 
-            return $.post($.breeze.url.rest(url), {
+            return $.post({
+                url: $.breeze.url.rest(url),
                 global: false,
                 data: {
                     addressInformation: {

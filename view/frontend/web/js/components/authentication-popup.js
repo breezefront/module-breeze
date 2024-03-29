@@ -10,7 +10,8 @@ define([
     loginAction = function (loginData, redirectUrl, isGlobal, messageContainer) {
         messageContainer = messageContainer || $.registry.first('uiMessages');
 
-        return $.post(window.authenticationPopup.customerLoginUrl, {
+        return $.post({
+            url: window.authenticationPopup.customerLoginUrl,
             data: JSON.stringify(loginData),
             global: isGlobal === undefined ? true : isGlobal,
             done: (response) => {
