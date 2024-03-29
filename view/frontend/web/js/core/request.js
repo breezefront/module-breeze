@@ -141,6 +141,10 @@
             }
 
             _.each(data, function (value, key) {
+                if (_.isFunction(value)) {
+                    value = value();
+                }
+
                 if (_.isArray(value)) {
                     key = key.includes('[') ? key : key + '[]';
                     value.map((val) => formData.append(key, val));

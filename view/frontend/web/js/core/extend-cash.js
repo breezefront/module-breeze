@@ -478,6 +478,8 @@
 
             if (value && typeof value === 'object') {
                 return $.params(value, key, doNotEncode);
+            } else if (typeof value === 'function') {
+                value = value();
             }
 
             return doNotEncode ? `${key}=${value}` : `${key}=${encodeURIComponent(value)}`;
