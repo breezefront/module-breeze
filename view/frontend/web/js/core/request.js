@@ -314,17 +314,9 @@
         }
     };
 
-    $.ajax = function (url, params) {
-        return $.request.send(url, params);
-    };
-
-    $.get = $.getJSON = function (url, data, success) {
-        return $.request.get(url, data, success);
-    };
-
-    $.post = function (url, data, success) {
-        return $.request.post(url, data, success);
-    };
+    $.ajax = $.request.send;
+    $.get = $.getJSON = $.request.get;
+    $.post = $.request.post;
 
     function storageRequest(url, global, contentType, headers, method, data) {
         return $.ajax(url, {
