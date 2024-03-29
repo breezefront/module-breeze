@@ -1,6 +1,11 @@
 (function () {
     'use strict';
 
+    var config = {
+        paths: {},
+        shim: {},
+    };
+
     $.breezemap = {
         'jquery': $,
         'ko': ko,
@@ -43,8 +48,8 @@
         if (alias.indexOf('text!') === 0) {
             result = alias.substr(5).replace(/[/.]/g, '_');
             result = $('#' + result).html();
-        } else if (alias.includes('//')) {
-            result = $.loadScript(alias);
+        } else if (config.paths[alias] || alias.includes('//')) {
+            result = $.loadScript(config.paths[alias] || alias);
         } else if ($.breeze.jsconfig.map[alias]) {
             result = require('loadComponent')(alias);
         } else if (window.location.search.includes('breeze=1')) {
@@ -75,7 +80,15 @@
         // Otherwise, execute it immediately.
         if (args.some(arg => arg && arg.then)) {
             Promise.all(args)
-                .then(values => register(success.apply(this, values)))
+                .then(values => {
+                    for (const [index, value] of values.entries()) {
+                        if (value === undefined && config.shim[deps[index]]?.exports) {
+                            values[index] = window[config.shim[deps[index]].exports];
+                        }
+                    }
+
+                    return register(success.apply(this, values));
+                })
                 .catch(reason => {
                     if (error) {
                         error(reason);
@@ -90,5 +103,5 @@
 
     window.define = window.requirejs = window.require;
     window.require.toUrl = (path) => window.VIEW_URL + '/' + path;
-    window.require.config = _.noop;
+    window.require.config = (cfg) => $.extend(config, cfg || {});
 })();
