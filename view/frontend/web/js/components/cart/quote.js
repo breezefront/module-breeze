@@ -14,15 +14,14 @@ define([
 
             return data;
         },
-        config = window.checkoutConfig || {
+        shippingAddress = ko.observable(null),
+        shippingMethod = ko.observable(null),
+        totals = ko.observable(processTotalsData(window.checkoutConfig || {
             items: [],
             extension_attributes: [],
             total_segments: [],
             totalsData: {},
-        },
-        shippingAddress = ko.observable(null),
-        shippingMethod = ko.observable(null),
-        totals = ko.observable(processTotalsData(config.totalsData));
+        }));
 
     if (cartData.get('totals')) {
         totals(cartData.get('totals'));
@@ -51,14 +50,14 @@ define([
         totals: totals,
         shippingAddress: shippingAddress,
         shippingMethod: shippingMethod,
-        getQuoteId: () => config.quoteData?.entity_id,
-        isVirtual: () => !!Number(config.quoteData?.is_virtual),
-        getPriceFormat: () => config.priceFormat,
-        getBasePriceFormat: () => config.basePriceFormat,
-        getItems: () => config.quoteItemData,
+        getQuoteId: () => window.checkoutConfig?.quoteData?.entity_id,
+        isVirtual: () => !!Number(window.checkoutConfig?.quoteData?.is_virtual),
+        getPriceFormat: () => window.checkoutConfig?.priceFormat,
+        getBasePriceFormat: () => window.checkoutConfig?.basePriceFormat,
+        getItems: () => window.checkoutConfig?.quoteItemData,
         getTotals: () => totals,
         setTotals: (data) => totals(processTotalsData(data)),
-        getStoreCode: () => config.storeCode
+        getStoreCode: () => window.checkoutConfig?.storeCode
     };
 
     (() => {
