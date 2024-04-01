@@ -387,6 +387,13 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
             return $this->allBundles;
         }
 
+        foreach ($this->bundles['dynamic']['items'] ?? [] as $itemName => $item) {
+            if (!is_array($item)) {
+                $this->bundles['dynamic']['items'][$itemName] = ['path' => $item];
+            }
+            $this->bundles['dynamic']['items'][$itemName]['load']['onRequire'] = true;
+        }
+
         $this->allBundles = $this->bundles;
 
         foreach ($this->allBundles as $bundleName => $bundle) {

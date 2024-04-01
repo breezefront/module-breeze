@@ -629,6 +629,10 @@
                             </item>
                         </item>
                     </item>
+                    <item name="dynamic" xsi:type="array">
+                        <item name="sort_order" xsi:type="number">100</item>
+                        <item name="items" xsi:type="array"></item>
+                    </item>
                 </argument>
             </arguments>
         </block>
