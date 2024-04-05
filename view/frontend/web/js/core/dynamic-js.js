@@ -7,12 +7,7 @@
         componentNameRe = /\/[a-z]{2}_[A-Z]{2}\/(?<name>[a-zA-Z0-9]+_[a-zA-Z0-9]+\/.*)(.min)?.js$/,
         bundlePrefixRe = /(?<prefix>Swissup_Breeze\/bundles\/\d+\/).*\.js$/,
         bundlePrefix = $('script[src*="/Swissup_Breeze/bundles/"]').attr('src')
-            ?.match(bundlePrefixRe).groups.prefix,
-        suffixRe = /Swissup_Breeze\/.*?(core|main)(?<suffix>\.min\.js|\.js)$/,
-        jsSuffix = $('script[src*="/Swissup_Breeze/"]')
-            .filter((i, el) => el.src.includes('/core.') || el.src.includes('/main.'))
-            .attr('src')
-            .match(suffixRe).groups.suffix;
+            ?.match(bundlePrefixRe).groups.prefix;
 
     $.breeze.jsconfig = {
         map: {},
@@ -24,12 +19,6 @@
             return path.endsWith('.js') || path.endsWith('/') || path.includes('?') ? path : path + '.js';
         }
 
-        if (path.endsWith('.min')) {
-            path += '.js';
-        } else if (!path.endsWith('.min.js')) {
-            path = path.replace(/\.js$/, '');
-            path += jsSuffix;
-        }
         return window.require.toUrl(path);
     }
 

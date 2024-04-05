@@ -1,10 +1,15 @@
 (function () {
     'use strict';
 
-    var config = {
-        paths: {},
-        shim: {},
-    };
+    var suffixRe = /Swissup_Breeze\/.*?(core|main)(?<suffix>\.min\.js|\.js)$/,
+        jsSuffix = $('script[src*="/Swissup_Breeze/"]')
+            .filter((i, el) => el.src.includes('/core.') || el.src.includes('/main.'))
+            .attr('src')
+            .match(suffixRe).groups.suffix,
+        config = {
+            paths: {},
+            shim: {},
+        };
 
     $.breezemap = {
         'jquery': $,
@@ -102,6 +107,19 @@
     };
 
     window.define = window.requirejs = window.require;
-    window.require.toUrl = (path) => window.VIEW_URL + '/' + path;
+    window.require.toUrl = (path) => {
+        if (path.includes('//')) {
+            return path;
+        }
+
+        if (path.endsWith('.min')) {
+            path += '.js';
+        } else if (!path.endsWith('.min.js')) {
+            path = path.replace(/\.js$/, '');
+            path += jsSuffix;
+        }
+
+        return window.VIEW_URL + '/' + path;
+    };
     window.require.config = (cfg) => $.extend(config, cfg || {});
 })();
