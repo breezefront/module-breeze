@@ -192,11 +192,15 @@
             return selector;
         }
 
-        selector = selector.trim();
+        selector = selector.split(',').map(s => {
+            s = s.trim();
 
-        if (['>', '+', '~'].includes(selector[0])) {
-            selector = ':scope ' + selector;
-        }
+            if (['>', '+', '~'].includes(s[0])) {
+                s = ':scope ' + s;
+            }
+
+            return s;
+        }).join(',');
 
         ['button', 'checkbox', 'hidden', 'image', 'password', 'radio', 'submit', 'text'].forEach(type => {
             selector = selector.replaceAll(`:${type}`, `[type="${type}"]`);
