@@ -62,7 +62,7 @@
         var result = [];
 
         _.toArray(nodes).forEach(function (node) {
-            if (node.nodeType !== 1) {
+            if (node.nodeType !== 1 || node.parentElement?.classList.contains('breeze-container')) {
                 return;
             }
 
