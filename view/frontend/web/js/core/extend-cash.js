@@ -582,9 +582,13 @@
 
     $.onReveal = function (element, callback, options = {}) {
         var revealObserver = new IntersectionObserver(entries => {
-            if (entries.some(entry => entry.isIntersecting)) {
-                callback();
-                revealObserver.disconnect();
+            var nodes = entries
+                .filter(entry => entry.isIntersecting)
+                .map(entry => entry.target);
+
+            if (nodes.length) {
+                callback($(nodes));
+                nodes.forEach(el => revealObserver.unobserve(el));
             }
         }, options);
 
@@ -594,8 +598,7 @@
     };
 
     $.fn.onReveal = function (callback, options = {}) {
-        return this.each(function () {
-            $.onReveal(this, () => callback(this), options);
-        });
+        $.onReveal(this, callback, options);
+        return this;
     };
 })();
