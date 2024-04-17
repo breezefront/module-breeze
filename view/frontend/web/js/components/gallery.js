@@ -72,7 +72,9 @@
                     self.stage.spinner(false);
                 })
                 .on('load', function () {
-                    self.thumbsWrapper.css('max-height', self.stage.height());
+                    if (self.stage.height()) {
+                        self.thumbsWrapper.css('max-height', self.stage.height());
+                    }
                     if (!self.cache.find(`[src="${self.image.attr('src')}"]`).length) {
                         self.cache.append(self.image.clone().removeAttr('alt id class fetchpriority'));
                     }
