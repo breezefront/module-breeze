@@ -616,7 +616,6 @@
         <!-- Change templates -->
         <referenceBlock name="require.js" template="Swissup_Breeze::theme/js/require_js.phtml"/>
         <referenceBlock name="cookie_config" template="Swissup_Breeze::theme/js/cookie.phtml"/>
-        <referenceBlock name="sales.order.print.js" template="Swissup_Breeze::theme/html/print.phtml"/>
         <referenceBlock name="customer.section.config" template="Swissup_Breeze::customer/js/section-config.phtml"/>
         <referenceBlock name="customer.customer.data" template="Swissup_Breeze::customer/js/customer-data.phtml"/>
         <referenceBlock name="minicart" template="Swissup_Breeze::checkout/minicart.phtml"/>
