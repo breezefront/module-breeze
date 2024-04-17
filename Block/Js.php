@@ -5,7 +5,7 @@ namespace Swissup\Breeze\Block;
 class Js extends \Magento\Framework\View\Element\AbstractBlock
 {
     const TEMPLATE_DYNAMIC = '<script type="breeze/dynamic-js">%s</script>';
-    const TEMPLATE = '<script data-breeze defer src="%s"></script>';
+    const TEMPLATE = '<script defer src="%s"></script>';
 
     /**
      * @var \Magento\Framework\App\View\Deployment\Version

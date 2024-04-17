@@ -6,7 +6,7 @@ use Magento\Framework\View\Element\Template;
 
 class KoTemplate extends Template
 {
-    const WRAPPER = '<script type="text/html" id="%s" data-breeze>%s</script>';
+    const WRAPPER = '<script type="text/html" id="%s">%s</script>';
 
     /**
      * @return string

@@ -9,7 +9,7 @@ script;
 
 
 if (isset($secureRenderer)) {
-    echo /* @noEscape */ $secureRenderer->renderTag('script', ['data-breeze' => true, 'type' => 'module'], $scriptString, false);
+    echo /* @noEscape */ $secureRenderer->renderTag('script', ['type' => 'module'], $scriptString, false);
 } else {
-    echo "<script data-breeze type='module'>{$scriptString}</script>";
+    echo "<script type='module'>{$scriptString}</script>";
 }
