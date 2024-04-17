@@ -13,14 +13,6 @@
     <body>
         <attribute name="class" value="breeze-inactive"/>
 
-        <referenceContainer name="before.body.end">
-            <block class="Swissup\Breeze\Block\JsTranslations" name="breeze.translations">
-                <arguments>
-                    <argument name="cache_lifetime" xsi:type="number">864000</argument>
-                </arguments>
-            </block>
-        </referenceContainer>
-
         <block class="Swissup\Breeze\Block\Preload" name="breeze.preload"/>
         <block class="Magento\Framework\View\Element\Template" name="breeze.required" template="Swissup_Breeze::theme/js/required.phtml"/>
 
@@ -632,6 +624,11 @@
 
         <!-- Add ko templates -->
         <referenceContainer name="before.body.end">
+            <block class="Swissup\Breeze\Block\JsTranslations" name="breeze.translations">
+                <arguments>
+                    <argument name="cache_lifetime" xsi:type="number">864000</argument>
+                </arguments>
+            </block>
             <container name="breeze.container" htmlTag="div" htmlClass="breeze-container">
                 <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.modal.popupTpl" template="Magento_Ui::modal/modal-popup.html"/>
                 <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.modal.slideTpl" template="Magento_Ui::modal/modal-slide.html"/>
