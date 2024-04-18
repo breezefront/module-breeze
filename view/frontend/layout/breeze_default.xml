@@ -15,6 +15,7 @@
 
         <block class="Swissup\Breeze\Block\Preload" name="breeze.preload"/>
         <block class="Magento\Framework\View\Element\Template" name="breeze.required" template="Swissup_Breeze::theme/js/required.phtml"/>
+        <block class="Magento\Framework\View\Element\Template" name="breeze.jsClass" template="Swissup_Breeze::theme/js/js-class.phtml"/>
 
         <block class="Swissup\Breeze\Block\Js" name="breeze.js">
             <arguments>
