@@ -10,12 +10,6 @@ class Dropdown extends Template
 
     private \Magento\Framework\Serialize\Serializer\Json $json;
 
-    private $content;
-
-    /**
-     * @param Template\Context $context
-     * @param array $data
-     */
     public function __construct(
         Template\Context $context,
         \Magento\Framework\Serialize\Serializer\Json $json,
