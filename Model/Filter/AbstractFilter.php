@@ -53,4 +53,20 @@ class AbstractFilter
     {
         return $this->layout->getBlock('breeze.preload');
     }
+
+    protected function insertBefore($haystack, $needle, $string): string
+    {
+        $pos = strpos($haystack, $needle);
+
+        if ($pos === false) {
+            return $haystack;
+        }
+
+        return substr_replace(
+            $haystack,
+            sprintf("\n%s\n%s", $string, $needle),
+            $pos,
+            strlen($needle)
+        );
+    }
 }

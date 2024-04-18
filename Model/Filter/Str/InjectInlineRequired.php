@@ -18,10 +18,6 @@ class InjectInlineRequired extends AbstractFilter
             return $html;
         }
 
-        return str_replace(
-            '</head>',
-            sprintf("\n%s\n</head>", $block->toHtml()),
-            $html
-        );
+        return $this->insertBefore($html, '</head>', $block->toHtml());
     }
 }
