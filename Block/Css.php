@@ -37,13 +37,10 @@ class Css extends \Magento\Framework\View\Element\AbstractBlock
             } else {
                 $items[] = $this->renderLink($name, $data);
             }
+
             if (!isset($data['deferred']) || $data['deferred']) {
-                if ($inlineCss) {
-                    // We will defer this style in Swissup\Breeze\Plugin\AsyncCssPlugin
-                    $items[] = $this->renderLink('deferred-' . $name, $data);
-                } else {
-                    $items[] = $this->renderLink($name, $data, true);
-                }
+                // We will defer this style later in Swissup\Breeze\Plugin\AsyncCssPlugin
+                $items[] = $this->renderLink('deferred-' . $name, $data);
             }
         }
 
@@ -56,7 +53,7 @@ class Css extends \Magento\Framework\View\Element\AbstractBlock
      * @param boolean $deferred
      * @return string
      */
-    private function renderLink($name, $data = [], $deferred = false)
+    private function renderLink($name, $data = [])
     {
         $media = 'all';
 
@@ -64,15 +61,10 @@ class Css extends \Magento\Framework\View\Element\AbstractBlock
             $media = $data['media'];
         }
 
-        if ($deferred) {
-            $template = '<link rel="stylesheet" type="text/css" media="print" onload="media=\'' . $media . '\'" href="%s"/>';
-            $href = 'css/deferred-' . $name . '.css';
-        } else {
-            $template = '<link rel="stylesheet" type="text/css" media="' . $media . '" href="%s"/>';
-            $href = 'css/' . $name . '.css';
-        }
-
-        return sprintf($template, $this->getViewFileUrl($href));
+        return sprintf(
+            '<link rel="stylesheet" type="text/css" media="' . $media . '" href="%s"/>',
+            $this->getViewFileUrl('css/' . $name . '.css')
+        );
     }
 
     /**
