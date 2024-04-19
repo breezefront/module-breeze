@@ -26,7 +26,7 @@ class Css extends \Magento\Framework\View\Element\AbstractBlock
     protected function _toHtml()
     {
         $items = [];
-        $inlineCss = $this->_scopeConfig->getValue(
+        $inlineCss = $this->_scopeConfig->isSetFlag(
             'dev/css/use_css_critical_path',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
