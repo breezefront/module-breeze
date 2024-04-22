@@ -4,7 +4,7 @@
     var promises = {},
         states = {},
         queue = [],
-        componentNameRe = /\/[a-z]{2}_[A-Z]{2}\/(?<name>[a-zA-Z0-9]+_[a-zA-Z0-9]+\/.*)(.min)?.js$/,
+        componentNameRe = /\/[a-z]{2}_[A-Z]{2}\/(?<name>[a-zA-Z0-9]+_[a-zA-Z0-9]+\/.*?)(.min)?.js$/,
         bundlePrefixRe = /(?<prefix>Swissup_Breeze\/bundles\/\d+\/).*\.js$/,
         bundlePrefix = $('script[src*="/Swissup_Breeze/bundles/"]').attr('src')
             ?.match(bundlePrefixRe).groups.prefix;
