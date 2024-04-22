@@ -23,7 +23,7 @@
                     <!-- <argument name="enabled" xsi:type="boolean">true</argument> -->
                     <argument name="selectors" xsi:type="array">
                         <item name="basic" xsi:type="string">.scroll-reveal, .scroll-reveal-children > *</item>
-                        <item name="heading" xsi:type="string">.scroll-reveal-container [data-content-type="heading"]</item>
+                        <item name="heading" xsi:type="string">.scroll-reveal-container [data-content-type="heading"], .scroll-reveal-container .block-title > *, .scroll-reveal-container .block-title:not(:has(*))</item>
                         <item name="poster-content" xsi:type="string">.scroll-reveal-container .pagebuilder-poster-content > div > *, #html-body .scroll-reveal-container .pagebuilder-poster-content > button</item>
                         <item name="collage-content" xsi:type="string">.scroll-reveal-container .pagebuilder-collage-content > div > *, #html-body .scroll-reveal-container .pagebuilder-collage-content > button</item>
                         <item name="column-content" xsi:type="string">.scroll-reveal-container .pagebuilder-column > *</item>
