@@ -1,0 +1,18 @@
+<style>
+@media (prefers-reduced-motion: no-preference) {
+    <?= $block->getCssSelector() ?> {
+        opacity: 0;
+    }
+}
+</style>
+<script>
+require(['jquery', 'underscore'], ($, _) => {
+    var selector = <?= $block->getJsSelector() ?>;
+    $.async(selector, _.debounce(() => {
+        $(selector).filter(':not(.reveal-ready)').onReveal(items => {
+            items.each((i, el) => $(el).var('--animation-order', i))
+                .addClass('scroll-reveal reveal-slide-in reveal-ready');
+        });
+    }, 40));
+});
+</script>

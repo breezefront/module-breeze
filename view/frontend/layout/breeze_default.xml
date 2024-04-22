@@ -17,6 +17,25 @@
         <block class="Magento\Framework\View\Element\Template" name="breeze.required" template="Swissup_Breeze::theme/js/required.phtml"/>
         <block class="Magento\Framework\View\Element\Template" name="breeze.jsClass" template="Swissup_Breeze::theme/js/js-class.phtml"/>
 
+        <referenceBlock name="head.additional">
+            <block class="Swissup\Breeze\Block\Theme\ScrollReveal" name="breeze.scrollReveal">
+                <arguments>
+                    <!-- <argument name="enabled" xsi:type="boolean">true</argument> -->
+                    <argument name="selectors" xsi:type="array">
+                        <item name="basic" xsi:type="string">.scroll-reveal, .scroll-reveal-children > *</item>
+                        <item name="heading" xsi:type="string">[data-content-type="heading"]</item>
+                        <item name="poster-content" xsi:type="string">.pagebuilder-poster-content > div > *, #html-body .pagebuilder-poster-content > button</item>
+                        <item name="collage-content" xsi:type="string">.pagebuilder-collage-content > div > *, #html-body .pagebuilder-collage-content > button</item>
+                        <item name="column-content" xsi:type="string">.pagebuilder-column > *</item>
+                        <item name="listing" xsi:type="string">.product-items > .product-item</item>
+                        <item name="product-info-main" xsi:type="string">.product-info-main</item>
+                        <item name="product-info-detailed" xsi:type="string">.product.info.detailed</item>
+                        <item name="tabs" xsi:type="string">.product.data.items > .title > *</item>
+                    </argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+
         <block class="Swissup\Breeze\Block\Js" name="breeze.js">
             <arguments>
                 <argument name="cache_lifetime" xsi:type="number">864000</argument> <!-- 10 days -->

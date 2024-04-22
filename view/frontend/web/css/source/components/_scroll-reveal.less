@@ -1,0 +1,33 @@
+& when (@media-common = true) {
+& when (@critical = unsure), (@critical) {
+    :root {
+        --animation-slide-in: slideIn 600ms cubic-bezier(0, 0, .3, 1) forwards;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        .js #html-body .scroll-reveal {
+            opacity: 0;
+
+            &.reveal-slide-in {
+                transform: translateY(2rem);
+            }
+
+            &.reveal-ready {
+                animation: var(--animation, var(--animation-slide-in));
+                animation-delay: ~"calc(var(--animation-order) * 75ms)";
+            }
+        }
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateY(2rem);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+}
+}
