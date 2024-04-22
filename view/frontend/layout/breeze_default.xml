@@ -28,6 +28,7 @@
                         <item name="collage-content" xsi:type="string">.scroll-reveal-container .pagebuilder-collage-content > div > *, #html-body .scroll-reveal-container .pagebuilder-collage-content > button</item>
                         <item name="column-content" xsi:type="string">.scroll-reveal-container .pagebuilder-column > *</item>
                         <item name="listing" xsi:type="string">.product-items > .product-item</item>
+                        <item name="listing-blocks" xsi:type="string">.block:has(.product-items > .product-item) .block-title</item>
                         <item name="product-info-main" xsi:type="string">.product-info-main</item>
                         <item name="product-info-detailed" xsi:type="string">.product.info.detailed</item>
                         <item name="tabs" xsi:type="string">.product.data.items > .title > *</item>
