@@ -5,7 +5,7 @@
     }
 
     @media (prefers-reduced-motion: no-preference) {
-        .js #html-body .scroll-reveal {
+        .js #html-body.scroll-reveal-enabled .scroll-reveal {
             opacity: 0;
 
             &.reveal-slide-in {
@@ -19,8 +19,8 @@
         }
 
         // hide animated elements until slider is rebuilt to fix flickering
-        .js .scroll-reveal-container [data-content-type="slide"]:not(.slick-list > [data-content-type="slide"]) [data-element="content"] > button,
-        .js .scroll-reveal-container [data-content-type="slide"]:not(.slick-list > [data-content-type="slide"]) [data-element="content"] > div > * {
+        .js #html-body.scroll-reveal-enabled .scroll-reveal-container [data-content-type="slide"]:not(.slick-list > [data-content-type="slide"]) [data-element="content"] > button,
+        .js #html-body.scroll-reveal-enabled .scroll-reveal-container [data-content-type="slide"]:not(.slick-list > [data-content-type="slide"]) [data-element="content"] > div > * {
             opacity: 0;
         }
     }

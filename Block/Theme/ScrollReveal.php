@@ -29,6 +29,14 @@ class ScrollReveal extends Template
         return parent::getTemplate();
     }
 
+    protected function _prepareLayout()
+    {
+        if ($this->getEnabled() === true) {
+            $this->pageConfig->addBodyClass('scroll-reveal-enabled');
+        }
+        return parent::_prepareLayout();
+    }
+
     public function getSelectors()
     {
         return array_filter($this->getData('selectors'));
