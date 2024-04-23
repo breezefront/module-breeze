@@ -17,6 +17,12 @@
                 animation-delay: ~"calc(var(--animation-order) * 75ms)";
             }
         }
+
+        // hide animated elements until slider is rebuilt to fix flickering
+        .js .scroll-reveal-container [data-content-type="slide"]:not(.slick-list > [data-content-type="slide"]) [data-element="content"] > button,
+        .js .scroll-reveal-container [data-content-type="slide"]:not(.slick-list > [data-content-type="slide"]) [data-element="content"] > div > * {
+            opacity: 0;
+        }
     }
 
     @keyframes slideIn {
