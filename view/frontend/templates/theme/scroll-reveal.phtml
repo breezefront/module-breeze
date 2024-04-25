@@ -7,10 +7,31 @@
 </style>
 <script>
 require(['jquery', 'underscore'], ($, _) => {
-    var selector = <?= $block->getJsSelector() ?>;
+    var selector = <?= $block->getJsSelector() ?>,
+        containers = [
+            '.scroll-reveal-container', // do not merge with other selectors!
+            '[data-content-type="html"], [data-content-type="row"], .columns, body',
+        ];
+
     $.async(selector, _.debounce(() => {
         $(selector).filter(':not(.reveal-ready)').onReveal(items => {
-            items.each((i, el) => $(el).var('--animation-order', i))
+            var counter = 0, prevContainer;
+
+            items.each((i, el) => {
+                    containers.some(selector => {
+                        var parent = $(el).closest(selector).get(0);
+
+                        if (parent) {
+                            if (parent !== prevContainer) {
+                                prevContainer = parent;
+                                counter = 0;
+                            }
+                            return true;
+                        }
+                    });
+
+                    $(el).var('--animation-order', counter++);
+                })
                 .addClass('scroll-reveal reveal-slide-in reveal-ready');
         });
     }, 40));
