@@ -9,7 +9,8 @@
 require(['jquery', 'underscore'], ($, _) => {
     var selector = <?= $block->getJsSelector() ?>,
         containers = [
-            '.scroll-reveal-container', // do not merge with other selectors!
+            '.scroll-reveal-cascade',
+            '.scroll-reveal-container',
             '[data-content-type="html"], [data-content-type="row"], .columns, body',
         ];
 
