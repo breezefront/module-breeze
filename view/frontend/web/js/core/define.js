@@ -56,7 +56,7 @@
         } else if (config.paths[alias] || alias.includes('//')) {
             result = $.loadScript(config.paths[alias] || alias);
         } else if ($.breeze.jsconfig.map[alias]) {
-            result = require('loadComponent')(alias);
+            result = $.breezemap.loadComponent(alias);
         } else if (window.location.search.includes('breeze=1')) {
             console.log(alias);
         }
