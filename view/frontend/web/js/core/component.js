@@ -228,7 +228,6 @@
         _initialize: function (options) {
             this._options(options);
             this._defaults(this.options);
-            this.__scope && this.initObservable();
             this._trigger('beforeCreate');
             this.initialize(this.options, this.element?.[0]);
             this.create();
@@ -241,10 +240,6 @@
         },
 
         initialize: function () {
-            return this;
-        },
-
-        initObservable: function () {
             return this;
         },
 
@@ -455,6 +450,14 @@
             this._markup = $(element).html();
             this._super(name, options, element);
             window.setTimeout(this._applyBindings.bind(this, element), 0);
+        },
+
+        initialize: function () {
+            return this.initObservable();
+        },
+
+        initObservable: function () {
+            return this;
         },
 
         _applyBindings: function (element) {

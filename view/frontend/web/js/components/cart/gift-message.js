@@ -16,6 +16,7 @@ define([
                 ? window.giftOptionsConfig.giftMessage.itemLevel?.[this.itemId]?.message
                 : window.giftOptionsConfig.giftMessage.orderLevel;
 
+            this._super();
             this.index = this.__scope;
             this.itemId = this.itemId || 'orderLevel';
 

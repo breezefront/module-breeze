@@ -91,6 +91,7 @@ define([
         },
 
         initialize: function () {
+            this._super();
             $.each(window[this.configSource]?.captcha || {}, function (formId, captchaData) {
                 var captcha = Captcha(_.extend(captchaData, {
                     formId: formId
