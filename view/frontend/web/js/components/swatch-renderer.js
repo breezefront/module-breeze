@@ -1,4 +1,10 @@
-(function () {
+define([
+    'jquery',
+    'underscore',
+    'mage/template',
+    'mage/translate',
+    'priceUtils'
+], function ($, _, mageTemplate, $t, priceUtils) {
     'use strict';
 
     $.widget('SwatchRendererTooltip', {
@@ -162,7 +168,7 @@
             controlLabelId: '',
 
             // text for more button
-            moreButtonText: $.__('More'),
+            moreButtonText: $t('More'),
 
             // Callback url for media
             mediaCallback: '',
@@ -199,7 +205,7 @@
             // tier prise selectors end
 
             // A price label selector
-            normalPriceLabelSelector: '.product-info-main .normal-price .price-label',
+            normalPriceLabelSelector: '.normal-price .price-label',
             qtyInfo: '#qty'
         },
 
@@ -270,7 +276,7 @@
 
         _create: function () {
             var options = this.options,
-                gallery = $('.column.main').find('[data-gallery-role="gallery-placeholder"]'),
+                gallery = $('[data-gallery-role=gallery-placeholder]', '.column.main'),
                 productData = this._determineProductData(),
                 $main = productData.isInProductView ?
                     this.element.parents('.column.main') :
@@ -300,8 +306,7 @@
                 isInProductView = false;
 
             productId = this.element.parents('.product-item-details, .product-item-info')
-                    .find('.price-box.price-final_price')
-                    .attr('data-product-id');
+                .find('.price-box.price-final_price').attr('data-product-id');
 
             if (!productId) {
                 // Check individual product.
@@ -756,7 +761,7 @@
          */
         _toggleCheckedAttributes: function ($this, $wrapper) {
             $wrapper.attr('aria-activedescendant', $this.attr('id'))
-                    .find('.' + this.options.classes.optionClass).attr('aria-checked', false);
+                .find('.' + this.options.classes.optionClass).attr('aria-checked', false);
             $this.attr('aria-checked', true);
         },
 
@@ -805,7 +810,9 @@
          * Rewind options for controls
          */
         _Rewind: function (controls) {
-            controls.find('div[data-option-id], option[data-option-id]').removeClass('disabled').removeAttr('disabled');
+            controls.find('div[data-option-id], option[data-option-id]')
+                .removeClass('disabled')
+                .prop('disabled', false);
             controls.find('div[data-option-empty], option[data-option-empty]')
                 .attr('disabled', true)
                 .addClass('disabled')
@@ -840,11 +847,9 @@
                     var $element = $(this),
                         option = $element.data('option-id');
 
-                    if (!$widget.optionsMap.hasOwnProperty(id) ||
-                        !$widget.optionsMap[id].hasOwnProperty(option) ||
+                    if (!$widget.optionsMap.hasOwnProperty(id) || !$widget.optionsMap[id].hasOwnProperty(option) ||
                         $element.hasClass('selected') ||
-                        $element.is(':selected')
-                    ) {
+                        $element.is(':selected')) {
                         return;
                     }
 
@@ -911,30 +916,33 @@
 
             if (typeof result != 'undefined' && result.tierPrices && result.tierPrices.length) {
                 if (this.options.tierPriceTemplate) {
-                    tierPriceHtml = _.template(this.options.tierPriceTemplate)({
-                        'tierPrices': result.tierPrices,
-                        '$t': $.__,
-                        'currencyFormat': this.options.jsonConfig.currencyFormat,
-                        'priceUtils': $.catalog.priceUtils
-                    });
+                    tierPriceHtml = mageTemplate(
+                        this.options.tierPriceTemplate,
+                        {
+                            'tierPrices': result.tierPrices,
+                            '$t': $t,
+                            'currencyFormat': this.options.jsonConfig.currencyFormat,
+                            'priceUtils': priceUtils
+                        }
+                    );
                     $(this.options.tierPriceBlockSelector).html(tierPriceHtml).show();
                 }
             } else {
                 $(this.options.tierPriceBlockSelector).hide();
             }
 
-            $(this.options.normalPriceLabelSelector).hide();
+            $product.find(this.options.normalPriceLabelSelector).hide();
 
-            _.each($('.' + this.options.classes.attributeOptionsWrapper), function (attribute) {
+            _.each(this.element.find('.' + this.options.classes.attributeOptionsWrapper), function (attribute) {
                 if ($(attribute).find('.' + this.options.classes.optionClass + '.selected').length === 0) {
                     if ($(attribute).find('.' + this.options.classes.selectClass).length > 0) {
                         _.each($(attribute).find('.' + this.options.classes.selectClass), function (dropdown) {
                             if ($(dropdown).val() === '0') {
-                                $(this.options.normalPriceLabelSelector).show();
+                                $product.find(this.options.normalPriceLabelSelector).show();
                             }
                         }.bind(this));
                     } else {
-                        $(this.options.normalPriceLabelSelector).show();
+                        $product.find(this.options.normalPriceLabelSelector).show();
                     }
                 }
             }.bind(this));
@@ -1182,11 +1190,16 @@
                 }
 
                 imagesToUpdate = images.length ? this._setImageType($.extend(true, [], images)) : [];
-                isInitial = _.isEqual(imagesToUpdate, initialImages);
+                isInitial = _.isEqual(
+                    imagesToUpdate.map(({thumb, img, full, type, videoUrl}) => ({thumb, img, full, type, videoUrl})),
+                    initialImages.map(({thumb, img, full, type, videoUrl}) => ({thumb, img, full, type, videoUrl}))
+                );
 
                 if (this.options.gallerySwitchStrategy === 'prepend' && !isInitial) {
                     imagesToUpdate = imagesToUpdate.concat(initialImages);
                 }
+
+                imagesToUpdate = this._setImageIndex(imagesToUpdate);
 
                 gallery.updateData(imagesToUpdate);
             } else if (justAnImage && justAnImage.img) {
@@ -1210,6 +1223,17 @@
                     photo.removeAttr('sizes');
                 }
             }
+        },
+
+        _setImageIndex: function (images) {
+            var length = images.length,
+                i;
+
+            for (i = 0; length > i; i++) {
+                images[i].i = i + 1;
+            }
+
+            return images;
         },
 
         /**
@@ -1313,4 +1337,4 @@
             );
         }
     });
-})();
+});
