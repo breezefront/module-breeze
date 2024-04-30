@@ -557,17 +557,26 @@
                                 <item name="import" xsi:type="array">
                                     <item name="wrapper" xsi:type="string">Magento_Paypal/js/in-context/express-checkout-wrapper</item>
                                 </item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onInteraction" xsi:type="boolean">true</item>
+                                </item>
                             </item>
                             <item name="Magento_Paypal/js/in-context/button" xsi:type="array">
                                 <item name="path" xsi:type="string">Magento_Paypal/js/in-context/button</item>
                                 <item name="import" xsi:type="array">
                                     <item name="wrapper" xsi:type="string">Magento_Paypal/js/in-context/express-checkout-wrapper</item>
                                 </item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onInteraction" xsi:type="boolean">true</item>
+                                </item>
                             </item>
                             <item name="Magento_Paypal/js/view/paylater" xsi:type="array">
                                 <item name="path" xsi:type="string">Magento_Paypal/js/view/paylater</item>
                                 <item name="import" xsi:type="array">
                                     <item name="paypal-sdk" xsi:type="string">Magento_Paypal/js/in-context/paypal-sdk</item>
+                                </item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onInteraction" xsi:type="boolean">true</item>
                                 </item>
                             </item>
 
