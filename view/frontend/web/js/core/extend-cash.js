@@ -453,6 +453,10 @@
         return Object.fromEntries((new FormData(this[0])).entries());
     };
 
+    $.fn.serializeArray = function () {
+        return Array.from((new FormData(this[0])).entries()).map(([name, value]) => ({name, value}));
+    };
+
     $.proxy = _.bind;
     $.map = _.map;
     $.now = Date.now;
