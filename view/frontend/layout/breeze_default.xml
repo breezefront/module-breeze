@@ -17,27 +17,6 @@
         <block class="Magento\Framework\View\Element\Template" name="breeze.required" template="Swissup_Breeze::theme/js/required.phtml"/>
         <block class="Magento\Framework\View\Element\Template" name="breeze.jsClass" template="Swissup_Breeze::theme/js/js-class.phtml"/>
 
-        <referenceBlock name="head.additional">
-            <block class="Swissup\Breeze\Block\Theme\ScrollReveal" name="breeze.scrollReveal">
-                <arguments>
-                    <!-- <argument name="enabled" xsi:type="boolean">true</argument> -->
-                    <argument name="selectors" xsi:type="array">
-                        <item name="basic" xsi:type="string">.scroll-reveal, .scroll-reveal-children > *</item>
-                        <item name="heading" xsi:type="string">.scroll-reveal-container .heading, .scroll-reveal-container .block-title > *, .scroll-reveal-container .block-title:not(:has(*))</item>
-                        <item name="pagebuilder-heading" xsi:type="string">.scroll-reveal-container [data-content-type="heading"]</item>
-                        <item name="pagebuilder-poster-content" xsi:type="string">.scroll-reveal-container .pagebuilder-poster-content > div > *, #html-body .scroll-reveal-container .pagebuilder-poster-content > button</item>
-                        <item name="pagebuilder-collage-content" xsi:type="string">.scroll-reveal-container .pagebuilder-collage-content > div > *, #html-body .scroll-reveal-container .pagebuilder-collage-content > button</item>
-                        <item name="pagebuilder-column-content" xsi:type="string">.scroll-reveal-container .pagebuilder-column > *</item>
-                        <item name="pagebuilder-buttons" xsi:type="string">.scroll-reveal-container [data-content-type="buttons"] > *</item>
-                        <item name="listing" xsi:type="string">.product-items > .product-item</item>
-                        <item name="product-info-main" xsi:type="string">.product-info-main</item>
-                        <item name="product-info-detailed" xsi:type="string">.main > .product.info.detailed</item>
-                        <item name="tabs" xsi:type="string">.product.data.items > .title > *</item>
-                    </argument>
-                </arguments>
-            </block>
-        </referenceBlock>
-
         <block class="Swissup\Breeze\Block\Js" name="breeze.js">
             <arguments>
                 <argument name="cache_lifetime" xsi:type="number">864000</argument> <!-- 10 days -->
@@ -648,6 +627,24 @@
             <block class="Swissup\Breeze\Block\JsTranslations" name="breeze.translations">
                 <arguments>
                     <argument name="cache_lifetime" xsi:type="number">864000</argument>
+                </arguments>
+            </block>
+            <block class="Swissup\Breeze\Block\Theme\ScrollReveal" name="breeze.scrollReveal">
+                <arguments>
+                    <!-- <argument name="enabled" xsi:type="boolean">true</argument> -->
+                    <argument name="selectors" xsi:type="array">
+                        <item name="basic" xsi:type="string">.scroll-reveal, .scroll-reveal-children > *</item>
+                        <item name="heading" xsi:type="string">.scroll-reveal-container .heading, .scroll-reveal-container .block-title > *, .scroll-reveal-container .block-title:not(:has(*))</item>
+                        <item name="pagebuilder-heading" xsi:type="string">.scroll-reveal-container [data-content-type="heading"]</item>
+                        <item name="pagebuilder-poster-content" xsi:type="string">.scroll-reveal-container .pagebuilder-poster-content > div > *, #html-body .scroll-reveal-container .pagebuilder-poster-content > button</item>
+                        <item name="pagebuilder-collage-content" xsi:type="string">.scroll-reveal-container .pagebuilder-collage-content > div > *, #html-body .scroll-reveal-container .pagebuilder-collage-content > button</item>
+                        <item name="pagebuilder-column-content" xsi:type="string">.scroll-reveal-container .pagebuilder-column > *</item>
+                        <item name="pagebuilder-buttons" xsi:type="string">.scroll-reveal-container [data-content-type="buttons"] > *</item>
+                        <item name="listing" xsi:type="string">.product-items > .product-item</item>
+                        <item name="product-info-main" xsi:type="string">.product-info-main</item>
+                        <item name="product-info-detailed" xsi:type="string">.main > .product.info.detailed</item>
+                        <item name="tabs" xsi:type="string">.product.data.items > .title > *</item>
+                    </argument>
                 </arguments>
             </block>
             <container name="breeze.container" htmlTag="div" htmlClass="breeze-container">
