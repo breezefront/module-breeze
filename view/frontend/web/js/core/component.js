@@ -493,7 +493,9 @@
             });
 
             _.each(values, (value, key) => {
-                this[key] = $.copyProp(value);
+                if (!_.has(this, key)) {
+                    this[key] = $.copyProp(value);
+                }
             });
         },
 
