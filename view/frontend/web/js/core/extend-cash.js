@@ -179,9 +179,12 @@
         return original.bind(this)(event, data);
     });
 
-    $.fn.on = _.wrap($.fn.on, function (original, eventName, handler) {
+    $.fn.on = _.wrap($.fn.on, function (original, eventName, handler, selector, data, one) {
         if (typeof eventName === 'string' && eventName === 'breeze:load' && $.breeze.ready) {
             handler?.();
+            if (one) {
+                return;
+            }
         }
 
         return original.apply(this, Array.prototype.slice.call(arguments, 1));
