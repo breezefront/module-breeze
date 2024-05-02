@@ -75,7 +75,7 @@
     }
 
     $.breezemap.uiLayout = (nodes) => {
-        $(document).on('breeze:load', () => {
+        $(document).one('breeze:load', () => {
             nodes.forEach(node => {
                 node.index = node.ns = node.__scope = node.name;
                 if (node.parent) {
