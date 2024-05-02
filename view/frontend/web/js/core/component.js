@@ -479,7 +479,9 @@
 
         destroy: function () {
             // Restore initial markup that is used as a template in knockout
-            this.element.html(this._markup);
+            if (!this.element.is('body')) {
+                this.element.html(this._markup);
+            }
             this._super();
         },
 
