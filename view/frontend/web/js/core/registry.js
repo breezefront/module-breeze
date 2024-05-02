@@ -1,7 +1,15 @@
 $.registry = (function () {
     'use strict';
 
-    var data = {};
+    var data = {},
+        scopeToName = {};
+
+    function toName(name) {
+        if (data[name]) {
+            return name;
+        }
+        return scopeToName[name] || name;
+    }
 
     return {
         first: function (name) {
@@ -15,6 +23,8 @@ $.registry = (function () {
          */
         get: function (name, element) {
             var result = [];
+
+            name = toName(name);
 
             if (!data[name] || !data[name].objects) {
                 return data[name];
@@ -57,6 +67,7 @@ $.registry = (function () {
 
             if (component.__scope) {
                 $.breezemap.uiRegistry.set(component.__scope, component);
+                scopeToName[component.__scope] = name;
             }
 
             if (!element) {
@@ -75,6 +86,12 @@ $.registry = (function () {
             var instance, index;
 
             if (name && element) {
+                name = toName(name);
+
+                if (!data[name]) {
+                    return;
+                }
+
                 instance = data[name].objects.get(element);
                 index = data[name].elements.indexOf(element);
 
