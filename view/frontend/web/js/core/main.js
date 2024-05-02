@@ -13,6 +13,8 @@
 
     /** Init 'data-mage-init' and 'text/x-magento-init' scripts */
     function mount(component, data, now) {
+        component = component || 'uiComponent';
+
         if (data.settings?.componentDisabled === true) {
             return;
         }
