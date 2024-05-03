@@ -170,7 +170,9 @@
         _setInitialOptionsLabels: function () {
             $.each(this.options.spConfig.attributes, function (index, element) {
                 $.each(element.options, function (optIndex, optElement) {
-                    this.options.spConfig.attributes[index].options[optIndex].initialLabel = optElement.label;
+                    if (!optElement.initialLabel) {
+                        this.options.spConfig.attributes[index].options[optIndex].initialLabel = optElement.label;
+                    }
                 }.bind(this));
             }.bind(this));
         },
