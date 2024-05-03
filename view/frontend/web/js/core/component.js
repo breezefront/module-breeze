@@ -439,7 +439,9 @@
             }
 
             this._regions = {};
-            this._markup = $(element).html();
+            if (!$(element).is('body')) {
+                this._markup = $(element).html();
+            }
             this._super(name, options, element);
             window.setTimeout(this._applyBindings.bind(this, element), 0);
         },
