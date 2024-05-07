@@ -81,7 +81,7 @@ class JsBuild
      */
     public function getBundledAssets()
     {
-        if ($this->assets) {
+        if (!$this->items || $this->assets) {
             return $this->assets;
         }
 
@@ -117,9 +117,7 @@ class JsBuild
      */
     public function publishIfNotExist()
     {
-        if (!$this->staticDir->isExist($this->getPath()) ||
-            !$this->versionMatches()
-        ) {
+        if ($this->items && !$this->versionMatches()) {
             $this->publish();
         }
 
@@ -153,7 +151,7 @@ class JsBuild
      */
     public function publish()
     {
-        if (!$this->staticDir->isWritable()) {
+        if (!$this->items || !$this->staticDir->isWritable()) {
             return $this;
         }
 
@@ -223,6 +221,10 @@ class JsBuild
 
     private function versionMatches()
     {
+        if (!$this->staticDir->isExist($this->getPath())) {
+            return false;
+        }
+
         $deployedVersion = (string) $this->readFileFromPubStatic($this->getPathToVersionFile());
         $deployedVersion = trim($deployedVersion);
 
