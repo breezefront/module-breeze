@@ -219,12 +219,13 @@
 
         // eslint-disable-next-line one-var, vars-on-top
         var result = fetch(params.url, params)
-            .then(function (response) {
+            .then(async function (response) {
                 var error;
 
                 if (!response.ok) {
                     error = new Error(response.code);
                     error.response = response;
+                    error.response.text = await response.text();
                     throw error;
                 }
 
