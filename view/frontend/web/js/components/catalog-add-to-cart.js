@@ -109,6 +109,8 @@
                         'form': form,
                         'response': response
                     });
+
+                    location.reload();
                 }
             });
         },
