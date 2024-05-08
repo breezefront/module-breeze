@@ -31,6 +31,13 @@
 
         params.fail.filter(fn => fn).forEach(fn => fn(response, 'error', error));
         params.always.filter(fn => fn).forEach(fn => fn(response, 'error', response));
+
+        $(document).trigger('ajaxError', {
+            response: response,
+            responseText: response.text,
+            settings: params,
+            error: error,
+        });
     }
 
     /**
