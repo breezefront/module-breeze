@@ -37,6 +37,7 @@
             responseText: response.text,
             settings: params,
             error: error,
+            status: response.status,
         });
     }
 
