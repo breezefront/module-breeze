@@ -66,6 +66,7 @@
                             <item name="breeze-request" xsi:type="string">Swissup_Breeze/js/core/request.js</item>
                             <item name="breeze-translate" xsi:type="string">Swissup_Breeze/js/core/translate.js</item>
                             <item name="breeze-validator" xsi:type="string">Swissup_Breeze/js/core/validator.js</item>
+                            <item name="breeze-validators" xsi:type="string">Swissup_Breeze/js/core/validators/core</item>
                             <item name="breeze-cookie" xsi:type="string">Swissup_Breeze/js/core/cookie.js</item>
                             <item name="breeze-storage" xsi:type="string">Swissup_Breeze/js/core/storage.js</item>
                             <item name="breeze-sections" xsi:type="string">Swissup_Breeze/js/core/sections.js</item>
@@ -88,7 +89,6 @@
                         <item name="active" xsi:type="boolean">true</item>
                         <item name="sort_order" xsi:type="number">10</item>
                         <item name="items" xsi:type="array">
-                            <item name="breeze-validators" xsi:type="string">Swissup_Breeze/js/components/validators/core</item>
                             <item name="breeze-form" xsi:type="string">Swissup_Breeze/js/components/form</item>
                             <item name="mage/calendar" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/calendar</item>
@@ -381,7 +381,7 @@
                                     <item name="shuffle-and-reveal" xsi:type="string">Swissup_Breeze/js/common/shuffle-and-reveal</item>
                                 </item>
                             </item>
-                            <item name="validate-item-quantity" xsi:type="string">Swissup_Breeze/js/components/validators/cart</item>
+                            <item name="validate-item-quantity" xsi:type="string">Swissup_Breeze/js/core/validators/cart</item>
                             <item name="product-configure" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/product-configure</item>
                                 <item name="load" xsi:type="array">
@@ -448,7 +448,7 @@
                         <item name="sort_order" xsi:type="number">30</item>
                         <item name="items" xsi:type="array">
                             <item name="validate-customer-password" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/validators/customer</item>
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/core/validators/customer</item>
                                 <item name="names" xsi:type="array">
                                     <item name="validate-customer-password" xsi:type="string">validate-customer-password</item>
                                     <item name="validate-emails" xsi:type="string">validate-emails</item>
