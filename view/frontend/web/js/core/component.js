@@ -220,7 +220,6 @@
         _create: _.noop,
         _init: _.noop,
         _trigger: _.noop,
-        _defaults: _.noop,
 
         /**
          * @param {Object} options
@@ -242,6 +241,16 @@
 
         initialize: function () {
             return this;
+        },
+
+        _defaults: function (values) {
+            _.each(this.defaults || {}, (value, key) => {
+                if ($.isPlainObject(values[key]) && $.isPlainObject(value)) {
+                    this[key] = $.extendProps(values[key], value);
+                } else {
+                    this[key] = $.copyProp(_.has(values, key) ? values[key] : value);
+                }
+            });
         },
 
         /**
@@ -488,13 +497,7 @@
         },
 
         _defaults: function (values) {
-            _.each(this.defaults || {}, (value, key) => {
-                if ($.isPlainObject(values[key]) && $.isPlainObject(value)) {
-                    this[key] = $.extendProps(values[key], value);
-                } else {
-                    this[key] = $.copyProp(_.has(values, key) ? values[key] : value);
-                }
-            });
+            this._super(values);
 
             _.each(values, (value, key) => {
                 if (!_.has(this, key)) {
