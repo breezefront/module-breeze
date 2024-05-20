@@ -632,13 +632,7 @@
         <referenceBlock name="minicart" template="Swissup_Breeze::checkout/minicart.phtml"/>
         <referenceBlock name="google.maps.api" template="Swissup_Breeze::pagebuilder/googlemaps.phtml"/>
 
-        <!-- Add ko templates -->
-        <referenceContainer name="before.body.end">
-            <block class="Swissup\Breeze\Block\JsTranslations" name="breeze.translations">
-                <arguments>
-                    <argument name="cache_lifetime" xsi:type="number">864000</argument>
-                </arguments>
-            </block>
+        <referenceContainer name="after.body.start">
             <block class="Swissup\Breeze\Block\Theme\ScrollReveal" name="breeze.scrollReveal">
                 <arguments>
                     <!-- <argument name="enabled" xsi:type="boolean">true</argument> -->
@@ -655,6 +649,15 @@
                         <item name="product-info-detailed" xsi:type="string">.main > .product.info.detailed</item>
                         <item name="tabs" xsi:type="string">.product.data.items > .title > *</item>
                     </argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+
+        <!-- Add ko templates -->
+        <referenceContainer name="before.body.end">
+            <block class="Swissup\Breeze\Block\JsTranslations" name="breeze.translations">
+                <arguments>
+                    <argument name="cache_lifetime" xsi:type="number">864000</argument>
                 </arguments>
             </block>
             <container name="breeze.container" htmlTag="div" htmlClass="breeze-container">
