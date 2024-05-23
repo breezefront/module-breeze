@@ -1,13 +1,7 @@
 (function () {
     'use strict';
 
-    var reloaded = false;
-
-    $(document).on('breeze:mount:Magento_LoginAsCustomerFrontendUi/js/login', function (event, data) {
-        if (reloaded) {
-            return;
-        }
-        reloaded = true;
+    $(document).one('breeze:mount:Magento_LoginAsCustomerFrontendUi/js/login', function (event, data) {
         $.sections.reload($.sections.getSectionNames());
         $(document).on('customer-data-reload', function () {
             window.location.href = data.settings.redirectUrl;
