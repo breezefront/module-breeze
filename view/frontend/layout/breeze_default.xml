@@ -89,7 +89,7 @@
                         <item name="active" xsi:type="boolean">true</item>
                         <item name="sort_order" xsi:type="number">10</item>
                         <item name="items" xsi:type="array">
-                            <item name="breeze-form" xsi:type="string">Swissup_Breeze/js/components/form</item>
+                            <item name="Magento_Ui/js/form/form" xsi:type="string">Swissup_Breeze/js/components/form</item>
                             <item name="mage/calendar" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/calendar</item>
                                 <item name="load" xsi:type="array">

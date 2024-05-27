@@ -2,6 +2,7 @@
     'use strict';
 
     $.view('form', {
+        component: 'Magento_Ui/js/form/form',
         defaults: {
             namespace: false
         },
