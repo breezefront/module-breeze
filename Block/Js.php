@@ -459,10 +459,9 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
                     $importBundle = $info['bundle'];
                     if (empty($this->activeBundles[$importBundle])) {
-                        unset($this->bundles[$bundleName]['items'][$itemName]['import'][$key]);
                         unset($this->allBundles[$bundleName]['items'][$itemName]['import'][$key]);
-                        $this->activeBundles[$importBundle] = $this->bundles[$importBundle];
-                        $this->processImports([$importBundle => $this->bundles[$importBundle]]);
+                        $this->activeBundles[$importBundle] = $this->allBundles[$importBundle];
+                        $this->processImports([$importBundle => $this->allBundles[$importBundle]]);
                     }
                 }
             }
