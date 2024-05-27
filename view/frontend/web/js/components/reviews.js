@@ -8,10 +8,8 @@
             var self = this,
                 reviewTab = $(this.options.reviewsTabSelector);
 
-            if (!reviewTab.length) {
-                this.loadReviews();
-            } else if (reviewTab.hasClass('active')) {
-                this.loadReviews();
+            if (!reviewTab.length || reviewTab.hasClass('active')) {
+                $('#product-review-container').onReveal(() => this.loadReviews());
             } else {
                 reviewTab.one('collapsible:beforeOpen', function () {
                     self.loadReviews();
