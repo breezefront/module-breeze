@@ -387,13 +387,6 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
             return $this->allBundles;
         }
 
-        foreach ($this->bundles['dynamic']['items'] ?? [] as $itemName => $item) {
-            if (!is_array($item)) {
-                $this->bundles['dynamic']['items'][$itemName] = ['path' => $item];
-            }
-            $this->bundles['dynamic']['items'][$itemName]['load']['onRequire'] = true;
-        }
-
         $this->allBundles = $this->bundles;
 
         foreach ($this->allBundles as $bundleName => $bundle) {
@@ -408,6 +401,15 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                     $this->allBundles[$bundleName]['items'][$itemName] = $item;
                 }
 
+                if (empty($item['load']) && $bundleName === 'dynamic') {
+                    $item['load'] = ['onRequire' => true];
+                    $this->allBundles[$bundleName]['items'][$itemName] = $item;
+                }
+            }
+        }
+
+        foreach ($this->allBundles as $bundleName => $bundle) {
+            foreach ($bundle['items'] as $itemName => $item) {
                 // add import/load to mixins
                 foreach ($item['mixins'] ?? [] as $mixinItemName) {
                     if (!$info = $this->findItemInfo($mixinItemName)) {
