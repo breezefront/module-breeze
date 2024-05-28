@@ -458,9 +458,9 @@
 
     function onGalleryChange(gallery) {
         var magnifierElement = getMagnifierElement(gallery),
-            options = gallery.options.magnifierOpts || {};
+            options = gallery.options.magnifierOpts;
 
-        if (options.enabled === false || gallery.opened()) {
+        if (!options || options.enabled === false || gallery.opened()) {
             return;
         }
 
@@ -481,9 +481,9 @@
     }
 
     $(document).on('gallery:loaded', (e, data) => {
-        var options = data.instance.options.magnifierOpts || {};
+        var options = data.instance.options.magnifierOpts;
 
-        if (options.enabled === false) {
+        if (!options || options.enabled === false) {
             return;
         }
 
