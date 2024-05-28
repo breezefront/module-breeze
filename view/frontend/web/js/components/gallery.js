@@ -40,7 +40,9 @@
 
         create: function () {
             this.options = _.extend(this.options, this.options.options || {});
-            this.options.magnifierOpts.gallery = this;
+            if (this.options.magnifierOpts) {
+                this.options.magnifierOpts.gallery = this;
+            }
             this.promises = {};
             this.cache = $('<div data-breeze-temporary>').hide().appendTo(document.body);
             this.gallery = this.element.parent();
