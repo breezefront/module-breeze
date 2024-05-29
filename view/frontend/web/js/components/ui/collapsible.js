@@ -230,6 +230,8 @@
         }
     });
 
+    $.breezemap['mage/collapsible'] = $.breezemap['collapsible'];
+
     $(document).on('click.collapsible', function (event) {
         var instance = $(event.target).closest('[data-trigger]').closest('[data-collapsible]').collapsible('instance'),
             tmpInstance;

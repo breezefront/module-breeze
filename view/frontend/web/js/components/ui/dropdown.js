@@ -93,6 +93,8 @@
         }
     });
 
+    $.breezemap['mage/dropdown'] = $.breezemap['dropdown'];
+
     $(document).on('click.dropdown', function (event) {
         var dialog,
             dropdown = $(event.target).closest('[data-dropdown]').dropdown('instance'),
