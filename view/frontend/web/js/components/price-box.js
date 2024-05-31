@@ -1,4 +1,6 @@
-(function () {
+define([
+    'Magento_Catalog/js/price-utils'
+], function (priceUtils) {
     'use strict';
 
     var globalOptions = {
@@ -22,7 +24,7 @@
             var box = this.element;
 
             box.trigger('updatePrice');
-            this.cache.displayPrices = $.catalog.priceUtils.deepClone(this.options.prices);
+            this.cache.displayPrices = priceUtils.deepClone(this.options.prices);
         },
 
         _create: function () {
@@ -104,7 +106,7 @@
             });
 
             if (_.isEmpty(additionalPrice)) {
-                this.cache.displayPrices = $.catalog.priceUtils.deepClone(this.options.prices);
+                this.cache.displayPrices = priceUtils.deepClone(this.options.prices);
             } else {
                 _.each(additionalPrice, function (option, priceCode) {
                     origin = this.options.prices[priceCode] || {};
@@ -135,7 +137,7 @@
                     return memo + amount;
                 }, price.amount);
 
-                price.formatted = $.catalog.priceUtils.formatPrice(price.final, priceFormat);
+                price.formatted = priceUtils.formatPrice(price.final, priceFormat);
 
                 $('[data-price-type="' + priceCode + '"]', this.element).html(priceTemplate({
                     data: price
@@ -144,8 +146,8 @@
         },
 
         setDefault: function (prices) {
-            this.cache.displayPrices = $.catalog.priceUtils.deepClone(prices);
-            this.options.prices = $.catalog.priceUtils.deepClone(prices);
+            this.cache.displayPrices = priceUtils.deepClone(prices);
+            this.options.prices = priceUtils.deepClone(prices);
         },
 
         _setDefaultsFromDataSet: function () {
@@ -210,4 +212,4 @@
             return result;
         }
     });
-})();
+});

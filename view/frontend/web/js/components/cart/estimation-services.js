@@ -1,8 +1,9 @@
 define([
+    'mage/url',
     'Magento_Checkout/js/model/quote',
     'Magento_Checkout/js/model/totals',
     'Magento_Checkout/js/model/cart/cache'
-], function (quote, totals, cartData) {
+], function (urlBuilder, quote, totals, cartData) {
     'use strict';
 
     var states = {},
@@ -27,7 +28,7 @@ define([
             isLoading('shippingRates', true);
 
             return $.post({
-                url: $.breeze.url.rest(url),
+                url: urlBuilder.rest(url),
                 global: false,
                 data: {
                     address: quote.shippingAddress()
@@ -45,7 +46,7 @@ define([
             totals.isLoading(true);
 
             return $.post({
-                url: $.breeze.url.rest(url),
+                url: urlBuilder.rest(url),
                 global: false,
                 data: {
                     addressInformation: {

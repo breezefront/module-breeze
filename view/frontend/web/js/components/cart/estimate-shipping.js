@@ -1,11 +1,12 @@
 define([
     'uiComponent',
+    'Magento_Catalog/js/price-utils',
     'Magento_Checkout/js/model/quote',
     'Magento_Checkout/js/checkout-data',
     'Magento_Checkout/js/model/cart/cache',
     'Magento_Checkout/js/model/new-customer-address',
     'Swissup_Breeze/js/components/cart/estimation-services'
-], function (Component, quote, checkoutData, cartData, addressModel, estimation) {
+], function (Component, priceUtils, quote, checkoutData, cartData, addressModel, estimation) {
     'use strict';
 
     var config = window.checkoutConfig || {};
@@ -210,7 +211,7 @@ define([
         },
 
         getFormattedPrice: function (price) {
-            return $.catalog.priceUtils.formatPriceLocale(price, quote.getPriceFormat());
+            return priceUtils.formatPriceLocale(price, quote.getPriceFormat());
         }
     });
 });

@@ -1,7 +1,8 @@
 define([
+    'mage/url',
     'uiComponent',
     'Magento_Checkout/js/model/quote'
-], function (Component, quote) {
+], function (urlBuilder, Component, quote) {
     'use strict';
 
     if (!window.giftOptionsConfig) {
@@ -102,7 +103,7 @@ define([
             $('body').spinner(true);
 
             return $.post({
-                url: $.breeze.url.rest(url),
+                url: urlBuilder.rest(url),
                 global: false,
                 data: {
                     gift_message: {
@@ -122,7 +123,7 @@ define([
                         this.message('');
                     }
 
-                    // window.location.href = $.breeze.url.build('checkout/cart/updatePost') +
+                    // window.location.href = urlBuilder.build('checkout/cart/updatePost') +
                     //     '?form_key=' + window.checkoutConfig.formKey +
                     //     '&cart[]';
                 },
