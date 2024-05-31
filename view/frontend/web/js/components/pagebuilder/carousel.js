@@ -1,4 +1,4 @@
-(function () {
+define(['pagebuilderSlider'], () => {
     'use strict';
 
     $.widget('pagebuilderCarousel', {
@@ -41,4 +41,4 @@
             return this.element.pagebuilderSlider('instance');
         }
     });
-})();
+});
