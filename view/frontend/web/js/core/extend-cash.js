@@ -237,13 +237,20 @@
     });
 
     $.fn.find = _.wrap($.fn.find, function (original, selector) {
-        selector = normalizeSelector(selector);
-
         if (selector instanceof Node) {
             return this[0].contains(selector) ? $(selector) : $();
         }
 
         return original.bind(this)(selector);
+    });
+
+    [Document, Element].forEach(Item => {
+        Item.prototype.querySelectorAll = _.wrap(
+            Item.prototype.querySelectorAll,
+            function (o, selector) {
+                return o.bind(this)(normalizeSelector(selector));
+            }
+        );
     });
 
     $.fn.component = function (key, value) {
