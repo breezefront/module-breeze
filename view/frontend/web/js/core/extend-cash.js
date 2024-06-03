@@ -209,7 +209,9 @@
             selector = selector.replaceAll(`:${type}`, `[type="${type}"]`);
         });
 
-        return selector.replaceAll(':input', ':where(input, select, textarea, button)');
+        return selector
+            .replaceAll(':selected', ':checked')
+            .replaceAll(':input', ':where(input, select, textarea, button)');
     }
 
     $.fn.is = _.wrap($.fn.is, function (original, selector) {
