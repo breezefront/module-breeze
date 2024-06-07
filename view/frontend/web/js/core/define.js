@@ -40,7 +40,7 @@
         }
 
         if (this.result !== undefined && !(this.result instanceof $)) {
-            [this.name].filter(alias => alias).forEach(alias => {
+            [this.path, this.name].filter(alias => alias).forEach(alias => {
                 alias = alias.startsWith('__module-') ? `__component${$.breezemap.__counter++}` : alias;
 
                 if ($.breezemap.__get(alias)) {
