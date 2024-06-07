@@ -1,4 +1,4 @@
-(function () {
+define(['collapsible'], () => {
     'use strict';
 
     $.widget('tabs', {
@@ -191,4 +191,4 @@
             return index;
         }
     });
-})();
+});

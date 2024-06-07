@@ -156,6 +156,7 @@
             $.breeze.referrer = referrers[window.location.href] || document.referrer;
             $.sessionStorage.ns('breeze').set('referrer', $.breeze.referrer);
         });
+        $(document).trigger('breeze:turbo-ready');
     }
 
     // Fixed jumping content on 404 page. Taken from https://github.com/turbolinks/turbolinks/issues/179

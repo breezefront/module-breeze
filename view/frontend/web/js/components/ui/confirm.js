@@ -1,7 +1,7 @@
-(function () {
+define(['Magento_Ui/js/modal/modal'], (modal) => {
     'use strict';
 
-    $.widget('mage.confirm', 'modal', {
+    $.widget('mage.confirm', modal, {
         options: {
             modalClass: 'confirm',
             title: '',
@@ -55,4 +55,4 @@
     $.breezemap['Magento_Ui/js/modal/confirm'] = $.confirm = function (config) {
         return $('<div></div>').html(config.content).confirm(config);
     };
-})();
+});

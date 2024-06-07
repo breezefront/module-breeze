@@ -1,4 +1,8 @@
-(function () {
+define([
+    'jquery',
+    'validation',
+    'catalogAddToCart'
+], ($) => {
     'use strict';
 
     $.widget('productValidate', {
@@ -9,4 +13,4 @@
             this.element.catalogAddToCart(this.options);
         }
     });
-})();
+});

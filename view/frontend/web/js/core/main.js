@@ -27,7 +27,7 @@
             $(document).trigger('breeze:mount:' + component, data);
         }
 
-        if (now && (!$.breeze.jsconfig.map[component] || $.breezemap.__get(component))) {
+        if (now && (!$.breeze.jsconfig[component] || $.breezemap.__get(component))) {
             return callback();
         }
 
@@ -332,17 +332,11 @@
         });
     }
 
-    function loadEventName() {
-        var name = 'DOMContentLoaded';
-
-        if (typeof Turbo !== 'undefined' || typeof Turbolinks !== 'undefined') {
-            name = 'turbo:load turbolinks:load';
-        }
-
-        return name;
-    }
-
-    $(document).on(loadEventName(), onDomDocumentLoad);
+    $(document).on('DOMContentLoaded', onDomDocumentLoad);
+    $(document).on('breeze:turbo-ready', () => {
+        $(document).off('DOMContentLoaded', onDomDocumentLoad);
+        $(document).on('turbolinks:load', onDomDocumentLoad);
+    });
     $(document).on('contentUpdated', function (event) {
         scopedElements = $('[data-bind*="scope:"]');
         walk(event.target);

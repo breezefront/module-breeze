@@ -34,18 +34,20 @@
             var self = this,
                 id = $(e.target).parent().data('address') || $(e.target).data('address');
 
-            $.confirm({
-                content: this.options.deleteConfirmMessage,
-                actions: {
-                    confirm: function () {
-                        $.breeze.visit(
-                            self.options.deleteUrlPrefix +
-                            id +
-                            '/form_key/' +
-                            $.cookies.get('form_key')
-                        );
+            require(['Magento_Ui/js/modal/confirm'], confirm => {
+                confirm({
+                    content: this.options.deleteConfirmMessage,
+                    actions: {
+                        confirm: function () {
+                            $.breeze.visit(
+                                self.options.deleteUrlPrefix +
+                                id +
+                                '/form_key/' +
+                                $.cookies.get('form_key')
+                            );
+                        }
                     }
-                }
+                });
             });
 
             return false;

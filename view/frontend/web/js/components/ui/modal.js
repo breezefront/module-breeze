@@ -2,6 +2,7 @@
     'use strict';
 
     $.widget('mage.modal', {
+        component: 'Magento_Ui/js/modal/modal',
         options: {
             type: 'popup',
             title: '',
@@ -373,7 +374,7 @@
         }
     });
 
-    $.breezemap['Magento_Ui/js/modal/modal'] = $.modal = function (config, el) {
+    $.modal = function (config, el) {
         return $(el || '<div></div>').html(config.content).modal(config);
     };
 })();

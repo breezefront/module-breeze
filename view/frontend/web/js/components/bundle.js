@@ -1,4 +1,7 @@
-(function () {
+define([
+    'jquery',
+    'Magento_Catalog/js/price-utils'
+], function ($, priceUtils) {
     'use strict';
 
     $.widget('slide', {
@@ -271,7 +274,7 @@
             template = _.template(template);
             options.filter('select').each(function (index, element) {
                 var $element = $(element),
-                    optionId = $.catalog.priceUtils.findOptionId($element),
+                    optionId = priceUtils.findOptionId($element),
                     optionConfig = config.optionConfig && config.optionConfig.options[optionId].selections,
                     value;
 
@@ -302,7 +305,7 @@
                         }, 0);
                         toTemplate.data[type] = {
                             value: value,
-                            formatted: $.catalog.priceUtils.formatPrice(value, format)
+                            formatted: priceUtils.formatPrice(value, format)
                         };
                     });
 
@@ -326,7 +329,7 @@
                 optionTierPricesElements;
 
             if (optionType === 'select-one') {
-                optionId = $.catalog.priceUtils.findOptionId(optionElement[0]);
+                optionId = priceUtils.findOptionId(optionElement[0]);
                 optionValue = optionElement.val() || null;
                 optionTierPricesElements = $(this.options.optionTierPricesBlocksSelector.replace('{1}', optionId));
 
@@ -361,7 +364,7 @@
             optionHash,
             tempChanges,
             qtyField,
-            optionId = $.catalog.priceUtils.findOptionId(element[0]),
+            optionId = priceUtils.findOptionId(element[0]),
             optionValue = element.val() || null,
             optionName = element.prop('name'),
             optionType = element.prop('type'),
@@ -385,7 +388,7 @@
                     optionQty = optionConfig[optionValue].qty || 0;
                     canQtyCustomize = optionConfig[optionValue].customQty === '1';
                     toggleQtyField(qtyField, optionQty, optionId, optionValue, canQtyCustomize);//eslint-disable-line
-                    tempChanges = $.catalog.priceUtils.deepClone(optionConfig[optionValue].prices);
+                    tempChanges = priceUtils.deepClone(optionConfig[optionValue].prices);
                     tempChanges = applyTierPrice(//eslint-disable-line
                         tempChanges,
                         optionQty,
@@ -407,7 +410,7 @@
                 _.each(optionConfig, function (row, optionValueCode) {
                     optionHash = 'bundle-option-' + optionName + '##' + optionValueCode;
                     optionQty = row.qty || 0;
-                    tempChanges = $.catalog.priceUtils.deepClone(row.prices);
+                    tempChanges = priceUtils.deepClone(row.prices);
                     tempChanges = applyTierPrice(tempChanges, optionQty, optionConfig);//eslint-disable-line
                     tempChanges = applyQty(tempChanges, optionQty);//eslint-disable-line
                     changes[optionHash] = _.contains(optionValue, optionValueCode) ? tempChanges : {};
@@ -419,7 +422,7 @@
             case 'checkbox':
                 optionHash = 'bundle-option-' + optionName + '##' + optionValue;
                 optionQty = optionConfig[optionValue].qty || 0;
-                tempChanges = $.catalog.priceUtils.deepClone(optionConfig[optionValue].prices);
+                tempChanges = priceUtils.deepClone(optionConfig[optionValue].prices);
                 tempChanges = applyTierPrice(tempChanges, optionQty, optionConfig);//eslint-disable-line
                 tempChanges = applyQty(tempChanges, optionQty);//eslint-disable-line
                 changes[optionHash] = element.is(':checked') ? tempChanges : {};
@@ -440,7 +443,7 @@
                 qtyField = element.data('qtyField');
                 qtyField.data('option', element);
                 toggleQtyField(qtyField, optionQty, optionId, optionValue, canQtyCustomize);//eslint-disable-line
-                tempChanges = $.catalog.priceUtils.deepClone(optionConfig[optionValue].prices);
+                tempChanges = priceUtils.deepClone(optionConfig[optionValue].prices);
                 tempChanges = applyTierPrice(tempChanges, optionQty, optionConfig);//eslint-disable-line
                 tempChanges = applyQty(tempChanges, optionQty);//eslint-disable-line
 
@@ -526,9 +529,9 @@
         });
 
         if (lowest !== false) {
-            oneItemPrice = $.catalog.priceUtils.deepClone(tiers[lowest].prices);
+            oneItemPrice = priceUtils.deepClone(tiers[lowest].prices);
         }
 
         return oneItemPrice;
     }
-})();
+});

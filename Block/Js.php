@@ -40,11 +40,6 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
     /**
      * @var array
      */
-    protected $activeItems = [];
-
-    /**
-     * @var array
-     */
     protected $activeBundles = null;
 
     /**
@@ -157,11 +152,6 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
     private function generateBreezemap($bundledAssets)
     {
-        $result = [
-            'map' => [],
-            'rules'=> [],
-        ];
-
         $bundleIndexes = array_fill_keys(array_keys($this->getAllBundles()), 0);
         foreach ($bundledAssets as $asset) {
             $pathParts = explode('/', $asset->getUrl());
@@ -175,54 +165,70 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
             $bundleIndexes[$matches['bundle']] = $matches['index'];
         }
 
+        $result = [];
         $activeBundles = array_keys($this->getActiveBundles());
-        foreach ($this->getAllBundles() as $name => $bundle) {
+        foreach ($this->getAllBundles() as $bundleName => $bundle) {
             foreach ($bundle['items'] as $alias => $item) {
                 $item['path'] = str_replace('::', '/', $item['path']);
                 $item['load'] = array_filter($item['load'] ?? []);
 
-                if (!empty($item['load']) || !in_array($name, $activeBundles)) {
+                if (!empty($item['load']) || !in_array($bundleName, $activeBundles)) {
                     $path = $item['path'];
                     if (empty($item['load']) && $this->isBundlingEnabled()) {
-                        $path = "{$name}*{$bundleIndexes[$name]}";
+                        $path = "{$bundleName}*{$bundleIndexes[$bundleName]}";
                     }
 
-                    $result['map'][$alias] = $path;
-                    $names = $item['names'] ?? []; // deprecated, use export instead
-                    $names += $item['export'] ?? [];
-                    foreach ($names as $anotherName) {
-                        $result['map'][$anotherName] = $path;
-                    }
-
-                    $result['rules'][$path] = array_filter([
+                    $result[$bundleName][$alias] = [
+                        'path' => $path,
                         'import' => array_filter(array_map(
                             fn ($name) => str_replace('::', '/', $name),
                             array_values($item['import'] ?? [])
-                        ), function ($name) use ($alias) {
+                        ), function ($name) use ($alias, $path) {
                             if ($name === $alias) {
                                 return true;
                             }
 
                             $info = $this->findItemInfo($name);
 
-                            return !$info || !empty($info['item']['load']);
-                        })
-                    ]);
+                            // If bundling is enabled and "import" is not a component but simple path,
+                            // our merge will put this import inside this bundle.
+                            if (strpos($path, '*') !== false && !$info) {
+                                return false;
+                            }
+
+                            return true;
+                        }),
+                    ];
                 }
 
                 if (!empty($item['load'])) {
-                    $result['rules'][$item['path']] += array_filter([
-                        'load' => array_filter([
-                            'onInteraction' => !empty($item['load']['onInteraction']),
-                            'onEvent' => array_values($item['load']['onEvent'] ?? []),
-                            'onReveal' => array_values($item['load']['onReveal'] ?? []),
-                        ]),
+                    $result[$bundleName][$alias]['load'] = array_filter([
+                        'onInteraction' => !empty($item['load']['onInteraction']),
+                        'onEvent' => array_values($item['load']['onEvent'] ?? []),
+                        'onReveal' => array_values($item['load']['onReveal'] ?? []),
+                        'onDom' => array_values($item['load']['onDom'] ?? []),
                     ]);
+                } elseif (!$this->isBundlingEnabled()
+                    && !in_array($bundleName, $activeBundles)
+                    && !empty($item['autoload'])
+                ) {
+                    $result[$bundleName][$alias]['autoload'] = true;
+                }
+
+                if (!empty($item['global'])) {
+                    $result[$bundleName][$alias]['global'] = $item['global'];
+                }
+
+                if (isset($result[$bundleName][$alias])) {
+                    $result[$bundleName][$alias] = array_filter($result[$bundleName][$alias]);
+                    $names = $item['names'] ?? []; // deprecated, use export instead
+                    $names += $item['export'] ?? [];
+                    foreach ($names as $anotherName) {
+                        $result[$bundleName][$anotherName]['ref'] = $alias;
+                    }
                 }
             }
         }
-
-        $result['rules'] = array_filter($result['rules']);
 
         return $result;
     }
@@ -234,13 +240,13 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         foreach ($this->getActiveBundles() as $name => $bundle) {
             foreach ($bundle['items'] as $item) {
                 $paths = [];
-                foreach (['deps', 'import', 'path'] as $key) {
-                    $pathsToAdd = $item[$key] ?? [];
-                    if (!is_array($pathsToAdd)) {
-                        $pathsToAdd = [$pathsToAdd];
+                foreach (['deps', 'import'] as $key) {
+                    foreach ($item[$key] ?? [] as $path) {
+                        $info = $this->findItemInfo($path);
+                        $paths[] = $info ? $info['item']['path'] : $path;
                     }
-                    $paths = array_merge($paths, array_values($pathsToAdd));
                 }
+                $paths[] = $item['path'];
 
                 foreach ($paths as $key => $path) {
                     $asset = $this->jsBuildFactory->create(['name' => $path])->getAsset();
@@ -293,14 +299,6 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
     }
 
     /**
-     * @param string $name
-     */
-    public function addItem($name)
-    {
-        $this->activeItems[$name] = $name;
-    }
-
-    /**
      * @return string[]
      */
     public function getCacheKeyInfo()
@@ -345,20 +343,8 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                 continue;
             }
 
-            $registeredNames = [];
-            foreach ($bundle['items'] as $key => $item) {
-                // do not activate bundle if item uses dynamic-js rules
-                if (!empty(array_filter($item['load'] ?? []))) {
-                    continue;
-                }
-
-                $registeredNames[] = $key;
-                $registeredNames += $item['names'] ?? []; // deprecated, use export instead
-                $registeredNames += $item['export'] ?? [];
-            }
-
-            if (array_intersect($registeredNames, $this->activeItems)) {
-                $this->activeBundles[$bundleName] = $bundle;
+            if ($this->isBundlingEnabled()) {
+                continue; // all bundles are dynamic
             }
         }
 
@@ -423,13 +409,6 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                     }
                 }
 
-                // unset disabled bundles
-                $names = $item['names'] ?? []; // deprecated, use export instead
-                $names += $item['export'] ?? [];
-                if ($names && array_intersect($names, $this->activeItems)) {
-                    continue; // do not check enabled state for the items from dom structure
-                }
-
                 $item['enabled'] ??= true;
 
                 if (!$item['enabled']) {
@@ -460,8 +439,12 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                     }
 
                     $importBundle = $info['bundle'];
+                    if (!empty($importBundle['item']['load'])) {
+                        continue;
+                    }
+
+                    unset($this->allBundles[$bundleName]['items'][$itemName]['import'][$key]);
                     if (empty($this->activeBundles[$importBundle])) {
-                        unset($this->allBundles[$bundleName]['items'][$itemName]['import'][$key]);
                         $this->activeBundles[$importBundle] = $this->allBundles[$importBundle];
                         $this->processImports([$importBundle => $this->allBundles[$importBundle]]);
                     }

@@ -98,11 +98,13 @@
     /** Toggle block loader on the element */
     $.fn.spinner = function (flag, settings) {
         return this.each(function () {
-            if (flag) {
-                $.fn.blockLoader().show($(this), settings);
-            } else {
-                $.fn.blockLoader().hide($(this));
-            }
+            require(['Magento_Ui/js/block-loader'], () => {
+                if (flag) {
+                    $.fn.blockLoader().show($(this), settings);
+                } else {
+                    $.fn.blockLoader().hide($(this));
+                }
+            });
         });
     };
 

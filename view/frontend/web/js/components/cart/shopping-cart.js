@@ -18,13 +18,15 @@
 
         _confirmClearCart: function (e) {
             e.preventDefault();
-            $.confirm({
-                content: $.mage.__('Are you sure you want to remove all items from your shopping cart?'),
-                actions: {
-                    confirm: () => {
-                        this.clearCart();
+            $(this.options.emptyCartButton).spinner(true);
+            require(['Magento_Ui/js/modal/confirm'], confirm => {
+                confirm({
+                    content: $.mage.__('Are you sure you want to remove all items from your shopping cart?'),
+                    actions: {
+                        confirm: () => this.clearCart(),
+                        cancel: () => $(this.options.emptyCartButton).spinner(false)
                     }
-                }
+                });
             });
         },
 

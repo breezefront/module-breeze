@@ -1,7 +1,8 @@
-(function () {
+define(['Magento_Ui/js/modal/modal'], (modal) => {
     'use strict';
 
-    $.widget('mage.prompt', 'modal', {
+    $.widget('mage.prompt', modal, {
+        component: 'Magento_Ui/js/modal/prompt',
         options: {
             modalClass: 'prompt',
             promptContentTmpl: $('#promptTpl').html(),
@@ -115,7 +116,7 @@
         }
     });
 
-    $.breezemap['Magento_Ui/js/modal/prompt'] = $.prompt = function (config) {
+    $.prompt = function (config) {
         return $('<div class="prompt-message"></div>').html(config.content).prompt(config);
     };
-})();
+});

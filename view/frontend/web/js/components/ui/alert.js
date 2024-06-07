@@ -1,4 +1,4 @@
-(function () {
+define(['Magento_Ui/js/modal/confirm'], () => {
     'use strict';
 
     $.widget('mage.alert', 'confirm', {
@@ -26,4 +26,4 @@
     $.breezemap['Magento_Ui/js/modal/alert'] = $.alert = function (config) {
         return $('<div></div>').html(config.content).alert(config);
     };
-})();
+});

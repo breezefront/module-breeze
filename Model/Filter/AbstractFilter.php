@@ -19,16 +19,6 @@ class AbstractFilter
     }
 
     /**
-     * @param string $name
-     */
-    protected function addComponent($name)
-    {
-        if ($this->getJsBlock()) {
-            $this->getJsBlock()->addItem($name);
-        }
-    }
-
-    /**
      * @param array $attributes
      */
     protected function addPreloadLink($attributes)

@@ -36,19 +36,18 @@
             }
 
             if (this.agreements().askToCreate) {
-                $.confirm({
-                    content: this.agreements().confirmMessage,
-                    actions: {
-                        /** [confirm description] */
-                        confirm: function () {
-                            self.redirect(self.agreements().confirmUrl, originalForm);
-                        },
-
-                        /** [cancel description] */
-                        cancel: function () {
-                            self.redirect(returnUrl, originalForm);
+                require(['Magento_Ui/js/modal/confirm'], confirm => {
+                    confirm({
+                        content: this.agreements().confirmMessage,
+                        actions: {
+                            confirm: function () {
+                                self.redirect(self.agreements().confirmUrl, originalForm);
+                            },
+                            cancel: function () {
+                                self.redirect(returnUrl, originalForm);
+                            }
                         }
-                    }
+                    });
                 });
             } else {
                 this.redirect(returnUrl, originalForm);

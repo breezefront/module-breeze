@@ -1,4 +1,6 @@
-(function () {
+define([
+    'Magento_Catalog/js/price-utils'
+], function (priceUtils) {
     'use strict';
 
     var globalOptions = {
@@ -25,7 +27,7 @@
     function defaultGetOptionValue(element, optionsConfig) {
         var changes = {},
             optionValue = element.val(),
-            optionId = $.catalog.priceUtils.findOptionId(element[0]),
+            optionId = priceUtils.findOptionId(element[0]),
             optionName = element.prop('name'),
             optionType = element.prop('type'),
             optionConfig = optionsConfig[optionId],
@@ -149,7 +151,7 @@
             template = _.template(template);
             options.filter('select').each(function (index, element) {
                 var $element = $(element),
-                    optionId = $.catalog.priceUtils.findOptionId($element),
+                    optionId = priceUtils.findOptionId($element),
                     optionConfig = config.optionConfig && config.optionConfig[optionId];
 
                 $element.find('option').each(function (idx, option) {
@@ -181,7 +183,7 @@
                             }, 0);
                             toTemplate.data[type] = {
                                 value: value,
-                                formatted: $.catalog.priceUtils.formatPrice(value, format)
+                                formatted: priceUtils.formatPrice(value, format)
                             };
                         });
 
@@ -191,4 +193,4 @@
             });
         }
     });
-})();
+});

@@ -33,22 +33,7 @@
                         <item name="active" xsi:type="boolean">true</item>
                         <item name="sort_order" xsi:type="number">2</item>
                         <item name="items" xsi:type="array">
-                            <item name="turbo" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/lib/turbolinks-5.2.0.min.js</item>
-                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
-                                    <param name="path">design/breeze/turbo</param>
-                                </item>
-                            </item>
                             <item name="underscore" xsi:type="string">Swissup_Breeze/js/lib/underscore-1.13.6.min.js</item>
-                            <item name="focus-trap" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/lib/focus-trap-7.3.1.min.js</item>
-                                <item name="import" xsi:type="array">
-                                    <item name="tabbable" xsi:type="string">Swissup_Breeze/js/lib/tabbable-6.1.1.min.js</item>
-                                </item>
-                                <item name="load" xsi:type="array">
-                                    <item name="onRequire" xsi:type="boolean">true</item>
-                                </item>
-                            </item>
                             <item name="cash" xsi:type="string">Swissup_Breeze/js/lib/cash-8.1.5.min.js</item>
                             <item name="cash-extend" xsi:type="string">Swissup_Breeze/js/core/extend-cash.js</item>
                             <item name="cookie" xsi:type="string">Swissup_Breeze/js/lib/js.cookie-3.0.1.min.js</item>
@@ -67,34 +52,27 @@
                             <item name="breeze-translate" xsi:type="string">Swissup_Breeze/js/core/translate.js</item>
                             <item name="breeze-validator" xsi:type="string">Swissup_Breeze/js/core/validator.js</item>
                             <item name="breeze-validators" xsi:type="string">Swissup_Breeze/js/core/validators/core</item>
+                            <item name="validation" xsi:type="string">Swissup_Breeze/js/components/validation</item>
                             <item name="breeze-cookie" xsi:type="string">Swissup_Breeze/js/core/cookie.js</item>
                             <item name="breeze-storage" xsi:type="string">Swissup_Breeze/js/core/storage.js</item>
                             <item name="breeze-sections" xsi:type="string">Swissup_Breeze/js/core/sections.js</item>
+                            <item name="Magento_Customer/js/customer-data" xsi:type="string">Swissup_Breeze/js/components/customer-data</item>
                             <item name="breeze-focus-trap" xsi:type="string">Swissup_Breeze/js/core/focus-trap.js</item>
                             <item name="breeze-main" xsi:type="string">Swissup_Breeze/js/core/main.js</item>
-                            <item name="breeze-turbo" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/core/turbo.js</item>
-                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
-                                    <param name="path">design/breeze/turbo</param>
-                                </item>
-                            </item>
                             <item name="breeze-lazy" xsi:type="string">Swissup_Breeze/js/core/lazy.js</item>
                             <item name="breeze-template" xsi:type="string">Swissup_Breeze/js/core/template.js</item>
                             <item name="breeze-common" xsi:type="string">Swissup_Breeze/js/common/common.js</item>
-                            <item name="breeze-url" xsi:type="string">Swissup_Breeze/js/common/url.js</item>
                             <item name="breeze-theme" xsi:type="string">Swissup_Breeze/js/common/theme.js</item>
                         </item>
                     </item>
                     <item name="default" xsi:type="array">
-                        <item name="active" xsi:type="boolean">true</item>
                         <item name="sort_order" xsi:type="number">10</item>
                         <item name="items" xsi:type="array">
+                            <item name="mage/url" xsi:type="string">Swissup_Breeze/js/common/url.js</item>
                             <item name="Magento_Ui/js/form/form" xsi:type="string">Swissup_Breeze/js/components/form</item>
+                            <item name="Magento_Ui/js/form/provider" xsi:type="string">Swissup_Breeze/js/components/form-provider</item>
                             <item name="mage/calendar" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/calendar</item>
-                                <item name="load" xsi:type="array">
-                                    <item name="onRequire" xsi:type="boolean">true</item>
-                                </item>
                             </item>
                             <item name="breeze-lite-youtube" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/lib/lite-yt-embed</item>
@@ -104,7 +82,6 @@
                                     </item>
                                 </item>
                             </item>
-
                             <item name="lineClamp" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/line-clamp</item>
                                 <item name="load" xsi:type="array">
@@ -113,18 +90,62 @@
                                     </item>
                                 </item>
                             </item>
-                            <item name="dropdown" xsi:type="string">Swissup_Breeze/js/components/ui/dropdown</item>
-                            <item name="dropdownDialog" xsi:type="string">Swissup_Breeze/js/components/ui/dropdown-dialog</item>
-                            <item name="collapsible" xsi:type="string">Swissup_Breeze/js/components/ui/collapsible</item>
-                            <item name="tabs" xsi:type="string">Swissup_Breeze/js/components/ui/tabs</item>
-                            <item name="accordion" xsi:type="string">Swissup_Breeze/js/components/ui/accordion</item>
+                            <item name="tabs" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/ui/tabs</item>
+                                <item name="export" xsi:type="array">
+                                    <item name="mage-tabs" xsi:type="string">mage/tabs</item>
+                                </item>
+                                <item name="import" xsi:type="array">
+                                    <item name="collapsible" xsi:type="string">collapsible</item>
+                                </item>
+                            </item>
+                            <item name="accordion" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/ui/accordion</item>
+                                <item name="export" xsi:type="array">
+                                    <item name="mage-accordion" xsi:type="string">mage/accordion</item>
+                                </item>
+                                <item name="import" xsi:type="array">
+                                    <item name="tabs" xsi:type="string">tabs</item>
+                                </item>
+                            </item>
+                            <item name="collapsible" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/ui/collapsible</item>
+                                <item name="export" xsi:type="array">
+                                    <item name="mage-collapsible" xsi:type="string">mage/collapsible</item>
+                                </item>
+                            </item>
                             <item name="toggleAdvanced" xsi:type="string">Swissup_Breeze/js/components/ui/toggle-advanced</item>
-                            <item name="modal" xsi:type="string">Swissup_Breeze/js/components/ui/modal</item>
-                            <item name="confirm" xsi:type="string">Swissup_Breeze/js/components/ui/confirm</item>
-                            <item name="alert" xsi:type="string">Swissup_Breeze/js/components/ui/alert</item>
-                            <item name="prompt" xsi:type="string">Swissup_Breeze/js/components/ui/prompt</item>
-
-                            <item name="Magento_Customer/js/customer-data" xsi:type="string">Swissup_Breeze/js/components/customer-data</item>
+                            <item name="dropdown" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/ui/dropdown</item>
+                                <item name="export" xsi:type="array">
+                                    <item name="mage-dropdown" xsi:type="string">mage/dropdown</item>
+                                </item>
+                            </item>
+                            <item name="dropdownDialog" xsi:type="string">Swissup_Breeze/js/components/ui/dropdown-dialog</item>
+                            <item name="modal" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/ui/modal</item>
+                                <item name="export" xsi:type="array">
+                                    <item name="mage-modal" xsi:type="string">Magento_Ui/js/modal/modal</item>
+                                </item>
+                            </item>
+                            <item name="confirm" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/ui/confirm</item>
+                                <item name="export" xsi:type="array">
+                                    <item name="mage-confirm" xsi:type="string">Magento_Ui/js/modal/confirm</item>
+                                </item>
+                            </item>
+                            <item name="alert" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/ui/alert</item>
+                                <item name="export" xsi:type="array">
+                                    <item name="mage-alert" xsi:type="string">Magento_Ui/js/modal/alert</item>
+                                </item>
+                            </item>
+                            <item name="prompt" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/ui/prompt</item>
+                                <item name="export" xsi:type="array">
+                                    <item name="mage-prompt" xsi:type="string">Magento_Ui/js/modal/prompt</item>
+                                </item>
+                            </item>
                             <item name="Magento_Customer/js/view/customer" xsi:type="string">Swissup_Breeze/js/components/customer</item>
                             <item name="Magento_PageCache/js/form-key-provider" xsi:type="string">Swissup_Breeze/js/components/form-key</item>
                             <item name="pageCache" xsi:type="string">Swissup_Breeze/js/components/page-cache</item>
@@ -135,8 +156,14 @@
                                     <item name="messages" xsi:type="string">Magento_Theme/js/view/messages</item>
                                 </item>
                             </item>
-                            <item name="Magento_Ui/js/block-loader" xsi:type="string">Swissup_Breeze/js/components/block-loader</item>
-                            <item name="dataPost" xsi:type="string">Swissup_Breeze/js/components/data-post</item>
+                            <item name="dataPost" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/data-post</item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onReveal" xsi:type="array">
+                                        <item name="0" xsi:type="string">[data-post], [data-post-remove]</item>
+                                    </item>
+                                </item>
+                            </item>
                             <item name="menu" xsi:type="string">Swissup_Breeze/js/components/menu</item>
                             <item name="Magento_Checkout/js/view/minicart" xsi:type="string">Swissup_Breeze/js/components/minicart</item>
                             <item name="Magento_Checkout/js/proceed-to-checkout" xsi:type="array">
@@ -157,73 +184,17 @@
                                 </item>
                             </item>
                             <item name="Magento_Catalog/js/view/compare-products" xsi:type="string">Swissup_Breeze/js/components/compare-products</item>
-                            <item name="validation" xsi:type="string">Swissup_Breeze/js/components/validation</item>
                             <item name="redirectUrl" xsi:type="string">Swissup_Breeze/js/components/redirect-url</item>
                             <item name="quickSearch" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/quick-search</item>
                             </item>
-                            <item name="priceUtils" xsi:type="string">Swissup_Breeze/js/common/price-utils</item>
-                            <item name="addToCart" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/msrp</item>
-                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
-                                    <param name="path">sales/msrp/enabled</param>
-                                </item>
-                                <item name="load" xsi:type="array">
-                                    <item name="onRequire" xsi:type="boolean">true</item>
-                                </item>
-                            </item>
-                            <item name="msrp" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/msrp-cart</item>
-                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
-                                    <param name="path">sales/msrp/enabled</param>
+                            <item name="priceUtils" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/common/price-utils</item>
+                                <item name="export" xsi:type="array">
+                                    <item name="Magento_Catalog/js/price-utils" xsi:type="string">Magento_Catalog/js/price-utils</item>
                                 </item>
                             </item>
                             <item name="priceBox" xsi:type="string">Swissup_Breeze/js/components/price-box</item>
-                            <item name="Magento_Catalog/js/validate-product" xsi:type="string">Swissup_Breeze/js/components/validate-product</item>
-                            <item name="cookieNotices" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/cookie-notices</item>
-                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
-                                    <param name="path">web/cookie/cookie_restriction</param>
-                                </item>
-                            </item>
-                            <item name="Magento_Persistent/js/view/additional-welcome" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/persistent</item>
-                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
-                                    <param name="path">persistent/options/enabled</param>
-                                </item>
-                            </item>
-                            <item name="Magento_GoogleAnalytics/js/google-analytics" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/google-analytics</item>
-                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\GoogleAnalytics::isUniversalAnalyticsEnabled"/>
-                                <item name="configPaths" xsi:type="array">
-                                    <item name="0" xsi:type="string">google/analytics/type</item>
-                                    <item name="1" xsi:type="string">google/analytics/active</item>
-                                </item>
-                            </item>
-                            <item name="Magento_GoogleGtag/js/google-analytics" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/google-gtag-analytics</item>
-                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
-                                    <param name="path">google/gtag/analytics4/active</param>
-                                </item>
-                            </item>
-                            <item name="Magento_GoogleGtag/js/google-adwords" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/google-gtag-adwords</item>
-                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isAllEnabled">
-                                    <param name="0">google/gtag/adwords/active</param>
-                                    <param name="1">google/gtag/adwords/conversion_label</param>
-                                </item>
-                            </item>
-                            <item name="Magento_GoogleTagManager/js/google-tag-manager" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/google-tag-manager</item>
-                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\GoogleAnalytics::isTagManagerAnalyticsEnabled"/>
-                                <item name="configPaths" xsi:type="array">
-                                    <item name="0" xsi:type="string">google/analytics/type</item>
-                                    <item name="1" xsi:type="string">google/analytics/active</item>
-                                </item>
-                                <item name="import" xsi:type="array">
-                                    <item name="google-tag-manager-universal" xsi:type="string">Swissup_Breeze/js/components/google-tag-manager-universal</item>
-                                </item>
-                            </item>
                             <item name="Magento_Wishlist/js/view/wishlist" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/wishlist</item>
                                 <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
@@ -244,105 +215,7 @@
                                     </item>
                                 </item>
                             </item>
-                            <item name="Magento_Ui/js/form/provider" xsi:type="string">Swissup_Breeze/js/components/form-provider</item>
-                            <item name="Magento_LoginAsCustomerFrontendUi/js/login" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/login-as-customer</item>
-                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isModuleEnabled">
-                                    <param name="module">Magento_LoginAsCustomerFrontendUi</param>
-                                </item>
-                            </item>
                             <item name="Magento_Customer/js/view/authentication-popup" xsi:type="string">Swissup_Breeze/js/components/authentication-popup</item>
-                            <item name="Magento_Captcha/js/view/checkout/loginCaptcha" xsi:type="string">Swissup_Breeze/js/components/captcha-ui</item>
-                            <item name="captcha" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/captcha</item>
-                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
-                                    <param name="module">customer/captcha/enable</param>
-                                </item>
-                            </item>
-                            <item name="Magento_ReCaptchaFrontendUi/js/reCaptcha" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/google-recaptcha</item>
-                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isAnyEnabled">
-                                    <param name="customer_login">recaptcha_frontend/type_for/customer_login</param>
-                                    <param name="forgot_password">recaptcha_frontend/type_for/customer_forgot_password</param>
-                                    <param name="customer_create">recaptcha_frontend/type_for/customer_create</param>
-                                    <param name="customer_edit">recaptcha_frontend/type_for/customer_edit</param>
-                                    <param name="contact">recaptcha_frontend/type_for/contact</param>
-                                    <param name="product_review">recaptcha_frontend/type_for/product_review</param>
-                                    <param name="newsletter">recaptcha_frontend/type_for/newsletter</param>
-                                    <param name="send_friend">recaptcha_frontend/type_for/send_friend</param>
-                                    <param name="paypal_payflowpro">recaptcha_frontend/type_for/paypal_payflowpro</param>
-                                </item>
-                            </item>
-                            <item name="Magento_PageBuilder/js/widget-initializer" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/initializer</item>
-                            </item>
-                            <item name="Magento_PageBuilder/js/content-type/slider/appearance/default/widget" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/slider</item>
-                                <item name="names" xsi:type="array">
-                                    <item name="pagebuilderSlider" xsi:type="string">pagebuilderSlider</item>
-                                </item>
-                                <item name="load" xsi:type="array">
-                                    <item name="onReveal" xsi:type="array">
-                                        <item name="0" xsi:type="string">[data-content-type="slider"]</item>
-                                    </item>
-                                </item>
-                            </item>
-                            <item name="Magento_PageBuilder/js/content-type/products/appearance/carousel/widget" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/carousel</item>
-                                <item name="names" xsi:type="array">
-                                    <item name="pagebuilderCarousel" xsi:type="string">pagebuilderCarousel</item>
-                                </item>
-                                <item name="import" xsi:type="array">
-                                    <item name="slider" xsi:type="string">pagebuilderSlider</item>
-                                </item>
-                                <item name="load" xsi:type="array">
-                                    <item name="onReveal" xsi:type="array">
-                                        <item name="0" xsi:type="string">[data-content-type="products"][data-appearance="carousel"]</item>
-                                    </item>
-                                </item>
-                            </item>
-                            <item name="Magento_PageBuilder/js/content-type/tabs/appearance/default/widget" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/tabs</item>
-                                <item name="load" xsi:type="array">
-                                    <item name="onReveal" xsi:type="array">
-                                        <item name="0" xsi:type="string">[data-content-type="tabs"]</item>
-                                    </item>
-                                </item>
-                            </item>
-                            <item name="Magento_PageBuilder/js/content-type/map/appearance/default/widget" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/map</item>
-                                <item name="names" xsi:type="array">
-                                    <item name="pagebuilderMap" xsi:type="string">pagebuilderMap</item>
-                                </item>
-                                <item name="load" xsi:type="array">
-                                    <item name="onReveal" xsi:type="array">
-                                        <item name="0" xsi:type="string">[data-content-type="map"]</item>
-                                    </item>
-                                </item>
-                            </item>
-                            <item name="parallax" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/parallax</item>
-                                <item name="import" xsi:type="array">
-                                    <item name="jarallax" xsi:type="string">Swissup_Breeze/js/lib/jarallax-2.1.3.min.js</item>
-                                </item>
-                                <item name="load" xsi:type="array">
-                                    <item name="onReveal" xsi:type="array">
-                                        <item name="0" xsi:type="string">[data-enable-parallax="1"]</item>
-                                    </item>
-                                </item>
-                            </item>
-                            <item name="video-background" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/video-background</item>
-                                <item name="import" xsi:type="array">
-                                    <item name="jarallax" xsi:type="string">Swissup_Breeze/js/lib/jarallax-2.1.3.min.js</item>
-                                    <item name="jarallax-video" xsi:type="string">Swissup_Breeze/js/lib/jarallax-video-2.1.3.min.js</item>
-                                </item>
-                                <item name="load" xsi:type="array">
-                                    <item name="onReveal" xsi:type="array">
-                                        <item name="0" xsi:type="string">[data-background-type="video"]</item>
-                                    </item>
-                                </item>
-                            </item>
                         </item>
                     </item>
                     <item name="product" xsi:type="array">
@@ -368,11 +241,22 @@
                                     <item name="form-validate" xsi:type="string">Magento_Review/js/validate-review</item>
                                     <item name="list" xsi:type="string">Magento_Review/js/process-reviews</item>
                                 </item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onReveal" xsi:type="array">
+                                        <item name="0" xsi:type="string">#reviews</item>
+                                    </item>
+                                </item>
                             </item>
                             <item name="upsellProducts" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/upsell-products</item>
                                 <item name="import" xsi:type="array">
                                     <item name="shuffle-and-reveal" xsi:type="string">Swissup_Breeze/js/common/shuffle-and-reveal</item>
+                                </item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onReveal" xsi:type="array">
+                                        <item name="0" xsi:type="string">[data-mage-init*="upsellProducts"]</item>
+                                        <item name="1" xsi:type="string">.upsell</item>
+                                    </item>
                                 </item>
                             </item>
                             <item name="relatedProducts" xsi:type="array">
@@ -380,8 +264,21 @@
                                 <item name="import" xsi:type="array">
                                     <item name="shuffle-and-reveal" xsi:type="string">Swissup_Breeze/js/common/shuffle-and-reveal</item>
                                 </item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onReveal" xsi:type="array">
+                                        <item name="0" xsi:type="string">[data-mage-init*="relatedProducts"]</item>
+                                        <item name="1" xsi:type="string">.related</item>
+                                    </item>
+                                </item>
                             </item>
-                            <item name="validate-item-quantity" xsi:type="string">Swissup_Breeze/js/core/validators/cart</item>
+                            <item name="cart-validators" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/core/validators/cart</item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onDom" xsi:type="array">
+                                        <item name="0" xsi:type="string">[data-validate*=validate-item-quantity]</item>
+                                    </item>
+                                </item>
+                            </item>
                             <item name="product-configure" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/product-configure</item>
                                 <item name="load" xsi:type="array">
@@ -489,9 +386,19 @@
                     <item name="checkout" xsi:type="array">
                         <item name="items" xsi:type="array">
                             <item name="shoppingCart" xsi:type="string">Swissup_Breeze/js/components/cart/shopping-cart</item>
-                            <item name="Magento_Checkout/js/checkout-data" xsi:type="string">Swissup_Breeze/js/components/cart/checkout-data</item>
+                            <item name="Magento_Checkout/js/checkout-data" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/cart/checkout-data</item>
+                                <item name="export" xsi:type="array">
+                                    <item name="Magento_Checkout/js/model/cart/cache" xsi:type="string">Magento_Checkout/js/model/cart/cache</item>
+                                </item>
+                            </item>
                             <item name="Magento_Checkout/js/model/new-customer-address" xsi:type="string">Swissup_Breeze/js/components/cart/new-customer-address</item>
-                            <item name="Magento_Checkout/js/model/quote" xsi:type="string">Swissup_Breeze/js/components/cart/quote</item>
+                            <item name="Magento_Checkout/js/model/quote" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/cart/quote</item>
+                                <item name="export" xsi:type="array">
+                                    <item name="Magento_Checkout/js/model/totals" xsi:type="string">Magento_Checkout/js/model/totals</item>
+                                </item>
+                            </item>
                             <item name="Swissup_Breeze/js/components/cart/estimation-services" xsi:type="string">Swissup_Breeze/js/components/cart/estimation-services</item>
                             <item name="orderReview" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/paypal-order-review</item>
@@ -505,10 +412,34 @@
                             </item>
                             <item name="discountCode" xsi:type="string">Swissup_Breeze/js/components/cart/discount-code</item>
                             <item name="Swissup_Breeze/js/components/estimate-shipping" xsi:type="string">Swissup_Breeze/js/components/cart/estimate-shipping</item>
-                            <item name="Magento_Checkout/js/view/cart/totals" xsi:type="string">Swissup_Breeze/js/components/cart/totals</item>
-                            <item name="Magento_Tax/js/view/checkout/summary/subtotal" xsi:type="string">Swissup_Breeze/js/components/cart/tax</item>
+                            <item name="Magento_Checkout/js/view/cart/totals" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/cart/totals</item>
+                                <item name="export" xsi:type="array">
+                                    <item name="Magento_Checkout/js/view/cart/totals" xsi:type="string">Magento_Checkout/js/view/cart/totals</item>
+                                    <item name="Magento_Checkout/js/view/summary/abstract-total" xsi:type="string">Magento_Checkout/js/view/summary/abstract-total</item>
+                                    <item name="Magento_Checkout/js/view/summary/shipping" xsi:type="string">Magento_Checkout/js/view/summary/shipping</item>
+                                    <item name="Magento_SalesRule/js/view/summary/discount" xsi:type="string">Magento_SalesRule/js/view/summary/discount</item>
+                                    <item name="Magento_SalesRule/js/view/cart/totals/discount" xsi:type="string">Magento_SalesRule/js/view/cart/totals/discount</item>
+                                </item>
+                            </item>
+                            <item name="Magento_Tax/js/view/checkout/summary/subtotal" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/cart/tax</item>
+                                <item name="export" xsi:type="array">
+                                    <item name="Magento_Tax/js/view/checkout/summary/subtotal" xsi:type="string">Magento_Tax/js/view/checkout/summary/subtotal</item>
+                                    <item name="Magento_Tax/js/view/checkout/summary/shipping" xsi:type="string">Magento_Tax/js/view/checkout/summary/shipping</item>
+                                    <item name="Magento_Tax/js/view/checkout/cart/totals/shipping" xsi:type="string">Magento_Tax/js/view/checkout/cart/totals/shipping</item>
+                                    <item name="Magento_Tax/js/view/checkout/summary/grand-total" xsi:type="string">Magento_Tax/js/view/checkout/summary/grand-total</item>
+                                    <item name="Magento_Tax/js/view/checkout/cart/totals/grand-total" xsi:type="string">Magento_Tax/js/view/checkout/cart/totals/grand-total</item>
+                                    <item name="Magento_Tax/js/view/checkout/summary/tax" xsi:type="string">Magento_Tax/js/view/checkout/summary/tax</item>
+                                    <item name="Magento_Tax/js/view/checkout/cart/totals/tax" xsi:type="string">Magento_Tax/js/view/checkout/cart/totals/tax</item>
+                                </item>
+                            </item>
                             <item name="Magento_Weee/js/view/cart/totals/weee" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/cart/weee</item>
+                                <item name="export" xsi:type="array">
+                                    <item name="Magento_Weee/js/view/checkout/summary/weee" xsi:type="string">Magento_Weee/js/view/checkout/summary/weee</item>
+                                    <item name="taxToggle" xsi:type="string">taxToggle</item>
+                                </item>
                                 <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
                                     <param name="0">tax/wee/enable</param>
                                 </item>
@@ -526,6 +457,199 @@
                     <item name="dynamic" xsi:type="array">
                         <item name="sort_order" xsi:type="number">100</item>
                         <item name="items" xsi:type="array">
+                            <item name="breeze-turbo" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/core/turbo</item>
+                                <item name="import" xsi:type="array">
+                                    <item name="turbo" xsi:type="string">Swissup_Breeze/js/lib/turbolinks-5.2.0.min.js</item>
+                                </item>
+                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
+                                    <param name="path">design/breeze/turbo</param>
+                                </item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onDom" xsi:type="array">
+                                        <item name="0" xsi:type="string">body</item>
+                                    </item>
+                                    <item name="onInteraction" xsi:type="boolean">true</item>
+                                </item>
+                            </item>
+                            <item name="focus-trap" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/lib/focus-trap-7.3.1.min.js</item>
+                                <item name="import" xsi:type="array">
+                                    <item name="tabbable" xsi:type="string">Swissup_Breeze/js/lib/tabbable-6.1.1.min.js</item>
+                                </item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onRequire" xsi:type="boolean">true</item>
+                                </item>
+                            </item>
+                            <item name="Magento_Ui/js/block-loader" xsi:type="string">Swissup_Breeze/js/components/block-loader</item>
+                            <item name="Magento_Catalog/js/validate-product" xsi:type="string">Swissup_Breeze/js/components/validate-product</item>
+                            <item name="cookieNotices" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/cookie-notices</item>
+                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
+                                    <param name="path">web/cookie/cookie_restriction</param>
+                                </item>
+                            </item>
+                            <item name="Magento_Persistent/js/view/additional-welcome" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/persistent</item>
+                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
+                                    <param name="path">persistent/options/enabled</param>
+                                </item>
+                            </item>
+                            <item name="Magento_GoogleAnalytics/js/google-analytics" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/google-analytics</item>
+                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\GoogleAnalytics::isUniversalAnalyticsEnabled"/>
+                                <item name="configPaths" xsi:type="array">
+                                    <item name="0" xsi:type="string">google/analytics/type</item>
+                                    <item name="1" xsi:type="string">google/analytics/active</item>
+                                </item>
+                            </item>
+                            <item name="Magento_GoogleGtag/js/google-analytics" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/google-gtag-analytics</item>
+                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
+                                    <param name="path">google/gtag/analytics4/active</param>
+                                </item>
+                            </item>
+                            <item name="Magento_GoogleGtag/js/google-adwords" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/google-gtag-adwords</item>
+                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isAllEnabled">
+                                    <param name="0">google/gtag/adwords/active</param>
+                                    <param name="1">google/gtag/adwords/conversion_label</param>
+                                </item>
+                            </item>
+                            <item name="Magento_GoogleTagManager/js/google-tag-manager" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/google-tag-manager</item>
+                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\GoogleAnalytics::isTagManagerAnalyticsEnabled"/>
+                                <item name="configPaths" xsi:type="array">
+                                    <item name="0" xsi:type="string">google/analytics/type</item>
+                                    <item name="1" xsi:type="string">google/analytics/active</item>
+                                </item>
+                                <item name="import" xsi:type="array">
+                                    <item name="google-tag-manager-universal" xsi:type="string">Swissup_Breeze/js/components/google-tag-manager-universal</item>
+                                </item>
+                            </item>
+                            <item name="Magento_LoginAsCustomerFrontendUi/js/login" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/login-as-customer</item>
+                                <item name="export" xsi:type="array">
+                                    <item name="login-as-customer" xsi:type="string">Magento_LoginAsCustomerFrontendUi/js/view/loginAsCustomer</item>
+                                </item>
+                            </item>
+
+                            <!-- Msrp -->
+                            <item name="addToCart" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/msrp</item>
+                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
+                                    <param name="path">sales/msrp/enabled</param>
+                                </item>
+                            </item>
+                            <item name="msrp" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/msrp-cart</item>
+                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
+                                    <param name="path">sales/msrp/enabled</param>
+                                </item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onDom" xsi:type="array">
+                                        <item name="0" xsi:type="string">.minicart-wrapper .details-map</item>
+                                    </item>
+                                </item>
+                            </item>
+
+                            <!-- Captcha -->
+                            <item name="Magento_Captcha/js/view/checkout/loginCaptcha" xsi:type="string">Swissup_Breeze/js/components/captcha-ui</item>
+                            <item name="captcha" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/captcha</item>
+                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
+                                    <param name="module">customer/captcha/enable</param>
+                                </item>
+                            </item>
+                            <item name="Magento_ReCaptchaFrontendUi/js/reCaptcha" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/google-recaptcha</item>
+                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isAnyEnabled">
+                                    <param name="customer_login">recaptcha_frontend/type_for/customer_login</param>
+                                    <param name="forgot_password">recaptcha_frontend/type_for/customer_forgot_password</param>
+                                    <param name="customer_create">recaptcha_frontend/type_for/customer_create</param>
+                                    <param name="customer_edit">recaptcha_frontend/type_for/customer_edit</param>
+                                    <param name="contact">recaptcha_frontend/type_for/contact</param>
+                                    <param name="product_review">recaptcha_frontend/type_for/product_review</param>
+                                    <param name="newsletter">recaptcha_frontend/type_for/newsletter</param>
+                                    <param name="send_friend">recaptcha_frontend/type_for/send_friend</param>
+                                    <param name="paypal_payflowpro">recaptcha_frontend/type_for/paypal_payflowpro</param>
+                                </item>
+                            </item>
+
+                            <!-- PageBuilder -->
+                            <item name="Magento_PageBuilder/js/widget-initializer" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/initializer</item>
+                            </item>
+                            <item name="Magento_PageBuilder/js/content-type/slider/appearance/default/widget" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/slider</item>
+                                <item name="names" xsi:type="array">
+                                    <item name="pagebuilderSlider" xsi:type="string">pagebuilderSlider</item>
+                                </item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onReveal" xsi:type="array">
+                                        <item name="0" xsi:type="string">[data-content-type="slider"]</item>
+                                    </item>
+                                </item>
+                            </item>
+                            <item name="Magento_PageBuilder/js/content-type/products/appearance/carousel/widget" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/carousel</item>
+                                <item name="names" xsi:type="array">
+                                    <item name="pagebuilderCarousel" xsi:type="string">pagebuilderCarousel</item>
+                                </item>
+                                <item name="import" xsi:type="array">
+                                    <item name="slider" xsi:type="string">pagebuilderSlider</item>
+                                </item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onReveal" xsi:type="array">
+                                        <item name="0" xsi:type="string">[data-content-type="products"][data-appearance="carousel"]</item>
+                                    </item>
+                                </item>
+                            </item>
+                            <item name="Magento_PageBuilder/js/content-type/tabs/appearance/default/widget" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/tabs</item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onReveal" xsi:type="array">
+                                        <item name="0" xsi:type="string">[data-content-type="tabs"]</item>
+                                    </item>
+                                </item>
+                            </item>
+                            <item name="Magento_PageBuilder/js/content-type/map/appearance/default/widget" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/map</item>
+                                <item name="names" xsi:type="array">
+                                    <item name="pagebuilderMap" xsi:type="string">pagebuilderMap</item>
+                                </item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onReveal" xsi:type="array">
+                                        <item name="0" xsi:type="string">[data-content-type="map"]</item>
+                                    </item>
+                                </item>
+                            </item>
+                            <item name="jarallax" xsi:type="string">Swissup_Breeze/js/lib/jarallax-2.1.3.min.js</item>
+                            <item name="jarallaxVideo" xsi:type="string">Swissup_Breeze/js/lib/jarallax-video-2.1.3.min.js</item>
+                            <item name="parallax" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/parallax</item>
+                                <item name="import" xsi:type="array">
+                                    <item name="jarallax" xsi:type="string">jarallax</item>
+                                </item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onReveal" xsi:type="array">
+                                        <item name="0" xsi:type="string">[data-enable-parallax="1"]</item>
+                                    </item>
+                                </item>
+                            </item>
+                            <item name="video-background" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/video-background</item>
+                                <item name="import" xsi:type="array">
+                                    <item name="jarallax" xsi:type="string">jarallax</item>
+                                    <item name="jarallax-video" xsi:type="string">jarallaxVideo</item>
+                                </item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onReveal" xsi:type="array">
+                                        <item name="0" xsi:type="string">[data-background-type="video"]</item>
+                                    </item>
+                                </item>
+                            </item>
+
                             <!-- PaypalStandard -->
                             <item name="paypalCheckout" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/paypal-checkout</item>

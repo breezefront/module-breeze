@@ -1,4 +1,7 @@
-(function () {
+define([
+    'jquery',
+    'Magento_Catalog/js/price-utils'
+], function ($, priceUtils) {
     'use strict';
 
     $.widget('configurable', {
@@ -434,7 +437,7 @@
                         options[i].label = options[i].initialLabel;
 
                         if (optionPriceDiff !== 0) {
-                            options[i].label += ' ' + $.catalog.priceUtils.formatPrice(
+                            options[i].label += ' ' + priceUtils.formatPrice(
                                 optionPriceDiff,
                                 this.options.priceFormat,
                                 true
@@ -692,7 +695,7 @@
                             'tierPrices': tierPrices,
                             '$t': $.__,
                             'currencyFormat': this.options.spConfig.currencyFormat,
-                            'priceUtils': $.catalog.priceUtils
+                            'priceUtils': priceUtils
                         })
                     ).show();
                 }
@@ -701,4 +704,4 @@
             }
         }
     });
-})();
+});

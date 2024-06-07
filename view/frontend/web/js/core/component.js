@@ -101,6 +101,7 @@
                 prototype.prototype.component &&
                 prototype.prototype.component !== name
             ) {
+                $.breezemap[prototype.prototype.component] = constructor;
                 $.breezemap.__aliases[prototype.prototype.component] = name;
             }
 
@@ -463,12 +464,14 @@
             return this;
         },
 
-        _applyBindings: function (element) {
+        _applyBindings: async function (element) {
             var koEl = element.firstChild;
 
             if (element === document.body) {
                 return;
             }
+
+            await this._resolveChildren();
 
             while (koEl) {
                 if (koEl.nodeType === 1 || (koEl.nodeType === 8 && koEl.nodeValue.match(/\s*ko\s+/))) {
@@ -486,6 +489,12 @@
                 $(element).trigger('contentUpdated');
                 this.afterRender();
             }
+        },
+
+        _resolveChildren: function () {
+            return Promise.all(Object.values(this.options.children || {}).map(config => {
+                return new Promise(resolve => require([config.component], resolve));
+            }));
         },
 
         destroy: function () {

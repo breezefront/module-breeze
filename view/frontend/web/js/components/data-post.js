@@ -11,8 +11,7 @@
         },
 
         postData: function (params) {
-            var self = this,
-                formKey = $(this.options.formKeyInputSelector).val(),
+            var formKey = $(this.options.formKeyInputSelector).val(),
                 $form;
 
             if (formKey) {
@@ -25,16 +24,6 @@
 
             if (params.files) {
                 console.error('Send files is not implemented');
-                // $form[0].enctype = 'multipart/form-data';
-                // $.each(params.files, function (key, files) {
-                //     if (files instanceof FileList) {
-                //         input = document.createElement('input');
-                //         input.type = 'file';
-                //         input.name = key;
-                //         input.files = files;
-                //         $form[0].appendChild(input);
-                //     }
-                // });
             }
 
             $form.appendTo('body').hide();
@@ -44,23 +33,18 @@
                 return this.submitForm($form);
             }
 
-            $.confirm({
-                content: params.data.confirmationMessage,
-                actions: {
-                    confirm: function () {
-                        self.submitForm($form);
+            require(['Magento_Ui/js/modal/confirm'], confirm => {
+                confirm({
+                    content: params.data.confirmationMessage,
+                    actions: {
+                        confirm: () => this.submitForm($form)
                     }
-                }
+                });
             });
         },
 
-        /** [submitForm description] */
         submitForm: function (form) {
             form.submit();
-            // $.request.post({
-            //     form: form,
-            //     strict: false
-            // });
         }
     });
 

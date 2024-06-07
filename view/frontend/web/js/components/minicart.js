@@ -48,19 +48,21 @@
                 event.preventDefault();
                 event.stopPropagation();
 
-                $.confirm({
-                    content: self.options.confirmMessage,
-                    actions: {
-                        /** @inheritdoc */
-                        confirm: function () {
-                            self._removeItem($(event.currentTarget));
-                        },
+                require(['Magento_Ui/js/modal/confirm'], confirm => {
+                    confirm({
+                        content: self.options.confirmMessage,
+                        actions: {
+                            /** @inheritdoc */
+                            confirm: function () {
+                                self._removeItem($(event.currentTarget));
+                            },
 
-                        /** @inheritdoc */
-                        always: function (e) {
-                            e.stopImmediatePropagation();
+                            /** @inheritdoc */
+                            always: function (e) {
+                                e.stopImmediatePropagation();
+                            }
                         }
-                    }
+                    });
                 });
             }).on('keyup change', this.options.item.qty, function (event) {
                 self._showItemButton($(event.target));

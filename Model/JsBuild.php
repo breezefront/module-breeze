@@ -253,7 +253,7 @@ class JsBuild
      */
     private function getContents($path)
     {
-        if (!$path) {
+        if (!$path || (strpos($path, '/') === false && strpos($path, '::') === false)) {
             return '';
         }
 
