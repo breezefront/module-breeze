@@ -121,5 +121,5 @@
 
         return window.VIEW_URL + '/' + path;
     };
-    window.require.config = (cfg) => $.extend(config, cfg || {});
+    window.require.config = (cfg) => $.extend(true, config, cfg || {});
 })();
