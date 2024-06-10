@@ -171,10 +171,12 @@
         Promise.all(depsWithImports.map(dep => $.preloadScript(dep.url))).then(async () => {
             for (const dep of depsWithImports) {
                 if (dep.name.startsWith('text!')) {
-                    // @todo: find by id
-                    // result = alias.substr(5).replace(/[/.]/g, '_');
-                    // result = $('#' + result).html();
-                    debugger;
+                    // @todo: load with ajax if not found in DOM
+                    dep.ran = true;
+                    dep.loaded = true;
+                    dep.result = $('#' + dep.name.substr(5).replace(/[/.]/g, '_')).html();
+
+                    continue;
                 }
 
                 await $.loadScript({
