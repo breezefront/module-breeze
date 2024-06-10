@@ -40,14 +40,17 @@
         }
 
         if (this.result !== undefined && !(this.result instanceof $)) {
-            [this.path, this.name].filter(alias => alias).forEach(alias => {
-                alias = alias.startsWith('__module-') ? `__component${$.breezemap.__counter++}` : alias;
+            [this.name].forEach(alias => {
+                if (alias.endsWith('-orig')) {
+                    alias = alias.slice(0, -5);
+                } else {
+                    alias = alias.startsWith('__module-') ? `__component${$.breezemap.__counter++}` : alias;
+                }
 
                 if ($.breezemap.__get(alias)) {
                     return;
                 }
 
-                $.breezemap.__log.push(alias);
                 $.breezemap[alias] = this.result;
             });
         }
@@ -205,5 +208,7 @@
     };
     window.require.config = (cfg) => $.extend(true, config, cfg || {});
 
-    $(document).on('breeze:component:load', (e, data) => getModule(data.alias).run());
+    $(document).on('breeze:component:load', (e, data) => {
+        setTimeout(() => getModule(data.alias).run(), 15);
+    });
 })();

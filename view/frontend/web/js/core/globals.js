@@ -15,11 +15,14 @@
         'mage/mage': $.mage,
         __counter: 1,
         __aliases: {},
-        __log: [],
         __getAll: () => ({ ...$.breezemap }),
         __get: key => $.breezemap[key],
-        __lastComponent: (offset = 0) => $.breezemap[$.breezemap.__log.at(-1 - offset)],
+        __lastComponent: (offset = 0) => $.breezemap[`__component${$.breezemap.__counter - 1 - offset}`],
         __register: (name, oldName) => {
+            if ($.breezemap[name]) {
+                return;
+            }
+
             if (!oldName || _.isNumber(oldName)) {
                 $.breezemap[name] = $.breezemap.__lastComponent(oldName);
             } else {

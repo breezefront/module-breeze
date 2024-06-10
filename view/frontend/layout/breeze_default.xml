@@ -133,17 +133,26 @@
                                 <item name="export" xsi:type="array">
                                     <item name="mage-confirm" xsi:type="string">Magento_Ui/js/modal/confirm</item>
                                 </item>
+                                <item name="import" xsi:type="array">
+                                    <item name="modal" xsi:type="string">modal</item>
+                                </item>
                             </item>
                             <item name="alert" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/ui/alert</item>
                                 <item name="export" xsi:type="array">
                                     <item name="mage-alert" xsi:type="string">Magento_Ui/js/modal/alert</item>
                                 </item>
+                                <item name="import" xsi:type="array">
+                                    <item name="confirm" xsi:type="string">confirm</item>
+                                </item>
                             </item>
                             <item name="prompt" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/ui/prompt</item>
                                 <item name="export" xsi:type="array">
                                     <item name="mage-prompt" xsi:type="string">Magento_Ui/js/modal/prompt</item>
+                                </item>
+                                <item name="import" xsi:type="array">
+                                    <item name="modal" xsi:type="string">modal</item>
                                 </item>
                             </item>
                             <item name="Magento_Customer/js/view/customer" xsi:type="string">Swissup_Breeze/js/components/customer</item>
