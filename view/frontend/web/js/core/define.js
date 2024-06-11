@@ -81,8 +81,12 @@
         modules[name].parents.push(...parents);
         modules[name].deps.push(...deps.map(depname => getModule(depname, [], [modules[name]])));
 
-        if (!modules[name].path && $.breeze.jsconfig[name]) {
-            modules[name].path = $.breeze.jsconfig[name].path;
+        if (!modules[name].path) {
+            if ($.breeze.jsconfig[name]) {
+                modules[name].path = $.breeze.jsconfig[name].path;
+            } else if (name.startsWith('text!')) {
+                modules[name].path = name.substr(5);
+            }
         }
 
         return modules[name];
@@ -116,7 +120,7 @@
             dep.path = path;
         } else if (config.paths[alias] || alias.includes('//')) {
             dep.path = alias;
-        } else {
+        } else if (!dep.path) {
             dep.unknown = true;
             dep.loaded = true;
         }
@@ -168,23 +172,27 @@
             });
         }
 
-        Promise.all(depsWithImports.map(dep => $.preloadScript(dep.url))).then(async () => {
-            for (const dep of depsWithImports) {
-                if (dep.name.startsWith('text!')) {
-                    // @todo: load with ajax if not found in DOM
-                    dep.ran = true;
-                    dep.loaded = true;
-                    dep.result = $('#' + dep.name.substr(5).replace(/[/.]/g, '_')).html();
+        Promise.all(
+                depsWithImports
+                    .filter(dep => !dep.name.startsWith('text!'))
+                    .map(dep => $.preloadScript(dep.url))
+            )
+            .then(async () => {
+                for (const dep of depsWithImports) {
+                    if (dep.name.startsWith('text!')) {
+                        // @todo: load with ajax if not found in DOM
+                        dep.cb = () => $('#' + dep.path.replace(/[/.]/g, '_')).html();
+                        dep.run();
 
-                    continue;
+                        continue;
+                    }
+
+                    await $.loadScript({
+                        'src': dep.url,
+                        'data-name': dep.name
+                    }, () => dep.run()).catch(e => console.error(e));
                 }
-
-                await $.loadScript({
-                    'src': dep.url,
-                    'data-name': dep.name
-                }, () => dep.run()).catch(e => console.error(e));
-            }
-        });
+            });
 
         return mod.run();
     };
