@@ -121,6 +121,8 @@ $.registry = (function () {
                     $.registry.delete(t, el);
                 });
             });
+
+            $.breezemap.uiRegistry.removeAll();
         }
     };
 })();
@@ -259,6 +261,11 @@ $.breezemap.uiRegistry = (() => {
             delete getItems(this)[id];
 
             return this;
+        },
+
+        removeAll: function () {
+            privateData.get(this).items = {};
+            privateData.get(this).requests = [];
         },
 
         filter: function (query) {
