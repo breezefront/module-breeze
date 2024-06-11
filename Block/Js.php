@@ -180,7 +180,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
                     $result[$bundleName][$alias] = [
                         'path' => $path,
-                        'import' => array_filter(array_map(
+                        'import' => array_values(array_filter(array_map(
                             fn ($name) => str_replace('::', '/', $name),
                             array_values($item['import'] ?? [])
                         ), function ($name) use ($alias, $path) {
@@ -197,7 +197,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                             }
 
                             return true;
-                        }),
+                        })),
                     ];
                 }
 
