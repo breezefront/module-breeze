@@ -146,7 +146,7 @@
 
         mod = getModule(name || `__module-${$.guid++}`, deps, cb);
         deps.forEach(depname => depsWithImports.push(...collectDeps(depname)));
-        depsWithImports = depsWithImports.filter(dep => !dep.loaded && !dep.promise && dep.path);
+        depsWithImports = depsWithImports.filter(dep => !dep.loaded && dep.path);
         depsWithImports.forEach(dep => {
             if (dep.path.includes('//')) {
                 if (dep.path.endsWith('.js') || dep.path.endsWith('/') || dep.path.includes('?')) {
