@@ -180,8 +180,16 @@
             .then(async () => {
                 for (const dep of depsWithImports) {
                     if (dep.name.startsWith('text!')) {
-                        // @todo: load with ajax if not found in DOM
-                        dep.cb = () => $('#' + dep.path.replace(/[/.]/g, '_')).html();
+                        var el = $('#' + dep.path.replace(/[/.]/g, '_'));
+
+                        if (el.length) {
+                            dep.cb = () => el.html();
+                        } else {
+                            await $.get(dep.url).then(res => {
+                                dep.cb = () => res.body;
+                            }).catch(e => console.error(e));
+                        }
+
                         dep.run();
 
                         continue;
