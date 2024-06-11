@@ -11,7 +11,7 @@ this module for our [Breeze themes](https://breezefront.com/) as well.
 
 ```bash
 composer require swissup/module-breeze
-bin/magento setup:upgrade --safe-mode=1
+bin/magento module:enable Swissup_Breeze Swissup_Rtl
 ```
 
 ## Configuration
