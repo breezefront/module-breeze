@@ -201,7 +201,9 @@
 
         if (path.endsWith('.min')) {
             path += '.js';
-        } else if (!path.endsWith('.min.js')) {
+        } else if (!path.endsWith('.min.js') &&
+            (path.endsWith('.js') || !path.split('/').at(-1).includes('.'))
+        ) {
             path = path.replace(/\.js$/, '');
             path += jsSuffix;
         }
