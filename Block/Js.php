@@ -224,6 +224,9 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                     $names = $item['names'] ?? []; // deprecated, use export instead
                     $names += $item['export'] ?? [];
                     foreach ($names as $anotherName) {
+                        if ($anotherName === $alias) {
+                            continue;
+                        }
                         $result[$bundleName][$anotherName]['ref'] = $alias;
                     }
                 }
