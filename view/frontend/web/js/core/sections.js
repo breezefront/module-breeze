@@ -120,6 +120,10 @@ $.sections = $.customerData = window.customerData = (function () {
             return deferred.promise();
         },
 
+        initStorage: function () {
+            // dummy method for luma compatibility
+        },
+
         /**
          * @return {Array}
          */
