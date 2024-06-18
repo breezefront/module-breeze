@@ -25,7 +25,7 @@
 
             if (!oldName || _.isNumber(oldName)) {
                 $.breezemap[name] = $.breezemap.__lastComponent(oldName);
-            } else {
+            } else if ($.breezemap[oldName] !== undefined) {
                 $.breezemap[name] = $.breezemap[oldName];
             }
         }
