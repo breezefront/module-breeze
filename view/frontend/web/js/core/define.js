@@ -73,7 +73,7 @@
                 }
             }, 100);
         } else {
-            if (this.path) {
+            if (this.path && !this.path.startsWith(bundlePrefix)) {
                 modulesByPaths[this.path] = modulesByPaths[this.path] || [];
                 modulesByPaths[this.path].push(this);
             }
