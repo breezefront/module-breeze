@@ -184,8 +184,10 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                             fn ($name) => str_replace('::', '/', $name),
                             array_values($item['import'] ?? [])
                         ), function ($name) use ($alias, $path) {
+                            // Importing the same name means that we trying to load original "luma" file.
+                            // if bundling is enabled we do not need to import it since it will be in the same bundle.
                             if ($name === $alias) {
-                                return true;
+                                return strpos($path, '*') === false;
                             }
 
                             $info = $this->findItemInfo($name);
