@@ -407,6 +407,11 @@
                                 <item name="export" xsi:type="array">
                                     <item name="Magento_Checkout/js/model/totals" xsi:type="string">Magento_Checkout/js/model/totals</item>
                                 </item>
+                                <item name="import" xsi:type="array">
+                                    <item name="checkoutData" xsi:type="string">Magento_Checkout/js/checkout-data</item>
+                                    <item name="cartCache" xsi:type="string">Magento_Checkout/js/model/cart/cache</item>
+                                    <item name="newAddress" xsi:type="string">Magento_Checkout/js/model/new-customer-address</item>
+                                </item>
                             </item>
                             <item name="Swissup_Breeze/js/components/cart/estimation-services" xsi:type="string">Swissup_Breeze/js/components/cart/estimation-services</item>
                             <item name="orderReview" xsi:type="array">
