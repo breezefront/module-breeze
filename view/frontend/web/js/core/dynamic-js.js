@@ -58,10 +58,13 @@
     try {
         $.each(jsBundles, (bundle, items) => {
             $.each(items, (alias, values) => {
-                $.breeze.jsconfig[alias] = {
-                    ...values.ref ? items[values.ref] : values,
-                    bundle
-                };
+                if (values.ref) {
+                    $.breeze.jsconfig[alias] = items[values.ref];
+                    $.breeze.jsconfig[alias].ref = values.ref;
+                } else {
+                    $.breeze.jsconfig[alias] = values;
+                }
+                $.breeze.jsconfig[alias].bundle = bundle;
 
                 if (values.global) {
                     require.config({
