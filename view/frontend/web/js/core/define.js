@@ -57,10 +57,9 @@
 
         if (this.result === undefined && this.waitForResult) {
             this.ran = this.loaded = false;
-            return this.result;
+        } else {
+            this.parents.forEach(parent => parent.run());
         }
-
-        this.parents.forEach(parent => parent.run());
 
         return this.result;
     }
