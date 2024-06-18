@@ -61,8 +61,17 @@
             });
         }
 
-        if (this.result === undefined && this.waitForResult && this.path && !this.path.includes('//')) {
+        if (this.result === undefined && this.waitForResult && !this.failed &&
+            this.path && !this.path.includes('//')
+        ) {
             this.ran = this.loaded = false;
+            setTimeout(() => {
+                if (!this.loaded) {
+                    console.error('Unable to resolve dependency', this);
+                    this.failed = true;
+                    this.run();
+                }
+            }, 100);
         } else {
             if (this.path) {
                 modulesByPaths[this.path] = modulesByPaths[this.path] || [];
