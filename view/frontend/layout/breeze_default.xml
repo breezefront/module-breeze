@@ -729,20 +729,13 @@
                                 <item name="path" xsi:type="string">mage/item-table</item>
                             </item>
                             <item name="Magento_Theme/js/row-builder" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/row-builder</item>
-                                <item name="import" xsi:type="array">
-                                    <item name="parent" xsi:type="string">Magento_Theme/js/row-builder</item>
-                                </item>
+                                <item name="path" xsi:type="string">Magento_Theme/js/row-builder</item>
                                 <item name="export" xsi:type="array">
-                                    <item name="row-builder" xsi:type="string">Magento_Theme/js/row-builder</item>
                                     <item name="rowBuilder" xsi:type="string">rowBuilder</item>
                                 </item>
                             </item>
                             <item name="Magento_Ui/js/model/messages" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/messages-model</item>
-                                <item name="import" xsi:type="array">
-                                    <item name="parent" xsi:type="string">Magento_Ui/js/model/messages</item>
-                                </item>
+                                <item name="path" xsi:type="string">Magento_Ui/js/model/messages</item>
                             </item>
                         </item>
                     </item>
