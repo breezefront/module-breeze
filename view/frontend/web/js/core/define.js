@@ -61,7 +61,7 @@
             });
         }
 
-        if (this.result === undefined && this.waitForResult) {
+        if (this.result === undefined && this.waitForResult && this.path && !this.path.includes('//')) {
             this.ran = this.loaded = false;
         } else {
             if (this.path) {
