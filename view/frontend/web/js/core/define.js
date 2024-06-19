@@ -3,6 +3,7 @@
 
     var modules = {},
         lastDefines = [],
+        loadingCount = 0,
         config = {
             paths: {},
             shim: {},
@@ -64,13 +65,15 @@
             this.path && !this.path.includes('//')
         ) {
             this.ran = this.loaded = false;
-            setTimeout(() => {
-                if (!this.loaded) {
-                    console.error('Unable to resolve dependency', this);
-                    this.failed = true;
-                    this.run();
-                }
-            }, 100);
+            if (!loadingCount) {
+                setTimeout(() => {
+                    if (!this.loaded) {
+                        console.error('Unable to resolve dependency', this);
+                        this.failed = true;
+                        this.run();
+                    }
+                }, 100);
+            }
         } else {
             this.parents.forEach(parent => parent.run());
         }
@@ -199,9 +202,11 @@
                         if (el.length) {
                             dep.cb = () => el.html();
                         } else {
+                            loadingCount++;
                             await $.get(dep.url).then(res => {
                                 dep.cb = () => res.body;
                             }).catch(e => console.error(e));
+                            loadingCount--;
                         }
 
                         dep.run();
@@ -209,10 +214,12 @@
                         continue;
                     }
 
+                    loadingCount++;
                     await $.loadScript({
                         'src': dep.url,
                         'data-name': dep.name
                     }, () => dep.run()).catch(e => console.error(e));
+                    loadingCount--;
                 }
             });
 
