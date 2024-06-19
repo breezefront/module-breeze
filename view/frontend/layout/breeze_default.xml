@@ -225,6 +225,10 @@
                                 </item>
                             </item>
                             <item name="Magento_Customer/js/view/authentication-popup" xsi:type="string">Swissup_Breeze/js/components/authentication-popup</item>
+                            <item name="Magento_Ui/js/block-loader" xsi:type="string">Swissup_Breeze/js/components/block-loader</item>
+                            <item name="Magento_PageBuilder/js/widget-initializer" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/initializer</item>
+                            </item>
                         </item>
                     </item>
                     <item name="product" xsi:type="array">
@@ -495,7 +499,6 @@
                                     <item name="onRequire" xsi:type="boolean">true</item>
                                 </item>
                             </item>
-                            <item name="Magento_Ui/js/block-loader" xsi:type="string">Swissup_Breeze/js/components/block-loader</item>
                             <item name="Magento_Catalog/js/validate-product" xsi:type="string">Swissup_Breeze/js/components/validate-product</item>
                             <item name="cookieNotices" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/cookie-notices</item>
@@ -591,9 +594,6 @@
                             </item>
 
                             <!-- PageBuilder -->
-                            <item name="Magento_PageBuilder/js/widget-initializer" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/initializer</item>
-                            </item>
                             <item name="Magento_PageBuilder/js/content-type/slider/appearance/default/widget" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/slider</item>
                                 <item name="names" xsi:type="array">
