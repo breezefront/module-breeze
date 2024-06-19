@@ -277,7 +277,7 @@
         set(obj, alias, value) {
             obj[alias] = value;
 
-            setTimeout(() => getModule(alias).run(), 15);
+            getModule(alias).run();
             $(document).trigger('breeze:component:load', { alias, value });
 
             return true;
