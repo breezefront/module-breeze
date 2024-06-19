@@ -2,7 +2,6 @@
     'use strict';
 
     var modules = {},
-        modulesByPaths = {},
         config = {
             paths: {},
             shim: {},
@@ -40,11 +39,6 @@
             $(document).trigger('bundle:autoload', $.breeze.jsconfig[this.name].bundle);
         }
 
-        // Multiple aliases for the same component (try require 'rowBuilder', then 'Magento_Theme/js/row-builder')
-        if (this.result === undefined && modulesByPaths[this.path]) {
-            this.result = modulesByPaths[this.path].find(mod => mod.ref === this.name || mod.ref === this.ref)?.result;
-        }
-
         if (this.result !== undefined && !(this.result instanceof $)) {
             [this.name].forEach(alias => {
                 if (alias.endsWith('-orig')) {
@@ -73,11 +67,6 @@
                 }
             }, 100);
         } else {
-            if (this.path && !this.path.startsWith(bundlePrefix)) {
-                modulesByPaths[this.path] = modulesByPaths[this.path] || [];
-                modulesByPaths[this.path].push(this);
-            }
-
             this.parents.forEach(parent => parent.run());
         }
 
@@ -99,7 +88,6 @@
         modules[name].cb = modules[name].cb || cb;
         modules[name].parents.push(...parents);
         modules[name].deps.push(...deps.map(depname => getModule(depname, [], [modules[name]])));
-        modules[name].ref = $.breeze.jsconfig[name]?.ref;
 
         if (!modules[name].path) {
             if ($.breeze.jsconfig[name]) {
