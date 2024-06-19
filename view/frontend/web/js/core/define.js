@@ -2,6 +2,7 @@
     'use strict';
 
     var modules = {},
+        lastDefines = [],
         config = {
             paths: {},
             shim: {},
@@ -14,6 +15,10 @@
             .filter((i, el) => el.src.includes('/core.') || el.src.includes('/main.'))
             .attr('src')
             .match(suffixRe).groups.suffix;
+
+    function isRunningFromBundle() {
+        return document.currentScript?.src.includes('Swissup_Breeze/bundles/');
+    }
 
     function run() {
         if (this.ran || this.deps.some(dep => !dep.loaded)) {
@@ -141,8 +146,7 @@
     window.require = function (deps, cb) {
         var mod,
             depsWithImports = [],
-            name = document.currentScript?.src.includes('Swissup_Breeze/bundles/') ?
-                undefined : $(document.currentScript).data('name');
+            name = isRunningFromBundle() ? undefined : $(document.currentScript).data('name');
 
         if (typeof deps === 'string') {
             name = deps;
@@ -179,6 +183,8 @@
                 modules[depname] && (modules[depname].waitForResult = true);
             });
         }
+
+        lastDefines.push(depsWithImports.length > 0);
 
         Promise.all(
                 depsWithImports
@@ -253,6 +259,15 @@
             }
 
             if (!oldName || _.isNumber(oldName)) {
+                if (isRunningFromBundle() && lastDefines.at(-2)) {
+                    console.error(
+                        // eslint-disable-next-line max-len
+                        `Trying to register previous cmp as ${name}, but previous define was async and not yet resolved. ` +
+                        // eslint-disable-next-line max-len
+                        'Make sure all of unknown dependencies of previous cmp are listed in "import" section of breeze_default.xml'
+                    );
+                }
+
                 $.breezemap[name] = $.breezemap.__lastComponent(oldName);
             } else if ($.breezemap[oldName] !== undefined) {
                 $.breezemap[name] = $.breezemap[oldName];
