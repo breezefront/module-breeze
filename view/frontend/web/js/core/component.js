@@ -444,10 +444,6 @@
         afterRender: _.noop,
 
         _initialize: function (name, options, element) {
-            if (!element.isConnected) {
-                return;
-            }
-
             this._regions = {};
             if (!$(element).is('body')) {
                 this._markup = $(element).html();
