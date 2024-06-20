@@ -149,7 +149,8 @@
     window.require = function (deps, cb) {
         var mod,
             depsWithImports = [],
-            name = isRunningFromBundle() ? undefined : $(document.currentScript).data('name');
+            scriptName = $(document.currentScript).data('name'),
+            name = isRunningFromBundle() ? undefined : scriptName;
 
         if (typeof deps === 'string') {
             name = deps;
@@ -165,7 +166,7 @@
 
         mod = getModule(name || `__module-${$.guid++}`, deps, cb);
         deps.forEach(depname => depsWithImports.push(...collectDeps(depname)));
-        depsWithImports = depsWithImports.filter(dep => !dep.loaded && dep.path);
+        depsWithImports = depsWithImports.filter(dep => !dep.loaded && dep.path && dep.name !== scriptName);
         depsWithImports.forEach(dep => {
             if (dep.path.includes('//')) {
                 if (dep.path.endsWith('.js') || dep.path.endsWith('/') || dep.path.includes('?')) {
