@@ -364,7 +364,7 @@
                     instance = component;
                 }
             } else if (_.isObject(component) && _.isFunction(component[name])) {
-                component[name].bind(component)(data.settings, data.el);
+                component[name].bind(component)(data.settings, el);
             } else {
                 return;
             }
