@@ -392,7 +392,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                     $this->allBundles[$bundleName]['items'][$itemName] = $item;
                 }
 
-                if (empty($item['load']) && $bundleName === 'dynamic') {
+                if (empty($item['load']) && $bundleName === 'dynamic' || strpos($item['path'], '//') !== false) {
                     $item['load'] = ['onRequire' => true];
                     $this->allBundles[$bundleName]['items'][$itemName] = $item;
                 }
