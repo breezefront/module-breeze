@@ -143,7 +143,7 @@
                 params.force_new_section_timestamp = true;
             }
 
-            $.request.get({
+            return $.request.get({
                 url: this.options.sectionLoadUrl,
                 data: params,
                 accept: 'json',
