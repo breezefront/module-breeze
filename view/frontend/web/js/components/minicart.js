@@ -36,7 +36,7 @@
                         $(this).prop('disabled', true);
                         location.href = self.options.url.loginUrl;
                     } else {
-                        $('.block-authentication').modal('openModal');
+                        $('#authenticationPopup').authPopup('showModal');
                     }
 
                     return false;

@@ -49,9 +49,9 @@ define([
             loginAction.registerLoginCallback(() => this.isLoading(false));
         },
 
-        _applyBindings: function (element, force) {
+        _applyBindings: async function (element, force) {
             if (force) {
-                this._super(element);
+                return this._super(element);
             }
         },
 
@@ -76,8 +76,8 @@ define([
             });
         },
 
-        showModal: function () {
-            this._applyBindings(this.element[0], true);
+        showModal: async function () {
+            await this._applyBindings(this.element[0], true);
             $(this.modalWindow).modal('openModal');
         },
 
