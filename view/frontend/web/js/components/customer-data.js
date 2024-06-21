@@ -275,7 +275,6 @@
             customerData.set(name, value);
         });
         customerData.initialize(window.customerDataConfig);
-        window.customerDataCmp = customerData;
     });
 
     $(document).on('ajaxComplete', function (event, data) {

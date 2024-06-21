@@ -75,25 +75,25 @@
         // Use $.customerData or 'Magento_Customer/js/customer-data' instead.
         //
         get: function (name) {
-            return window.customerDataCmp.get(name);
+            return $.customerData.get(name);
         },
         set: function (name, section) {
-            window.customerDataCmp.set(name, section);
+            $.customerData.set(name, section);
         },
         reload: function (names, forceNewSectionTimestamp) {
-            return window.customerDataCmp.reload(names, forceNewSectionTimestamp);
+            return $.customerData.reload(names, forceNewSectionTimestamp);
         },
         invalidate: function (names) {
-            window.customerDataCmp.invalidate(names);
+            $.customerData.invalidate(names);
         },
         getInitCustomerData: function () {
-            return window.customerDataCmp.getInitCustomerData();
+            return $.customerData.getInitCustomerData();
         },
         initStorage: function () {
-            window.customerDataCmp.initStorage();
+            $.customerData.initStorage();
         },
         getExpiredSectionNames: function () {
-            return window.customerDataCmp.getExpiredSectionNames();
+            return $.customerData.getExpiredSectionNames();
         }
     };
 
