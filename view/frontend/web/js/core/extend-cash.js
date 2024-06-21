@@ -5,6 +5,7 @@
         'click',
         'select',
         'submit',
+        'scroll',
         'blur',
         'focus'
     ];
