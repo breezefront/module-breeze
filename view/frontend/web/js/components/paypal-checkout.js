@@ -10,7 +10,7 @@
         },
 
         create: function () {
-            this.agreements = $.sections.get('paypal-billing-agreement');
+            this.agreements = $.customerData.get('paypal-billing-agreement');
             this.onClickHandler = this.onClick.bind(this);
             this.element.on('click', '[data-action="checkout-form-submit"]', this.onClickHandler);
         },

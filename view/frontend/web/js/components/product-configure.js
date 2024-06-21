@@ -3,11 +3,11 @@
 
     $.widget('productConfigure', {
         create: function () {
-            this.cartSubscription = $.sections.get('cart').subscribe(function (data) {
+            this.cartSubscription = $.customerData.get('cart').subscribe(function (data) {
                 this.syncQuantity(data);
             }.bind(this));
 
-            this.syncQuantity($.sections.get('cart')());
+            this.syncQuantity($.customerData.get('cart')());
         },
 
         destroy: function () {

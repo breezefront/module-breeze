@@ -3,7 +3,7 @@
 
     $.view('wishlistView', {
         component: 'Magento_Wishlist/js/view/wishlist',
-        wishlist: $.sections.get('wishlist')
+        wishlist: $.customerData.get('wishlist')
     });
 
     $.widget('wishlist', {

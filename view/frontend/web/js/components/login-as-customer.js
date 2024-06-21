@@ -2,7 +2,7 @@
     'use strict';
 
     $(document).one('breeze:mount:Magento_LoginAsCustomerFrontendUi/js/login', function (event, data) {
-        $.sections.reload($.sections.getSectionNames());
+        $.customerData.reload($.sections.getSectionNames());
         $(document).on('customer-data-reload', function () {
             window.location.href = data.settings.redirectUrl;
         });
@@ -14,8 +14,8 @@
         notificationText: ko.observable(),
 
         create: function () {
-            var customerData = $.sections.get('customer'),
-                loggedAsCustomerData = $.sections.get('loggedAsCustomer');
+            var customerData = $.customerData.get('customer'),
+                loggedAsCustomerData = $.customerData.get('loggedAsCustomer');
 
             customerData.subscribe(function (data) {
                 this.fullname = data.fullname;

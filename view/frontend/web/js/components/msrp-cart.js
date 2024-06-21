@@ -16,8 +16,8 @@
     }
 
     $(document).one('breeze:mount:Magento_Checkout/js/view/minicart', function () {
-        updateDisplaySubtotal($.sections.get('cart')());
-        $.sections.get('cart').subscribe(function (cart) {
+        updateDisplaySubtotal($.customerData.get('cart')());
+        $.customerData.get('cart').subscribe(function (cart) {
             updateDisplaySubtotal(cart);
         });
     });

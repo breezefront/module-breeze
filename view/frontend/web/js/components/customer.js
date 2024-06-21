@@ -3,6 +3,6 @@
 
     $.view('customer', {
         component: 'Magento_Customer/js/view/customer',
-        customer: $.sections.get('customer')
+        customer: $.customerData.get('customer')
     });
 })();

@@ -5,14 +5,14 @@
         create: function () {
             this.productOptions = {};
 
-            this.cartSubscription = $.sections.get('cart').subscribe(function (updateCartData) {
+            this.cartSubscription = $.customerData.get('cart').subscribe(function (updateCartData) {
                 if (this.setProductOptions(updateCartData)) {
                     this.updateOptions();
                 }
             }.bind(this));
 
             $('#product_addtocart_form').on(this.eventName, function () {
-                this.setProductOptions($.sections.get('cart')());
+                this.setProductOptions($.customerData.get('cart')());
                 this.updateOptions();
             }.bind(this));
         },

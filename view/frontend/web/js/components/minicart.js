@@ -26,8 +26,8 @@
             var self = this;
 
             this.element.on('click', this.options.button.checkout, function () {
-                var cart = $.sections.get('cart'),
-                    customer = $.sections.get('customer');
+                var cart = $.customerData.get('cart'),
+                    customer = $.customerData.get('customer');
 
                 if (!customer().firstname && cart().isGuestCheckoutAllowed === false) {
                     $.cookies.set('login_redirect', self.options.url.checkout);
@@ -186,7 +186,7 @@
          * @return {Object|undefined}
          */
         _getProductById: function (productId) {
-            return _.find($.sections.get('cart')().items, function (item) {
+            return _.find($.customerData.get('cart')().items, function (item) {
                 return productId === Number(item.item_id);
             });
         },
@@ -263,7 +263,7 @@
 
         create: function () {
             var self = this,
-                cartData = $.sections.get('cart');
+                cartData = $.customerData.get('cart');
 
             this.update(cartData());
 
@@ -294,7 +294,7 @@
                 (cartData().website_id !== window.checkout.websiteId && cartData().website_id !== undefined ||
                 cartData().storeId !== window.checkout.storeId && cartData().storeId !== undefined)
             ) {
-                $.sections.reload(['cart'], false);
+                $.customerData.reload(['cart'], false);
             }
         },
 
@@ -435,7 +435,7 @@
 
     ko.components.register('subtotal.totals', {
         viewModel: function (options) {
-            this.cart = $.sections.get('cart');
+            this.cart = $.customerData.get('cart');
             this.displaySubtotal = options.$root.displaySubtotal;
             $.extend(
                 this,

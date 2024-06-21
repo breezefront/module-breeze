@@ -53,7 +53,7 @@ define([
             this.postcode.subscribe(this.updateShippingAddress.bind(this));
             this.addressForm().on('input', this.updateShippingAddress.bind(this));
 
-            $.sections.get('directory-data').subscribe(this.onDirectoryDataUpdate.bind(this));
+            $.customerData.get('directory-data').subscribe(this.onDirectoryDataUpdate.bind(this));
 
             if (!cartData.get('rates') || !quote.shippingAddress()) {
                 this.updateShippingAddress();
@@ -86,7 +86,7 @@ define([
             this.availableCountries.removeAll();
             this.availableCountries.push({ label: '', value: '' });
 
-            Object.entries($.sections.get('directory-data')()).map(([code, item]) => {
+            Object.entries($.customerData.get('directory-data')()).map(([code, item]) => {
                     return {
                         value: code,
                         label: item.name || code
@@ -98,7 +98,7 @@ define([
         },
 
         updateAvailableRegions: function () {
-            var countries = $.sections.get('directory-data')() || {},
+            var countries = $.customerData.get('directory-data')() || {},
                 regions = countries[this.countryId()]?.regions;
 
             this.availableRegions.removeAll();
@@ -123,7 +123,7 @@ define([
         },
 
         updateShippingAddress: _.debounce(function () {
-            var countries = $.sections.get('directory-data')() || {},
+            var countries = $.customerData.get('directory-data')() || {},
                 regions = countries[this.countryId()]?.regions || {},
                 address = _.extend(this.addressForm().serializeJSON(), {
                     regionCode: '',

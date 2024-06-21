@@ -5,10 +5,10 @@
         component: 'Magento_Persistent/js/view/additional-welcome',
 
         create: function () {
-            var persistent = $.sections.get('persistent');
+            var persistent = $.customerData.get('persistent');
 
             if (persistent().fullname === undefined) {
-                $.sections.get('persistent').subscribe(this.replacePersistentWelcome);
+                $.customerData.get('persistent').subscribe(this.replacePersistentWelcome);
             } else {
                 this.replacePersistentWelcome();
             }
@@ -16,7 +16,7 @@
 
         /** Replace welcome message for customer with persistent cookie. */
         replacePersistentWelcome: function () {
-            var persistent = $.sections.get('persistent'),
+            var persistent = $.customerData.get('persistent'),
                 welcomeElems;
 
             if (persistent().fullname !== undefined) {

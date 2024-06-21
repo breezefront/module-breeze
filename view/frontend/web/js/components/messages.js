@@ -60,7 +60,7 @@
             this.observe({'cookieMessagesObservable': []});
             this.cookieMessages = _.unique($.cookies.getJson('mage-messages') || [], 'text');
             this.cookieMessagesObservable(this.cookieMessages);
-            this.messages = $.sections.get('messages').extend({
+            this.messages = $.customerData.get('messages').extend({
                 disposableCustomerData: 'messages'
             });
 
@@ -84,7 +84,7 @@
 
         purgeMessages: function () {
             if (!_.isEmpty(this.messages().messages)) {
-                $.sections.set('messages', {});
+                $.customerData.set('messages', {});
             }
         },
 
@@ -103,7 +103,7 @@
 
         messages.messages = messages.messages || [];
         messages.messages = messages.messages.concat(cookieMessages);
-        $.sections.set('messages', messages);
+        $.customerData.set('messages', messages);
     });
 
     // Appear effect when sticky position is used. See _messages.less

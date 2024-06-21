@@ -43,11 +43,11 @@
         component: 'Magento_Review/js/view/review',
 
         create: function () {
-            this.review = $.sections.get('review');
+            this.review = $.customerData.get('review');
         },
 
         nickname: function () {
-            return this.review().nickname || $.sections.get('customer')().firstname;
+            return this.review().nickname || $.customerData.get('customer')().firstname;
         }
     });
 

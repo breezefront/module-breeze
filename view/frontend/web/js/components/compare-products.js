@@ -3,6 +3,6 @@
 
     $.view('compareProducts', {
         component: 'Magento_Catalog/js/view/compare-products',
-        compareProducts: $.sections.get('compare-products')
+        compareProducts: $.customerData.get('compare-products')
     });
 })();
