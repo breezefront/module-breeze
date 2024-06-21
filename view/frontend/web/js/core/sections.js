@@ -1,9 +1,7 @@
-$.sections = $.customerData = window.customerData = (function () {
+(function () {
     'use strict';
 
-    var data = {},
-        deferred = $.Deferred(),
-        options = window.sectionsConfig;
+    var options = window.sectionsConfig;
 
     /**
      * @param {String} url
@@ -21,11 +19,7 @@ $.sections = $.customerData = window.customerData = (function () {
         return route.replace(/^\/?index.php\/?/, '').toLowerCase();
     }
 
-    $(document).on('customerData:afterInitialize', () => {
-        deferred.resolve();
-    });
-
-    return {
+    $.sections = {
         /**
          * Returns a list of sections which should be invalidated for given URL.
          * @param {String} url - URL which was requested.
@@ -76,121 +70,32 @@ $.sections = $.customerData = window.customerData = (function () {
             return options.sectionNames;
         },
 
-        /**
-         * @param {String} name
-         * @return {Function}
-         */
+        //
+        // The methods below are deprecated.
+        // Use $.customerData or 'Magento_Customer/js/customer-data' instead.
+        //
         get: function (name) {
-            if (!data[name]) {
-                data[name] = ko.observable({});
-            }
-
-            return data[name];
+            return window.customerDataCmp.get(name);
         },
-
-        /**
-         * @param {String} name
-         * @param {Object} section
-         */
         set: function (name, section) {
-            this.get(name)(section);
+            window.customerDataCmp.set(name, section);
         },
-
-        /**
-         * @param {Array} names
-         * @param {Boolean} forceNewSectionTimestamp
-         */
         reload: function (names, forceNewSectionTimestamp) {
-            $(document).trigger('customerData:reload', {
-                sections: names,
-                forceNewSectionTimestamp: forceNewSectionTimestamp
-            });
+            return window.customerDataCmp.reload(names, forceNewSectionTimestamp);
         },
-
-        /**
-         * @param {Array} names
-         */
         invalidate: function (names) {
-            $(document).trigger('customerData:invalidate', {
-                sections: names
-            });
+            window.customerDataCmp.invalidate(names);
         },
-
         getInitCustomerData: function () {
-            return deferred.promise();
+            return window.customerDataCmp.getInitCustomerData();
         },
-
         initStorage: function () {
-            // dummy method for luma compatibility
+            window.customerDataCmp.initStorage();
         },
-
-        /**
-         * @return {Array}
-         */
         getExpiredSectionNames: function () {
-            if (!window.customerDataCmp) {
-                return [];
-            }
-
             return window.customerDataCmp.getExpiredSectionNames();
         }
     };
-})();
 
-$.breezemap['Magento_Customer/js/customer-data'] = $.sections;
-$.breezemap['Magento_Customer/js/section-config'] = $.sections;
-
-(function () {
-    'use strict';
-
-    var sections = $.sections,
-        storage = $.storage.ns('mage-cache-storage');
-
-    $(document).on('ajaxComplete', function (event, data) {
-        var names,
-            response = data.response,
-            request = data.response.req,
-            redirects = ['redirect', 'backUrl'];
-
-        if (!request.method.match(/post|put|delete/i)) {
-            return;
-        }
-
-        names = sections.getAffectedSections(request.url);
-
-        if (!names.length) {
-            return;
-        }
-
-        sections.invalidate(names);
-
-        if (_.isObject(response.body) && !_.isEmpty(_.pick(response.body, redirects))) {
-            return;
-        }
-
-        sections.reload(names, true);
-    });
-
-    $(document).on('submit', function (event) {
-        var names;
-
-        if (!event.target.method.match(/post|put|delete/i)) {
-            return;
-        }
-
-        names = sections.getAffectedSections(event.target.action);
-
-        if (!names.length) {
-            return;
-        }
-
-        sections.invalidate(names);
-        $.storage.remove(names);
-    });
-
-    $(document).on('breeze:load', function () {
-        $.each(storage.get(), function (name, value) {
-            sections.set(name, value);
-        });
-    });
+    $.breezemap['Magento_Customer/js/section-config'] = $.sections;
 })();

@@ -2,6 +2,8 @@
     'use strict';
 
     var customerData,
+        deferred = $.Deferred(),
+        sectionConfig = $.sections,
         disposableSubscriptions = new WeakMap(),
         storage = $.storage.ns('mage-cache-storage'),
         storageInvalidation = $.storage.ns('mage-cache-storage-section-invalidation');
@@ -32,6 +34,8 @@
     }
 
     customerData = {
+        data: {},
+
         /**
          * @param {Object} settings
          */
@@ -40,6 +44,7 @@
             invalidateCacheBySessionTimeOut(this.options);
             invalidateCacheByCloseCookieSession();
             this.create();
+            deferred.resolve();
             $(document).trigger('customerData:afterInitialize');
         },
 
@@ -65,6 +70,10 @@
             if (sectionNames.length > 0) {
                 this.reload(sectionNames);
             }
+        },
+
+        initStorage: function () {
+            // dummy method for luma compatibility
         },
 
         /**
@@ -99,6 +108,18 @@
             expiredSectionNames = _.intersection(expiredSectionNames, $.sections.getSectionNames());
 
             return _.uniq(expiredSectionNames);
+        },
+
+        get: function (name) {
+            if (!this.data[name]) {
+                this.data[name] = ko.observable({});
+            }
+
+            return this.data[name];
+        },
+
+        set: function (name, section) {
+            this.get(name)(section);
         },
 
         /**
@@ -142,7 +163,7 @@
                         sectionDataIds[sectionName] = sectionData.data_id;
                         storage.set(sectionName, sectionData);
                         storageInvalidation.remove(sectionName);
-                        $.sections.set(sectionName, sectionData);
+                        $.customerData.set(sectionName, sectionData);
                     });
 
                     $(document).trigger('customer-data-reload', {
@@ -185,8 +206,32 @@
             $.cookies.setJson('section_data_ids', sectionDataIds, {
                 domain: false
             });
+        },
+
+        getInitCustomerData: function () {
+            return deferred.promise();
+        },
+
+        onAjaxComplete: function (jsonResponse, settings) {
+            var sections,
+                redirects = ['redirect', 'backUrl'];
+
+            if (settings.type.match(/post|put|delete/i)) {
+                sections = sectionConfig.getAffectedSections(settings.url);
+
+                if (sections && sections.length) {
+                    this.invalidate(sections);
+
+                    if (_.isObject(jsonResponse) && !_.isEmpty(_.pick(jsonResponse, redirects))) { //eslint-disable-line
+                        return;
+                    }
+                    this.reload(sections, true);
+                }
+            }
         }
     };
+
+    window.customerData = $.customerData = $.breezemap['Magento_Customer/js/customer-data'] = customerData;
 
     ko.extenders.disposableCustomerData = function (target, sectionName) {
         var sectionDataIds, newSectionDataIds = {};
@@ -226,7 +271,31 @@
     });
 
     $(document).on('breeze:load', function () {
+        $.each(storage.get(), function (name, value) {
+            customerData.set(name, value);
+        });
         customerData.initialize(window.customerDataConfig);
         window.customerDataCmp = customerData;
+    });
+
+    $(document).on('ajaxComplete', function (event, data) {
+        customerData.onAjaxComplete(data.response.body, data.settings);
+    });
+
+    $(document).on('submit', function (event) {
+        var names;
+
+        if (!event.target.method.match(/post|put|delete/i)) {
+            return;
+        }
+
+        names = sectionConfig.getAffectedSections(event.target.action);
+
+        if (!names.length) {
+            return;
+        }
+
+        customerData.invalidate(names);
+        $.storage.remove(names);
     });
 })();

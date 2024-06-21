@@ -55,7 +55,7 @@
                             <item name="validation" xsi:type="string">Swissup_Breeze/js/components/validation</item>
                             <item name="breeze-cookie" xsi:type="string">Swissup_Breeze/js/core/cookie</item>
                             <item name="breeze-storage" xsi:type="string">Swissup_Breeze/js/core/storage</item>
-                            <item name="breeze-sections" xsi:type="string">Swissup_Breeze/js/core/sections</item>
+                            <item name="Magento_Customer/js/section-config" xsi:type="string">Swissup_Breeze/js/core/sections</item>
                             <item name="Magento_Customer/js/customer-data" xsi:type="string">Swissup_Breeze/js/components/customer-data</item>
                             <item name="breeze-focus-trap" xsi:type="string">Swissup_Breeze/js/core/focus-trap</item>
                             <item name="breeze-main" xsi:type="string">Swissup_Breeze/js/core/main</item>
