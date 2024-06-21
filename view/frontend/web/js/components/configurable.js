@@ -40,10 +40,10 @@ define([
         },
 
         _create: function () {
-            if ($(this.options.priceHolderSelector).priceBox('instance')) {
+            if (this._getPriceBoxElement().priceBox('instance')) {
                 this._onPriceFormatReady();
             } else {
-                $(this.options.priceHolderSelector)
+                this._getPriceBoxElement()
                     .first()
                     .one('price-box-initialized', this._onPriceFormatReady.bind(this));
             }
@@ -78,7 +78,7 @@ define([
         _initializeOptions: function () {
             var options = this.options,
                 gallery = $(options.mediaGallerySelector),
-                priceBoxOptions = $(this.options.priceHolderSelector).priceBox('option').priceConfig || null;
+                priceBoxOptions = this._getPriceBoxElement().priceBox('option').priceConfig || null;
 
             if (priceBoxOptions && priceBoxOptions.optionTemplate) {
                 options.optionTemplate = priceBoxOptions.optionTemplate;
@@ -321,6 +321,7 @@ define([
                 }
 
                 images = $.extend(true, [], images);
+                images = this._setImageIndex(images);
 
                 gallery.updateData(images);
             } else {
@@ -332,6 +333,23 @@ define([
             return _.sortBy(images, function (image) {
                 return image.position;
             });
+        },
+
+        /**
+         * Set correct indexes for image set.
+         *
+         * @param {Array} images
+         * @private
+         */
+        _setImageIndex: function (images) {
+            var length = images.length,
+                i;
+
+            for (i = 0; length > i; i++) {
+                images[i].i = i + 1;
+            }
+
+            return images;
         },
 
         /**
@@ -437,7 +455,7 @@ define([
                         options[i].label = options[i].initialLabel;
 
                         if (optionPriceDiff !== 0) {
-                            options[i].label += ' ' + priceUtils.formatPrice(
+                            options[i].label += ' ' + priceUtils.formatPriceLocale(
                                 optionPriceDiff,
                                 this.options.priceFormat,
                                 true
@@ -495,8 +513,10 @@ define([
         _clearSelect: function (element) {
             var i;
 
-            for (i = element.options.length - 1; i >= 0; i--) {
-                element.remove(i);
+            if (element.options) {
+                for (i = element.options.length - 1; i >= 0; i--) {
+                    element.remove(i);
+                }
             }
         },
 
@@ -516,7 +536,7 @@ define([
          * configurable product's option selections.
          */
         _reloadPrice: function () {
-            $(this.options.priceHolderSelector).trigger('updatePrice', this._getPrices());
+            this._getPriceBoxElement().trigger('updatePrice', this._getPrices());
         },
 
         /**
@@ -526,26 +546,31 @@ define([
         _getPrices: function () {
             var prices = {},
                 elements = _.toArray(this.options.settings),
-                allowedProduct;
+                allowedProduct,
+                selected,
+                config,
+                priceValue;
 
             _.each(elements, function (element) {
-                var selected = element.options[element.selectedIndex],
-                    config = selected && selected.config,
+                if (element.options) {
+                    selected = element.options[element.selectedIndex];
+                    config = selected && selected.config;
                     priceValue = this._calculatePrice({});
 
-                if (config && config.allowedProducts.length === 1) {
-                    priceValue = this._calculatePrice(config);
-                } else if (element.value) {
-                    allowedProduct = this._getAllowedProductWithMinPrice(config.allowedProducts);
-                    priceValue = this._calculatePrice({
-                        'allowedProducts': [
-                            allowedProduct
-                        ]
-                    });
-                }
+                    if (config && config.allowedProducts.length === 1) {
+                        priceValue = this._calculatePrice(config);
+                    } else if (element.value) {
+                        allowedProduct = this._getAllowedProductWithMinPrice(config.allowedProducts);
+                        priceValue = this._calculatePrice({
+                            'allowedProducts': [
+                                allowedProduct
+                            ]
+                        });
+                    }
 
-                if (!_.isEmpty(priceValue)) {
-                    prices.prices = priceValue;
+                    if (!_.isEmpty(priceValue)) {
+                        prices.prices = priceValue;
+                    }
                 }
             }, this);
 
@@ -582,7 +607,7 @@ define([
          * @returns {*}
          */
         _calculatePrice: function (config) {
-            var displayPrices = $(this.options.priceHolderSelector).priceBox('option').prices,
+            var displayPrices = this._getPriceBoxElement().priceBox('option').prices,
                 newPrices = this.options.spConfig.optionPrices[_.first(config.allowedProducts)] || {};
 
             _.each(displayPrices, function (price, code) {
@@ -603,19 +628,23 @@ define([
         _getSimpleProductId: function (element) {
             // TODO: Rewrite algorithm. It should return ID of
             //        simple product based on selected options.
-            var allOptions = element.config.options,
-                value = element.value,
+            var allOptions,
+                value,
                 config;
 
-            config = _.filter(allOptions, function (option) {
-                return option.id === value;
-            });
-            config = _.first(config);
+            if (element.config) {
+                allOptions = element.config.options;
+                value = element.value;
 
-            return _.isEmpty(config) ?
-                undefined :
-                _.first(config.allowedProducts);
+                config = _.filter(allOptions, function (option) {
+                    return option.id === value;
+                });
+                config = _.first(config);
 
+                return _.isEmpty(config) ?
+                    undefined :
+                    _.first(config.allowedProducts);
+            }
         },
 
         /**
@@ -625,8 +654,7 @@ define([
          */
         _displayRegularPriceBlock: function (optionId) {
             var shouldBeShown = true,
-                $priceBox = this.element.parents(this.options.selectorProduct)
-                    .find(this.options.selectorProductPrice);
+                $priceBox = this._getPriceBoxElement();
 
             _.each(this.options.settings, function (element) {
                 if (element.value === '') {
@@ -702,6 +730,18 @@ define([
             } else {
                 $(this.options.tierPriceBlockSelector).hide();
             }
+        },
+
+        /**
+         * Returns the price container element
+         *
+         * @returns {*}
+         * @private
+         */
+        _getPriceBoxElement: function () {
+            return this.element
+                .parents(this.options.selectorProduct)
+                .find(this.options.selectorProductPrice);
         }
     });
 });
