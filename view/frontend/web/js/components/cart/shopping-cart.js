@@ -16,6 +16,11 @@
             });
         },
 
+        destroy: function () {
+            $(document).off('ajax:removeFromCart ajax:updateItemQty ajax:updateCartItemQty');
+            return this._super();
+        },
+
         _confirmClearCart: function (e) {
             e.preventDefault();
             $(this.options.emptyCartButton).spinner(true);
