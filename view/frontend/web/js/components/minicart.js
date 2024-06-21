@@ -36,7 +36,12 @@
                         $(this).prop('disabled', true);
                         location.href = self.options.url.loginUrl;
                     } else {
-                        $('#authenticationPopup').authPopup('showModal');
+                        $('body').spinner(true, {
+                            delay: 150
+                        });
+                        $('#authenticationPopup').authPopup('showModal').then(() => {
+                            $('body').spinner(false);
+                        });
                     }
 
                     return false;

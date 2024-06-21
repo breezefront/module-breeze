@@ -11,7 +11,13 @@
                 event.preventDefault();
 
                 if (!customer().firstname && cart().isGuestCheckoutAllowed === false) {
-                    return $('#authenticationPopup').authPopup('showModal');
+                    $('body').spinner(true, {
+                        delay: 150
+                    });
+
+                    return $('#authenticationPopup').authPopup('showModal').then(() => {
+                        $('body').spinner(false);
+                    });
                 }
 
                 location.href = this.options.checkoutUrl;
