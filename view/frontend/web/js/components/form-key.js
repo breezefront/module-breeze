@@ -6,15 +6,11 @@
             inputSelector: 'input[name="form_key"]'
         },
 
-        /** Fill input with valid form key */
         _create: function () {
             $(this.options.inputSelector).val($.cookies.get('form_key'));
         }
     });
 
-    /**
-     * Generate form key string
-     */
     function generateFormKeyString() {
         var result = '',
             length = 16,
@@ -27,9 +23,6 @@
         return result;
     }
 
-    /**
-     * Init form_key inputs with value
-     */
     function initFormKey() {
         var formKey = $.cookies.get('form_key');
 
@@ -42,10 +35,6 @@
 
         $('input[name="form_key"]').val(formKey);
     }
-
-    // $(document).on('breeze:mount:Magento_PageCache/js/form-key-provider', function () {
-    //     initFormKey();
-    // });
 
     $(document).on('breeze:load contentUpdated', function () {
         initFormKey();
