@@ -34,10 +34,10 @@
 
         $(document).trigger('ajaxError', {
             response: response,
-            responseText: response.text,
+            responseText: response?.text,
             settings: params,
             error: error,
-            status: response.status,
+            status: response?.status,
         });
     }
 
