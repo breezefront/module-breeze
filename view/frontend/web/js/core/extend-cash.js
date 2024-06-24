@@ -212,6 +212,10 @@
             selector = selector.replaceAll(`:${type}`, `[type="${type}"]`);
         });
 
+        if (selector.includes('[') && selector.includes('=')) {
+            selector = selector.replaceAll(/\[([\w-]+)?=(\d+)\]/g, '[$1="$2"]');
+        }
+
         return selector
             .replaceAll(':selected', ':checked')
             .replaceAll(':input', ':where(input, select, textarea, button)');
