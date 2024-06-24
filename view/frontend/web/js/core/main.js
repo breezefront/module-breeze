@@ -360,7 +360,9 @@
 
             if (_.isFunction(component)) {
                 instance = component(data.settings, el);
-                if (!component.extend && !instance?.component) {
+                if (_.isFunction(instance) && instance.extend && instance._proto) {
+                    instance = instance(data.settings, el); // cmp is a function that returns UI Component
+                } else if (!component.extend && !instance?.component) {
                     instance = component;
                 }
             } else if (_.isObject(component) && _.isFunction(component[name])) {
