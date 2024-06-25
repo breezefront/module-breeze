@@ -160,7 +160,7 @@
             deps = [];
         }
 
-        if (modules[name]?.cb && cb) {
+        if ((modules[name]?.cb || modules[name]?.ran) && cb) {
             name = `__module-${$.guid++}`;
         }
 
