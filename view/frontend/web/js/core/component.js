@@ -492,9 +492,11 @@
         },
 
         _resolveChildren: function () {
-            return Promise.all(Object.values(this.options.children || {}).map(config => {
-                return new Promise(resolve => require([config.component], resolve));
-            }));
+            return Promise.all(Object.values(this.options.children || {})
+                .filter(config => config.component)
+                .map(config => {
+                    return new Promise(resolve => require([config.component], resolve));
+                }));
         },
 
         destroy: function () {
