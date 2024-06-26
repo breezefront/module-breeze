@@ -352,6 +352,10 @@
             data = data || {};
             data.instance = this;
             this.element.trigger(this.__name + ':' + event, data);
+
+            if (typeof this.options[event] === 'function') {
+                this.options[event].apply(this.element[0], data);
+            }
         },
 
         /**
