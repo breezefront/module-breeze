@@ -157,7 +157,7 @@
             deps = [];
         } else if (typeof deps === 'function') {
             cb = deps;
-            deps = [];
+            deps = ['require'];
         }
 
         if ((modules[name]?.cb || modules[name]?.ran) && cb) {
@@ -255,6 +255,7 @@
         'ko': ko,
         'knockout': ko,
         'underscore': _,
+        'require': window.require,
         'mage/mage': $.mage,
         __counter: 1,
         __aliases: {},
