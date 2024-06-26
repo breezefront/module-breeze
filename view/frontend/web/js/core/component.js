@@ -534,6 +534,8 @@
                     this[key] = _.isArray(value) ? ko.observableArray(value) : ko.observable(value);
                 }
             });
+
+            return this;
         },
 
         getTemplate: function () {
