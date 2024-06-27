@@ -588,13 +588,14 @@
         },
 
         mount: function (config) {
-            // @see main.js
+            var element = $('<div>');
+
             $.breeze.mount(config.component, {
-                el: this.element,
+                el: element,
                 settings: config
             }, true);
 
-            return this.element.component(config.component);
+            return element.component(config.component);
         }
     });
 
