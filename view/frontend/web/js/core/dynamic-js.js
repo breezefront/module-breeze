@@ -129,26 +129,15 @@
                     useMemo = false;
                 }
 
-                if ($.breeze.jsconfig[alias] && (!hasLoadRules || !respectLoadRules)) {
-                    if (loadRules.onInteraction) {
-                        $.lazy(callback);
-                    } else {
-                        callback();
-                    }
+                if (loadRules.onInteraction && (!hasLoadRules || !respectLoadRules)) {
+                    $.lazy(callback);
                 } else {
-                    resolve($.breezemap.__get(alias));
+                    callback();
                 }
             });
 
             if (useMemo) {
                 promises[alias] = result;
-                result.then(() => {
-                    if (window.location.search.includes('breeze=1') &&
-                        $.breezemap.__get(alias) === undefined
-                    ) {
-                        console.log(alias);
-                    }
-                });
             }
         }
 

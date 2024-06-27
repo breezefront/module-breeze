@@ -78,6 +78,10 @@
             this.parents.forEach(parent => parent.run());
         }
 
+        if (this.result === undefined && this.unknown && window.location.search.includes('breeze=1')) {
+            console.log(this.name);
+        }
+
         return this.result;
     }
 
