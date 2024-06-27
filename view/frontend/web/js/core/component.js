@@ -567,8 +567,13 @@
             Object.keys(children).sort((a, b) => {
                 return children[a].sortOrder - children[b].sortOrder;
             }).forEach(key => {
-                var config = children[key],
-                    cmp = self.mount(config);
+                var cmp, config = children[key];
+
+                if (!config.component) {
+                    return;
+                }
+
+                cmp = self.mount(config);
 
                 if (!cmp || code && cmp.displayArea !== code) {
                     return;
