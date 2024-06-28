@@ -392,7 +392,11 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                     $this->allBundles[$bundleName]['items'][$itemName] = $item;
                 }
 
-                if (empty($item['load']) && $bundleName === 'dynamic' || strpos($item['path'], '//') !== false) {
+                $item['enabled'] ??= true;
+
+                if (!$item['enabled']) {
+                    unset($this->allBundles[$bundleName]['items'][$itemName]);
+                } elseif (empty($item['load']) && $bundleName === 'dynamic' || strpos($item['path'], '//') !== false) {
                     $item['load'] = ['onRequire' => true];
                     $this->allBundles[$bundleName]['items'][$itemName] = $item;
                 }
@@ -412,12 +416,6 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                     if (isset($this->allBundles[$info['bundle']]['items'][$info['itemName']]['load'])) {
                         $this->allBundles[$bundleName]['items'][$itemName]['load']['onRequire'] = true;
                     }
-                }
-
-                $item['enabled'] ??= true;
-
-                if (!$item['enabled']) {
-                    unset($this->allBundles[$bundleName]['items'][$itemName]);
                 }
             }
         }
