@@ -230,7 +230,7 @@
             this._options(options);
             this._defaults(this.options);
             this._trigger('beforeCreate');
-            this.initialize(this.options, this.element?.[0]);
+            this.initialize(this.options, this.__element?.[0]);
             this.create();
             this._create();
             this.init();
@@ -311,6 +311,7 @@
             this.__uuid = $.guid++;
             this.__eventNamespace = '.' + name + this.__uuid;
             this.__bindings = $();
+            this.__element = $(element);
             this.uuid = this.__uuid;
             this.element = $(element);
 
@@ -326,7 +327,7 @@
          */
         createFocusTrap: function (element, options) {
             if (!element) {
-                element = this.element;
+                element = this.__element;
             }
 
             return $.focusTrap.createFocusTrap(element.get(0), $.extend({
@@ -338,7 +339,7 @@
         onReveal: function (element, callback) {
             if (!callback) {
                 callback = element;
-                element = this.element;
+                element = this.__element;
             }
 
             return $.onReveal(element, callback);
@@ -351,10 +352,10 @@
         _trigger: function (event, data) {
             data = data || {};
             data.instance = this;
-            this.element.trigger(this.__name + ':' + event, data);
+            this.__element.trigger(this.__name + ':' + event, data);
 
             if (typeof this.options[event] === 'function') {
-                this.options[event].apply(this.element[0], data);
+                this.options[event].apply(this.__element[0], data);
             }
         },
 
@@ -371,7 +372,7 @@
         _on: function (element, event, handler) {
             var self = this,
                 handlers = {},
-                el = this.element;
+                el = this.__element;
 
             if (handler) { // on('body', 'click', fn)
                 handlers[event] = handler;
@@ -420,7 +421,7 @@
         _off: function (element, eventName) {
             if (!eventName) {
                 eventName = element;
-                element = this.element;
+                element = this.__element;
             }
 
             eventName =
@@ -435,11 +436,11 @@
             this.focusTrap?.deactivate();
             this.revealObserver?.disconnect();
 
-            this.element.off(this.__eventNamespace);
+            this.__element.off(this.__eventNamespace);
             this.__bindings.off(this.__eventNamespace);
             this._super();
 
-            $.registry.delete(this.__name, this.element[0], true);
+            $.registry.delete(this.__name, this.__element[0], true);
         }
     });
 
@@ -453,6 +454,14 @@
                 this._markup = $(element).html();
             }
             this._super(name, options, element);
+
+            // Fix for UI form:
+            // 1. foreach: elems as 'element'
+            // 2. element.hasAddons
+            if (this.hasTemplate() && document.getElementById(this.getTemplate())?.innerHTML.includes('element')) {
+                delete this.element;
+            }
+
             window.setTimeout(this._applyBindings.bind(this, element), 0);
         },
 
@@ -501,8 +510,8 @@
 
         destroy: function () {
             // Restore initial markup that is used as a template in knockout
-            if (!this.element.is('body')) {
-                this.element.html(this._markup);
+            if (!this.__element.is('body')) {
+                this.__element.html(this._markup);
             }
             this._super();
         },
