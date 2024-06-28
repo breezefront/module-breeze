@@ -73,6 +73,9 @@
 
     ko.virtualElements.allowedBindings.i18n = true;
 
+    ko.bindingHandlers.translate = ko.bindingHandlers.i18n;
+    ko.virtualElements.allowedBindings.translate = true;
+
     ko.bindingHandlers.scope = {
         init: function () {
             return {
