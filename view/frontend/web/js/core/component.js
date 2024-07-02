@@ -547,6 +547,10 @@
             return this;
         },
 
+        hasTemplate: function () {
+            return this.template || this.options.template;
+        },
+
         getTemplate: function () {
             var template = this.template || this.options.template,
                 templates = [
