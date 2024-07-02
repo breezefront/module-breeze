@@ -99,8 +99,9 @@ $.registry = (function () {
                     data[name].elements.splice(index, 1);
                 }
 
-                if (instance?.destroy && !skipDestroy) {
+                if (instance?.destroy && !instance.__destroyed && !skipDestroy) {
                     instance.destroy();
+                    instance.__destroyed = true;
                 }
 
                 if (instance?.__scope) {
