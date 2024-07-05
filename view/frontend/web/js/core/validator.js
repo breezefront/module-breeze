@@ -373,4 +373,62 @@
     };
 
     $.breezemap['Magento_Ui/js/lib/validation/utils'] = $.validator.utils;
+
+    function validate(id, value, params, additionalParams) {
+        var rule, message, valid,
+            result = {
+                rule: id,
+                passed: true,
+                message: ''
+            };
+
+        if (_.isObject(params)) {
+            message = params.message || '';
+        }
+
+        if (!$.validator.validators[id]) {
+            return result;
+        }
+
+        rule = $.validator.validators[id];
+        while (typeof rule === 'string') {
+            rule = $.validator.validators[rule];
+        }
+
+        valid = rule[0](value, params, additionalParams);
+        message = message || rule[1];
+
+        if (!valid) {
+            params = Array.isArray(params) ? params : [params];
+
+            if (typeof message === 'function') {
+                message = message();
+            }
+
+            message = params.reduce(function (msg, param, idx) {
+                return msg.replace(new RegExp('\\{' + idx + '\\}', 'g'), param);
+            }, message);
+
+            result.passed = false;
+            result.message = message;
+        }
+
+        return result;
+    }
+
+    $.breezemap['Magento_Ui/js/lib/validation/validator'] = function (rules, value, additionalParams) {
+        var result = {
+            passed: true,
+        };
+
+        _.every(rules, function (params, id) {
+            if (params.validate || params !== false || additionalParams) {
+                result = validate(id, value, params, additionalParams);
+                return result.passed;
+            }
+            return true;
+        });
+
+        return result;
+    };
 })();
