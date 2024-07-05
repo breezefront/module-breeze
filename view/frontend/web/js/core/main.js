@@ -13,8 +13,6 @@
 
     /** Init 'data-mage-init' and 'text/x-magento-init' scripts */
     function mount(component, data, now) {
-        component = component || 'uiComponent';
-
         if (data.settings?.componentDisabled === true) {
             return;
         }
@@ -145,8 +143,10 @@
 
                     // eslint-disable-next-line max-nested-callbacks
                     $.each(config[i].components, function (scope, cfg) {
-                        cfg.name = cfg.index = cfg.ns = cfg.__scope = scope;
-                        mountView(scope, cfg);
+                        if (cfg.component) {
+                            cfg.name = cfg.index = cfg.ns = cfg.__scope = scope;
+                            mountView(scope, cfg);
+                        }
                     });
                 } else {
                     if (selector) {
