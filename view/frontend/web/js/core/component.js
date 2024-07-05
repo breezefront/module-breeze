@@ -453,14 +453,7 @@
                 this._markup = $(element).html();
             }
             this._super(name, options, element);
-
-            // Fix for UI form:
-            // 1. foreach: elems as 'element'
-            // 2. element.hasAddons
-            if (this.hasTemplate() && document.getElementById(this.getTemplate())?.innerHTML.includes('element')) {
-                delete this.element;
-            }
-
+            this._fixMissingElementInKoTemplates();
             window.setTimeout(this._applyBindings.bind(this, element), 0);
         },
 
@@ -470,6 +463,21 @@
 
         initObservable: function () {
             return this;
+        },
+
+        // Fix for UI form:
+        // 1. foreach: elems as 'element'
+        // 2. element.hasAddons
+        _fixMissingElementInKoTemplates: function () {
+            var html = this.hasTemplate() && document.getElementById(this.getTemplate())?.innerHTML;
+
+            if (!html) {
+                return;
+            }
+
+            if (html.includes('element.') || html.includes('\'element\'')) {
+                delete this.element;
+            }
         },
 
         _applyBindings: async function (element) {
