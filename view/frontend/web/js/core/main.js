@@ -347,10 +347,17 @@
     $(document).on('breeze:mount', function (event, data) {
         var name = $.breezemap.__aliases[data.__component] || data.__component,
             component = $.breezemap[name],
-            instance = component;
+            instance = component,
+            proto = {};
 
         if (!component || component._proto?.prototype.component === false) {
             return;
+        }
+
+        if (['uiComponent', 'uiCollection'].includes(name)) {
+            proto.defaults = {
+                template: 'uiComponent'
+            };
         }
 
         $(data.el || document.body).each((i, el) => {
@@ -367,6 +374,8 @@
                 }
             } else if (_.isObject(component) && _.isFunction(component[name])) {
                 component[name].bind(component)(data.settings, el);
+            } else if (_.isObject(component) && _.isFunction(component.extend)) {
+                instance = component.extend(proto)(data.settings, el);
             } else {
                 return;
             }
