@@ -800,6 +800,7 @@
                 <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.modal.customTpl" template="Magento_Ui::modal/modal-custom.html"/>
                 <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.modal.promptTpl" template="Magento_Ui::modal/modal-prompt-content.html"/>
                 <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.uiMessages" template="Magento_Ui::messages.html"/>
+                <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.uiComponent" template="Swissup_Breeze::ui/component.html"/>
                 <block class="Swissup\Breeze\Block\KoTemplate" name="breeze.image_with_borders" template="Swissup_Breeze::ko/catalog/product-image.phtml">
                     <arguments>
                         <argument name="id" xsi:type="string">Magento_Catalog/product/image_with_borders</argument>
