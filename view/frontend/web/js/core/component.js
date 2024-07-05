@@ -620,6 +620,7 @@
         },
         register: $.breezemap.__register,
     };
+    $.breezemap.uiCollection = $.uiComponent;
     $.breezemap.uiComponent = $.uiComponent;
     $.breezemap.uiElement = $.uiComponent;
     $.breezemap.uiClass = $.Base;
