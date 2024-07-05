@@ -314,8 +314,7 @@
             this.__element = $(element);
             this.uuid = this.__uuid;
             this.element = $(element);
-
-            $.registry.set(name, element, this);
+            this.__element.one(`${this.__name}:beforeCreate`, () => $.registry.set(name, element, this));
 
             return this._super(options);
         },
