@@ -2,7 +2,8 @@
     'use strict';
 
     var address = function (data) {
-        var countryId = data.country_id || data.countryId || window.checkoutConfig?.defaultCountryId,
+        var identifier = Date.now(),
+            countryId = data.country_id || data.countryId || window.checkoutConfig?.defaultCountryId,
             regionId = data.region?.region_id || data.regionId || data.region_id;
 
         // eslint-disable-next-line eqeqeq
@@ -34,6 +35,15 @@
             country_id: countryId,
             region_id: regionId,
             region_code: data.region?.region_code || data.regionCode || data.region_code,
+            getType: function () {
+                return 'new-customer-address';
+            },
+            getKey: function () {
+                return this.getType();
+            },
+            getCacheKey: function () {
+                return this.getType() + identifier;
+            },
         };
     };
 
