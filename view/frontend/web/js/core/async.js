@@ -39,13 +39,19 @@
      * @param {Element} node
      */
     function processAdded(node) {
+        var allSelectors = Object.keys(mapping).join(',');
+
+        if (!$(node).is(allSelectors)) {
+            return;
+        }
+
         _.each(mapping, function (listeners, selector) {
             if (!$(node).is(selector)) {
                 return;
             }
 
             _.each(listeners, function (data) {
-                if (!data.ctx.contains(node) || !$(node, data.ctx).is(selector)) {
+                if (data.ctx !== document && !data.ctx.contains(node) || !$(node, data.ctx).is(selector)) {
                     return;
                 }
 
@@ -74,8 +80,10 @@
     }
 
     observer = new MutationObserver(function (mutations) {
-        mutations.forEach(function (mutation) {
-            collectNodes(mutation.addedNodes).forEach(processAdded);
+        mutations.forEach(mutation => {
+            setTimeout(() => {
+                collectNodes(mutation.addedNodes).forEach(processAdded);
+            }, 0);
         });
     });
 
