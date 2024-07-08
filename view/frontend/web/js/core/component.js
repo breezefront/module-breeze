@@ -217,6 +217,7 @@
     Base = Class.extend({
         create: _.noop,
         init: _.noop,
+        initConfig: _.noop,
         destroy: _.noop,
         _create: _.noop,
         _init: _.noop,
@@ -229,6 +230,7 @@
         _initialize: function (options) {
             this._options(options);
             this._defaults(this.options);
+            this.initConfig(options);
             this._trigger('beforeCreate');
             this.initialize(this.options, this.__element?.[0]);
             this.create();
