@@ -161,7 +161,13 @@ class JsBuild
         foreach ($this->items as $name => $item) {
             $deps = [];
             foreach (['deps', 'import'] as $key) {
-                $deps = array_merge($deps, array_values($item[$key] ?? []));
+                foreach ($item[$key] ?? [] as $depName) {
+                    if ($name !== $depName && isset($this->items[$depName]['path'])) {
+                        $deps[] = $this->items[$depName]['path'];
+                    } else {
+                        $deps[] = $depName;
+                    }
+                }
             }
             $deps = array_diff($deps, $loadedDeps);
 
@@ -170,12 +176,12 @@ class JsBuild
                 $loadedDeps[$depPath] = $depPath;
             }
 
-            $path = $item['path'];
-            if (isset($loadedDeps[$path])) {
+            if (isset($loadedDeps[$item['path']])) {
                 continue;
             }
 
-            $build[$name] = $this->getContents($path);
+            $build[$name] = $this->getContents($item['path']);
+            $loadedDeps[$item['path']] = $item['path'];
         }
 
         $build = array_values(array_filter($build));
