@@ -247,7 +247,9 @@
         },
 
         _defaults: function (values) {
-            _.each(this.defaults || {}, (value, key) => {
+            var defaults = this._processDefaults(this.defaults || {}, _.extend({}, this.defaults, this.options));
+
+            _.each(defaults, (value, key) => {
                 if ($.isPlainObject(values[key]) && $.isPlainObject(value)) {
                     this[key] = $.extendProps(values[key], value);
                 } else {
@@ -267,7 +269,13 @@
                 this.options = $.extendProps(this.options.config || {}, this.options);
             }
 
+            this.options = this._processDefaults(this.options || {}, _.extend({}, this.defaults, this.options));
+
             return this;
+        },
+
+        _processDefaults: function (obj) {
+            return obj;
         },
 
         /**
