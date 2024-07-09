@@ -1,14 +1,13 @@
 (function () {
     'use strict';
 
-    var Base, Widget, View,
-        prototypes = {},
+    var prototypes = {},
         pending = {
             mixins: {},
             components: {}
         };
 
-    function createComponentFn(BaseClass) {
+    $.createComponentFn = function (BaseClass) {
         var componentFn, registerFn, factory;
 
         factory = {
@@ -212,9 +211,9 @@
         };
 
         return componentFn;
-    }
+    };
 
-    Base = Class.extend({
+    $.Base = Class.extend({
         create: _.noop,
         init: _.noop,
         initConfig: _.noop,
@@ -309,7 +308,7 @@
         }
     });
 
-    Widget = Base.extend({
+    $.Widget = $.Base.extend({
         /**
          * @param {String} name
          * @param {Object} options
@@ -453,7 +452,7 @@
         }
     });
 
-    View = Widget.extend({
+    $.View = $.Widget.extend({
         beforeRender: _.noop,
         afterRender: _.noop,
 
@@ -680,9 +679,8 @@
         }
     });
 
-    $.Base = Base;
-    $.widget = createComponentFn(Widget);
-    $.view = createComponentFn(View);
+    $.widget = $.createComponentFn($.Widget);
+    $.view = $.createComponentFn($.View);
     $.uiComponent = {
         extend: function (proto) {
             return $.view(proto.component || `__component${$.breezemap.__counter++}`, proto);
