@@ -77,13 +77,14 @@
     $.breezemap.uiLayout = (nodes) => {
         $(document).one('breeze:load', () => {
             nodes.forEach(node => {
-                node.index = node.ns = node.__scope = node.name;
+                node.index = node.ns = node.name;
                 if (node.parent) {
                     // eslint-disable-next-line max-nested-callbacks
                     $.breezemap.uiRegistry.get(node.parent, parent => {
-                        parent.getRegion(node.displayArea || null).push(parent.mount(node));
+                        parent.insertChild(parent.mount(node));
                     });
                 } else {
+                    node.__scope = node.name;
                     mountView(node.name, node);
                 }
             });

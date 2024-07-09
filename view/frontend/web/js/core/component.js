@@ -458,7 +458,7 @@
         afterRender: _.noop,
 
         _initialize: function (name, options, element) {
-            this._regions = {};
+            this._elems = [];
             if (!$(element).is('body')) {
                 this._markup = $(element).html();
             }
@@ -485,6 +485,7 @@
         },
 
         initObservable: function () {
+            this.elems = ko.observableArray();
             return this;
         },
 
@@ -511,6 +512,7 @@
             }
 
             await this._resolveChildren();
+            this._initElems();
 
             while (koEl) {
                 if (koEl.nodeType === 1 || (koEl.nodeType === 8 && koEl.nodeValue.match(/\s*ko\s+/))) {
@@ -536,6 +538,62 @@
                 .map(config => {
                     return new Promise(resolve => require([config.component], resolve));
                 }));
+        },
+
+        _initElems: function () {
+            var children = this.options.children || {};
+
+            Object.keys(children).sort((a, b) => {
+                return children[a].sortOrder - children[b].sortOrder;
+            }).forEach(key => {
+                var cmp, config = children[key];
+
+                if (!config.component) {
+                    return;
+                }
+
+                config.index = key;
+                cmp = this.mount(config);
+
+                if (!cmp) {
+                    return;
+                }
+
+                this._elems.push(cmp);
+            });
+
+            this._updateCollection();
+        },
+
+        _updateCollection: function () {
+            this._elems.forEach(el => {
+                var displayArea = el.displayArea || null;
+
+                [...new Set([null, displayArea])].forEach(regionCode => {
+                    if (regionCode && displayArea !== regionCode) {
+                        return;
+                    }
+                    this.getRegion(regionCode).push(el);
+                });
+            });
+
+            this.elems(this._elems);
+        },
+
+        insertChild: function (elems) {
+            if (!_.isArray(elems)) {
+                elems = [elems];
+            }
+            this._elems.push(...elems);
+            this._updateCollection();
+            return this;
+        },
+
+        getRegion: function (name) {
+            name = name || null;
+            this.regions = this.regions || {};
+            this.regions[name] = this.regions[name] || ko.observableArray();
+            return this.regions[name];
         },
 
         destroy: function () {
@@ -594,44 +652,24 @@
             return found || templates[0];
         },
 
-        elems: function () {
-            return this.getRegion(null);
-        },
-
-        getRegion: function (code) {
-            var self = this,
-                result = ko.observableArray(),
-                children = this.options.children || [];
-
-            if (this._regions[code]) {
-                return this._regions[code];
-            }
-
-            Object.keys(children).sort((a, b) => {
-                return children[a].sortOrder - children[b].sortOrder;
-            }).forEach(key => {
-                var cmp, config = children[key];
-
-                if (!config.component) {
-                    return;
-                }
-
-                cmp = self.mount(config);
-
-                if (!cmp || code && cmp.displayArea !== code) {
-                    return;
-                }
-
-                result.push(cmp);
-            });
-
-            this._regions[code] = result;
-
-            return result;
-        },
-
         mount: function (config) {
             var element = $('<div>');
+
+            if (this.dataScope) {
+                config.dataScope = [this.dataScope, config.dataScope].join('.');
+            }
+
+            config = _.extend({
+                parentName: this.__scope,
+                parentScope: this.index,
+            }, config);
+
+            if (config.index) {
+                config = _.extend({
+                    __scope: [this.__scope, config.index].filter(v => v).join('.'),
+                    name: [this.__scope, config.index].filter(v => v).join('.'),
+                }, config);
+            }
 
             $.breeze.mount(config.component, {
                 el: element,
