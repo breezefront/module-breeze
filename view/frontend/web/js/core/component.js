@@ -464,7 +464,20 @@
             }
             this._super(name, options, element);
             this._fixMissingElementInKoTemplates();
-            window.setTimeout(this._applyBindings.bind(this, element), 0);
+
+            if (this.provider) {
+                $.breezemap.uiRegistry.get(this.provider, provider => {
+                    this.source = provider;
+                });
+            }
+
+            if (this.deps) {
+                Promise.all(
+                    this.deps.filter(v => v).map(v => $.breezemap.uiRegistry.promise(v))
+                ).then(() => this._applyBindings.bind(this, element)());
+            } else {
+                window.setTimeout(this._applyBindings.bind(this, element), 0);
+            }
         },
 
         initialize: function () {
