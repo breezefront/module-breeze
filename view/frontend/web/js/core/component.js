@@ -543,7 +543,7 @@
             var children = this.options.children || {};
 
             Object.keys(children).sort((a, b) => {
-                return children[a].sortOrder - children[b].sortOrder;
+                return (children[a].sortOrder || 1000000) - (children[b].sortOrder || 1000000);
             }).forEach(key => {
                 var cmp, config = children[key];
 
