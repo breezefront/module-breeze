@@ -661,6 +661,7 @@
             config = _.extend({
                 parentName: this.__scope,
                 parentScope: this.index,
+                dataScope: '',
             }, config);
 
             if (config.index) {
