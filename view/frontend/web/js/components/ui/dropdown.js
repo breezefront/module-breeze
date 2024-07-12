@@ -14,7 +14,10 @@
             this.status = false;
 
             if (this.options.parent) {
-                this.parent = $(this.options.parent);
+                this.parent = this.element.closest(this.options.parent);
+                if (!this.parent.length) {
+                    this.parent = $(this.options.parent);
+                }
             } else {
                 this.parent = this.element.parent();
             }
