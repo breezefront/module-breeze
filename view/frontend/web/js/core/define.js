@@ -136,6 +136,11 @@
             result.push(...collectDeps(item, i === index, true));
         });
 
+        // When 'quickSearch' is required, resolve 'smileEs.quickSearch' too.
+        Object.keys($.breeze.jsconfig).filter(key => key.endsWith(`.${alias}`)).forEach(key => {
+            result.push(...collectDeps(key));
+        });
+
         if (isKnown || $.breeze.jsconfig[dep.name]?.path) {
             dep.path = path;
         } else if (config.paths[alias] || alias.includes('//')) {
