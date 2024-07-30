@@ -411,7 +411,14 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                         continue;
                     }
 
-                    $this->allBundles[$info['bundle']]['items'][$info['itemName']]['import'][] = $itemName;
+                    if (!isset($this->allBundles[$info['bundle']]['items'][$info['itemName']]['import'])) {
+                        $this->allBundles[$info['bundle']]['items'][$info['itemName']]['import'] = [];
+                    }
+
+                    array_unshift(
+                        $this->allBundles[$info['bundle']]['items'][$info['itemName']]['import'],
+                        $itemName
+                    );
 
                     if (isset($this->allBundles[$info['bundle']]['items'][$info['itemName']]['load'])) {
                         $this->allBundles[$bundleName]['items'][$itemName]['load']['onRequire'] = true;
