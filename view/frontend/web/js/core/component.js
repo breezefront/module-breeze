@@ -191,14 +191,6 @@
             prototype = factory.extend(prototype, parent);
             prototypes[name] = prototype;
 
-            // apply pending mixins
-            if (pending.mixins[name]) {
-                $.each(pending.mixins[name], function () {
-                    $.mixin(name, this);
-                });
-                delete pending.mixins[name];
-            }
-
             // create pending components
             if (pending.components[name]) {
                 $.each(pending.components[name], function () {
@@ -702,11 +694,11 @@
         }
 
         if (!proto) {
-            if (!pending.mixins[name]) {
-                pending.mixins[name] = [];
+            if (!$.mixin.pending[name]) {
+                $.mixin.pending[name] = [];
             }
 
-            return pending.mixins[name].push(mixins);
+            return $.mixin.pending[name].push(mixins);
         } else if (typeof proto === 'function' && typeof mixins === 'function') {
             mixins = [mixins];
             proto = [proto];
@@ -729,4 +721,5 @@
             }
         });
     };
+    $.mixin.pending = {};
 })();

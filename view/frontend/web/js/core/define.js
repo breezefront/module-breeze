@@ -295,6 +295,11 @@
         set(obj, alias, value) {
             obj[alias] = value;
 
+            if ($.mixin?.pending[alias]) {
+                $.mixin.pending[alias].forEach(mixin => $.mixin(alias, mixin));
+                delete $.mixin.pending[alias];
+            }
+
             getModule(alias).run();
             $(document).trigger('breeze:component:load', { alias, value });
 
