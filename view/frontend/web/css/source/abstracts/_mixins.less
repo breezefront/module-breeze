@@ -33,3 +33,24 @@
         overflow-y: overlay;
     }
 }
+
+.bz-gallery-nav-dots() {
+    gap: @bz-gallery-dots-thumb__gap;
+    justify-content: center;
+    .margin(@bz-gallery-dots-thumb__margin);
+    img {
+        display: none;
+    }
+    .item {
+        background: @bz-gallery-dots-thumb__background;
+        width: @bz-gallery-dots-thumb__width;
+        height: @bz-gallery-dots-thumb__height;
+    }
+    .item,
+    .item::after {
+        .lib-css(border-radius, @bz-gallery-dots-thumb__border-radius);
+    }
+    .item.active {
+        background-color: @active__color;
+    }
+}
