@@ -31,7 +31,7 @@
         this.loaded = true;
 
         if (this.result === undefined && config.shim[this.name]?.exports) {
-            this.result = window[config.shim[this.name].exports];
+            this.result = _.get(window, config.shim[this.name].exports.split('.'));
         }
 
         if (this.result?.component) {
