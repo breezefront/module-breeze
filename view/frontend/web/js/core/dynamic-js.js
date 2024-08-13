@@ -5,10 +5,10 @@
         debouncedContentUpdated = _.debounce(() => $(document).trigger('contentUpdated'), 40),
         jsBundles = JSON.parse($('[type="breeze/dynamic-js"]').text());
 
-    function processMatchedLoadRule(loadRules, alias) {
-        var callback = () => {
+    function processMatchedLoadRule(loadRules, alias, callback) {
+        callback = callback || (() => {
             require([alias], debouncedContentUpdated);
-        };
+        });
 
         if (loadRules.onInteraction) {
             $.lazy(callback);
@@ -17,19 +17,19 @@
         }
     }
 
-    function processOnRevealRules(loadRules, alias) {
+    function processOnRevealRules(loadRules, alias, callback) {
         if (!loadRules?.onReveal) {
             return;
         }
 
         $.async(loadRules.onReveal.join(','), (el) => {
-            $.onReveal(el, () => processMatchedLoadRule(loadRules, alias), {
+            $.onReveal(el, () => processMatchedLoadRule(loadRules, alias, callback), {
                 rootMargin: '120px',
             });
         });
     }
 
-    function processOnEventRules(loadRules, alias) {
+    function processOnEventRules(loadRules, alias, callback) {
         if (!loadRules?.onEvent) {
             return;
         }
@@ -40,19 +40,25 @@
                 selector = parts.join(' ');
 
             $(document).one(eventName, selector, () => {
-                processMatchedLoadRule(loadRules, alias);
+                processMatchedLoadRule(loadRules, alias, callback);
             });
         });
     }
 
-    function processOnDomRules(loadRules, alias) {
+    function processOnDomRules(loadRules, alias, callback) {
         if (!loadRules?.onDom) {
             return;
         }
 
         $.async(loadRules.onDom.join(','), () => {
-            processMatchedLoadRule(loadRules, alias);
+            processMatchedLoadRule(loadRules, alias, callback);
         });
+    }
+
+    function processLoadRules(loadRules, alias, callback) {
+        processOnRevealRules(loadRules, alias, callback);
+        processOnEventRules(loadRules, alias, callback);
+        processOnDomRules(loadRules, alias, callback);
     }
 
     try {
@@ -93,9 +99,7 @@
 
     $(document).on('breeze:load', () => {
         $.each($.breeze.jsconfig, (alias, values) => {
-            processOnRevealRules(values.load, alias);
-            processOnEventRules(values.load, alias);
-            processOnDomRules(values.load, alias);
+            processLoadRules(values.load, alias);
         });
     });
 
@@ -131,6 +135,8 @@
 
                 if (loadRules.onInteraction && (!hasLoadRules || !respectLoadRules)) {
                     $.lazy(callback);
+                } else if (hasLoadRules && respectLoadRules) {
+                    processLoadRules(loadRules, alias, callback);
                 } else {
                     callback();
                 }
