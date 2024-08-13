@@ -592,6 +592,21 @@
                 this.stateText = 'rejected';
             });
 
+            promise.finally = _.wrap(promise.finally, (o, onFinally) => {
+                o.bind(promise)(onFinally);
+                return this;
+            });
+
+            promise.then = _.wrap(promise.then, (o, onFulfilled, onRejected) => {
+                o.bind(promise)(onFulfilled, onRejected);
+                return this;
+            });
+
+            promise.catch = _.wrap(promise.catch, (o, onRejected) => {
+                o.bind(promise)(onRejected);
+                return this;
+            });
+
             this.always = promise.always = promise.finally.bind(promise);
             this.done = this.then = promise.done = promise.then.bind(promise);
             this.fail = promise.fail = promise.catch.bind(promise);
