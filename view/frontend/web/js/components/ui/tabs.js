@@ -50,7 +50,7 @@ define(['collapsible'], () => {
                 if (_.isArray(self.options.active)) {
                     isActive = self.options.active.indexOf(index) !== -1;
                 } else {
-                    isActive = index === self.options.active;
+                    isActive = index === +self.options.active;
                 }
 
                 if (!isActive) {
