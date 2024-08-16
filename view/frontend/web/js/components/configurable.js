@@ -34,7 +34,7 @@ define([
             tierPriceTemplateSelector: '#tier-prices-template',
             tierPriceBlockSelector: '[data-role="tier-price-block"]',
             tierPriceTemplate: '',
-            selectorProduct: '.product-info-main',
+            selectorProduct: '.product-info-main, .product-info-wrapper',
             selectorProductPrice: '[data-role=priceBox]',
             qtyInfo: '#qty'
         },
