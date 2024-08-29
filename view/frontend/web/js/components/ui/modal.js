@@ -360,7 +360,10 @@
             }
 
             if (this.options.clickableOverlay) {
-                this.overlay.off().on('click', outerClickHandler);
+                if (!this._getVisibleCount()) {
+                    this.overlay.off();
+                }
+                this.overlay.on('click', outerClickHandler);
             }
         },
 
