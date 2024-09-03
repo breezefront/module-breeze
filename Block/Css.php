@@ -2,6 +2,9 @@
 
 namespace Swissup\Breeze\Block;
 
+use Magento\Csp\Api\InlineUtilInterface;
+use Magento\Framework\App\ObjectManager;
+
 class Css extends \Magento\Framework\View\Element\AbstractBlock
 {
     private $assetRepo;
@@ -39,8 +42,8 @@ class Css extends \Magento\Framework\View\Element\AbstractBlock
             }
 
             if (!isset($data['deferred']) || $data['deferred']) {
-                // We will defer this style later in Swissup\Breeze\Plugin\AsyncCssPlugin
-                $items[] = $this->renderLink('deferred-' . $name, $data);
+                // When inlineCss is true, we will defer this style later in Swissup\Breeze\Plugin\AsyncCssPlugin
+                $items[] = $this->renderLink('deferred-' . $name, $data, !$inlineCss);
             }
         }
 
@@ -53,17 +56,29 @@ class Css extends \Magento\Framework\View\Element\AbstractBlock
      * @param boolean $deferred
      * @return string
      */
-    private function renderLink($name, $data = [])
+    private function renderLink($name, $data = [], $deferred = false)
     {
-        $media = 'all';
+        $media = $data['media'] ?? 'all';
+        $href = $this->getViewFileUrl('css/' . $name . '.css');
+        $onload = '';
 
-        if (!empty($data['media'])) {
-            $media = $data['media'];
+        if ($deferred) {
+            $onloadValue = sprintf('this.media=\'%s\'', $media);
+            $onload = sprintf('onload="%s"', $onloadValue);
+            $media = 'print';
+
+            if (interface_exists(InlineUtilInterface::class)) {
+                $onload = ObjectManager::getInstance()
+                    ->get(InlineUtilInterface::class)
+                    ->renderEventListener('onload', $onloadValue);
+            }
         }
 
         return sprintf(
-            '<link rel="stylesheet" type="text/css" media="' . $media . '" href="%s"/>',
-            $this->getViewFileUrl('css/' . $name . '.css')
+            '<link rel="stylesheet" type="text/css" media="%s" %s href="%s"/>',
+            $media,
+            $onload,
+            $href
         );
     }
 
