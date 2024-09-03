@@ -2,11 +2,13 @@
 
 namespace Swissup\Breeze\Plugin;
 
+use Magento\Csp\Api\InlineUtilInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\App\Response\Http;
 use Magento\Framework\App\Response\HttpInterface as HttpResponseInterface;
 use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\View\Result\Layout;
 
 class AsyncCssPlugin
@@ -15,9 +17,14 @@ class AsyncCssPlugin
 
     private ScopeConfigInterface $scopeConfig;
 
-    public function __construct(ScopeConfigInterface $scopeConfig)
-    {
+    private ObjectManagerInterface $objectManager;
+
+    public function __construct(
+        ScopeConfigInterface $scopeConfig,
+        ObjectManagerInterface $objectManager
+    ) {
         $this->scopeConfig = $scopeConfig;
+        $this->objectManager = $objectManager;
     }
 
     public function afterRenderResult(Layout $subject, Layout $result, ResponseInterface $httpResponse)
@@ -54,9 +61,19 @@ class AsyncCssPlugin
             }
 
             preg_match('@media=("|\')(.*?)\1@', $style, $mediaAttribute);
+
+            $onloadValue = sprintf('this.onload=null;this.media=\'%s\'', $mediaAttribute[2] ?? 'all');
+            $onload = sprintf('onload="%s"', $onloadValue);
+            if (interface_exists(InlineUtilInterface::class)) {
+                $onload = $this->objectManager->get(InlineUtilInterface::class)->renderEventListener(
+                    'onload',
+                    $onloadValue,
+                );
+            }
+
             $asyncStyle = sprintf(
-                '<link rel="stylesheet" media="print" onload="this.onload=null;this.media=\'%s\'" href="%s">',
-                $mediaAttribute[2] ?? 'all',
+                '<link rel="stylesheet" media="print" %s href="%s">',
+                $onload,
                 $hrefAttribute[2]
             );
 
