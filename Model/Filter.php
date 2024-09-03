@@ -43,11 +43,9 @@ class Filter
         $html = htmlentities($html);
         $html = htmlspecialchars_decode($html);
 
-        $html = $this->escapeNestedHtmlTags($html);
-
         libxml_use_internal_errors(true);
         $document = new \DOMDocument();
-        $document->loadHTML($html);
+        $document->loadHTML($html, LIBXML_HTML_NODEFDTD | LIBXML_SCHEMA_CREATE);
 
         foreach ($this->domFilters as $filter) {
             $filter->process($document);
@@ -56,7 +54,6 @@ class Filter
         $html = $document->saveHTML($document->documentElement);
         $html = '<!DOCTYPE html>' . $html;
 
-        $html = $this->unescapeNestedHtmlTags($html);
         $html = $this->unescapeHtmlEntities($html);
 
         foreach ($this->strFilters as $filter) {
@@ -84,51 +81,5 @@ class Filter
             '”' => 'bz-rdquo',
             '@' => 'bz-at',
         ];
-    }
-
-    /**
-     * Fix broken html within script tag with type="text/x-magento-template"
-     * Fix too early close tag inner script : <script>alert("</div>")</script>
-     *
-     * @see https://stackoverflow.com/questions/236073/why-split-the-script-tag-when-writing-it-with-document-write/236106#236106
-     *
-     * @param  string $html
-     * @return string
-     */
-    private function escapeNestedHtmlTags($html)
-    {
-        $matches = [];
-        $patterns = [
-            '/<(script|style)\b[^>]*>(.*?)<\/\1>/is',
-        ];
-
-        foreach ($patterns as $pattern) {
-            preg_match_all($pattern, $html, $matches);
-
-            foreach ($matches[2] as $rawHtml) {
-                if (strpos($rawHtml, '</') === false) {
-                    continue;
-                }
-
-                $escapedHtml = str_replace('</', '<\/', $rawHtml);
-                $html = str_replace($rawHtml, $escapedHtml, $html);
-
-                $this->escapedBlocks[$rawHtml] = $escapedHtml;
-            }
-        }
-
-        return $html;
-    }
-
-    /**
-     * @param  string $html
-     * @return string
-     */
-    protected function unescapeNestedHtmlTags($html)
-    {
-        foreach ($this->escapedBlocks as $originalHtml => $escapedHtml) {
-            $html = str_replace($escapedHtml, $originalHtml, $html);
-        }
-        return $html;
     }
 }
