@@ -65,15 +65,19 @@
             this.path && !this.path.includes('//')
         ) {
             this.ran = this.loaded = false;
-            if (!loadingCount) {
-                setTimeout(() => {
-                    if (!this.loaded) {
-                        console.error('Unable to resolve dependency', this);
-                        this.failed = true;
-                        this.run();
-                    }
-                }, 100);
-            }
+            setTimeout(function reportUnresolved() {
+                if (this.loaded) {
+                    return;
+                }
+
+                if (loadingCount) {
+                    return setTimeout(reportUnresolved.bind(this), 1000);
+                }
+
+                console.error('Unable to resolve dependency', this);
+                this.failed = true;
+                this.run();
+            }.bind(this), 100);
         } else {
             this.parents.forEach(parent => parent.run());
         }
