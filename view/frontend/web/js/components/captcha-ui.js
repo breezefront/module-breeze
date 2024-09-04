@@ -66,6 +66,8 @@ define([
         };
     };
 
+    $.breezemap['Magento_Captcha/js/model/captcha'] = Captcha;
+
     captchaList = (() => {
         var list = [];
 
@@ -79,6 +81,8 @@ define([
             getCaptchaList: () => list
         };
     })();
+
+    $.breezemap['Magento_Captcha/js/model/captchaList'] = captchaList;
 
     DefaultCaptcha = Component.extend({
         component: 'Magento_Captcha/js/view/checkout/defaultCaptcha',
