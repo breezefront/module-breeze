@@ -11,16 +11,20 @@ class Css extends \Magento\Framework\View\Element\AbstractBlock
 
     private $cssResolver;
 
+    private $moduleManager;
+
     public function __construct(
         \Magento\Framework\View\Element\Context $context,
         \Magento\Framework\View\Asset\Repository $assetRepo,
         \Magento\Framework\View\Url\CssResolver $cssResolver,
+        \Magento\Framework\Module\Manager $moduleManager,
         array $data = []
     ) {
         parent::__construct($context, $data);
 
         $this->assetRepo = $assetRepo;
         $this->cssResolver = $cssResolver;
+        $this->moduleManager = $moduleManager;
     }
 
     /**
@@ -67,7 +71,9 @@ class Css extends \Magento\Framework\View\Element\AbstractBlock
             $onload = sprintf('onload="%s"', $onloadValue);
             $media = 'print';
 
-            if (interface_exists(InlineUtilInterface::class)) {
+            if (interface_exists(InlineUtilInterface::class) &&
+                $this->moduleManager->isEnabled('Magento_Csp')
+            ) {
                 $onload = ObjectManager::getInstance()
                     ->get(InlineUtilInterface::class)
                     ->renderEventListener('onload', $onloadValue);

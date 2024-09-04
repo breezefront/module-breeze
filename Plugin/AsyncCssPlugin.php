@@ -8,6 +8,7 @@ use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\App\Response\Http;
 use Magento\Framework\App\Response\HttpInterface as HttpResponseInterface;
 use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Module\Manager as ModuleManager;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\View\Result\Layout;
 
@@ -15,14 +16,18 @@ class AsyncCssPlugin
 {
     private const XML_PATH_USE_CSS_CRITICAL_PATH = 'dev/css/use_css_critical_path';
 
+    private ModuleManager $moduleManager;
+
     private ScopeConfigInterface $scopeConfig;
 
     private ObjectManagerInterface $objectManager;
 
     public function __construct(
+        ModuleManager $moduleManager,
         ScopeConfigInterface $scopeConfig,
         ObjectManagerInterface $objectManager
     ) {
+        $this->moduleManager = $moduleManager;
         $this->scopeConfig = $scopeConfig;
         $this->objectManager = $objectManager;
     }
@@ -64,7 +69,7 @@ class AsyncCssPlugin
 
             $onloadValue = sprintf('this.onload=null;this.media=\'%s\'', $mediaAttribute[2] ?? 'all');
             $onload = sprintf('onload="%s"', $onloadValue);
-            if (interface_exists(InlineUtilInterface::class)) {
+            if (interface_exists(InlineUtilInterface::class) && $this->moduleManager->isEnabled('Magento_Csp')) {
                 $onload = $this->objectManager->get(InlineUtilInterface::class)->renderEventListener(
                     'onload',
                     $onloadValue,
