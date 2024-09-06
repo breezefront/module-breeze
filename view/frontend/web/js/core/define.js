@@ -27,7 +27,11 @@
         }
 
         this.ran = true;
-        this.result = this.cb?.apply(window, this.deps.map(dep => dep.run()));
+        try {
+            this.result = this.cb?.apply(window, this.deps.map(dep => dep.run()));
+        } catch (e) {
+            console.error(e);
+        }
         this.loaded = true;
 
         if (this.result === undefined && config.shim[this.name]?.exports) {
