@@ -159,8 +159,7 @@
                     });
             }
 
-            // do not change selector to #send2 as it will return first element only
-            $('body #send2').prop('disabled', false);
+            parentForm.find('button:not([type]), [type=submit]').prop('disabled', false);
         },
 
         validateReCaptcha: function (state) {
