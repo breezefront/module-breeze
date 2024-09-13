@@ -28,6 +28,9 @@ define([
 
         create: function () {
             Object.entries(quote.shippingAddress() || {}).forEach(([key, value]) => {
+                if (value === undefined) {
+                    value = '';
+                }
                 if (this[key] !== undefined) {
                     this[key] = value;
                 }
