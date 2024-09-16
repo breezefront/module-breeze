@@ -744,4 +744,6 @@ define([
                 .find(this.options.selectorProductPrice);
         }
     });
+
+    $.mage.configurable = $.breezemap.configurable;
 });
