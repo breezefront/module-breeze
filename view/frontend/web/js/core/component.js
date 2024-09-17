@@ -119,7 +119,8 @@
          * @return {Object}
          */
         componentFn = function (fullname, parent, prototype) {
-            var name = fullname.split('.').pop();
+            var name = fullname.split('.').pop(),
+                pendingComponents = [];
 
             if (!prototype) {
                 prototype = parent;
@@ -193,10 +194,11 @@
 
             // create pending components
             if (pending.components[name]) {
-                $.each(pending.components[name], function () {
+                pendingComponents = pending.components[name];
+                delete pending.components[name];
+                $.each(pendingComponents, function () {
                     componentFn(this.fullname, this.parent, this.prototype);
                 });
-                delete pending.components[name];
             }
 
             return registerFn(fullname, prototype);
