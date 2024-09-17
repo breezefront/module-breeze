@@ -352,6 +352,18 @@
                                     </item>
                                 </item>
                             </item>
+                            <item name="configurableVariationQty" xsi:type="array">
+                                <item name="path" xsi:type="string">Magento_InventoryConfigurableProductFrontendUi/js/configurable-variation-qty</item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onRequire" xsi:type="boolean">true</item>
+                                </item>
+                            </item>
+                            <item name="Magento_InventoryConfigurableProductFrontendUi/js/configurable" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/inventory-configurable</item>
+                                <item name="mixins" xsi:type="array">
+                                    <item name="configurable" xsi:type="string">configurable</item>
+                                </item>
+                            </item>
                         </item>
                     </item>
                     <item name="customer" xsi:type="array">
