@@ -688,8 +688,9 @@
     $.breezemap.uiClass = $.Base;
 
     /** Wrap prototype with mixins */
-    $.mixin = function (name, mixins) {
-        var proto = name;
+    $.mixin = function (name, mixins, useSuper) {
+        var proto = name,
+            wrapper = $.breezemap['mage/utils/wrapper'];
 
         if (typeof name === 'string') {
             proto = prototypes[name]?.prototype || $.breezemap[name]?._proto?.prototype || $.breezemap[name];
@@ -711,11 +712,11 @@
                 originalType = typeof proto[key];
 
             if (mixinType === 'function' && originalType === 'function') {
-                proto[key] = _.wrap(proto[key], function () {
-                    arguments[0] = arguments[0].bind(this);
-
-                    return mixin.apply(this, _.toArray(arguments));
-                });
+                if (useSuper) {
+                    proto[key] = wrapper.wrapSuper(proto[key], mixin);
+                } else {
+                    proto[key] = wrapper.wrap(proto[key], mixin);
+                }
             } else if (mixinType === 'object' && originalType === 'object') {
                 proto[key] = _.extend({}, proto[key], mixin);
             } else {
@@ -724,4 +725,5 @@
         });
     };
     $.mixin.pending = {};
+    $.mixinSuper = (name, mixins) => $.mixin(name, mixins, true);
 })();

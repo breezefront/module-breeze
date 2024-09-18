@@ -37,11 +37,12 @@
                             <item name="cash" xsi:type="string">Swissup_Breeze/js/lib/cash-8.1.5.min.js</item>
                             <item name="cash-extend" xsi:type="string">Swissup_Breeze/js/core/extend-cash</item>
                             <item name="cookie" xsi:type="string">Swissup_Breeze/js/lib/js.cookie-3.0.1.min.js</item>
+                            <item name="breeze-globals" xsi:type="string">Swissup_Breeze/js/core/globals</item>
+                            <item name="breeze-define" xsi:type="string">Swissup_Breeze/js/core/define</item>
+                            <item name="breeze-wrapper" xsi:type="string">Swissup_Breeze/js/core/wrapper</item>
                             <item name="class" xsi:type="string">Swissup_Breeze/js/lib/class</item>
                             <item name="range-slider" xsi:type="string">Swissup_Breeze/js/lib/range-slider-1.0.0.min.js</item>
                             <item name="dayjs" xsi:type="string">Swissup_Breeze/js/lib/dayjs-1.11.7.min.js</item>
-                            <item name="breeze-globals" xsi:type="string">Swissup_Breeze/js/core/globals</item>
-                            <item name="breeze-define" xsi:type="string">Swissup_Breeze/js/core/define</item>
                             <item name="breeze-registry" xsi:type="string">Swissup_Breeze/js/core/registry</item>
                             <item name="breeze-component" xsi:type="string">Swissup_Breeze/js/core/component</item>
                             <item name="breeze-load-script" xsi:type="string">Swissup_Breeze/js/core/load-script</item>

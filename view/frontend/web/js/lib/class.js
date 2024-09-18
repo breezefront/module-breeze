@@ -4,10 +4,8 @@
  * MIT Licensed.
  */
 // eslint-disable-next-line strict
-(function () {
-    var initializing = false,
-        // eslint-disable-next-line no-undef
-        fnTest = /xyz/.test(function () {xyz;}) ? /\b_super\b/ : /.*/;
+define(['mage/utils/wrapper'], function (wrapper) {
+    var initializing = false;
 
     this.Class = function () {};
 
@@ -27,28 +25,8 @@
             propType = typeof prop[name];
             superPropType = typeof _super[name];
 
-            if (propType === 'function' && superPropType === 'function' && fnTest.test(prop[name])) {
-                prototype[name] = (function (key, fn) {
-                    return function () {
-                        var tmp = this._super,
-                            args = arguments,
-                            ret;
-
-                        // Add a new ._super() method that is the same method
-                        // but on the super-class
-                        this._super = function () {
-                            return _super[key].apply(this, arguments.length ? arguments : args);
-                        };
-
-                        // The method only need to be bound temporarily, so we
-                        // remove it when we're done executing
-                        ret = fn.apply(this, args);
-
-                        this._super = tmp;
-
-                        return ret;
-                    };
-                })(name, prop[name]);
+            if (propType === 'function' && superPropType === 'function') {
+                prototype[name] = wrapper.wrapSuper(_super[name], prop[name]);
             } else if (propType === 'object' && superPropType === 'object') {
                 prototype[name] = $.extendProps(prop[name], _super[name]);
             } else {
@@ -70,4 +48,4 @@
 
         return Class;
     };
-})();
+});

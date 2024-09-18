@@ -295,7 +295,7 @@
             Array.prototype.slice.call(arguments, 1)
         );
 
-        if (result === undefined && collection[0]) {
+        if (result === undefined && collection[0] && $.registry) {
             cleanKey = key.replace(/^[^A-Z]+/, ''); // mageSwatchRenderer => SwatchRenderer
             keys = [
                 key,
