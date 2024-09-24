@@ -157,7 +157,7 @@
 
                 $.each(regionsEntries, function (key, value) {
                     regionData = value[1];
-                    regionId = regionData.id;
+                    regionId = regionData.id || value[0];
                     this._renderSelectOption(regionList, regionId, regionData);
                 }.bind(this));
 
