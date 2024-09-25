@@ -37,6 +37,7 @@
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
                         this.toggle();
+                        this.element.trigger('click.toggleDropdown');
                     }
                 }.bind(this)
             });
