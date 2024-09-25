@@ -132,7 +132,6 @@
 
             if (this.header.length && this.content.length) {
                 this.header.attr({
-                    'aria-selected': true,
                     'aria-expanded': true
                 });
                 this.content.attr({
@@ -173,7 +172,6 @@
 
             if (this.header.length && this.content.length) {
                 this.header.attr({
-                    'aria-selected': false,
                     'aria-expanded': false
                 });
                 this.content.attr({
