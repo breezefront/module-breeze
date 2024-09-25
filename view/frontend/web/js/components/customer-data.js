@@ -284,7 +284,9 @@
     $(document).on('submit', function (event) {
         var names;
 
-        if (!event.target.method.match(/post|put|delete/i)) {
+        if (!event.target.hasAttribute('method') ||
+            !event.target.getAttribute('method').match(/post|put|delete/i)
+        ) {
             return;
         }
 
