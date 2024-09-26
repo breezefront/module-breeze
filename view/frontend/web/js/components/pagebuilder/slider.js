@@ -19,14 +19,21 @@
                     '<ul class="slick-dots" role="tablist">',
                         '<% _.each(dots, function(dot) { %>',
                             '<li class="<%- dot.css %>" role="tab">',
-                                // eslint-disable-next-line max-len
-                                '<button type="button" aria-label="<%- dot.ariaLabel %>" tabindex="-1">',
+                                '<button type="button" aria-label="<%- dot.ariaLabel %>">',
                                     '<%- dot.label %>',
                                 '</button>',
                             '</li>',
                         '<% }) %>',
                     '</ul>'
-                ].join('')
+                ].join(''),
+                skip: [
+                    '<a href="#<%- id %>" class="action skip">',
+                        '<%- label %>',
+                    '</a>'
+                ].join(''),
+                anchor: [
+                    '<span id="<%- id %>" class="anchor skip"></span>'
+                ].join(''),
             }
         },
 
@@ -87,6 +94,14 @@
                     label: $.__('Next')
                 }));
             }
+
+            this.element.prepend(_.template(this.options.templates.skip)({
+                id: 'slider-' + this.uuid + '-end',
+                label: $.__('Skip carousel')
+            }));
+            this.element.after(_.template(this.options.templates.anchor)({
+                id: 'slider-' + this.uuid + '-end'
+            }));
 
             this.slider = this.element.find('.slick-list');
             this.slides = this.slider.children();
