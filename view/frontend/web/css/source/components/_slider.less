@@ -50,6 +50,22 @@
             }
         }
 
+        .slick-initialized {
+            .action.skip {
+                position: absolute;
+                z-index: 50;
+                top: 4px;
+                .left(4px);
+                padding: 5px;
+                height: auto;
+                background: #fff;
+            }
+            .anchor.skip {
+                position: absolute;
+                bottom: 0;
+            }
+        }
+
         @media (min-width: 1024px) {
             div[data-content-type='slider'].containered {
                 opacity: 0;
