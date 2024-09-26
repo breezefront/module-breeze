@@ -195,6 +195,10 @@
             }
         },
 
+        _loadContent: function () {
+            return this.loadContent();
+        },
+
         loadContent: function () {
             var url = this.element.find(this.options.ajaxUrlElement).attr(this.options.ajaxUrlAttribute),
                 self = this;
