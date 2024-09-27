@@ -36,7 +36,6 @@
                 keydown: function (e) {
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
-                        this.toggle();
                         this.element.trigger('click.toggleDropdown');
                     }
                 }.bind(this)
@@ -99,7 +98,7 @@
 
     $.breezemap['mage/dropdown'] = $.breezemap['dropdown'];
 
-    $(document).on('click.dropdown', function (event) {
+    $(document).on('click.dropdown click.toggleDropdown', function (event) {
         var dialog,
             dropdown = $(event.target).closest('[data-dropdown]').dropdown('instance'),
             modalContext = $(event.target).closest('.modal-popup'),
