@@ -83,7 +83,6 @@ class FormValidation extends AbstractFilter
     public function applyRequiredNumber($node)
     {
         $this->applyRequired($node);
-        $this->applyNumber($node);
     }
 
     public function applyValidateItemQuantity($node, $config)
