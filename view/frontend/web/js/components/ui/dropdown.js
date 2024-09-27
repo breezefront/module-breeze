@@ -98,7 +98,7 @@
 
     $.breezemap['mage/dropdown'] = $.breezemap['dropdown'];
 
-    $(document).on('click.dropdown click.toggleDropdown', function (event) {
+    $(document).on('click.dropdown.toggleDropdown', function (event) {
         var dialog,
             dropdown = $(event.target).closest('[data-dropdown]').dropdown('instance'),
             modalContext = $(event.target).closest('.modal-popup'),
