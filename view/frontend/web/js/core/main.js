@@ -297,6 +297,9 @@
     function onDomDocumentLoad() {
         var newScripts = !checkScriptState || _.isEmpty($.breeze.loadedScripts)
                 ? [] : $('script[src]').filter(function () {
+                    if (!['', 'text/javascript', 'module'].includes(this.type)) {
+                        return false;
+                    }
                     return !$.breeze.loadedScripts[this.src];
                 }),
             spinnerTimeout,
