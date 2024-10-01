@@ -622,7 +622,7 @@ define([
             });
 
             $widget.element.on('keydown', function (e) {
-                if (e.which === 13) {
+                if (e.key === 'Enter') {
                     target = $(e.target);
 
                     if (target.is('.' + options.optionClass)) {
