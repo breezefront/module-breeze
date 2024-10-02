@@ -332,10 +332,7 @@
                 element = this.__element;
             }
 
-            return $.focusTrap.createFocusTrap(element.get(0), $.extend({
-                allowOutsideClick: true,
-                escapeDeactivates: false
-            }, options || {}));
+            return $.focusTrap.createFocusTrap(element.get(0), options);
         },
 
         onReveal: function (element, callback) {
