@@ -95,13 +95,15 @@
                 }));
             }
 
-            this.element.prepend(_.template(this.options.templates.skip)({
-                id: 'slider-' + this.uuid + '-end',
-                label: $.__('Skip carousel')
-            }));
-            this.element.after(_.template(this.options.templates.anchor)({
-                id: 'slider-' + this.uuid + '-end'
-            }));
+            if (!this.element.find('.action.skip').length) {
+                this.element.prepend(_.template(this.options.templates.skip)({
+                    id: 'slider-' + this.uuid + '-end',
+                    label: $.__('Skip carousel')
+                }));
+                this.element.after(_.template(this.options.templates.anchor)({
+                    id: 'slider-' + this.uuid + '-end'
+                }));
+            }
 
             this.slider = this.element.find('.slick-list');
             this.slides = this.slider.children();
