@@ -812,7 +812,7 @@ define([
         _Rewind: function (controls) {
             controls.find('div[data-option-id], option[data-option-id]')
                 .removeClass('disabled')
-                .prop('disabled', false);
+                .removeAttr('disabled');
             controls.find('div[data-option-empty], option[data-option-empty]')
                 .attr('disabled', true)
                 .addClass('disabled')
