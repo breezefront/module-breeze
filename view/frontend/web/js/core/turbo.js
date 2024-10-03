@@ -111,6 +111,13 @@
         }
     }
 
+    // Do not load page when clicking on the same page anchor links
+    document.addEventListener('turbolinks:click', (event) => {
+        if ($(event.target).attr('href')?.startsWith('#')) {
+            event.preventDefault();
+        }
+    });
+
     document.addEventListener('turbolinks:before-render', onBeforeRender);
     document.addEventListener('turbolinks:render', onRender);
     document.addEventListener('turbolinks:request-start', onRequestStart);
