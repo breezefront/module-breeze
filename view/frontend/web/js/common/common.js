@@ -1,7 +1,9 @@
 (function () {
     'use strict';
 
-    $('form[data-auto-submit="true"]').submit();
+    $(document).on('breeze:load', () => {
+        $('form[data-auto-submit="true"]').submit();
+    });
 
     $(document).on('submit', function (event) {
         var input,
