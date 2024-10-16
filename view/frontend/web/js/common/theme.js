@@ -16,4 +16,20 @@
             });
         });
     });
+
+    // Remove tabindex from filter title, when it's not clickable
+    function updateShopByTabindex() {
+        $('.block.filter .filter-title').attr(
+            'tabindex',
+            $('.block.filter .filter-content').css('visibility') === 'hidden' ? 0 : -1
+        );
+    }
+
+    $(document)
+        .on('breeze:resize', _.debounce(updateShopByTabindex, 500))
+        .on('collapsible:afterCreate', (e, data) => {
+            if (data.instance.trigger.is('.block.filter .filter-title')) {
+                updateShopByTabindex();
+            }
+        });
 })();
