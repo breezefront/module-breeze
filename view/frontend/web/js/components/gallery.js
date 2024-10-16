@@ -99,6 +99,11 @@
                     } else {
                         self.open();
                     }
+                })
+                .on('keydown', '.main-image-wrapper', function (e) {
+                    if (e.key === 'Enter') {
+                        $(e.target).click();
+                    }
                 });
 
             this.gallery.on('click', '.item', function (event) {

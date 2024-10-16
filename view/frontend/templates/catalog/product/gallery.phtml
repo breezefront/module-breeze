@@ -43,7 +43,7 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
         data-gallery-id="<?= $galleryId ?>"
         data-gallery-role="gallery-placeholder"
         data-caption="<?= $block->escapeHtmlAttr($mainImageLabel) ?>">
-        <div class="main-image-wrapper">
+        <div class="main-image-wrapper" tabindex="0">
             <img alt="<?= $block->escapeHtmlAttr($mainImageLabel) ?>"
                 fetchpriority="high"
                 class="main-image"
