@@ -2,13 +2,20 @@
     'use strict';
 
     var config = $('#breeze-turbo').data('config'),
+        themeRe = /\/frontend\/((.+?)\/(.+?))\//,
+        theme = ($('link[href*="/frontend/"]').attr('href') || '').match(themeRe),
         staticRe = /\/static\/version([a-z0-9]+)/,
         staticVersion = ($('link[href*="/static/version"]').attr('href') || '').match(staticRe),
         restoreInlineScripts = true,
         referrers = {};
 
     function isResourceVersionChanged(responseText) {
-        var newVersion = responseText.match(staticRe);
+        var newVersion = responseText.match(staticRe),
+            newTheme = responseText.match(themeRe);
+
+        if (theme[1] !== newTheme[1]) {
+            return true;
+        }
 
         if (!staticVersion) {
             return !!newVersion;
