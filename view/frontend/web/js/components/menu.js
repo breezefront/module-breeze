@@ -44,7 +44,7 @@
                 var dropdown = $(this).children(self.options.dropdown),
                     visibleDropdowns = $(self.options.dropdown + '.shown');
 
-                if (['Enter', 'Escape', ' '].indexOf(e.key) === -1) {
+                if (!['Enter', 'Escape', ' '].includes(e.key)) {
                     return;
                 }
 
@@ -241,7 +241,7 @@
             var parentElement,
                 parentClass = childClassName.substr(0, childClassName.lastIndexOf('-'));
 
-            if (parentClass.lastIndexOf('-') !== -1) {
+            if (parentClass.includes('-')) {
                 parentElement = this.element.find('.' + parentClass);
 
                 if (parentElement) {
@@ -260,8 +260,9 @@
 
             if (firstCategoryUrl) {
                 lastUrlSection = firstCategoryUrl.substr(firstCategoryUrl.lastIndexOf('/'));
-                categoryUrlExtension = lastUrlSection.lastIndexOf('.') !== -1 ?
-                    lastUrlSection.substr(lastUrlSection.lastIndexOf('.')) : '';
+                categoryUrlExtension = lastUrlSection.includes('.')
+                    ? lastUrlSection.substr(lastUrlSection.lastIndexOf('.'))
+                    : '';
 
                 possibleCategoryUrl = currentUrl.substr(0, currentUrl.lastIndexOf('/')) + categoryUrlExtension;
                 this._setActiveMenuForCategory(possibleCategoryUrl);
