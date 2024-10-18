@@ -243,6 +243,9 @@
 
         return mod.run();
     };
+    window.require.async = (deps) => new Promise(resolve => require(deps, function () {
+        resolve(arguments);
+    }));
 
     window.define = window.requirejs = window.require;
     window.require.toUrl = (path) => {
