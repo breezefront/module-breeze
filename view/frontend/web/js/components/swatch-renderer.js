@@ -407,6 +407,8 @@ define([
             // Hide all elements below more button
             $('.' + classes.moreButton).nextAll().hide();
 
+            container.find('.' + classes.attributeOptionsWrapper).a11y('selectable');
+
             // Handle events like click or change
             $widget._EventListener();
 
@@ -606,6 +608,12 @@ define([
             var $widget = this,
                 options = this.options.classes,
                 target;
+
+            $widget.element.on('a11y:focus', '.' + options.optionClass, function () {
+                if (!$(this).hasClass('selected')) {
+                    $(this).click();
+                }
+            });
 
             $widget.element.on('click', '.' + options.optionClass, function () {
                 return $widget._OnClick($(this), $widget);

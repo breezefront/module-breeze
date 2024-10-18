@@ -68,7 +68,17 @@ define(['collapsible'], () => {
             if (allExpanded && this.component === 'tabs') {
                 this.triggers.attr('tabIndex', -1);
                 this.collapsibles.removeAttr('data-collapsible', true);
+            } else {
+                this.element.a11y('selectable', {
+                    selectable: '[role="tab"]',
+                });
             }
+
+            this._on('[role="tab"]', 'a11y:focus', function (event) {
+                if ($(event.target).attr('aria-expanded') !== 'true') {
+                    $(event.target).click();
+                }
+            });
 
             $(this.element).on('collapsible:beforeOpen', function (event, data) {
                 var oldActiveTab = self.getActiveTab(),

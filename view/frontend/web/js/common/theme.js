@@ -2,6 +2,12 @@
     'use strict';
 
     $(document).on('breeze:load', function () {
+        $('.sidebar-main').a11y('skippable', {
+            id: 'product-list',
+            label: $t('Skip to product list'),
+            destination: '.column.main',
+        });
+
         $('.panel.header > .header.links')
             .clone()
             .data('breeze-temporary', true)

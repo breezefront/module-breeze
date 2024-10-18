@@ -26,14 +26,6 @@
                         '<% }) %>',
                     '</ul>'
                 ].join(''),
-                skip: [
-                    '<a href="#<%- id %>" class="action skip">',
-                        '<%- label %>',
-                    '</a>'
-                ].join(''),
-                anchor: [
-                    '<span id="<%- id %>" class="anchor skip"></span>'
-                ].join(''),
             }
         },
 
@@ -95,15 +87,10 @@
                 }));
             }
 
-            if (!this.element.find('.action.skip').length) {
-                this.element.prepend(_.template(this.options.templates.skip)({
-                    id: 'slider-' + this.uuid + '-end',
-                    label: $.__('Skip carousel')
-                }));
-                this.element.after(_.template(this.options.templates.anchor)({
-                    id: 'slider-' + this.uuid + '-end'
-                }));
-            }
+            this.element.a11y('skippable', {
+                id: 'slider-' + this.uuid + '-end',
+                label: $.__('Skip carousel')
+            });
 
             this.slider = this.element.find('.slick-list');
             this.slides = this.slider.children();

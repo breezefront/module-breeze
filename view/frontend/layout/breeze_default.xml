@@ -63,6 +63,7 @@
                             <item name="breeze-main" xsi:type="string">Swissup_Breeze/js/core/main</item>
                             <item name="breeze-lazy" xsi:type="string">Swissup_Breeze/js/core/lazy</item>
                             <item name="breeze-template" xsi:type="string">Swissup_Breeze/js/core/template</item>
+                            <item name="breeze-a11y" xsi:type="string">Swissup_Breeze/js/common/a11y</item>
                             <item name="breeze-common" xsi:type="string">Swissup_Breeze/js/common/common</item>
                             <item name="breeze-theme" xsi:type="string">Swissup_Breeze/js/common/theme</item>
                         </item>

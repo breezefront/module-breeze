@@ -12,6 +12,9 @@ class FixA11yIssues
             ' aria-labelledby="block-related-heading"' => '',
             ' aria-labelledby="block-crosssell-heading"' => '',
             ' aria-labelledby="block-widgetgrid-heading"' => '',
+
+            // Remove not used focus elements
+            '<div class="fieldset" tabindex="0">' => '<div class="fieldset">',
         ];
 
         foreach ($replaceMapping as $search => $replace) {

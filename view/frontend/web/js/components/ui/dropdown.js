@@ -32,22 +32,30 @@
             this.parent.attr('data-trigger', true);
             this.parent.attr('data-dropdown-parent', true);
 
-            this._on({
-                keydown: function (e) {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        this.element.trigger('click.toggleDropdown');
-                    }
-                }.bind(this)
-            });
+            // dropdown may have complex content.
+            // enable selectable for simple dropdowns only: currency/language/qty/account
+            // if (this.parent.find(this.options.menu).is('ul') ||
+            //     this.parent.find(this.options.menu).is('div:has(>ul)')
+            // ) {
+            //     this.parent.find(this.options.menu).a11y('selectable');
+            // }
 
-            this._on(document, {
-                keydown: function (e) {
-                    if (e.key === 'Escape') {
-                        e.preventDefault();
-                        this.close();
-                    }
-                }.bind(this)
+            this.parent.a11y('openable');
+            this._on(this.parent, 'a11y:open', () => {
+                if (!this.status) {
+                    this.element.trigger('click.toggleDropdown');
+                }
+                setTimeout(async () => {
+                    var [{tabbable}] = await require.async(['tabbable']);
+
+                    $(tabbable(this.parent.find(this.options.menu)[0])).first().focus();
+                }, 50);
+            });
+            this._on(this.parent, 'a11y:close', () => {
+                if (this.parent.find(this.options.menu).is(':has(:focus)')) {
+                    this.element.focus();
+                }
+                this.close();
             });
 
             this.close();
