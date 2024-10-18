@@ -135,6 +135,12 @@
                         preventScroll: true
                     });
                 })
+                .on('keydown', function (event) {
+                    if (event.key === 'Escape' && self.opened()) {
+                        self.close();
+                        event.stopPropagation();
+                    }
+                })
                 .find('.close').on('click', function (event) {
                     event.preventDefault();
                     self.close();
