@@ -2,6 +2,8 @@
 
 namespace Swissup\Breeze\Model\Filter;
 
+use Swissup\Breeze\Model\DomDocument;
+
 class AbstractFilter
 {
     /**
@@ -9,13 +11,23 @@ class AbstractFilter
      */
     protected $layout;
 
+    protected DomDocument $domDocument;
+
     /**
      * @param \Magento\Framework\View\LayoutInterface $layout
+     * @param DomDocument $domDocument
      */
     public function __construct(
-        \Magento\Framework\View\LayoutInterface $layout
+        \Magento\Framework\View\LayoutInterface $layout,
+        DomDocument $domDocument
     ) {
         $this->layout = $layout;
+        $this->domDocument = $domDocument;
+    }
+
+    protected function getNodeAttribute($node, $code): string
+    {
+        return $this->domDocument->getNodeAttribute($node, $code);
     }
 
     /**

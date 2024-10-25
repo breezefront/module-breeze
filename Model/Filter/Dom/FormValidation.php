@@ -22,7 +22,7 @@ class FormValidation extends AbstractFilter
         $xpath = new \DOMXPath($document);
         $nodes = $xpath->query('//*[@data-validate]', $document);
         foreach ($nodes as $node) {
-            $value = $this->parseJson($node->getAttribute('data-validate'));
+            $value = $this->parseJson($this->getNodeAttribute($node, 'data-validate'));
 
             if (!$value) {
                 continue;

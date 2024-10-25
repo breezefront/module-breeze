@@ -39,9 +39,9 @@ class PreloadCriticalImages extends AbstractFilter
 
             $this->addPreloadLink([
                 'as' => 'image',
-                'href' => $node->getAttribute('src'),
-                'imagesrcset' => $node->getAttribute('srcset'),
-                'imagesizes' => $node->getAttribute('sizes'),
+                'href' => $this->getNodeAttribute($node, 'src'),
+                'imagesrcset' => $this->getNodeAttribute($node, 'srcset'),
+                'imagesizes' => $this->getNodeAttribute($node, 'sizes'),
             ]);
 
             if ($i + 1 >= $maxLinksToAdd) {
@@ -59,7 +59,7 @@ class PreloadCriticalImages extends AbstractFilter
                 break;
             }
 
-            $attr = (string) $node->getAttribute('data-background-images');
+            $attr = $this->getNodeAttribute($node, 'data-background-images');
             $attr = json_decode(stripslashes($attr), true);
             if (!$attr || empty($attr['desktop_image'])) {
                 continue;
