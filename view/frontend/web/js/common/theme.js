@@ -8,6 +8,9 @@
             destination: '.column.main',
         });
 
+        // remove duplicated tabstops (banner with button, )
+        $('a[href]:has(button)').attr('tabindex', -1);
+
         $('.panel.header > .header.links')
             .clone()
             .data('breeze-temporary', true)

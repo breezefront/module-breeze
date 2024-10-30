@@ -11,7 +11,7 @@
             dots: false,
             templates: {
                 arrow: [
-                    '<button class="<%- css %> slick-arrow" aria-label="<%- label %>" type="button">',
+                    '<button class="<%- css %> slick-arrow" aria-label="<%- label %>" type="button" tabindex="-1">',
                         '<%- label %>',
                     '</button>'
                 ].join(''),
@@ -19,7 +19,7 @@
                     '<ul class="slick-dots" role="tablist">',
                         '<% _.each(dots, function(dot) { %>',
                             '<li class="<%- dot.css %>" role="tab">',
-                                '<button type="button" aria-label="<%- dot.ariaLabel %>">',
+                                '<button type="button" aria-label="<%- dot.ariaLabel %>" tabindex="-1">',
                                     '<%- dot.label %>',
                                 '</button>',
                             '</li>',
