@@ -128,12 +128,16 @@ define([
         updateShippingAddress: _.debounce(function () {
             var countries = $.customerData.get('directory-data')() || {},
                 regions = countries[this.countryId()]?.regions || {},
-                address = _.extend(this.addressForm().serializeJSON(), {
-                    regionCode: '',
-                    region_id: undefined,
-                    region: this.region(),
-                    postcode: this.postcode()
-                });
+                address = _.extend(
+                    checkoutData.getShippingAddressFromData() || {},
+                    this.addressForm().serializeJSON(),
+                    {
+                        regionCode: '',
+                        region_id: undefined,
+                        region: this.region(),
+                        postcode: this.postcode()
+                    }
+                );
 
             if (this.countryId()) {
                 address.countryId = this.countryId();
