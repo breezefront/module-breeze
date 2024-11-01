@@ -407,6 +407,7 @@ define([
             // Hide all elements below more button
             $('.' + classes.moreButton).nextAll().hide();
 
+            container.find('.breeze-placeholder').remove();
             container.find('.' + classes.attributeOptionsWrapper).a11y('selectable');
 
             // Handle events like click or change
