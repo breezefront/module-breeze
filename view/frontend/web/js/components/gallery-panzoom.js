@@ -17,6 +17,7 @@
         create: function () {
             // eslint-disable-next-line no-undef
             this.panzoom = Panzoom(this.element[0], this.options);
+            this.element.parent().css('overflow', ''); // remove inline overflow style because we rely on css
             this.addEventListeners();
         },
 
