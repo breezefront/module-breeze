@@ -52,9 +52,8 @@
                     return;
                 }
 
-                e.stopPropagation();
-
                 if (e.key === 'Enter' || e.key === ' ') {
+                    e.stopPropagation();
                     e.preventDefault();
 
                     visibleDropdowns.not(dropdown).each(function () {
@@ -69,6 +68,7 @@
                         self.open(dropdown);
                     }
                 } else if (e.key === 'Escape' && visibleDropdowns.length) {
+                    e.stopPropagation();
                     self.close(visibleDropdowns.last());
                 }
             });
