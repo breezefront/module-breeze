@@ -96,6 +96,10 @@
             this.slides = this.slider.children();
             this.nextEl = this.element.find('.slick-next');
             this.prevEl = this.element.find('.slick-prev');
+
+            if (!this.slides.first().find('a, button').length) {
+                this.slider.attr('tabindex', 0);
+            }
         },
 
         addEventListeners: function () {
