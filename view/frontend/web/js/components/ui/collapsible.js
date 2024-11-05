@@ -32,7 +32,10 @@
                 this.trigger = this.header;
             }
 
-            this.header.removeAttr('aria-level').attr('role', 'button');
+            this.header.removeAttr('aria-level');
+            if (!this.header.attr('role')) {
+                this.header.attr('role', 'button');
+            }
             this.trigger.attr('data-trigger', true);
             this.trigger.attr('tabindex', 0);
             this.trigger.children('a').attr('tabindex', -1);
