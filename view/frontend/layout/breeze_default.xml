@@ -494,7 +494,7 @@
                                 <item name="import" xsi:type="array">
                                     <item name="turbo" xsi:type="string">Swissup_Breeze/js/lib/turbolinks-5.2.0.min.js</item>
                                 </item>
-                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
+                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Data::isTurboEnabled">
                                     <param name="path">design/breeze/turbo</param>
                                 </item>
                                 <item name="load" xsi:type="array">
