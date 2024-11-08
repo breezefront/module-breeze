@@ -51,7 +51,7 @@
             this.thumbsWrapper = this.gallery.find('.thumbnails');
             this.thumbs = this.gallery.find('.thumbnails a');
             this.stage = this.gallery.find('.stage');
-            this.image = this.stage.find('.stage img');
+            this.image = this.stage.find('.stage img.main-image');
             this.activeIndex = this.gallery.find('.thumbnails a.active').index();
             this.focusTrap = this.createFocusTrap(this.gallery);
 
