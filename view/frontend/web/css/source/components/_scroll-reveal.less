@@ -7,12 +7,14 @@
     @media (prefers-reduced-motion: no-preference) {
         .js #html-body.scroll-reveal-enabled .scroll-reveal {
             opacity: 0;
+            visibility: hidden;
 
             &.reveal-slide-in {
                 transform: translateY(2rem);
             }
 
             &.reveal-ready {
+                visibility: visible;
                 animation: var(--animation, var(--animation-slide-in));
                 animation-delay: ~"calc(var(--animation-order) * 75ms)";
             }
