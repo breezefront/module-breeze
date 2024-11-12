@@ -222,7 +222,7 @@
                 classes,
                 classNav;
 
-            if (!activeCategoryLink || !activeCategoryLink.parent().hasClass('li-item')) {
+            if (!activeCategoryLink || !activeCategoryLink.parent().is('.category-item, .li-item')) {
                 return false;
             } else if (!activeCategoryLink.parent().hasClass('active')) {
                 activeCategoryLink.parent().addClass('active');
