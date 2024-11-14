@@ -11,6 +11,7 @@ class Preload extends \Magento\Framework\View\Element\AbstractBlock
         'href',
         'imagesrcset',
         'imagesizes',
+        'media',
     ];
 
     /**

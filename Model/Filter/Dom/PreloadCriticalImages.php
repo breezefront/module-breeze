@@ -37,12 +37,21 @@ class PreloadCriticalImages extends AbstractFilter
 
             $node->removeAttribute('loading');
 
-            $this->addPreloadLink([
+            $attributes = [
                 'as' => 'image',
                 'href' => $this->getNodeAttribute($node, 'src'),
                 'imagesrcset' => $this->getNodeAttribute($node, 'srcset'),
                 'imagesizes' => $this->getNodeAttribute($node, 'sizes'),
-            ]);
+            ];
+
+            $class = (string) $node->getAttribute('class');
+            if (strpos($class, 'pagebuilder-mobile-hidden') !== false) {
+                $attributes['media'] = '(min-width: 768px)';
+            } elseif (strpos($class, 'pagebuilder-mobile-only') !== false) {
+                $attributes['media'] = '(max-width: 767.98px)';
+            }
+
+            $this->addPreloadLink($attributes);
 
             if ($i + 1 >= $maxLinksToAdd) {
                 break;
