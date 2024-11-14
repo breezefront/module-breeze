@@ -15,7 +15,26 @@ class PreloadCriticalImages extends AbstractFilter
         $body = $document->getElementsByTagName('body')->item(0);
         $content = $document->getElementById('maincontent');
 
-        if ($this->isHomePage($body) || $this->isCmsPage($body)) {
+        $preloadImages = [];
+        $preloadBackgrounds = [];
+        if (!$this->isProductPage($body)) {
+            $preloadImages = $xpath->query(implode('', [
+                '//img[@class]',
+                '[contains(concat(" ", normalize-space(@class), " "), " data-preload ")]',
+                ' | ',
+                '//figure[@class]',
+                '[contains(concat(" ", normalize-space(@class), " "), " data-preload ")]/img',
+            ]), $content);
+            $preloadBackgrounds = $xpath->query(implode('', [
+                '//div[@data-background-images]',
+                '[contains(concat(" ", normalize-space(@class), " "), " data-preload ")]',
+            ]), $content);
+        }
+
+        if (count($preloadImages) || count($preloadBackgrounds)) {
+            $this->walkImgNodes($preloadImages, 10, 10);
+            $this->walkBackgroundImgNodes($preloadBackgrounds, 10, 10);
+        } elseif ($this->isHomePage($body) || $this->isCmsPage($body)) {
             if (!$this->walkBackgroundImgNodes($xpath->query('//div[@data-background-images]', $content))) {
                 $this->walkImgNodes($xpath->query('//div[@class="column main"]//img', $content), 1);
                 $this->walkImgNodes($xpath->query('//img[@class="product-image-photo"]', $content));
