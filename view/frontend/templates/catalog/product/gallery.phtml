@@ -55,6 +55,7 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
                     sizes="<?= $block->escapeHtmlAttr($sizes) ?>"
                 <?php endif ?>
             />
+            <link itemprop="image" href="<?= $block->escapeUrl($mainImageUrl) ?>">
         </div>
 
         <?php if (count($images) > 1) : ?>
