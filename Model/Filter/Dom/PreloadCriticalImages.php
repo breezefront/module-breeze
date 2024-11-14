@@ -36,7 +36,7 @@ class PreloadCriticalImages extends AbstractFilter
             $this->walkBackgroundImgNodes($preloadBackgrounds, 10, 10);
         } elseif ($this->isHomePage($body) || $this->isCmsPage($body)) {
             if (!$this->walkBackgroundImgNodes($xpath->query('//div[@data-background-images]', $content))) {
-                $this->walkImgNodes($xpath->query('//div[@class="column main"]//img', $content), 1);
+                $this->walkImgNodes($xpath->query('//div[@class="column main"]//img[not(ancestor::picture)]'), 1);
                 $this->walkImgNodes($xpath->query('//img[@class="product-image-photo"]', $content));
             }
         } elseif ($this->isProductPage($body)) {
