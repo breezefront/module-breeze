@@ -42,11 +42,16 @@ class ScrollReveal extends Template
         return array_filter($this->getData('selectors'));
     }
 
-    public function getCssSelector(): string
+    public function getCssSelector($prefix = '.js '): string
     {
         $selectors = explode(',', implode(',', $this->getSelectors())); // explode on each comma
-        $selectors = '.js ' . implode(', .js ', $selectors);
+        $selectors = $prefix . implode(', ' . $prefix, $selectors);
         return $selectors;
+    }
+
+    public function getCssSelectorForActiveKeyboard(): string
+    {
+        return $this->getCssSelector('.js.kbd ');
     }
 
     public function getJsSelector(): string

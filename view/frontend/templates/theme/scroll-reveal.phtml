@@ -4,6 +4,9 @@
         opacity: 0;
         visibility: hidden;
     }
+    <?= $block->getCssSelectorForActiveKeyboard() ?> {
+        visibility: visible;
+    }
 }
 </style>
 <script>

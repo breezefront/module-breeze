@@ -35,6 +35,7 @@
     }
 
     $(document)
+        .one('keydown', () => $('html').addClass('kbd'))
         .on('breeze:resize', _.debounce(updateShopByTabindex, 500))
         .on('collapsible:afterCreate', (e, data) => {
             if (data.instance.trigger.is('.block.filter .filter-title')) {
