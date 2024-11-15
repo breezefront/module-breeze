@@ -173,7 +173,7 @@
         if (typeof html === 'object') {
             return $(this).text('').append(html);
         }
-        return original.bind(this)(html);
+        return original.apply(this, Array.prototype.slice.call(arguments, 1));
     });
 
     $.fn.trigger = _.wrap($.fn.trigger, function (original, event, data) {
