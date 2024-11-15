@@ -169,6 +169,13 @@
         return original.bind(this)(text);
     });
 
+    $.fn.html = _.wrap($.fn.html, function (original, html) {
+        if (typeof html === 'object') {
+            return $(this).text('').append(html);
+        }
+        return original.bind(this)(html);
+    });
+
     $.fn.trigger = _.wrap($.fn.trigger, function (original, event, data) {
         if (typeof event === 'string' && event === 'submit' && this.closest('form')) {
             this.one(event, function (e) {
