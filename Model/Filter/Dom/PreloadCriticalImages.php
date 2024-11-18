@@ -54,7 +54,15 @@ class PreloadCriticalImages extends AbstractFilter
                 continue;
             }
 
-            $node->removeAttribute('loading');
+            // remove 'loading="lazy"' from the first and second listing product images
+            if ($node->getAttribute('loading') === 'lazy') {
+                $class = (string) $node->getAttribute('class');
+                if (strpos($class, 'product-image-photo') !== false) {
+                    $node->removeAttribute('loading');
+                } else {
+                    continue;
+                }
+            }
 
             $attributes = [
                 'as' => 'image',
