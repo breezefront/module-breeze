@@ -243,9 +243,17 @@
 
         return mod.run();
     };
-    window.require.async = (deps) => new Promise(resolve => require(deps, function () {
-        resolve(arguments);
-    }));
+    window.require.async = (deps) => new Promise(resolve => {
+        var isMultipleDeps = _.isArray(deps);
+
+        if (!isMultipleDeps) {
+            deps = [deps];
+        }
+
+        return require(deps, (...args) => {
+            resolve(isMultipleDeps ? args : args[0]);
+        });
+    });
 
     window.define = window.requirejs = window.require;
     window.require.toUrl = (path) => {
