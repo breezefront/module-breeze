@@ -42,8 +42,9 @@
         /**
          * @param {Object} form
          */
-        ajaxSubmit: function (form) {
-            var self = this;
+        ajaxSubmit: async function (form) {
+            var self = this,
+                productInfo;
 
             $(self.options.minicartSelector).trigger('contentLoading');
 
@@ -52,6 +53,8 @@
             if (self.isLoaderEnabled()) {
                 $('body').trigger(self.options.processStart);
             }
+
+            productInfo = (await require.async('Magento_Catalog/js/product/view/product-info-resolver'))(form);
 
             $.request.post({
                 form: form,
@@ -69,6 +72,7 @@
                     $(document).trigger('ajax:addToCart', {
                         'sku': form.data().productSku,
                         'productIds': [form.find('input[name=product]').val()],
+                        'productInfo': productInfo,
                         'form': form,
                         'response': data
                     });
@@ -106,6 +110,7 @@
                     $(document).trigger('ajax:addToCart:error', {
                         'sku': form.data().productSku,
                         'productIds': [form.find('input[name=product]').val()],
+                        'productInfo': productInfo,
                         'form': form,
                         'response': response
                     });
