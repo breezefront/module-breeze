@@ -51,12 +51,7 @@
                     $(tabbable(this.parent.find(this.options.menu)[0])).first().focus();
                 }, 50);
             });
-            this._on(this.parent, 'a11y:close', () => {
-                if (this.parent.find(this.options.menu).is(':has(:focus)')) {
-                    this.element.focus();
-                }
-                this.close();
-            });
+            this._on(this.parent, 'a11y:close', this.close);
 
             this.close();
         },
@@ -87,6 +82,10 @@
             this._trigger('beforeClose');
 
             this.status = false;
+
+            if (this.parent.find(this.options.menu).is(':has(:focus)')) {
+                this.element.focus();
+            }
 
             this.element.removeClass(this.options.activeClass)
                 .attr('aria-expanded', false);
