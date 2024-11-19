@@ -807,6 +807,7 @@
                         <item name="pagebuilder-column-content" xsi:type="string">.scroll-reveal-container .pagebuilder-column > *</item>
                         <item name="pagebuilder-buttons" xsi:type="string">.scroll-reveal-container [data-content-type="buttons"] > *</item>
                         <item name="listing" xsi:type="string">.product-items > .product-item</item>
+                        <item name="product-info-media" xsi:type="string">.breeze-gallery > *</item>
                         <item name="product-info-main" xsi:type="string">.product-info-main > *</item>
                         <item name="product-info-detailed" xsi:type="string">.main > .product.info.detailed</item>
                         <item name="tabs" xsi:type="string">.product.data.items > .title > *</item>
