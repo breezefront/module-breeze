@@ -222,7 +222,7 @@
                                     <item name="addToWishlist" xsi:type="string">addToWishlist</item>
                                 </item>
                             </item>
-                            <item name="Swissup_Breeze/js/recent-products" xsi:type="array">
+                            <item name="Swissup_Breeze/js/components/recent-products" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/recent-products</item>
                                 <item name="load" xsi:type="array">
                                     <item name="onReveal" xsi:type="array">
