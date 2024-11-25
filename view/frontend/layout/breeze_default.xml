@@ -93,6 +93,12 @@
                                     </item>
                                 </item>
                             </item>
+                            <item name="collapsible" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/ui/collapsible</item>
+                                <item name="export" xsi:type="array">
+                                    <item name="mage-collapsible" xsi:type="string">mage/collapsible</item>
+                                </item>
+                            </item>
                             <item name="tabs" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/ui/tabs</item>
                                 <item name="export" xsi:type="array">
@@ -109,12 +115,6 @@
                                 </item>
                                 <item name="import" xsi:type="array">
                                     <item name="tabs" xsi:type="string">tabs</item>
-                                </item>
-                            </item>
-                            <item name="collapsible" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/ui/collapsible</item>
-                                <item name="export" xsi:type="array">
-                                    <item name="mage-collapsible" xsi:type="string">mage/collapsible</item>
                                 </item>
                             </item>
                             <item name="toggleAdvanced" xsi:type="string">Swissup_Breeze/js/components/ui/toggle-advanced</item>
