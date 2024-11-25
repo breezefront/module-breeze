@@ -210,7 +210,12 @@
                                     <item name="Magento_Catalog/js/price-utils" xsi:type="string">Magento_Catalog/js/price-utils</item>
                                 </item>
                             </item>
-                            <item name="priceBox" xsi:type="string">Swissup_Breeze/js/components/price-box</item>
+                            <item name="priceBox" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/price-box</item>
+                                <item name="import" xsi:type="array">
+                                    <item name="priceUtils" xsi:type="string">priceUtils</item>
+                                </item>
+                            </item>
                             <item name="Magento_Wishlist/js/view/wishlist" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/wishlist</item>
                                 <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
