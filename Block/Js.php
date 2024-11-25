@@ -427,6 +427,41 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
             }
         }
 
+        foreach ($this->allBundles as $bundleName => $bundle) {
+            $index = -1;
+            $imported = [];
+            foreach ($bundle['items'] as $itemName => $item) {
+                $imported[$itemName] = $itemName;
+                $imported[$item['path']] = $item['path'];
+                $index++;
+
+                if (!empty($item['load']) || empty($item['import'])) {
+                    continue;
+                }
+
+                foreach ($item['import'] as $importItemName) {
+                    if (isset($imported[$importItemName])) {
+                        continue;
+                    }
+
+                    if (!$info = $this->findItemInfo($importItemName)) {
+                        continue;
+                    }
+
+                    if ($info['bundle'] !== $bundleName || !empty($info['item']['load'])) {
+                        continue;
+                    }
+
+                    $start = array_slice($this->allBundles[$bundleName]['items'], 0, $index);
+                    $end = array_slice($this->allBundles[$bundleName]['items'], $index);
+                    $start[$info['itemName']] = $info['item'];
+                    $this->allBundles[$bundleName]['items'] = $start + $end;
+                }
+
+                $bundle['items'] = $this->allBundles[$bundleName]['items'];
+            }
+        }
+
         return $this->allBundles;
     }
 
