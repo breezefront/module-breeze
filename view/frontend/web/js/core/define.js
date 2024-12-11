@@ -153,7 +153,7 @@
             dep.path = path;
         } else if (config.paths[alias] || alias.includes('//')) {
             dep.path = alias;
-        } else if (!dep.path) {
+        } else if (!dep.path && !dep.named) {
             dep.unknown = true;
             dep.loaded = true;
         }
@@ -163,13 +163,18 @@
         return result;
     }
 
-    window.require = function (deps, cb) {
+    window.require = function (deps, cb, extra) {
         var mod,
             depsWithImports = [],
             scriptName = $(document.currentScript).data('name'),
             name = isRunningFromBundle() ? undefined : scriptName;
 
-        if (typeof deps === 'string') {
+        if (typeof extra === 'function') {
+            // define('name', [], () => {})
+            mod = getModule(deps, cb, extra);
+            mod.named = true;
+            return mod;
+        } else if (typeof deps === 'string') {
             name = deps;
             deps = [];
         } else if (typeof deps === 'function') {
@@ -183,18 +188,21 @@
 
         mod = getModule(name || `__module-${$.guid++}`, deps, cb);
         deps.forEach(depname => depsWithImports.push(...collectDeps(depname)));
-        depsWithImports = depsWithImports.filter(dep => !dep.loaded && dep.path && dep.name !== scriptName);
-        depsWithImports.forEach(dep => {
-            if (dep.path.includes('//')) {
-                if (dep.path.endsWith('.js') || dep.path.endsWith('/') || dep.path.includes('?')) {
-                    dep.url = dep.path;
-                } else {
-                    dep.url = dep.path + '.js';
+        depsWithImports = depsWithImports
+            .filter(dep => !dep.loaded && (dep.path || dep.named) && dep.name !== scriptName)
+            .map(dep => {
+                if (dep.path?.includes('//')) {
+                    if (dep.path.endsWith('.js') || dep.path.endsWith('/') || dep.path.includes('?')) {
+                        dep.url = dep.path;
+                    } else {
+                        dep.url = dep.path + '.js';
+                    }
+                } else if (dep.path) {
+                    dep.url = window.require.toUrl(dep.path);
                 }
-            } else {
-                dep.url = window.require.toUrl(dep.path);
-            }
-        });
+
+                return dep;
+            });
 
         if (cb && cb.length && deps.length) {
             deps.some((depname, i) => {
@@ -205,39 +213,36 @@
             });
         }
 
-        lastDefines.push(depsWithImports.length > 0);
+        lastDefines.push(depsWithImports.filter(dep => dep.url).length > 0);
 
         Promise.all(
                 depsWithImports
-                    .filter(dep => !dep.name.startsWith('text!'))
+                    .filter(dep => dep.url && !dep.name.startsWith('text!'))
                     .map(dep => $.preloadScript(dep.url))
             )
             .then(async () => {
                 for (const dep of depsWithImports) {
+                    loadingCount++;
+
                     if (dep.name.startsWith('text!')) {
                         var el = $('#' + dep.path.replace(/[/.]/g, '_'));
 
                         if (el.length) {
                             dep.cb = () => el.html();
                         } else {
-                            loadingCount++;
                             await $.get(dep.url).then(res => {
                                 dep.cb = () => res.body;
                             }).catch(e => console.error(e));
-                            loadingCount--;
                         }
-
-                        dep.run();
-
-                        continue;
+                    } else if (dep.url) {
+                        await $.loadScript({
+                            'src': dep.url,
+                            'data-name': dep.name
+                        }).catch(e => console.error(e));
                     }
 
-                    loadingCount++;
-                    await $.loadScript({
-                        'src': dep.url,
-                        'data-name': dep.name
-                    }, () => dep.run()).catch(e => console.error(e));
                     loadingCount--;
+                    dep.run();
                 }
             });
 
