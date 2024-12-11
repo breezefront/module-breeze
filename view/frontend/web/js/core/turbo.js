@@ -142,7 +142,7 @@
             window.define = window.requireCopy;
         }
         $.breeze.ready = false;
-        window.require = (deps, callback) => window.required.push([deps, callback]);
+        window.require = (...args) => window.required.push(args);
         window.require.toUrl = window.requireCopy.toUrl;
         window.require.config = window.requireCopy.config;
     });
@@ -151,7 +151,7 @@
             return;
         }
         window.require = window.requireCopy;
-        window.required.map((pair) => require(pair[0], pair[1]));
+        window.required.map(args => require(...args));
         window.required = [];
     });
 

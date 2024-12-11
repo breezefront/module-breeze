@@ -4,7 +4,7 @@
  * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
  */
 $scriptString = <<<script
-required.map((pair) => require(pair[0], pair[1])); required = [];
+required.map(args => require(...args)); required = [];
 script;
 
 
