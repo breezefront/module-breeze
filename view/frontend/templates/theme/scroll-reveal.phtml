@@ -37,7 +37,10 @@ require(['jquery', 'underscore'], ($, _) => {
 
                     $(el).var('--animation-order', counter++);
                 })
-                .addClass('scroll-reveal reveal-slide-in reveal-ready');
+                .addClass('scroll-reveal reveal-slide-in reveal-ready')
+                .one('animationend', function () {
+                    $(this).addClass('scroll-reveal-finished');
+                });
         });
     }, 40));
 });
