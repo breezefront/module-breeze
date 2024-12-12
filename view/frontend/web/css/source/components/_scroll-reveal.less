@@ -6,7 +6,7 @@
 
     @media (prefers-reduced-motion: no-preference) {
         .js #html-body.scroll-reveal-enabled .scroll-reveal {
-            opacity: 0;
+            opacity: .01;
             visibility: hidden;
             will-change: opacity, transform, visibility;
 
@@ -24,7 +24,14 @@
         // hide animated elements until slider is rebuilt to fix flickering
         .js #html-body.scroll-reveal-enabled .scroll-reveal-container [data-content-type="slide"]:not(.slick-list > [data-content-type="slide"]) [data-element="content"] > button,
         .js #html-body.scroll-reveal-enabled .scroll-reveal-container [data-content-type="slide"]:not(.slick-list > [data-content-type="slide"]) [data-element="content"] > div > * {
-            opacity: 0;
+            opacity: .01;
+        }
+
+        /* Fixed unclickable elements in Safari 18 */
+        @supports (font: -apple-system-body) and (-webkit-appearance: none) {
+            .js #html-body.scroll-reveal-enabled .scroll-reveal {
+                visibility: visible;
+            }
         }
     }
 
@@ -39,7 +46,7 @@
     @keyframes slideIn {
         from {
             transform: translateY(2rem);
-            opacity: 0;
+            opacity: .01;
         }
         to {
             transform: translateY(0);

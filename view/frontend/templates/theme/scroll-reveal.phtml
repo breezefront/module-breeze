@@ -1,11 +1,18 @@
 <style>
 @media (prefers-reduced-motion: no-preference) {
     <?= $block->getCssSelector() ?> {
-        opacity: 0;
+        opacity: .01;
         visibility: hidden;
     }
     <?= $block->getCssSelectorForActiveKeyboard() ?> {
         visibility: visible;
+    }
+
+    /* Fixed unclickable elements in Safari 18 */
+    @supports (font: -apple-system-body) and (-webkit-appearance: none) {
+        <?= $block->getCssSelector() ?> {
+            visibility: visible;
+        }
     }
 }
 </style>
