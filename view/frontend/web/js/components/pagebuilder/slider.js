@@ -142,7 +142,7 @@
                 }
 
                 this.updateCurrentPage();
-            }, 40));
+            }, 250));
 
             new ResizeObserver(() => {
                 lastResize = new Date();
