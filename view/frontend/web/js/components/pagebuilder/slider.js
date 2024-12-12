@@ -20,7 +20,7 @@
                         '<% _.each(dots, function(dot) { %>',
                             '<li class="<%- dot.css %>" role="tab">',
                                 '<button type="button" aria-label="<%- dot.ariaLabel %>" tabindex="-1">',
-                                    '<%- dot.label %>',
+                                    '<span><%- dot.label %></span>',
                                 '</button>',
                             '</li>',
                         '<% }) %>',
