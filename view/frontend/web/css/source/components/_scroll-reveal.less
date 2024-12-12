@@ -21,12 +21,6 @@
             }
         }
 
-        // hide animated elements until slider is rebuilt to fix flickering
-        .js #html-body.scroll-reveal-enabled .scroll-reveal-container [data-content-type="slide"]:not(.slick-list > [data-content-type="slide"]) [data-element="content"] > button,
-        .js #html-body.scroll-reveal-enabled .scroll-reveal-container [data-content-type="slide"]:not(.slick-list > [data-content-type="slide"]) [data-element="content"] > div > * {
-            opacity: .01;
-        }
-
         /* Fixed unclickable elements in Safari 18 */
         @supports (font: -apple-system-body) and (-webkit-appearance: none) {
             .js #html-body.scroll-reveal-enabled .scroll-reveal {
