@@ -17,23 +17,26 @@
                     }
                 });
             }
+
+            [
+                'isValid',
+                'valid',
+                'validate',
+                'checkForm',
+                'showErrors',
+                'hideErrors',
+                'reset',
+                'resetElements'
+            ].forEach(method => {
+                this[method] = (...args) => {
+                    return this.validator[method](...args);
+                };
+            });
         },
 
         destroy: function () {
             this.element.removeAttr('data-validator-ready');
             this._super();
-        },
-
-        isValid: function (inputs, silent) {
-            return this.validator.isValid(inputs, silent);
-        },
-
-        validate: function (inputs, silent) {
-            return this.validator.validate(inputs, silent);
-        },
-
-        reset: function () {
-            return this.validator.reset();
         },
 
         clearError: function (...args) {
@@ -56,9 +59,14 @@
     };
 
     $.fn.validate = function () {
-        $(this).validator();
+        var validator = $(this).validator('instance');
 
-        return $(this).validator('instance').validate();
+        if (!validator) {
+            $(this).validator();
+            validator = $(this).validator('instance');
+        }
+
+        return validator;
     };
 
     $(document).on('breeze:mount:Magento_Customer/js/block-submit-on-send', function (event, data) {

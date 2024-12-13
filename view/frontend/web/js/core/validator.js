@@ -27,6 +27,18 @@
             return this.isValid(elements, silent);
         },
 
+        form: function (elements, silent) {
+            return this.isValid(elements, silent);
+        },
+
+        /**
+         * Silent validation
+         * @return {Boolean}
+         */
+        checkForm: function () {
+            return this.isValid(true);
+        },
+
         /**
          * Validate input(s) or whole form and return validation object
          *
@@ -101,7 +113,19 @@
         },
 
         resetForm: function (elements) {
-            return this.reset(elements);
+            this.reset(elements);
+        },
+
+        resetElements: function (elements) {
+            this.reset(elements);
+        },
+
+        hideErrors: function (elements) {
+            this.reset(elements);
+        },
+
+        showErrors: function (elements) {
+            this.validate(elements);
         },
 
         /**
