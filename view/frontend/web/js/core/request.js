@@ -146,6 +146,11 @@
 
             if (typeof data === 'string') {
                 data = $.parseQuery(data);
+            } else if (_.isArray(data)) {
+                data = data.reduce((result, item) => {
+                    result[item.name] = item.value;
+                    return result;
+                }, {});
             }
 
             _.each(data, function (value, key) {
