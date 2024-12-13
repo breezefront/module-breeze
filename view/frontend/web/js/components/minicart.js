@@ -317,10 +317,6 @@
                 return sidebar.update();
             }
 
-            if (!$('[data-role=product-item]').length) {
-                return false;
-            }
-
             minicart.sidebar(this.getSidebarSettings());
         },
 
