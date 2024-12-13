@@ -1,6 +1,31 @@
 (function () {
     'use strict';
 
+    var _$ = $;
+
+    window.$ = function (selector, context) {
+        var result = _$(selector, context);
+
+        // HANDLE: $(html, props)
+        // See: https://github.com/jquery/jquery/blob/main/src/core/init.js#L76
+        if (typeof selector === 'string' &&
+            $.isPlainObject(context) &&
+            selector.trim().startsWith('<')
+        ) {
+            for (const [key, value] of Object.entries(context)) {
+                if (typeof result[key] === 'function') {
+                    result[key](value);
+                } else {
+                    result.attr(key, value);
+                }
+            }
+        }
+
+        return result;
+    };
+
+    Object.assign(window.$, _$);
+
     var methods = [
         'click',
         'select',
