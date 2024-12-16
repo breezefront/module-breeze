@@ -145,8 +145,11 @@
             }, 250));
 
             new ResizeObserver(() => {
-                lastResize = new Date();
-                updateScrollOffsetAndPagination();
+                if (this.slider.data('breeze-prev-width') !== this.slider.width()) {
+                    this.slider.data('breeze-prev-width', this.slider.width());
+                    lastResize = new Date();
+                    updateScrollOffsetAndPagination();
+                }
             }).observe(this.slider.get(0));
 
             this.slides.each((i, slide) => {
