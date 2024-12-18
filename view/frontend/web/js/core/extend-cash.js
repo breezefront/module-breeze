@@ -26,37 +26,40 @@
 
     Object.assign(window.$, _$);
 
-    var methods = [
-        'click',
-        'select',
-        'submit',
-        'scroll',
-        'blur',
-        'focus'
-    ];
+    // Trigger shortcuts
+    (() => {
+        var methods = [
+            'click',
+            'select',
+            'submit',
+            'scroll',
+            'blur',
+            'focus'
+        ];
 
-    $.each(methods, function () {
-        var method = this;
+        $.each(methods, function () {
+            var method = this;
 
-        /** Native methods proxy */
-        $.fn[method] = function (callback) {
-            if (callback) {
-                return this.on(method, callback);
-            }
-
-            return this.each(function () {
-                var event = document.createEvent('Event');
-
-                event.initEvent(method, true, true);
-
-                $(this).trigger(event);
-
-                if (!event.defaultPrevented && method !== 'click' && this[method]) {
-                    this[method]();
+            /** Native methods proxy */
+            $.fn[method] = function (callback) {
+                if (callback) {
+                    return this.on(method, callback);
                 }
-            });
-        };
-    });
+
+                return this.each(function () {
+                    var event = document.createEvent('Event');
+
+                    event.initEvent(method, true, true);
+
+                    $(this).trigger(event);
+
+                    if (!event.defaultPrevented && method !== 'click' && this[method]) {
+                        this[method]();
+                    }
+                });
+            };
+        });
+    })();
 
     function isVisible(i, el) {
         return el.offsetWidth || el.offsetHeight || el.getClientRects().length;
