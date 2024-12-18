@@ -261,6 +261,7 @@
     });
 
     window.define = window.requirejs = window.require;
+    window.require.defined = (name) => getModule(name).loaded;
     window.require.toUrl = (path) => {
         if (config.paths[path]) {
             return config.paths[path];
