@@ -678,4 +678,39 @@
         $.onReveal(this, callback, options);
         return this;
     };
+
+    //Microtasks
+    (() => {
+        var methods = [
+            'addClass',
+            'after',
+            'append',
+            'before',
+            'hide',
+            'off',
+            'on',
+            'prepend',
+        ];
+
+        $.fn.microtasks = function () {
+            if (this.microtasksProxy) {
+                return this.microtasksProxy;
+            }
+
+            this.microtasksProxy = new Proxy(this, {
+                get(target, prop) {
+                    if (!methods.includes(prop)) {
+                        return target[prop];
+                    }
+
+                    return (...args) => {
+                        _.chunk(target, 1200).forEach(chunk => setTimeout(() => $(chunk)[prop](...args)));
+                        return target.microtasksProxy;
+                    };
+                }
+            });
+
+            return this.microtasksProxy;
+        };
+    })();
 })();
