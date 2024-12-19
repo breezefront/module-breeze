@@ -214,7 +214,9 @@
         },
 
         isExpanded: function () {
-            this.element.find(this.options.menus).find(this.options.menus).addClass('expanded');
+            this.element.find(`:scope ${this.options.menus} ${this.options.menus}`)
+                .microtasks()
+                .addClass('expanded');
         },
 
         _setActiveMenu: function () {
