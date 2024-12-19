@@ -19,6 +19,10 @@
                 self = this,
                 themeBreakpoint = $('body').var('--navigation-media-mobile');
 
+            if (this.options.expanded === true) {
+                this.isExpanded();
+            }
+
             if (this.options.responsive) {
                 mql = window.matchMedia(themeBreakpoint || this.options.mediaBreakpoint);
                 mql.addListener(this.toggleMode.bind(this));
@@ -207,6 +211,10 @@
             this._trigger('afterClose', {
                 dropdown: dropdown
             });
+        },
+
+        isExpanded: function () {
+            this.element.find(this.options.menus).find(this.options.menus).addClass('expanded');
         },
 
         _setActiveMenu: function () {
