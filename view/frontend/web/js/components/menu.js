@@ -19,32 +19,32 @@
                 self = this,
                 themeBreakpoint = $('body').var('--navigation-media-mobile');
 
-            if (this.options.expanded === true) {
-                this.isExpanded();
-            }
+            setTimeout(() => {
+                if (this.options.expanded === true) {
+                    this.isExpanded();
+                }
 
-            if (this.options.responsive) {
-                mql = window.matchMedia(themeBreakpoint || this.options.mediaBreakpoint);
-                mql.addListener(this.toggleMode.bind(this));
-                this.toggleMode(mql);
-            } else if (this.options.mode === 'mobile') {
-                this.toggleMobileMode();
-            } else {
-                this.toggleDesktopMode();
-            }
+                if (this.options.responsive) {
+                    mql = window.matchMedia(themeBreakpoint || this.options.mediaBreakpoint);
+                    mql.addListener(this.toggleMode.bind(this));
+                    this.toggleMode(mql);
+                } else if (this.options.mode === 'mobile') {
+                    this.toggleMobileMode();
+                } else {
+                    this.toggleDesktopMode();
+                }
 
-            this._setActiveMenu(); // varnish fix
+                this._setActiveMenu(); // varnish fix
+            });
 
-            $('.li-item').addClass('ui-menu-item');
+            $('.li-item.level-top', this.element).addClass('ui-menu-item');
+            $('.li-item:not(.level-top)', this.element).microtasks().addClass('ui-menu-item');
             $('li.parent > ul', this.element).hide();
-            $('li.parent', this.element)
-                .children('a')
-                .filter(function () {
-                    return $(this).children('.ui-icon').length === 0;
-                })
-                .prepend('<span class="ui-menu-icon ui-icon"></span>');
+            $('li.parent > a', this.element).microtasks().prepend(
+                `<span class="ui-menu-icon ui-icon"></span>`
+            );
 
-            $('li.parent', this.element).on('keydown.menu', function (e) {
+            this.element.on('keydown.menu', 'li.parent', function (e) {
                 var dropdown = $(this).children(self.options.dropdown),
                     visibleDropdowns = $(self.options.dropdown + '.shown');
 
@@ -77,7 +77,7 @@
                 }
             });
 
-            $('a', this.element).on('click.menu', '.ui-icon', function () {
+            $('a', this.element).microtasks().on('click.menu', '.ui-icon', function () {
                 var dropdown = $(this).closest('a').siblings(self.options.dropdown);
 
                 if (!dropdown.length) {
@@ -121,6 +121,7 @@
             });
 
             $('li.parent', this.element)
+                .microtasks()
                 .off('click.menu')
                 .on('mouseenter.menu', function () {
                     var dropdown = $(this).children(self.options.dropdown),
@@ -158,6 +159,7 @@
             var self = this;
 
             $('li.parent', this.element)
+                .microtasks()
                 .off('mouseenter.menu mouseleave.menu')
                 .on('click.menu', function () {
                     var dropdown = $(this).children(self.options.dropdown);
