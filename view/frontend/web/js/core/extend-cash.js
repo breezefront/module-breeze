@@ -685,11 +685,16 @@
             'addClass',
             'after',
             'append',
+            'appendTo',
             'before',
             'hide',
+            'insertAfter',
+            'insertBefore',
             'off',
             'on',
             'prepend',
+            'prependTo',
+            'remove',
         ];
 
         $.fn.microtasks = function (chunkSize = 1200) {
