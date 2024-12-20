@@ -6,6 +6,9 @@
         options: {
             menus: 'ul',
             dropdown: 'ul',
+            icons: {
+                submenu: '',
+            },
             useInlineDisplay: true,
             responsive: true,
             expanded: false,
@@ -41,7 +44,7 @@
             $('.li-item:not(.level-top)', this.element).microtasks().addClass('ui-menu-item');
             $('li.parent > ul', this.element).hide();
             $('li.parent > a', this.element).microtasks().prepend(
-                `<span class="ui-menu-icon ui-icon"></span>`
+                `<span class="ui-menu-icon ui-icon ${this.options.icons.submenu}"></span>`
             );
 
             this.element.on('keydown.menu', 'li.parent', function (e) {
