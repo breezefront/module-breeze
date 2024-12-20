@@ -43,7 +43,7 @@
             $('.li-item.level-top', this.element).addClass('ui-menu-item');
             $('.li-item:not(.level-top)', this.element).microtasks().addClass('ui-menu-item');
             $('li.parent > ul', this.element).hide();
-            $('li.parent > a', this.element).microtasks().prepend(
+            $('li.parent > a', this.element).microtasks(200).prepend(
                 `<span class="ui-menu-icon ui-icon ${this.options.icons.submenu}"></span>`
             );
 
