@@ -34,7 +34,7 @@
                         <item name="sort_order" xsi:type="number">2</item>
                         <item name="items" xsi:type="array">
                             <item name="underscore" xsi:type="string">Swissup_Breeze/js/lib/underscore-1.13.6.min.js</item>
-                            <item name="cash" xsi:type="string">Swissup_Breeze/js/lib/cash-8.1.5.min.js</item>
+                            <item name="cash" xsi:type="string">Swissup_Breeze/js/lib/cash-8.1.5-p1.min.js</item>
                             <item name="cash-extend" xsi:type="string">Swissup_Breeze/js/core/extend-cash</item>
                             <item name="cookie" xsi:type="string">Swissup_Breeze/js/lib/js.cookie-3.0.1.min.js</item>
                             <item name="breeze-globals" xsi:type="string">Swissup_Breeze/js/core/globals</item>
