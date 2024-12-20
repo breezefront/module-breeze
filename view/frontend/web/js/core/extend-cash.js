@@ -692,7 +692,7 @@
             'prepend',
         ];
 
-        $.fn.microtasks = function () {
+        $.fn.microtasks = function (chunkSize = 1200) {
             if (this.microtasksProxy) {
                 return this.microtasksProxy;
             }
@@ -704,7 +704,7 @@
                     }
 
                     return (...args) => {
-                        _.chunk(target, 1200).forEach(chunk => setTimeout(() => $(chunk)[prop](...args)));
+                        _.chunk(target, chunkSize).forEach(chunk => setTimeout(() => $(chunk)[prop](...args)));
                         return target.microtasksProxy;
                     };
                 }
