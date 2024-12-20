@@ -18,9 +18,25 @@
         },
 
         create: function () {
-            var mql,
-                self = this,
-                themeBreakpoint = $('body').var('--navigation-media-mobile');
+            this.mediaBreakpoint = $('body').var('--navigation-media-mobile') || this.options.mediaBreakpoint;
+            this.mql = window.matchMedia(this.mediaBreakpoint)
+
+            // Postponing initialization on mobile until menu became visible
+            if (this.mql.matches) {
+                this.mql.addEventListener('change', this.initMenu.bind(this), { once: true });
+                $(document).one('menuSlideout:beforeOpen', this.initMenu.bind(this));
+            } else {
+                this.initMenu();
+            }
+        },
+
+        initMenu: function () {
+            var self = this;
+
+            if (this.inited) {
+                return;
+            }
+            this.inited = true;
 
             setTimeout(() => {
                 if (this.options.expanded === true) {
@@ -28,9 +44,8 @@
                 }
 
                 if (this.options.responsive) {
-                    mql = window.matchMedia(themeBreakpoint || this.options.mediaBreakpoint);
-                    mql.addListener(this.toggleMode.bind(this));
-                    this.toggleMode(mql);
+                    this.mql.addEventListener('change', this.toggleMode.bind(this));
+                    this.toggleMode(this.mql);
                 } else if (this.options.mode === 'mobile') {
                     this.toggleMobileMode();
                 } else {
