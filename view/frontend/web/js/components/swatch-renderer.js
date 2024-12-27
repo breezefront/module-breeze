@@ -29,7 +29,7 @@ define([
                 $corner;
 
             if (!$element.length) {
-                $element = $('<div class="' +
+                $element = $('<div style="display:none" class="' +
                     $widget.options.tooltipClass +
                     '"><div class="image"></div><div class="title"></div><div class="corner"></div></div>'
                 );

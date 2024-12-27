@@ -199,13 +199,15 @@
                 dropdown: dropdown
             });
 
-            dropdown.addClass('shown')
-                .parent('li')
-                .addClass('opened');
+            $.raf(() => {
+                dropdown.addClass('shown')
+                    .parent('li')
+                    .addClass('opened');
 
-            if (this.options.useInlineDisplay) {
-                dropdown.show();
-            }
+                if (this.options.useInlineDisplay) {
+                    dropdown.show();
+                }
+            });
         },
 
         close: function (dropdown) {
