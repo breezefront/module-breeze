@@ -718,4 +718,8 @@
             return this.microtasksProxy;
         };
     })();
+
+    $.raf = requestAnimationFrame.bind(window);
+    $.caf = cancelAnimationFrame.bind(window);
+    $.rafraf = callback => $.raf(() => $.raf(callback));
 })();
