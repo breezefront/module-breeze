@@ -19,7 +19,7 @@
 
         create: function () {
             this.mediaBreakpoint = $('body').var('--navigation-media-mobile') || this.options.mediaBreakpoint;
-            this.mql = window.matchMedia(this.mediaBreakpoint)
+            this.mql = window.matchMedia(this.mediaBreakpoint);
 
             // Postponing initialization on mobile until menu became visible
             if (this.mql.matches) {
