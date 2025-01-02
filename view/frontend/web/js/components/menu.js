@@ -13,7 +13,7 @@
             responsive: true,
             expanded: false,
             dropdownShowDelay: 100,
-            dropdownHideDelay: 120,
+            dropdownHideDelay: 170,
             mediaBreakpoint: '(max-width: 767px)'
         },
 
