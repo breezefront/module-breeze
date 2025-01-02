@@ -95,7 +95,7 @@
                 }
             });
 
-            $('a', this.element).microtasks().on('click.menu', '.ui-icon', function () {
+            $('a', this.element).microtasks().on('click.menu', '.ui-icon', function (e) {
                 var dropdown = $(this).closest('a').siblings(self.options.dropdown);
 
                 if (!dropdown.length) {
@@ -108,7 +108,7 @@
                     self.open(dropdown);
                 }
 
-                return false;
+                e.preventDefault();
             });
         },
 
@@ -179,7 +179,7 @@
             $('li.parent', this.element)
                 .microtasks()
                 .off('mouseenter.menu mouseleave.menu')
-                .on('click.menu', function () {
+                .on('click.menu', function (e) {
                     var dropdown = $(this).children(self.options.dropdown);
 
                     if (!dropdown.length || dropdown.hasClass('shown')) {
@@ -187,8 +187,7 @@
                     }
 
                     self.open(dropdown);
-
-                    return false;
+                    e.preventDefault();
                 });
 
             this._trigger('afterToggleMobileMode');
