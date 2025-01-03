@@ -23,23 +23,29 @@
         },
 
         create: function () {
-            var self = this;
+            this.status = false;
+        },
 
-            self.status = false;
-            self.dialog = $('<div class="ui-dialog" role="dialog">');
-            self.dialog.addClass(self.options.defaultDialogClass);
-            self.dialog.addClass(self.options.dialogClass);
-            self.dialog.appendTo($(self.options.appendTo));
-            self.dialog.hide();
-
-            self.addButtons();
-
-            if (self.options.shadowHinter) {
-                self.hinter = $('<div class="' + self.options.shadowHinter + '">');
-                $(self.element).append(self.hinter);
+        initDialog: function () {
+            if (this.inited) {
+                return;
             }
 
-            $(self.element).show().prependTo(self.dialog);
+            this.inited = true;
+            this.dialog = $('<div class="ui-dialog" role="dialog">');
+            this.dialog.addClass(this.options.defaultDialogClass);
+            this.dialog.addClass(this.options.dialogClass);
+            this.dialog.appendTo($(this.options.appendTo));
+            this.dialog.hide();
+
+            this.addButtons();
+
+            if (this.options.shadowHinter) {
+                this.hinter = $('<div class="' + this.options.shadowHinter + '">');
+                $(this.element).append(this.hinter);
+            }
+
+            $(this.element).show().prependTo(this.dialog);
 
             this._on(document, {
                 keydown: function (e) {
@@ -101,11 +107,14 @@
         },
 
         destroy: function () {
-            this.close();
+            if (this.dialog) {
+                this.close();
+            }
             this._super();
         },
 
         open: function () {
+            this.initDialog();
             this.status = true;
 
             if (this.options.autoPosition && this.options.position.of) {
