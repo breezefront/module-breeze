@@ -6,10 +6,7 @@
         scriptsContainer,
         scopedElements,
         parsedSettings = {},
-        oldDimensions = {
-            width: $(window).width(),
-            height: $(window).height()
-        };
+        oldDimensions = {};
 
     /** Init 'data-mage-init' and 'text/x-magento-init' scripts */
     function mount(component, data, now) {
@@ -389,6 +386,13 @@
                 $.registry.set(name, el, instance);
             }
         });
+    });
+
+    $.raf(() => {
+        oldDimensions = {
+            width: $(window).width(),
+            height: $(window).height()
+        };
     });
 
     $(window).on('resize', _.debounce(function () {
