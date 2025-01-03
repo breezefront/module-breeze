@@ -9,7 +9,8 @@
         });
 
         // remove duplicated tabstops (banner with button, )
-        $('a[href]:has(button)').attr('tabindex', -1);
+        // $('a[href]:has(button)').attr('tabindex', -1); // 3x slower then the selector below
+        $('a[href] button').parents('a').attr('tabindex', -1);
 
         $('.panel.header > .header.links')
             .clone()
