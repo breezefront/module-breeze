@@ -274,7 +274,9 @@
         $.each(storage.get(), function (name, value) {
             customerData.set(name, value);
         });
-        customerData.initialize(window.customerDataConfig);
+        setTimeout(() => {
+            customerData.initialize(window.customerDataConfig);
+        });
     });
 
     $(document).on('ajaxComplete', function (event, data) {

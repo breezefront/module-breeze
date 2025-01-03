@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    $(document).on('breeze:load', function () {
+    $(document).on('breeze:load', () => { setTimeout(() => {
         $('.sidebar-main').a11y('skippable', {
             id: 'product-list',
             label: $t('Skip to product list'),
@@ -25,7 +25,7 @@
                 rootMargin: '100px',
             });
         });
-    });
+    })});
 
     // Remove tabindex from filter title, when it's not clickable
     function updateShopByTabindex() {

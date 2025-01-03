@@ -22,9 +22,11 @@
             return;
         }
 
-        $.async(loadRules.onReveal.join(','), (el) => {
-            $.onReveal(el, () => processMatchedLoadRule(loadRules, alias, callback), {
-                rootMargin: '120px',
+        setTimeout(() => {
+            $.async(loadRules.onReveal.join(','), (el) => {
+                $.onReveal(el, () => processMatchedLoadRule(loadRules, alias, callback), {
+                    rootMargin: '120px',
+                });
             });
         });
     }
