@@ -113,6 +113,10 @@
             this.disabled = false;
         },
 
+        activate: function () {
+            this.open();
+        },
+
         /** Open dropdown */
         open: function () {
             this._trigger('beforeOpen');
@@ -151,6 +155,10 @@
             this.element.trigger('dimensionsChanged', {
                 opened: true
             });
+        },
+
+        deactivate: function () {
+            this.close();
         },
 
         close: function () {
