@@ -137,6 +137,7 @@
         });
     };
 
+    $.fn.toArray = $.fn.get;
     $.fn.fadeIn = $.fn.show;
     $.fn.fadeOut = $.fn.hide;
     $.fn.bind = $.fn.on;
