@@ -86,7 +86,9 @@
             this.parents.forEach(parent => parent.run());
         }
 
-        if (this.result === undefined && this.unknown && window.location.search.includes('breeze=1')) {
+        if (this.result === undefined && this.unknown &&
+            (window.location.search.includes('breeze=1') || window.location.hash.includes('breeze')))
+        {
             console.log(this.name);
         }
 
