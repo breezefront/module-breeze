@@ -90,4 +90,6 @@
             loaders.first().remove();
         }
     });
+
+    $.widget('mage.loader', 'blockLoader', {});
 })();

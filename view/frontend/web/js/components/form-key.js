@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    $.widget('formKey', {
+    $.widget('mage.formKey', {
         options: {
             inputSelector: 'input[name="form_key"]'
         },
