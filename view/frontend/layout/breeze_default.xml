@@ -528,6 +528,10 @@
                                     <item name="onRequire" xsi:type="boolean">true</item>
                                 </item>
                             </item>
+                            <item name="matchMedia" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/match-media</item>
+                                <item name="global" xsi:type="string">mediaCheck</item>
+                            </item>
                             <item name="Magento_Catalog/js/validate-product" xsi:type="string">Swissup_Breeze/js/components/validate-product</item>
                             <item name="Magento_Catalog/js/product/view/product-info-resolver" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/catalog-product-info-resolver</item>
