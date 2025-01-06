@@ -296,7 +296,7 @@
          */
         send: function (url, params) {
             params = prepareParams(url, params);
-            params.type = params.method = params.method || 'get';
+            params.type = params.method = params.method?.toLowerCase() || 'get';
 
             return send(params);
         },
