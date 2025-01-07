@@ -698,7 +698,7 @@
                 $.mixin.pending[name] = [];
             }
 
-            return $.mixin.pending[name].push(mixins);
+            return $.mixin.pending[name].push([name, mixins, useSuper]);
         } else if (typeof proto === 'function' && typeof mixins === 'function') {
             mixins = [mixins];
             proto = [proto];

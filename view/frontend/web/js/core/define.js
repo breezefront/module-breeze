@@ -323,7 +323,7 @@
             obj[alias] = value;
 
             if ($.mixin?.pending[alias]) {
-                $.mixin.pending[alias].forEach(mixin => $.mixin(alias, mixin));
+                $.mixin.pending[alias].forEach(args => $.mixin(...args));
                 delete $.mixin.pending[alias];
             }
 
