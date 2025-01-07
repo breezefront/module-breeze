@@ -245,7 +245,26 @@
         }).join(',');
 
         ['button', 'checkbox', 'hidden', 'image', 'password', 'radio', 'submit', 'text'].forEach(type => {
-            selector = selector.replaceAll(`:${type}`, `[type="${type}"]`);
+            var pseudo = `:${type}`, parts;
+
+            if (!selector.includes(pseudo)) {
+                return;
+            }
+
+            parts = selector.split(pseudo);
+            selector = parts.map((part, i) => {
+                if (i === parts.length - 1) {
+                    return part;
+                }
+
+                // $(':image') $('div input:image')
+                if (!part || part.endsWith(' ') || part.endsWith('input')) {
+                    return part + `[type="${type}"]`;
+                }
+
+                // $('[name="og:image"]')
+                return part + pseudo;
+            }).join('');
         });
 
         if (selector.includes('[') && selector.includes('=')) {
