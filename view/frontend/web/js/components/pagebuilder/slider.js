@@ -48,18 +48,21 @@
             });
 
             this.prepareMarkup();
-            this.buildPagination();
-            this.addEventListeners();
-            this.element.addClass('slick-initialized');
-            this.updateScrollOffset();
 
-            if (this.element.hasClass('containered') && matchMedia('(min-width: 1024px)').matches) {
-                this.scrollToPage(1, true); // hide empty space before first slide
-            }
+            setTimeout(() => {
+                this.buildPagination();
+                this.addEventListeners();
+                this.element.addClass('slick-initialized');
+                this.updateScrollOffset();
 
-            if (this.options.autoplay) {
-                this.start();
-            }
+                if (this.element.hasClass('containered') && matchMedia('(min-width: 1024px)').matches) {
+                    this.scrollToPage(1, true); // hide empty space before first slide
+                }
+
+                if (this.options.autoplay) {
+                    this.start();
+                }
+            });
         },
 
         destroy: function () {
@@ -353,7 +356,7 @@
                 return arrows.hide();
             }
 
-            arrows.show();
+            arrows.css('display', 'block');
 
             if (this.options.infinite) {
                 return;
