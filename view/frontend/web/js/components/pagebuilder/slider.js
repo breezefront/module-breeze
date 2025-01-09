@@ -198,9 +198,11 @@
                         this.slider[0].scrollLeft = pos.left - pos.dx;
 
                         if (this.slider[0].scrollLeft !== pos.left - pos.dx) {
-                            this.slider.css('transform', `translateX(
-                                ${(this.slider[0].scrollLeft + pos.dx - pos.left) / 5}px
-                            )`);
+                            $.raf(() => {
+                                this.slider.css('transform', `translateX(
+                                    ${(this.slider[0].scrollLeft + pos.dx - pos.left) / 5}px
+                                )`);
+                            });
                             this.element.css('overflow', 'hidden');
                         }
 
@@ -229,11 +231,10 @@
 
                         this.element.css('user-select', '');
                         this.slider.css('transition', 'transform 100ms ease-in-out');
-                        this.slider.css('transform', '');
-
-                        setTimeout(() => {
-                            this.slider.css('transition', '');
-                        }, 100);
+                        $.raf(() => {
+                            this.slider.css('transform', '');
+                            setTimeout(() => this.slider.css('transition', ''), 100);
+                        });
 
                         // restore styles after scroll (onscrollend)
                         timer = setTimeout(() => {
