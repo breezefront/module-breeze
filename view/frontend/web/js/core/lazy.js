@@ -28,7 +28,11 @@
 
         $(document).one([
             'touchstart', 'scroll', 'mousemove', 'click', 'mousewheel', 'keyup', 'wakeup'
-        ].join('.lazy '), () => {
+        ].join('.lazy '), (e) => {
+            if (e.namespace !== undefined && e.type !== 'wakeup') {
+                return;
+            }
+
             $('body').removeClass('breeze-inactive');
 
             if (interacted) {
