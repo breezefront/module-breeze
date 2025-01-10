@@ -10,7 +10,7 @@
             if ($.cookies.get(this.options.cookieName)) {
                 this.element.hide();
             } else {
-                this.element.show();
+                $.raf(() => this.element.show());
             }
 
             $(this.options.cookieAllowButtonSelector).on('click', function () {
