@@ -7,6 +7,11 @@ define([
 ], function ($, _, mageTemplate, $t, priceUtils) {
     'use strict';
 
+    var $element = $(),
+        $image,
+        $title,
+        $corner;
+
     $.widget('SwatchRendererTooltip', {
         options: {
             delay: 200,
@@ -16,33 +21,42 @@ define([
         _init: function () {
             var $widget = this,
                 $this = this.element,
-                $element = $('.' + $widget.options.tooltipClass),
-                timer,
-                type = parseInt($this.data('option-type'), 10),
-                label = $this.data('option-label'),
-                thumb = $this.data('option-tooltip-thumb'),
-                value = $this.data('option-tooltip-value'),
-                width = $this.data('thumb-width'),
-                height = $this.data('thumb-height'),
-                $image,
-                $title,
-                $corner;
+                timer, type, label, thumb, value, width, height;
 
-            if (!$element.length) {
+            function prepareMarkup() {
+                $element = $('.' + $widget.options.tooltipClass);
+
+                if ($element.length) {
+                    return;
+                }
+
                 $element = $('<div style="display:none" class="' +
                     $widget.options.tooltipClass +
                     '"><div class="image"></div><div class="title"></div><div class="corner"></div></div>'
                 );
                 $('body').append($element);
-            }
 
-            $image = $element.find('.image');
-            $title = $element.find('.title');
-            $corner = $element.find('.corner');
+                $image = $element.find('.image');
+                $title = $element.find('.title');
+                $corner = $element.find('.corner');
+            }
 
             $this.hover(function () {
                 if ($this.hasClass('disabled')) {
                     return;
+                }
+
+                if (!$element.length) {
+                    prepareMarkup();
+                }
+
+                if (type === undefined) {
+                    type = parseInt($this.data('option-type'), 10);
+                    label = $this.data('option-label');
+                    thumb = $this.data('option-tooltip-thumb');
+                    value = $this.data('option-tooltip-value');
+                    width = $this.data('thumb-width');
+                    height = $this.data('thumb-height');
                 }
 
                 timer = setTimeout(function () {
