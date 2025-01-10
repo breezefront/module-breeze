@@ -3,6 +3,7 @@
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
         <meta name="turbolinks-cache-control" content="no-preview"/>
+        <remove src="jquery/uppy/dist/uppy-custom.css"/>
         <remove src="mage/calendar.css"/>
         <remove src="mage/gallery/gallery.css"/>
         <remove src="requirejs/require.js"/>
