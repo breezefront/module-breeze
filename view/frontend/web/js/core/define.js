@@ -142,6 +142,10 @@
             dep = getModule(alias + '-orig');
         }
 
+        if (dep.collectedDeps) {
+            return dep.collectedDeps;
+        }
+
         imports.forEach((item, i) => {
             result.push(...collectDeps(item, i === index, true));
         });
@@ -161,6 +165,7 @@
         }
 
         result.push(dep);
+        dep.collectedDeps = result;
 
         return result;
     }
