@@ -153,11 +153,5 @@ define(['mage/template'], (template) => {
         }
     };
 
-    $.fn.a11y = function (fnName, options) {
-        $.lazy(() => {
-            this.each(function () {
-                $.breeze.a11y[fnName].init($(this), options);
-            });
-        });
-    };
+    return $.breeze.a11y;
 });
