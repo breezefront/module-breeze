@@ -7,7 +7,7 @@ use Magento\Translation\Model\Js\Config;
 
 class JsTranslations extends \Magento\Framework\View\Element\AbstractBlock
 {
-    const TEMPLATE = '<script data-breeze>var translations = %s</script>';
+    const TEMPLATE = '<script>var translations = %s</script>';
 
     private \Magento\Translation\Model\FileManager $fileManager;
 

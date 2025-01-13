@@ -8,9 +8,6 @@
     <type name="Magento\Framework\View\Result\Page">
         <plugin name="swissup_breeze" type="Swissup\Breeze\Plugin\ViewResultPage" sortOrder="-1"/>
     </type>
-    <type name="Magento\Framework\View\Element\Html\Date">
-        <plugin name="swissup_breeze" type="Swissup\Breeze\Plugin\DateElement"/>
-    </type>
     <type name="Magento\Theme\Block\Html\Header\CriticalCss">
         <plugin name="swissup_breeze" type="Swissup\Breeze\Plugin\CriticalCss"/>
     </type>

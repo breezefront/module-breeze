@@ -92,7 +92,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         }
 
         $properties = [
-            'attributes' => 'data-breeze defer',
+            'attributes' => 'defer',
         ];
 
         foreach ($this->getData('assets') as $asset) {
