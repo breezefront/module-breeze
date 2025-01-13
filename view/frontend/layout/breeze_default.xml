@@ -42,7 +42,6 @@
                             <item name="breeze-define" xsi:type="string">Swissup_Breeze/js/core/define</item>
                             <item name="breeze-wrapper" xsi:type="string">Swissup_Breeze/js/core/wrapper</item>
                             <item name="class" xsi:type="string">Swissup_Breeze/js/lib/class</item>
-                            <item name="range-slider" xsi:type="string">Swissup_Breeze/js/lib/range-slider-1.0.0.min.js</item>
                             <item name="breeze-registry" xsi:type="string">Swissup_Breeze/js/core/registry</item>
                             <item name="breeze-component" xsi:type="string">Swissup_Breeze/js/core/component</item>
                             <item name="breeze-load-script" xsi:type="string">Swissup_Breeze/js/core/load-script</item>
@@ -555,6 +554,14 @@
                             </item>
                             <item name="mage/calendar" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/calendar</item>
+                            </item>
+                            <item name="range-slider" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/lib/range-slider-1.0.0.min.js</item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onReveal" xsi:type="array">
+                                        <item name="range-slider" xsi:type="string">range-slider</item>
+                                    </item>
+                                </item>
                             </item>
                             <item name="Magento_Catalog/js/validate-product" xsi:type="string">Swissup_Breeze/js/components/validate-product</item>
                             <item name="Magento_Catalog/js/product/view/product-info-resolver" xsi:type="array">
