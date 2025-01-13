@@ -60,7 +60,7 @@
                             <item name="Magento_Customer/js/section-config" xsi:type="string">Swissup_Breeze/js/core/sections</item>
                             <item name="Magento_Customer/js/customer-data" xsi:type="string">Swissup_Breeze/js/components/customer-data</item>
                             <item name="Magento_PageCache/js/form-key-provider" xsi:type="string">Swissup_Breeze/js/components/form-key</item>
-                            <item name="breeze-focus-trap" xsi:type="string">Swissup_Breeze/js/core/focus-trap</item>
+                            <item name="breeze-focus-trap" xsi:type="string">Swissup_Breeze/js/core/focus-trap-facade</item>
                             <item name="breeze-main" xsi:type="string">Swissup_Breeze/js/core/main</item>
                             <item name="breeze-lazy" xsi:type="string">Swissup_Breeze/js/core/lazy</item>
                             <item name="breeze-template" xsi:type="string">Swissup_Breeze/js/core/template</item>

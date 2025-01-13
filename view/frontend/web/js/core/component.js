@@ -332,7 +332,7 @@
                 element = this.__element;
             }
 
-            return $.focusTrap.createFocusTrap(element.get(0), options);
+            return $.breeze.focusTrap.createFocusTrap(element.get(0), options);
         },
 
         onReveal: function (element, callback) {

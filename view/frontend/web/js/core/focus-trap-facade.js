@@ -28,8 +28,8 @@
         };
     }
 
-    $.focusTrap = {};
-    $.focusTrap.createFocusTrap = function (element, options) {
+    $.breeze.focusTrap = {};
+    $.breeze.focusTrap.createFocusTrap = function (element, options) {
         return new focusTrapFacade(element, $.extend({
             allowOutsideClick: true,
             escapeDeactivates: false
@@ -38,7 +38,7 @@
 
     $.fn.focusTrap = function (flag, options) {
         if (!this.data('__focusTrap')) {
-            this.data('__focusTrap', $.focusTrap.createFocusTrap(this[0], options));
+            this.data('__focusTrap', $.breeze.focusTrap.createFocusTrap(this[0], options));
         }
         this.data('__focusTrap')[flag ? 'activate' : 'deactivate']();
         return this;
