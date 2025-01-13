@@ -334,6 +334,7 @@
 
             getModule(alias).run();
             $(document).trigger('breeze:component:load', { alias, value });
+            $(document).trigger('breeze:component:load:' + alias, { value });
 
             return true;
         }
