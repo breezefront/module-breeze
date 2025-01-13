@@ -12,33 +12,52 @@
                     .insertBefore(this.element);
             }
 
-            this.calendar.attr('value', this.toISOString());
+            $.lazy(async () => {
+                await this.loadDependencies();
 
-            if (this.options.maxDate) {
-                this.calendar.attr('max', this.toISOString(this.calculateDate(this.options.maxDate)));
-            }
+                if (this.element.val()) {
+                    this.calendar.attr('value', this.toISOString());
+                }
 
-            if (this.options.minDate) {
-                this.calendar.attr('min', this.toISOString(this.calculateDate(this.options.minDate)));
-            }
+                if (this.options.maxDate) {
+                    this.calendar.attr('max', this.toISOString(this.calculateDate(this.options.maxDate)));
+                }
 
-            this.calendar.on('input', () => {
-                var value = '',
-                    date = $.date(this.calendar.val());
+                if (this.options.minDate) {
+                    this.calendar.attr('min', this.toISOString(this.calculateDate(this.options.minDate)));
+                }
+            });
+
+            this.calendar.on('input', async () => {
+                var value = '', date;
+
+                await this.loadDependencies();
+
+                date = $.breeze.date(this.calendar.val());
 
                 if (date.isValid()) {
-                    value = date.format($.date.normalizeFormat(this.options.dateFormat));
+                    value = date.format($.breeze.date.normalizeFormat(this.options.dateFormat));
                 }
 
                 this.element.val(value);
             });
 
-            this.element.on('input', () => {
-                var value = this.toISOString();
+            this.element.on('input', async () => {
+                var value;
+
+                await this.loadDependencies();
+
+                value = this.toISOString();
 
                 if (value) {
                     this.calendar.val(value);
                 }
+            });
+        },
+
+        loadDependencies: function () {
+            return new Promise(resolve => {
+                require(['Swissup_Breeze/js/core/date'], resolve);
             });
         },
 
@@ -47,7 +66,7 @@
          * See https://jqueryui.com/datepicker/#min-max
          */
         calculateDate: function (rules) {
-            var result = $.date(),
+            var result = $.breeze.date(),
                 mapping = {
                     'D': 'd',
                     'W': 'w',
@@ -55,7 +74,7 @@
                 };
 
             if (rules instanceof Date) {
-                return $.date(rules);
+                return $.breeze.date(rules);
             }
 
             rules.split(' ').forEach(period => {
@@ -81,7 +100,7 @@
         getDate: function () {
             var value = this.element.val();
 
-            return value ? $.date(value, this.options.dateFormat) : $.date(null);
+            return value ? $.breeze.date(value, this.options.dateFormat) : $.breeze.date(null);
         },
 
         destroy: function () {

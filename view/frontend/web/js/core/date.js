@@ -47,7 +47,7 @@
         return date;
     }
 
-    $.date = function (value, format) {
+    $.breeze.date = function (value, format) {
         return dayjs(format ? parseMagentoDate(value, format) : value);
     };
 
@@ -57,11 +57,11 @@
      * @param {String} format
      * @return {String}
      */
-    $.date.normalizeFormat = function (format) {
+    $.breeze.date.normalizeFormat = function (format) {
         var [separator, parts] = parseFormat(format);
 
         return _.map(parts, part => mapping[part].dayjs).join(separator);
     };
 
-    $.breezemap.moment = dayjs;
+    return $.breeze.date;
 })();
