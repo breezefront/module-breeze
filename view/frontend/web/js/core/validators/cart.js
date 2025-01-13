@@ -1,4 +1,4 @@
-(function () {
+define(['Magento_Ui/js/lib/validation/validator'], function () {
     'use strict';
 
     $.validator.validators['validate-item-quantity'] = [
@@ -50,4 +50,4 @@
             return this.itemQtyErrorMessage;
         }
     ];
-})();
+});

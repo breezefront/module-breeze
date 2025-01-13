@@ -1,4 +1,4 @@
-(function () {
+define(['Magento_Ui/js/lib/validation/validator'], function () {
     'use strict';
 
     $.widget('validator', {
@@ -86,4 +86,4 @@
             }
         });
     });
-})();
+});

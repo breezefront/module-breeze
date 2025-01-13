@@ -1,6 +1,7 @@
 define([
     'jquery',
-    'Swissup_Breeze/js/core/date'
+    'Swissup_Breeze/js/core/date',
+    'Magento_Ui/js/lib/validation/validator'
 ], function ($, $date) {
     'use strict';
 

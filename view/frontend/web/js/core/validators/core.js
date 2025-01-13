@@ -1,4 +1,4 @@
-(function () {
+define(['Magento_Ui/js/lib/validation/validator'], function () {
     'use strict';
 
     // eslint-disable-next-line max-len
@@ -73,4 +73,4 @@
             }
         ],
     });
-})();
+});

@@ -1,4 +1,4 @@
-(function () {
+define(['Magento_Ui/js/lib/validation/validator'], function () {
     'use strict';
 
     $.validator.validators['validate-emails'] = [
@@ -73,4 +73,4 @@
             return this.passwordErrorMessage;
         }
     ];
-})();
+});
