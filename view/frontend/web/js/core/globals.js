@@ -6,4 +6,10 @@
 
     $.breeze.loadedScripts = {};
     $.breeze.jsconfig = {};
+
+    $.breezemap = {
+        'jquery': $,
+        'underscore': _,
+        'mage/mage': $.mage,
+    };
 })();

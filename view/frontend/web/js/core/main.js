@@ -333,7 +333,12 @@
         });
     }
 
-    $(document).on('DOMContentLoaded', onDomDocumentLoad);
+    if (document.readyState !== 'loading') {
+        onDomDocumentLoad();
+    } else {
+        $(document).on('DOMContentLoaded', onDomDocumentLoad);
+    }
+
     $(document).on('breeze:turbo-ready', () => {
         $(document).off('DOMContentLoaded', onDomDocumentLoad);
         $(document).on('turbolinks:load', onDomDocumentLoad);

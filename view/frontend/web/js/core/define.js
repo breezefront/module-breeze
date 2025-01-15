@@ -291,13 +291,8 @@
     };
     window.require.config = (cfg) => $.extend(true, config, cfg || {});
 
-    $.breezemap = new Proxy({
-        'jquery': $,
-        'ko': ko,
-        'knockout': ko,
-        'underscore': _,
-        'require': window.require,
-        'mage/mage': $.mage,
+    $.breezemap = new Proxy($.extend($.breezemap, {
+        require: window.require,
         __counter: 1,
         __aliases: {},
         __getAll: () => ({ ...$.breezemap }),
@@ -323,7 +318,7 @@
                 $.breezemap[name] = $.breezemap[oldName];
             }
         }
-    }, {
+    }), {
         set(obj, alias, value) {
             obj[alias] = value;
 

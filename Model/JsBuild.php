@@ -32,7 +32,11 @@ class JsBuild
 
     private \Magento\Framework\Component\ComponentRegistrar $componentRegistrar;
 
+    private JsAssetFactory $jsAssetFactory;
+
     private string $name;
+
+    private string $type;
 
     private array $items;
 
@@ -49,7 +53,9 @@ class JsBuild
         \Magento\Framework\HTTP\Adapter\CurlFactory $curlFactory,
         ComponentRegistrar $componentRegistrar,
         Dir $moduleDir,
+        JsAssetFactory $jsAssetFactory,
         $name,
+        string $type = 'async',
         array $items = []
     ) {
         $this->assetRepo = $assetRepo;
@@ -60,24 +66,29 @@ class JsBuild
         $this->design = $design;
         $this->componentRegistrar = $componentRegistrar;
         $this->moduleDir = $moduleDir;
+        $this->jsAssetFactory = $jsAssetFactory;
         $this->moduleManager = $moduleManager;
         $this->minification = $minification;
         $this->minifier = $minifier;
         $this->curlFactory = $curlFactory;
         $this->name = $name;
+        $this->type = $type;
         $this->items = $items;
     }
 
-    /**
-     * @return \Magento\Framework\View\Asset\File
-     */
-    public function getAsset()
+    public function getAsset($path = null): JsAsset
     {
-        return $this->assetRepo->createArbitrary($this->getPath(), '');
+        return $this->jsAssetFactory->create([
+            'asset' => $this->assetRepo->createArbitrary($path ?: $this->getPath(), ''),
+            'bundleInfo' => [
+                'name' => $this->name,
+                'type' => $this->type,
+            ],
+        ]);
     }
 
     /**
-     * @return \Magento\Framework\View\Asset\File[]
+     * @return JsAsset[]
      */
     public function getBundledAssets()
     {
@@ -106,7 +117,7 @@ class JsBuild
                 continue;
             }
 
-            $this->assets[] = $this->assetRepo->createArbitrary($path, '');
+            $this->assets[] = $this->getAsset($path);
         }
 
         return $this->assets;
@@ -212,7 +223,7 @@ class JsBuild
 
             $path = $this->getPath($i);
             $this->staticDir->writeFile($path, $content);
-            $this->assets[] = $this->assetRepo->createArbitrary($path, '');
+            $this->assets[] = $this->getAsset($path);
         }
 
         $this->publishVersion();

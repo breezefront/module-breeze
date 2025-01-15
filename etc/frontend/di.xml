@@ -39,7 +39,6 @@
                 <item name="varnish" xsi:type="object">Swissup\Breeze\Model\Filter\Str\Varnish</item>
                 <item name="inject_components" xsi:type="object">Swissup\Breeze\Model\Filter\Str\InjectComponents</item>
                 <item name="inject_preload_links" xsi:type="object">Swissup\Breeze\Model\Filter\Str\InjectPreloadLinks</item>
-                <item name="inject_inline_required" xsi:type="object">Swissup\Breeze\Model\Filter\Str\InjectInlineRequired</item>
                 <item name="inject_js_class" xsi:type="object">Swissup\Breeze\Model\Filter\Str\InjectJsClass</item>
                 <item name="replace_jquery_calls" xsi:type="object">Swissup\Breeze\Model\Filter\Str\ReplaceJqueryCalls</item>
                 <item name="fix_a11y_issues" xsi:type="object">Swissup\Breeze\Model\Filter\Str\FixA11yIssues</item>

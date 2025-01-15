@@ -5,7 +5,15 @@ namespace Swissup\Breeze\Block;
 class Js extends \Magento\Framework\View\Element\AbstractBlock
 {
     const TEMPLATE_DYNAMIC = '<script type="breeze/dynamic-js">%s</script>';
+    const TEMPLATE_MODULE = '<script type="module" src="%s"></script>';
+    const TEMPLATE_ASYNC = '<script type="breeze/async-js" src="%s"></script>';
     const TEMPLATE = '<script defer src="%s"></script>';
+
+    protected $templateTypes = [
+        'defer' => self::TEMPLATE,
+        'async' => self::TEMPLATE_ASYNC,
+        'module' => self::TEMPLATE_MODULE,
+    ];
 
     /**
      * @var \Magento\Framework\App\View\Deployment\Version
@@ -134,7 +142,10 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
         $scripts = [];
         foreach ($assets as $asset) {
-            $scripts[$asset->getUrl()] = sprintf(self::TEMPLATE, $asset->getUrl());
+            $scripts[$asset->getUrl()] = sprintf(
+                $this->templateTypes[$asset->getType()] ?? self::TEMPLATE,
+                $asset->getUrl()
+            );
         }
 
         return implode("\n", $scripts)
@@ -254,7 +265,10 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                 $paths[] = $item['path'];
 
                 foreach ($paths as $key => $path) {
-                    $asset = $this->jsBuildFactory->create(['name' => $path])->getAsset();
+                    $asset = $this->jsBuildFactory->create([
+                        'name' => $path,
+                        'type' => $bundle['type'] ?? 'async',
+                    ])->getAsset();
                     if (empty(array_filter($item['load'] ?? []))) {
                         $assets[] = $asset;
                     }
@@ -273,6 +287,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
             $staticItems = array_filter($bundle['items'], fn ($item) => empty(array_filter($item['load'] ?? [])));
             $builds[$name] = $this->jsBuildFactory->create(array_merge([
                 'name' => 'Swissup_Breeze/bundles/' . $this->storeManager->getStore()->getId() . '/' . $name,
+                'type' => $bundle['type'] ?? 'async',
                 'items' => $staticItems,
             ], $jsBuildParams));
 
@@ -285,7 +300,10 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
             $allAssets = array_merge($allAssets, $builds[$name]->getBundledAssets());
             $dynamicItems = array_filter($bundle['items'], fn ($item) => !empty(array_filter($item['load'] ?? [])));
             foreach ($dynamicItems as $item) {
-                $this->jsBuildFactory->create(['name' => $item['path']])->getAsset();
+                $this->jsBuildFactory->create([
+                    'name' => $item['path'],
+                    'type' => $bundle['type'] ?? 'async',
+                ])->getAsset();
             }
         }
 

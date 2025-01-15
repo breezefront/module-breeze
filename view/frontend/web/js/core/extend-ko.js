@@ -145,4 +145,6 @@
             });
         }
     };
+
+    $.breezemap.ko = $.breezemap.knockout = ko;
 })();
