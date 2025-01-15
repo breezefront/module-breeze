@@ -437,4 +437,5 @@
         walk();
         return this;
     };
+    $.breezemap['mage/mage'] = $.mage;
 })();
