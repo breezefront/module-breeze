@@ -126,15 +126,6 @@
             });
 
             this.gallery
-                .on('click', function () {
-                    if (self.gallery.is(':focus-within')) {
-                        return;
-                    }
-
-                    this.focus({
-                        preventScroll: true
-                    });
-                })
                 .on('keydown', function (event) {
                     if (event.key === 'Escape' && self.opened()) {
                         self.close();
