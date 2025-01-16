@@ -61,7 +61,7 @@
                 this.activeIndex = 0;
             }
 
-            this.activate(this.activeIndex);
+            // this.activate(this.activeIndex);
             this.addEventListeners();
             this.showImageLoaders();
 
