@@ -53,7 +53,9 @@
             this.stage = this.gallery.find('.stage');
             this.image = this.stage.find('.stage img.main-image');
             this.activeIndex = this.gallery.find('.thumbnails a.active').index();
-            this.focusTrap = this.createFocusTrap(this.gallery);
+            this.focusTrap = this.createFocusTrap(this.gallery, {
+                initialFocus: this.element.find('.close')[0],
+            });
 
             if (this.activeIndex === -1) {
                 this.activeIndex = 0;
