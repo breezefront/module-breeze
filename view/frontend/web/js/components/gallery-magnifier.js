@@ -33,21 +33,32 @@
                 this.imageIndex = this.element.index();
             }
 
+            this.addEventListeners();
+        },
+
+        init: function () {
             if (!['auto', 'stage', 'lens'].includes(this.options.mode)) {
                 this.options.mode = 'auto';
+            }
+
+            if (this.options.mode === 'lens' && this.options.stage.position === 'inner') {
+                this.options.stage.position = 'right';
             }
 
             if (this.rtl && this.options.stage.position !== 'inner') {
                 this.options.stage.position = this.options.stage.position === 'right' ? 'left' : 'right';
             }
-
-            this.prepareMarkup();
-            this.mode(this.options.mode);
-            this.addEventListeners();
         },
 
         prepareMarkup: function () {
-            var container = $('.magnifier-container');
+            var container;
+
+            if (this.markupReady) {
+                return;
+            }
+
+            this.markupReady = true;
+            container = $('.magnifier-container');
 
             $('body').addClass('magnifier').addClass(`magnifier-stage-${this.options.stage.position}`);
 
@@ -79,6 +90,8 @@
             this.stageImage = this.stage.find('img');
 
             this.options.timeout = parseFloat(this.stageImageWrapper.css('transition-duration')) * 1000;
+
+            this.mode(this.options.mode);
         },
 
         status: function (flag) {
@@ -186,6 +199,8 @@
             if (!this.status() || (isTouch && !this.touchActive)) {
                 return;
             }
+
+            this.prepareMarkup();
 
             if (!this.isLoaded()) {
                 await this.loadAndApply();
