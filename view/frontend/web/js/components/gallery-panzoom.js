@@ -94,6 +94,10 @@
         },
 
         reset: function () {
+            this.element.css({
+                'transform': 'none',
+                'translate': 'none'
+            });
             this.panzoom.reset({
                 animate: false
             });
