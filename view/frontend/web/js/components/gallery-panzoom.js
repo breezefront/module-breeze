@@ -117,9 +117,6 @@
     }
 
     $(document)
-        .on('gallery:beforeCreate', (e, data) => {
-            panzoom(data.instance);
-        })
         .on('gallery:beforeActivate', (e, data) => {
             panzoom(data.instance).reset();
         })
