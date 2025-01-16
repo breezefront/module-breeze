@@ -434,19 +434,24 @@
                 imageX = lensX = Math.max(0, Math.min(lensX, this.element.width() - lensWidth));
                 imageY = lensY = Math.max(0, Math.min(lensY, this.element.height() - lensHeight));
 
-                this.stageImageWrapper.css({
-                    transform: `translate3d(${(lensX * zoom - this.state.offsetX) * -1}px, ${lensY * zoom * -1}px, 0px)`
+                $.raf(() => {
+                    this.stageImageWrapper.css({
+                        // eslint-disable-next-line max-len
+                        transform: `translate3d(${(lensX * zoom - this.state.offsetX) * -1}px, ${lensY * zoom * -1}px, 0px)`
+                    });
                 });
             }
 
             imageX += 1;
             imageY += 1;
 
-            this.lensImageWrapper.css({
-                transform: `translate3d(${imageX * -1}px, ${imageY * -1}px, 0px)`
-            });
-            this.lens.css({
-                transform: `translate3d(${lensX}px, ${lensY}px, 0px)`
+            $.raf(() => {
+                this.lensImageWrapper.css({
+                    transform: `translate3d(${imageX * -1}px, ${imageY * -1}px, 0px)`
+                });
+                this.lens.css({
+                    transform: `translate3d(${lensX}px, ${lensY}px, 0px)`
+                });
             });
         }
     });
