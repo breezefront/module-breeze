@@ -140,7 +140,7 @@
             this._on(isTouch ? 'touchmove' : 'mousemove', this.onMouseMove);
 
             this._on('touchstart', (e) => {
-                if (this.touchTimer) {
+                if (this.touchTimer || this.gallery.opened()) {
                     return;
                 }
 
@@ -175,6 +175,10 @@
                 this.touchTimer = clearTimeout(this.touchTimer);
                 this.touchActive = false;
                 this.isMouseOver = false;
+
+                if (!this.markupReady) {
+                    return;
+                }
 
                 $('body').add(this.element).removeClass('magnifier-active');
 
