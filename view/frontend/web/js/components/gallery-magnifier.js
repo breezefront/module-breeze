@@ -428,7 +428,8 @@
                 lensHeight = this.lens.outerHeight(),
                 lensX = pos.x - lensWidth / 2,
                 lensY = pos.y - lensHeight / 2,
-                imageX, imageY;
+                imageX, imageY,
+                rafs = [];
 
             if (this.mode() === 'lens') {
                 imageX = pos.x * zoom - lensWidth / 2 - this.state.offsetX;
@@ -452,8 +453,7 @@
             } else {
                 imageX = lensX = Math.max(0, Math.min(lensX, this.element.width() - lensWidth));
                 imageY = lensY = Math.max(0, Math.min(lensY, this.element.height() - lensHeight));
-
-                $.raf(() => {
+                rafs.push(() => {
                     this.stageImageWrapper.css({
                         // eslint-disable-next-line max-len
                         transform: `translate3d(${(lensX * zoom - this.state.offsetX) * -1}px, ${lensY * zoom * -1}px, 0px)`
@@ -465,6 +465,7 @@
             imageY += 1;
 
             $.raf(() => {
+                rafs.forEach(fn => fn());
                 this.lensImageWrapper.css({
                     transform: `translate3d(${imageX * -1}px, ${imageY * -1}px, 0px)`
                 });
