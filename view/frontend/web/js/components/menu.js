@@ -310,7 +310,9 @@
         create: function () {
             $(this.element).attr('tabindex', 0);
 
-            this.focusTrap = this.createFocusTrap($('.navigation-wrapper, .nav-sections').first());
+            this.focusTrap = this.createFocusTrap($('.navigation-wrapper, .nav-sections').first(), {
+                initialFocus: false
+            });
 
             this._on({
                 click: this.toggle,
@@ -360,9 +362,9 @@
             this.focusTrap.deactivate();
             $('html').removeClass('nav-open');
             setTimeout(() => {
-                $.breeze.scrollbar.reset();
                 $('html').removeClass('nav-before-open');
                 this._trigger('afterClose');
+                setTimeout(() => $.breeze.scrollbar.reset(), 300); // wait till css animation is over
             }, this.options.closeDelay);
         }
     });
