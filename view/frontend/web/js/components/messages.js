@@ -125,7 +125,7 @@
                 if (e.animationName === 'message-hide') {
                     $(el).remove();
                     if (!messages.children().length) {
-                        messages.remove();
+                        messages.text('');
                     }
                 }
             });
