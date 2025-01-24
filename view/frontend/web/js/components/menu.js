@@ -95,7 +95,7 @@
                 }
             });
 
-            $('a', this.element).microtasks().on('click.menu', '.ui-icon', function (e) {
+            $('a', this.element).microtasks().on('click.menu', '.ui-icon', function () {
                 var dropdown = $(this).closest('a').siblings(self.options.dropdown);
 
                 if (!dropdown.length) {
@@ -108,7 +108,7 @@
                     self.open(dropdown);
                 }
 
-                e.preventDefault();
+                return false;
             });
         },
 
