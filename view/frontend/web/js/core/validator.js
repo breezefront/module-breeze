@@ -395,6 +395,9 @@
             return value === '' || value == null || value.length === 0;
         }
     };
+    $.validator.addMethod = (id, fn, message) => {
+        $.validator.validators[id] = [fn, message];
+    };
 
     $.breezemap['Magento_Ui/js/lib/validation/utils'] = $.validator.utils;
 
