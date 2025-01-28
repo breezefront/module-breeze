@@ -106,6 +106,16 @@
         $.customerData.set('messages', messages);
     });
 
+    function removeMessage(el) {
+        var messages = $(el).parent('.messages');
+
+        $(el).remove();
+
+        if (!messages.children().length) {
+            messages.empty();
+        }
+    }
+
     // Appear effect when sticky position is used. See _messages.less
     $(document).on('breeze:load', () => {
         if (!$('body').hasClass('breeze-theme')) {
@@ -120,13 +130,8 @@
             }, 0);
 
             $(el).on('animationend', (e) => {
-                var messages = $(el).parent('.messages');
-
                 if (e.animationName === 'message-hide') {
-                    $(el).remove();
-                    if (!messages.children().length) {
-                        messages.empty();
-                    }
+                    removeMessage(el);
                 }
             });
         });
@@ -135,7 +140,7 @@
             var message = $(this).closest('.message').removeClass('shown');
 
             setTimeout(() => {
-                $(message).remove();
+                removeMessage(message);
             }, 100);
         });
     });
