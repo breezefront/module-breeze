@@ -2,12 +2,11 @@
     'use strict';
 
     var promises = {},
-        debouncedContentUpdated = _.debounce(() => $(document).trigger('contentUpdated'), 40),
         jsBundles = JSON.parse($('[type="breeze/dynamic-js"]').text());
 
     function processMatchedLoadRule(loadRules, alias, callback) {
         callback = callback || (() => {
-            require([alias], debouncedContentUpdated);
+            require([alias], () => $(document).trigger('contentUpdated'));
         });
 
         if (loadRules.onInteraction) {

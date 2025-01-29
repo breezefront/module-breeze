@@ -232,27 +232,13 @@
         );
     }
 
-    /** Convert data-mage-init-lazy attributes */
-    function convertLazyInitToDataMageInit(el) {
-        $(el).attr('data-mage-init', $(el).attr('data-mage-init-lazy'));
-    }
-
-    /**
-     * @param {Element} node
-     */
-    function walk(node) {
-        node = node || document;
-
-        [...node.querySelectorAll('[data-bind*="mageInit:"]')]
+    function walk() {
+        [...document.querySelectorAll('[data-bind*="mageInit:"]')]
             .filter(el => !$(el).parents('[data-bind*="scope:"]').length)
             .forEach(convertDataBindToDataMageInit);
 
-        node.querySelectorAll('[data-mage-init-lazy]')
-            .forEach(convertLazyInitToDataMageInit);
-
-        $(node).find('[data-mage-init],[type="text/x-magento-init"]')
-            .add($(node).is('[data-mage-init],[type="text/x-magento-init"]') ? node : $())
-            .each((i, el) => setTimeout(() => processElement(el), 0));
+        [...document.querySelectorAll('[data-mage-init],[type="text/x-magento-init"]')]
+            .forEach(el => setTimeout(() => processElement(el)));
     }
 
     // convert 'ko scope:' into 'data-bind scope'
@@ -346,10 +332,10 @@
         $(document).off('DOMContentLoaded', onDomDocumentLoad);
         $(document).on('turbolinks:load', onDomDocumentLoad);
     });
-    $(document).on('contentUpdated', function (event) {
+    $(document).on('contentUpdated', _.debounce(() => {
         scopedElements = $('[data-bind*="scope:"]');
-        walk(event.target);
-    });
+        walk();
+    }, 40));
     document.addEventListener('turbolinks:before-render', () => !(checkScriptState = true));
 
     // automatically mount components
