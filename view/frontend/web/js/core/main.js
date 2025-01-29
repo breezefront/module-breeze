@@ -5,16 +5,18 @@
         checkScriptState,
         scriptsContainer,
         scopedElements,
+        mounted = new WeakMap(),
         parsedSettings = {},
         oldDimensions = {};
 
     /** Init 'data-mage-init' and 'text/x-magento-init' scripts */
     function mount(component, data, now) {
+        var storageEl = data.settings.__el || data.el;
+
         if (data.settings?.componentDisabled === true) {
             return;
         }
 
-        /** Callback to run while browser is resting */
         function callback() {
             $(document).trigger('breeze:mount', $.extend({}, data, {
                 __component: component
@@ -24,6 +26,15 @@
 
         if (now && (!$.breeze.jsconfig[component] || $.breezemap.__get(component))) {
             return callback();
+        }
+
+        if (storageEl) {
+            if (!mounted.has(storageEl)) {
+                mounted.set(storageEl, {});
+            } else if (mounted.get(storageEl)[component]) {
+                return;
+            }
+            mounted.get(storageEl)[component] = data;
         }
 
         // will load components from non-active bundle if needed (product.js on homepage)
@@ -97,10 +108,12 @@
             settings = isScript ? el.textContent : el.dataset.mageInit;
 
         if (isScript) {
-            // Move script to the bottom so it will not break :nth-child, and ~ selectors
-            // and still will be accessible for reinitialization when using turbo cache.
-            scriptsContainer.append(el);
+            el.remove();
             el = false;
+        }
+
+        if (!settings) {
+            return;
         }
 
         if (typeof parsedSettings[settings] === 'undefined') {
@@ -138,6 +151,7 @@
                     $.each(config[i].components, function (scope, cfg) {
                         if (cfg.component) {
                             cfg.name = cfg.index = cfg.ns = cfg.__scope = scope;
+                            cfg.__el = el;
                             mountView(scope, cfg);
                         }
                     });
