@@ -34,6 +34,10 @@ define(['Magento_Ui/js/lib/validation/validator'], function () {
             });
         },
 
+        init: function () {
+            $.extend(this.validator.options, this.options);
+        },
+
         destroy: function () {
             this.element.removeAttr('data-validator-ready');
             this._super();

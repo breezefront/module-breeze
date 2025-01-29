@@ -447,10 +447,15 @@
     $.breeze.referrer = document.referrer;
     $.breezemap['mage/apply/main'] = {
         apply: walk,
-        applyFor: (el, config, component) => mount(component, {
-            el: el,
-            settings: config,
-        }),
+        applyFor: (el, settings, component) => {
+            var instance = $(el).component(component);
+
+            if (instance) {
+                instance._options(settings).init();
+            } else {
+                mount(component, { el, settings });
+            }
+        }
     };
     $.mage.init = function () {
         walk();

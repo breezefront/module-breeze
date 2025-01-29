@@ -358,6 +358,11 @@
             var anchor = $(element),
                 next = $(element).nextAll().last();
 
+            if (this.options.errorPlacement) {
+                errorNodes.each((i, el) => this.options.errorPlacement($(el), anchor));
+                return;
+            }
+
             if (anchor.data('errors-message-box')) {
                 return $(anchor.data('errors-message-box')).empty().append(errorNodes);
             }
