@@ -117,16 +117,8 @@
             var selector = false;
 
             if (isScript) {
-                el = false;
-
                 if (component !== '*') {
-                    el = html.find(component);
-                    selector = component;
-
-                    // eslint-disable-next-line max-depth
-                    if (!el.length) {
-                        return;
-                    }
+                    return;
                 }
 
                 component = Object.keys(config);
@@ -232,10 +224,34 @@
         );
     }
 
+    function convertXMagentoInitToDataMageInit(el) {
+        var remove = true,
+            settings = JSON.parse(el.textContent);
+
+        $.each(settings, (selector, json) => {
+            if (selector === '*') {
+                remove = false;
+                return;
+            }
+
+            $(selector).attr(
+                'data-mage-init',
+                JSON.stringify($.extend($(selector).data('mage-init') || {}, json))
+            );
+        });
+
+        if (remove) {
+            el.remove();
+        }
+    }
+
     function walk() {
         [...document.querySelectorAll('[data-bind*="mageInit:"]')]
             .filter(el => !$(el).parents('[data-bind*="scope:"]').length)
             .forEach(convertDataBindToDataMageInit);
+
+        [...document.querySelectorAll('[type="text/x-magento-init"]')]
+            .forEach(convertXMagentoInitToDataMageInit);
 
         [...document.querySelectorAll('[data-mage-init],[type="text/x-magento-init"]')]
             .forEach(el => setTimeout(() => processElement(el)));
