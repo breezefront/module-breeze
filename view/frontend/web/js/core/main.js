@@ -63,11 +63,14 @@
             elements = $([false]);
         }
 
-        elements.each(function () {
-            mount(config.component, {
-                settings: config,
-                el: this
-            });
+        elements = elements.get();
+        mount(config.component, {
+            settings: config,
+            el: elements.shift()
+        });
+
+        $.breezemap.uiRegistry.get(scope, cmp => {
+            elements.forEach(el => cmp._applyBindings(el));
         });
     }
 
