@@ -65,9 +65,6 @@
                             <item name="breeze-component" xsi:type="string">Swissup_Breeze/js/core/component</item>
                             <item name="breeze-dynamic-js" xsi:type="string">Swissup_Breeze/js/core/dynamic-js</item>
                             <item name="breeze-translate" xsi:type="string">Swissup_Breeze/js/core/translate</item>
-                            <item name="breeze-validator" xsi:type="string">Swissup_Breeze/js/core/validator</item>
-                            <item name="breeze-validators" xsi:type="string">Swissup_Breeze/js/core/validators/core</item>
-                            <item name="validation" xsi:type="string">Swissup_Breeze/js/components/validation</item>
                             <item name="breeze-cookie" xsi:type="string">Swissup_Breeze/js/core/cookie</item>
                             <item name="breeze-storage" xsi:type="string">Swissup_Breeze/js/core/storage</item>
                             <item name="Magento_Customer/js/section-config" xsi:type="string">Swissup_Breeze/js/core/sections</item>
@@ -306,14 +303,6 @@
                                     </item>
                                 </item>
                             </item>
-                            <item name="cart-validators" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/core/validators/cart</item>
-                                <item name="load" xsi:type="array">
-                                    <item name="onDom" xsi:type="array">
-                                        <item name="0" xsi:type="string">[data-validate*=validate-item-quantity]</item>
-                                    </item>
-                                </item>
-                            </item>
                             <item name="product-configure" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/product-configure</item>
                                 <item name="load" xsi:type="array">
@@ -388,14 +377,6 @@
                     <item name="customer" xsi:type="array">
                         <item name="sort_order" xsi:type="number">30</item>
                         <item name="items" xsi:type="array">
-                            <item name="validate-customer-password" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/core/validators/customer</item>
-                                <item name="names" xsi:type="array">
-                                    <item name="validate-customer-password" xsi:type="string">validate-customer-password</item>
-                                    <item name="validate-emails" xsi:type="string">validate-emails</item>
-                                    <item name="password-not-equal-to-user-name" xsi:type="string">password-not-equal-to-user-name</item>
-                                </item>
-                            </item>
                             <item name="address" xsi:type="string">Swissup_Breeze/js/components/address</item>
                             <item name="changeEmailPassword" xsi:type="string">Swissup_Breeze/js/components/change-email-password</item>
                             <item name="regionUpdater" xsi:type="array">
@@ -551,19 +532,6 @@
                                     <item name="moment" xsi:type="string">moment</item>
                                 </item>
                             </item>
-                            <item name="Swissup_Breeze/js/core/validators/date" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/core/validators/date</item>
-                                <item name="import" xsi:type="array">
-                                    <item name="date" xsi:type="string">Swissup_Breeze/js/core/date</item>
-                                </item>
-                                <item name="load" xsi:type="array">
-                                    <item name="onInteraction" xsi:type="boolean">true</item>
-                                    <item name="onDom" xsi:type="array">
-                                        <item name="validate-date" xsi:type="string">[data-validate*=validate-date]</item>
-                                        <item name="validate-dob" xsi:type="string">[data-validate*=validate-dob]</item>
-                                    </item>
-                                </item>
-                            </item>
                             <item name="mage/calendar" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/calendar</item>
                             </item>
@@ -575,7 +543,6 @@
                                     </item>
                                 </item>
                             </item>
-                            <item name="Magento_Catalog/js/validate-product" xsi:type="string">Swissup_Breeze/js/components/validate-product</item>
                             <item name="Magento_Catalog/js/product/view/product-info-resolver" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/catalog-product-info-resolver</item>
                             </item>
@@ -627,6 +594,78 @@
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/login-as-customer</item>
                                 <item name="export" xsi:type="array">
                                     <item name="login-as-customer" xsi:type="string">Magento_LoginAsCustomerFrontendUi/js/view/loginAsCustomer</item>
+                                </item>
+                            </item>
+
+                            <!-- Validation -->
+                            <item name="Magento_Ui/js/lib/validation/validator" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/core/validator</item>
+                                <item name="export" xsi:type="array">
+                                    <item name="utils" xsi:type="string">Magento_Ui/js/lib/validation/utils</item>
+                                </item>
+                            </item>
+                            <item name="validation" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/validation</item>
+                                <item name="import" xsi:type="array">
+                                    <item name="validator" xsi:type="string">Magento_Ui/js/lib/validation/validator</item>
+                                </item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onInteraction" xsi:type="boolean">true</item>
+                                </item>
+                            </item>
+                            <item name="Swissup_Breeze/js/core/validators/core" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/core/validators/core</item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onEvent" xsi:type="array">
+                                        <item name="validator" xsi:type="string">breeze:component:load:Magento_Ui/js/lib/validation/validator</item>
+                                    </item>
+                                </item>
+                            </item>
+                            <item name="Swissup_Breeze/js/core/validators/date" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/core/validators/date</item>
+                                <item name="import" xsi:type="array">
+                                    <item name="validator" xsi:type="string">Magento_Ui/js/lib/validation/validator</item>
+                                    <item name="date" xsi:type="string">Swissup_Breeze/js/core/date</item>
+                                </item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onInteraction" xsi:type="boolean">true</item>
+                                    <item name="onDom" xsi:type="array">
+                                        <item name="validate-date" xsi:type="string">[data-validate*=validate-date]</item>
+                                        <item name="validate-dob" xsi:type="string">[data-validate*=validate-dob]</item>
+                                    </item>
+                                </item>
+                            </item>
+                            <item name="Swissup_Breeze/js/core/validators/cart" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/core/validators/cart</item>
+                                <item name="import" xsi:type="array">
+                                    <item name="validator" xsi:type="string">Magento_Ui/js/lib/validation/validator</item>
+                                </item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onDom" xsi:type="array">
+                                        <item name="0" xsi:type="string">[data-validate*=validate-item-quantity]</item>
+                                    </item>
+                                </item>
+                            </item>
+                            <item name="Swissup_Breeze/js/core/validators/customer" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/core/validators/customer</item>
+                                <item name="import" xsi:type="array">
+                                    <item name="validator" xsi:type="string">Magento_Ui/js/lib/validation/validator</item>
+                                </item>
+                                <item name="export" xsi:type="array">
+                                    <item name="validate-customer-password" xsi:type="string">validate-customer-password</item>
+                                    <item name="validate-emails" xsi:type="string">validate-emails</item>
+                                    <item name="password-not-equal-to-user-name" xsi:type="string">password-not-equal-to-user-name</item>
+                                </item>
+                                <item name="onDom" xsi:type="array">
+                                    <item name="0" xsi:type="string">[data-validate*=validate-customer-password]</item>
+                                    <item name="1" xsi:type="string">[data-validate*=validate-emails]</item>
+                                    <item name="2" xsi:type="string">[data-validate*=password-not-equal-to-user-name]</item>
+                                </item>
+                            </item>
+                            <item name="Magento_Catalog/js/validate-product" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/validate-product</item>
+                                <item name="import" xsi:type="array">
+                                    <item name="validation" xsi:type="string">validation</item>
                                 </item>
                             </item>
 
