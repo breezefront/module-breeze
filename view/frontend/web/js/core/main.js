@@ -1,8 +1,7 @@
 (function () {
     'use strict';
 
-    var html,
-        checkScriptState,
+    var checkScriptState,
         scriptsContainer,
         scopedElements,
         mounted = new WeakMap(),
@@ -298,7 +297,6 @@
     function onBreezeLoad() {
         convertKoScopeToDataBind();
 
-        html = $('html');
         scriptsContainer = $('.breeze-container');
         scopedElements = $('[data-bind*="scope:"]');
 
