@@ -4,6 +4,7 @@
     /** Contructor */
     var Validator = function (form, options) {
         this.form = form;
+        this.elementErrors = new WeakMap();
         this.options = $.extend({
             errorClass: 'mage-error',
             errorTextTag: '<div>',
@@ -358,6 +359,8 @@
             var anchor = $(element),
                 next = $(element).nextAll().last();
 
+            this.elementErrors.set(element, errorNodes);
+
             if (this.options.errorPlacement) {
                 errorNodes.each((i, el) => this.options.errorPlacement($(el), anchor));
                 return;
@@ -378,6 +381,10 @@
          * @param {Element} element
          */
         removeErrorNodes: function (element) {
+            if (this.elementErrors.has(element)) {
+                this.elementErrors.get(element).remove();
+                this.elementErrors.delete(element);
+            }
             $(element).parent().find('.error-text[generated]').remove();
         }
     };
