@@ -57,9 +57,19 @@ define(['Magento_Ui/js/lib/validation/validator'], function () {
     $.fn.validation = $.fn.validator;
 
     $.fn.valid = function (inputs, silent) {
-        $(this).validator();
+        var form = $(this).closest('form'),
+            validator = form.validator('instance');
 
-        return $(this).validator('instance').isValid(inputs, silent);
+        if (!validator) {
+            form.validator();
+            validator = form.validator('instance');
+        }
+
+        if (!inputs && !$(this).is('form')) {
+            inputs = this;
+        }
+
+        return validator.isValid(inputs, silent);
     };
 
     $.fn.validate = function () {
