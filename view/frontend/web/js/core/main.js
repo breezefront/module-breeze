@@ -107,12 +107,10 @@
             settings = isScript ? el.textContent : el.dataset.mageInit;
 
         if (isScript) {
-            el.remove();
+            // Move script to the bottom so it will not break :nth-child, and ~ selectors
+            // and still will be accessible for reinitialization when using turbo cache.
+            scriptsContainer.append(el);
             el = false;
-        }
-
-        if (!settings) {
-            return;
         }
 
         if (typeof parsedSettings[settings] === 'undefined') {
