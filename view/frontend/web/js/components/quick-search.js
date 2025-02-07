@@ -361,11 +361,15 @@
         },
 
         sendRequest: function (query) {
-            var value = query || this.element.val();
+            var value = this.element.val();
+
+            if (typeof query === 'string' && query.length) {
+                value = query;
+            }
 
             this.submitBtn.prop('disabled', true);
 
-            if (value.length < this.options.minSearchLength) {
+            if (value.length === 0 || value.length < this.options.minSearchLength) {
                 return this.resetAutocomplete();
             }
 
