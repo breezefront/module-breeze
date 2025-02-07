@@ -360,8 +360,8 @@
             }
         },
 
-        sendRequest: function () {
-            var value = this.element.val();
+        sendRequest: function (query) {
+            var value = query || this.element.val();
 
             this.submitBtn.prop('disabled', true);
 
