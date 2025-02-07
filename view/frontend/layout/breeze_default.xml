@@ -337,6 +337,9 @@
                         <item name="items" xsi:type="array">
                             <item name="configurable" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/configurable</item>
+                                <item name="import" xsi:type="array">
+                                    <item name="priceUtils" xsi:type="string">priceUtils</item>
+                                </item>
                                 <item name="load" xsi:type="array">
                                     <item name="onReveal" xsi:type="array">
                                         <item name="0" xsi:type="string">.field.configurable</item>
@@ -345,6 +348,9 @@
                             </item>
                             <item name="Magento_Swatches/js/swatch-renderer" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/swatch-renderer</item>
+                                <item name="import" xsi:type="array">
+                                    <item name="priceUtils" xsi:type="string">priceUtils</item>
+                                </item>
                                 <item name="load" xsi:type="array">
                                     <item name="onReveal" xsi:type="array">
                                         <item name="0" xsi:type="string">[class*="swatch-opt"]</item>
