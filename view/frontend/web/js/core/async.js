@@ -67,11 +67,7 @@
     function collectNodes(nodes) {
         var result = [];
 
-        _.toArray(nodes).forEach(function (node) {
-            if (node.nodeType !== 1 || node.parentElement?.classList.contains('breeze-container')) {
-                return;
-            }
-
+        nodes.forEach(function (node) {
             result.push(node);
             result = result.concat(_.toArray(node.querySelectorAll('*')));
         });
@@ -81,9 +77,17 @@
 
     observer = new MutationObserver(function (mutations) {
         mutations.forEach(mutation => {
-            setTimeout(() => {
-                collectNodes(mutation.addedNodes).forEach(processAdded);
-            }, 0);
+            var nodes = [...mutation.addedNodes].filter(node => {
+                return node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'SCRIPT';
+            });
+
+            if (!nodes.length) {
+                return;
+            }
+
+            _.chunk(collectNodes(nodes), 500).forEach(chunk => {
+                setTimeout(() => chunk.forEach(processAdded));
+            });
         });
     });
 
