@@ -231,7 +231,7 @@
 
         $(el).attr(
             'data-mage-init',
-            JSON.stringify($.extend($(el).data('mage-init') || {}, json))
+            JSON.stringify(Object.assign($(el).data('mage-init') || {}, json))
         );
     }
 
