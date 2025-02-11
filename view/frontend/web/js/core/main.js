@@ -236,33 +236,46 @@
     }
 
     function convertXMagentoInitToDataMageInit(el) {
-        var remove = true,
-            settings = JSON.parse(el.textContent);
+        return new Promise(resolve => {
+            setTimeout(() => {
+                var remove = true,
+                    settings = JSON.parse(el.textContent);
 
-        $.each(settings, (selector, json) => {
-            if (selector === '*') {
-                remove = false;
-                return;
-            }
+                $.each(settings, (selector, json) => {
+                    if (selector === '*') {
+                        remove = false;
+                        return;
+                    }
 
-            $(selector).attr(
-                'data-mage-init',
-                JSON.stringify($.extend($(selector).data('mage-init') || {}, json))
-            );
+                    $(selector).each((i, el) => {
+                        $(el).attr(
+                            'data-mage-init',
+                            JSON.stringify(Object.assign($(el).data('mage-init') || {}, json))
+                        );
+                    });
+                    delete settings[selector];
+                });
+
+                if (remove) {
+                    el.remove();
+                } else {
+                    el.innerText = JSON.stringify(settings);
+                }
+
+                resolve();
+            });
         });
-
-        if (remove) {
-            el.remove();
-        }
     }
 
-    function walk() {
+    async function walk() {
         [...document.querySelectorAll('[data-bind*="mageInit:"]')]
             .filter(el => !$(el).parents('[data-bind*="scope:"]').length)
             .forEach(convertDataBindToDataMageInit);
 
-        [...document.querySelectorAll('[type="text/x-magento-init"]')]
-            .forEach(convertXMagentoInitToDataMageInit);
+        await Promise.all(
+            [...document.querySelectorAll('[type="text/x-magento-init"]')]
+                .map(convertXMagentoInitToDataMageInit)
+        );
 
         [...document.querySelectorAll('[data-mage-init],[type="text/x-magento-init"]')]
             .forEach(el => setTimeout(() => processElement(el)));
