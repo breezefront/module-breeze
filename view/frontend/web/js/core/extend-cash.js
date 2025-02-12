@@ -28,35 +28,37 @@
 
     // Trigger shortcuts
     (() => {
-        var methods = [
+        var events = [
+            'blur',
+            'focus',
+            'focusin',
+            'focusout',
+            'resize',
+            'scroll',
             'click',
+            'dblclick',
+            'mousedown',
+            'mouseup',
+            'mousemove',
+            'mouseover',
+            'mouseout',
+            'mouseenter',
+            'mouseleave',
+            'change',
             'select',
             'submit',
-            'scroll',
-            'blur',
-            'focus'
+            'keydown',
+            'keypress',
+            'keyup',
+            'contextmenu',
         ];
 
-        $.each(methods, function () {
-            var method = this;
-
-            /** Native methods proxy */
-            $.fn[method] = function (callback) {
+        events.forEach(event => {
+            $.fn[event] = function (callback) {
                 if (callback) {
-                    return this.on(method, callback);
+                    return this.on(event, callback);
                 }
-
-                return this.each(function () {
-                    var event = document.createEvent('Event');
-
-                    event.initEvent(method, true, true);
-
-                    $(this).trigger(event);
-
-                    if (!event.defaultPrevented && method !== 'click' && this[method]) {
-                        this[method]();
-                    }
-                });
+                return this.trigger(event);
             };
         });
     })();
