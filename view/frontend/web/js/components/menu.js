@@ -24,7 +24,11 @@
             // Postponing initialization on mobile until menu became visible
             if (this.mql.matches) {
                 this.mql.addEventListener('change', this.initMenu.bind(this), { once: true });
-                $(document).one('menuSlideout:beforeOpen', this.initMenu.bind(this));
+                if ($('html').hasClass('nav-before-open')) {
+                    this.initMenu();
+                } else {
+                    $(document).one('menuSlideout:beforeOpen', this.initMenu.bind(this));
+                }
             } else {
                 this.initMenu();
             }
