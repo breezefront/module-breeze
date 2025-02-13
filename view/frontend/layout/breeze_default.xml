@@ -28,7 +28,7 @@
                         <item name="sort_order" xsi:type="number">-9999999</item>
                         <item name="items" xsi:type="array">
                             <item name="underscore" xsi:type="string">Swissup_Breeze/js/lib/underscore-1.13.6.min.js</item>
-                            <item name="cash" xsi:type="string">Swissup_Breeze/js/lib/cash-8.1.5-p1.min.js</item>
+                            <item name="cash" xsi:type="string">Swissup_Breeze/js/lib/cash-8.1.5-p2.min.js</item>
                             <item name="breeze-cash-extend" xsi:type="string">Swissup_Breeze/js/core/extend-cash</item>
                             <item name="breeze-globals" xsi:type="string">Swissup_Breeze/js/core/globals</item>
                             <item name="breeze-load-script" xsi:type="string">Swissup_Breeze/js/core/load-script</item>
