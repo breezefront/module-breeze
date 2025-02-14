@@ -24,8 +24,8 @@
         }
 
         Object.entries({
-            top: `${rect.top - 2}px`,
-            left: `${rect.left - 2}px`,
+            top: `${rect.top + window.scrollY - 2}px`,
+            left: `${rect.left + window.scrollX - 2}px`,
             width: `${rect.width + 4}px`,
             height: `${rect.height + 4}px`,
             display: 'flex',
