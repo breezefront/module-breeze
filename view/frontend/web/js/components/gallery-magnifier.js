@@ -253,7 +253,9 @@
             this.element.spinner(true, { delay: 200 });
             this.memo[src] = await this.gallery.loadFullImage(this.imageIndex);
             this.element.spinner(false);
-            this.apply();
+            if (this.memo[this.image.attr('src')]) {
+                this.apply();
+            }
         },
 
         apply: function () {
