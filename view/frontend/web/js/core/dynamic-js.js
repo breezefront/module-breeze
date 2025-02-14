@@ -1,8 +1,7 @@
 (() => {
     'use strict';
 
-    var promises = {},
-        jsBundles = JSON.parse($('[type="breeze/dynamic-js"]').text());
+    var promises = {};
 
     function processMatchedLoadRule(loadRules, alias, callback) {
         callback = callback || (() => {
@@ -62,42 +61,6 @@
         processOnDomRules(loadRules, alias, callback);
     }
 
-    try {
-        $.each(jsBundles, (bundle, items) => {
-            $.each(items, (alias, values) => {
-                if (values.ref) {
-                    $.breeze.jsconfig[alias] = items[values.ref];
-                    $.breeze.jsconfig[alias].ref = values.ref;
-                } else {
-                    $.breeze.jsconfig[alias] = values;
-                }
-                $.breeze.jsconfig[alias].bundle = bundle;
-
-                if (values.global) {
-                    require.config({
-                        shim: {
-                            [alias]: {
-                                exports: values.global
-                            }
-                        }
-                    });
-                }
-            });
-        });
-        $.each($.breeze.jsconfig, (alias, values) => {
-            (values.import || []).forEach(path => {
-                if (!$.breeze.jsconfig[path]) {
-                    $.breeze.jsconfig[path] = {
-                        path,
-                        bundle: values.bundle
-                    };
-                }
-            });
-        });
-    } catch (e) {
-        console.log(e);
-    }
-
     $(document).on('breeze:load', () => {
         $.each($.breeze.jsconfig, (alias, values) => {
             processLoadRules(values.load, alias);
@@ -106,7 +69,7 @@
 
     $(document).on('bundle:load', (event, bundle) => {
         require(
-            Object.entries(jsBundles[bundle] || {})
+            Object.entries($.breeze.jsbundles[bundle] || {})
                 .filter(([, values]) => !values.load)
                 .map(([alias]) => alias)
         );
@@ -114,7 +77,7 @@
 
     $(document).on('bundle:autoload', (event, bundle) => {
         require(
-            Object.entries(jsBundles[bundle] || {})
+            Object.entries($.breeze.jsbundles[bundle] || {})
                 .filter(([, values]) => values.autoload && !values.load)
                 .map(([alias]) => alias)
         );
@@ -150,20 +113,4 @@
 
         return result;
     };
-
-    // dynamic widgets
-    $.each($.breeze.jsconfig, alias => {
-        if (!/^[a-zA-Z_.]+$/.test(alias)) {
-            return;
-        }
-        $.fn[alias] = function (settings) {
-            require([alias], () => {
-                if (!this[alias].__dynamic) {
-                    this[alias](settings);
-                }
-            });
-            return this;
-        };
-        $.fn[alias].__dynamic = true;
-    });
 })();
