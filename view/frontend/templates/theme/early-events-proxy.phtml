@@ -1,0 +1,103 @@
+<script data-defer-js-ignore>
+(() => {
+    var rules = <?= $block->getRules() ?>,
+        spinner,
+        selectors = [],
+        spinnerConfig = {};
+
+    function updateSpinner(config) {
+        spinnerConfig = config || spinnerConfig;
+
+        var rect = spinnerConfig.el?.getBoundingClientRect();
+
+        if (!rect || !rect.width || !rect.height) {
+            return spinner ? spinner.style.display = 'none' : null;
+        }
+
+        if (!spinner) {
+            spinner = new DOMParser().parseFromString(`
+                <div class="loading-mask early-event-spinner" style="display:none;">
+                    <div class="loader"></div>
+                </div>
+            `, 'text/html').body.firstChild;
+            document.body.append(spinner);
+        }
+
+        Object.entries({
+            top: `${rect.top - 2}px`,
+            left: `${rect.left - 2}px`,
+            width: `${rect.width + 4}px`,
+            height: `${rect.height + 4}px`,
+            display: 'flex',
+        }).forEach(([key, value]) => {
+            spinner.style[key] = value;
+        });
+    }
+
+    rules.forEach(rule => {
+        rule.events.forEach(event => {
+            var [, eventName, selector] = event.match(/^([\w:-]*)\s*(.*)$/),
+                handler = (e) => {
+                    var el = e.target.closest?.(selector);
+
+                    if (e.defaultPrevented || !el) {
+                        return;
+                    }
+
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+
+                    if (spinnerConfig.el !== el) {
+                        updateSpinner({
+                            el,
+                            eventName,
+                            component: rule.component,
+                        });
+                    }
+                },
+                mouseleaveHandler = (e) => {
+                    if (e.target.closest?.(selector) && spinnerConfig.component === rule.component) {
+                        updateSpinner({});
+                    }
+                };
+
+            selectors.push(selector);
+            document.addEventListener(eventName, handler);
+            if (eventName === 'mouseenter') {
+                document.addEventListener('mouseleave', mouseleaveHandler);
+            }
+
+            document.addEventListener(`breeze:component:load:${rule.component}`, () => {
+                document.removeEventListener(eventName, handler);
+                document.removeEventListener('mouseleave', mouseleaveHandler);
+
+                setTimeout(() => {
+                    if (spinnerConfig.component === rule.component) {
+                        try {
+                            rule.proxy !== false && $(spinnerConfig.el)[spinnerConfig.eventName]();
+                        } catch (e) {}
+                        updateSpinner({});
+                    }
+                }, 200);
+            }, { once: true });
+        });
+    });
+
+    window.addEventListener('resize', () => updateSpinner());
+    document.addEventListener('click', () => updateSpinner({}));
+
+    var unrevealObserver = new IntersectionObserver(entries => {
+        if (entries.some(entry => !entry.isIntersecting && spinnerConfig.el === entry.target)) {
+            updateSpinner({});
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            [...document.querySelectorAll(selectors.join(','))].forEach(el => {
+                unrevealObserver.observe(el);
+            });
+        } catch (e) {}
+    });
+})();
+</script>

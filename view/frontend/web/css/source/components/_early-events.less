@@ -1,0 +1,16 @@
+& when (@media-common = true) {
+& when (@critical = unsure), (@critical) {
+    .loading-mask.early-event-spinner {
+        --base-bg-alpha: .3;
+        border-radius: 3px;
+        pointer-events: none;
+        position: absolute !important;
+        inset: auto;
+
+        .loader {
+            max-width: 16px;
+            max-height: 16px;
+        }
+    }
+}
+}

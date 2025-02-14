@@ -912,6 +912,55 @@
                     </argument>
                 </arguments>
             </block>
+            <block class="Swissup\Breeze\Block\Theme\EarlyEventsProxy" name="breeze.earlyEventsProxy">
+                <arguments>
+                    <argument name="rules" xsi:type="array">
+                        <item name="dataPost" xsi:type="array">
+                            <item name="component" xsi:type="string">dataPost</item>
+                            <item name="events" xsi:type="array">
+                                <item name="0" xsi:type="string">click [data-post], [data-post-remove]</item>
+                            </item>
+                        </item>
+                        <item name="dropdown" xsi:type="array">
+                            <item name="component" xsi:type="string">dropdown</item>
+                            <item name="events" xsi:type="array">
+                                <item name="0" xsi:type="string">click [data-mage-init*='"dropdown"']</item>
+                            </item>
+                        </item>
+                        <item name="dropdownDialog" xsi:type="array">
+                            <item name="component" xsi:type="string">dropdownDialog</item>
+                            <item name="events" xsi:type="array">
+                                <item name="0" xsi:type="string">click [data-mage-init*="dropdownDialog"]</item>
+                            </item>
+                        </item>
+                        <item name="collapsible" xsi:type="array">
+                            <item name="component" xsi:type="string">collapsible</item>
+                            <item name="events" xsi:type="array">
+                                <item name="0" xsi:type="string">click [data-mage-init*="collapsible"] > *</item>
+                            </item>
+                        </item>
+                        <item name="quickSearch" xsi:type="array">
+                            <item name="component" xsi:type="string">quickSearch</item>
+                            <item name="events" xsi:type="array">
+                                <item name="0" xsi:type="string">click .minisearch:has([data-mage-init*="quickSearch"]) label</item>
+                            </item>
+                        </item>
+                        <item name="minicart" xsi:type="array">
+                            <item name="component" xsi:type="string">Magento_Checkout/js/view/minicart</item>
+                            <item name="events" xsi:type="array">
+                                <item name="0" xsi:type="string">click [data-bind*="minicart_content"]</item>
+                            </item>
+                        </item>
+                        <item name="menu" xsi:type="array">
+                            <item name="component" xsi:type="string">menu</item>
+                            <item name="events" xsi:type="array">
+                                <item name="0" xsi:type="string">mouseenter [data-mage-init*='"menu"'] > li.parent</item>
+                                <item name="1" xsi:type="string">click body:has([data-mage-init*='"menu"']) .nav-toggle</item>
+                            </item>
+                        </item>
+                    </argument>
+                </arguments>
+            </block>
         </referenceContainer>
 
         <!-- Add ko templates -->
