@@ -271,7 +271,7 @@
             this.stage.attr('data-caption', data.caption);
 
             if (this.image.get(0) && !this.image.get(0).complete) {
-                this.stage.spinner(true, {
+                this.stage.spinner(false).spinner(true, {
                     delay: 200
                 });
             }
