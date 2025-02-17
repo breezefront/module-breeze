@@ -15,7 +15,7 @@ define(['mage/template'], (template) => {
         }
 
         focusableElements.attr('tabindex', -1);
-        tabbableElements.eq(index > -1 ? index : 0).attr('tabindex', 0).focus();
+        tabbableElements.eq(Math.max(index, 0)).attr('tabindex', 0).get(0).focus();
     });
 
     $(document).on('keydown.a11y', '[data-a11y-selectable]', async (e, data) => {
