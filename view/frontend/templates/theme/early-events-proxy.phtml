@@ -59,17 +59,30 @@
                     if (e.target.closest?.(selector) && spinnerConfig.component === rule.component) {
                         updateSpinner({});
                     }
-                };
+                },
+                elements = [];
 
             selectors.push(selector);
-            document.addEventListener(eventName, handler);
+
             if (eventName === 'mouseenter') {
-                document.addEventListener('mouseleave', mouseleaveHandler);
+                elements = document.querySelectorAll(selector);
+                elements.forEach(el => {
+                    el.addEventListener('mouseenter', handler);
+                    el.addEventListener('mouseleave', mouseleaveHandler);
+                });
+            } else {
+                document.addEventListener(eventName, handler);
             }
 
             document.addEventListener(`breeze:component:load:${rule.component}`, () => {
-                document.removeEventListener(eventName, handler);
-                document.removeEventListener('mouseleave', mouseleaveHandler);
+                if (eventName === 'mouseenter') {
+                    elements.forEach(el => {
+                        el.removeEventListener('mouseenter', handler);
+                        el.removeEventListener('mouseleave', mouseleaveHandler);
+                    });
+                } else {
+                    document.removeEventListener(eventName, handler);
+                }
 
                 setTimeout(() => {
                     if (spinnerConfig.component === rule.component) {
