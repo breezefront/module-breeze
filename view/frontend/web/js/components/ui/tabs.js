@@ -145,13 +145,19 @@ define(['collapsible'], () => {
                     element = self.contents.eq(index);
                 }
 
-                element.show().get(0).scrollIntoView();
+                element.show();
+
+                self.scrollTo(element);
             });
         },
 
         destroy: function () {
             $(document).off('click.tabs');
             this._super();
+        },
+
+        scrollTo: function (element) {
+            element.get(0).scrollIntoView();
         },
 
         getActiveTab: function () {
