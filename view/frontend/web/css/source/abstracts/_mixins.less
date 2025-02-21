@@ -37,14 +37,19 @@
 .bz-gallery-nav-dots() {
     gap: @bz-gallery-dots-thumb__gap;
     justify-content: center;
+    z-index: 101;
     .margin(@bz-gallery-dots-thumb__margin);
     img {
         display: none;
     }
     .item {
-        background: @bz-gallery-dots-thumb__background;
+        background: transparent;
         width: @bz-gallery-dots-thumb__width;
         height: @bz-gallery-dots-thumb__height;
+        &::after {
+            background: @bz-gallery-dots-thumb__background;
+            inset: @bz-gallery-dots-thumb__inset;
+        }
     }
     .item,
     .item::after {
