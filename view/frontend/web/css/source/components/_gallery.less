@@ -8,9 +8,9 @@
         .next,
         .controls a,
         .close {
-            color: ~"rgba(var(--base-color, 119, 119, 119), .6)";
+            color: @bz-gallery-controls__color;
             &:hover {
-                color: ~"rgba(var(--base-color, 119, 119, 119), 1)";
+                color: @bz-gallery-controls__hover__color;
             }
             svg {
                 width: 24px;
@@ -56,12 +56,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            .left(0);
-            top: 50%;
-            width: 40px;
-            height: 80px;
-            margin-top: -40px;
-            background: ~"rgba(var(--muted-bg, 255, 255, 255), .6)";
+            .left(@bz-gallery-arrow__left);
+            top: @bz-gallery-arrow__top;
+            width: @bz-gallery-arrow__width;
+            height: @bz-gallery-arrow__height;
+            margin-top: -@bz-gallery-arrow__height / 2;
+            .lib-css(color, @bz-gallery-arrow__color);
+            .lib-css(background, @bz-gallery-arrow__background);
+            .lib-css(border, @bz-gallery-arrow__border);
+            .lib-css(border-radius, @bz-gallery-arrow__border-radius);
             z-index: 11;
             transition: all 150ms ease-in;
 
@@ -70,6 +73,7 @@
                 opacity: 0;
                 &:hover {
                     opacity: 1;
+                    .lib-css(color, @bz-gallery-arrow__hover__color);
                 }
             }
 
@@ -79,7 +83,7 @@
         }
         .next {
             .left(auto);
-            .right(0);
+            .right(@bz-gallery-arrow__left);
         }
         @media (hover: hover) {
             .stage:hover {
@@ -203,7 +207,7 @@
                 }
                 &:focus::after,
                 &.active::after {
-                    box-shadow: inset 0 0 0 2px @active__color;
+                    .lib-css(box-shadow, @bz-gallery-thumb-item__active__box-shadow);
                 }
             }
         }

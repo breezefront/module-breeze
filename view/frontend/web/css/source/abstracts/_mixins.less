@@ -47,6 +47,7 @@
         width: @bz-gallery-dots-thumb__width;
         height: @bz-gallery-dots-thumb__height;
         &::after {
+            .lib-css(box-shadow, @bz-gallery-dots-thumb__box-shadow);
             background: @bz-gallery-dots-thumb__background;
             inset: @bz-gallery-dots-thumb__inset;
         }
@@ -56,6 +57,9 @@
         .lib-css(border-radius, @bz-gallery-dots-thumb__border-radius);
     }
     .item.active {
-        background-color: @active__color;
+        &::after {
+            .lib-css(box-shadow, @bz-gallery-dots-thumb__active__box-shadow);
+            .lib-css(background, @bz-gallery-dots-thumb__active__background);
+        }
     }
 }
