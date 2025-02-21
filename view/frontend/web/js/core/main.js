@@ -4,6 +4,7 @@
     var checkScriptState,
         scriptsContainer,
         scopedElements,
+        configs = new WeakMap(),
         mounted = new WeakMap(),
         parsedSettings = {},
         oldDimensions = {};
@@ -122,6 +123,9 @@
         }
 
         settings = parsedSettings[settings];
+        if (configs.has(el)) {
+            settings = Object.assign({}, settings, configs.get(el));
+        }
 
         $.each(settings, function (component, config) {
             var selector = false;
@@ -229,10 +233,10 @@
             return;
         }
 
-        $(el).attr(
-            'data-mage-init',
-            JSON.stringify(Object.assign($(el).data('mage-init') || {}, json))
-        );
+        if (!$(el).attr('data-mage-init')) {
+            $(el).attr('data-mage-init', '{}');
+        }
+        configs.set(el, Object.assign(configs.get(el) || {}, json));
     }
 
     function convertXMagentoInitToDataMageInit(script) {
@@ -248,10 +252,10 @@
                     }
 
                     $(selector).each((i, el) => {
-                        $(el).attr(
-                            'data-mage-init',
-                            JSON.stringify(Object.assign($(el).data('mage-init') || {}, json))
-                        );
+                        if (!$(el).attr('data-mage-init')) {
+                            $(el).attr('data-mage-init', '{}');
+                        }
+                        configs.set(el, Object.assign(configs.get(el) || {}, json));
                     });
                     delete settings[selector];
                 });
