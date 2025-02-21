@@ -235,11 +235,11 @@
         );
     }
 
-    function convertXMagentoInitToDataMageInit(el) {
+    function convertXMagentoInitToDataMageInit(script) {
         return new Promise(resolve => {
             setTimeout(() => {
                 var remove = true,
-                    settings = JSON.parse(el.textContent);
+                    settings = JSON.parse(script.textContent);
 
                 $.each(settings, (selector, json) => {
                     if (selector === '*') {
@@ -257,9 +257,9 @@
                 });
 
                 if (remove) {
-                    el.remove();
+                    script.remove();
                 } else {
-                    el.innerText = JSON.stringify(settings);
+                    script.innerText = JSON.stringify(settings);
                 }
 
                 resolve();
