@@ -37,6 +37,7 @@
 .bz-gallery-nav-dots() {
     gap: @bz-gallery-dots-thumb__gap;
     justify-content: center;
+    overflow: visible;
     z-index: 101;
     .margin(@bz-gallery-dots-thumb__margin);
     img {
@@ -56,7 +57,8 @@
     .item::after {
         .lib-css(border-radius, @bz-gallery-dots-thumb__border-radius);
     }
-    .item.active {
+    .item.active,
+    .item:focus {
         &::after {
             .lib-css(box-shadow, @bz-gallery-dots-thumb__active__box-shadow);
             .lib-css(background, @bz-gallery-dots-thumb__active__background);
