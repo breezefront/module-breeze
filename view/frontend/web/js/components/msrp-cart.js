@@ -15,10 +15,8 @@
         $.registry.get('minicart')[0]?.displaySubtotal(!isMsrpApplied(cart.items));
     }
 
-    $(document).one('breeze:mount:Magento_Checkout/js/view/minicart', function () {
-        updateDisplaySubtotal($.customerData.get('cart')());
-        $.customerData.get('cart').subscribe(function (cart) {
-            updateDisplaySubtotal(cart);
-        });
+    updateDisplaySubtotal($.customerData.get('cart')());
+    $.customerData.get('cart').subscribe(function (cart) {
+        updateDisplaySubtotal(cart);
     });
 })();
