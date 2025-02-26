@@ -98,12 +98,6 @@
         });
     });
 
-    $(document).on('breeze:destroy', function () {
-        mapping = {};
-        counter = 1;
-        observer.disconnect();
-    });
-
     /**
      * @param {String|Object} selector
      * @param {HTMLElement|Function} ctx

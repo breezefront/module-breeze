@@ -46,9 +46,4 @@
             }
         });
     });
-    $(document).on('breeze:destroy', () => {
-        $(document).off('.lazy');
-        interacted = false;
-        callbacks = [];
-    });
 })();

@@ -33,7 +33,6 @@ define([
     };
     loginAction.registerLoginCallback = (callback) => loginCallbacks.push(callback);
     $.breezemap['Magento_Customer/js/action/login'] = loginAction;
-    $(document).on('breeze:destroy', () => (loginCallbacks = []) && true);
 
     $.view('authPopup', {
         component: 'Magento_Customer/js/view/authentication-popup',

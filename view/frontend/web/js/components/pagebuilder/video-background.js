@@ -21,11 +21,4 @@
             });
         });
     });
-
-    $(document).on('breeze:destroy', () => {
-        $('[data-background-type="video"]').each((i, el) => {
-            $(el).removeClass('jarallax jarallax-ready');
-            jarallax(el, 'destroy');
-        });
-    });
 })();

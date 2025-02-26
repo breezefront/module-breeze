@@ -71,10 +71,6 @@ define([
     captchaList = (() => {
         var list = [];
 
-        $(document).on('breeze:destroy', () => {
-            list = [];
-        });
-
         return {
             add: (item) => list.push(item),
             getCaptchaByFormId: formId => list.find(item => item.formId === formId),
