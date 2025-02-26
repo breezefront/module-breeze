@@ -3,8 +3,6 @@
 "Breeze module will replace all scripts with its own simplified version. It will also remove all custom and third-party modules scripts.","Breeze module will replace all scripts with its own simplified version. It will also remove all custom and third-party modules scripts."
 "Disable Breeze for specified URLs","Disable Breeze for specified URLs"
 "One url per line. Example: /helpdesk or ?param=1","One url per line. Example: /helpdesk or ?param=1"
-"Enable Turbo Feature","Enable Turbo Feature"
-"This feature adds a turbo.js library that provides a speed of a single-page web application for your store.","This feature adds a turbo.js library that provides a speed of a single-page web application for your store."
 "Enable Responsive Images","Enable Responsive Images"
 "This feature allows to serve most suitable image size per device. Theme developer must describe srcset property in view.xml file in order to enable this feature.","This feature allows to serve most suitable image size per device. Theme developer must describe srcset property in view.xml file in order to enable this feature."
 "Allows to force breeze status via query parameter: ?breeze=1 or ?breeze=0","Allows to force breeze status via query parameter: ?breeze=1 or ?breeze=0"

@@ -62,7 +62,7 @@
 
             $('body').addClass('magnifier').addClass(`magnifier-stage-${this.options.stage.position}`);
 
-            this.lens = $('<div data-breeze-temporary>')
+            this.lens = $('<div>')
                 .css({ position: 'absolute', visibility: 'hidden', left: 0, top: 0 })
                 .addClass('image-magnifier-lens')
                 .appendTo(this.element);
@@ -71,7 +71,7 @@
             this.lensImage = $('<img alt="">').appendTo(this.lensImageWrapper);
 
             if (!container.length) {
-                container = $('<div data-breeze-temporary>')
+                container = $('<div>')
                     .addClass('magnifier-container')
                     .appendTo(document.body);
             }
@@ -79,7 +79,7 @@
             this.stage = container.find(`[data-url="${this.image.attr('src')}"]`);
 
             if (!this.stage.length) {
-                this.stage = $(`<div data-breeze-temporary data-url="${this.image.attr('src')}">`)
+                this.stage = $(`<div data-url="${this.image.attr('src')}">`)
                     .css({ position: 'absolute', visibility: 'hidden' })
                     .addClass(`image-magnifier-stage image-magnifier-stage-${this.options.stage.position}`)
                     .appendTo(container)

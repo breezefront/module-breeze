@@ -24,7 +24,7 @@
         },
 
         prepareMarkup() {
-            this.element.prepend(`<a href="#" class="clamp-toggle" data-breeze-temporary>${this.textExpand}</a>`);
+            this.element.prepend(`<a href="#" class="clamp-toggle">${this.textExpand}</a>`);
             this.toggler = this.element.find('.clamp-toggle');
         },
 

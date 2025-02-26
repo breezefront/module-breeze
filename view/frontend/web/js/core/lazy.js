@@ -15,7 +15,7 @@
         $.lazy(() => {
             $(selector).each(function () {
                 this.parentNode.insertBefore(
-                    $(this).clone().attr('data-breeze-temporary', 1).removeAttr('type').get(0),
+                    $(this).clone().removeAttr('type').get(0),
                     this
                 );
             });

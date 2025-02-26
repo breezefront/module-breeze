@@ -136,8 +136,8 @@ define(['mage/template'], (template) => {
 
         skippable: {
             init: function (scope, options) {
-                var skipTpl = '<a href="#<%- id %>" class="action skip" data-breeze-temporary><%- label %></a>',
-                    anchorTpl = '<span id="<%- id %>" class="anchor skip" data-breeze-temporary></span>',
+                var skipTpl = '<a href="#<%- id %>" class="action skip"><%- label %></a>',
+                    anchorTpl = '<span id="<%- id %>" class="anchor skip"></span>',
                     destination = scope,
                     method = 'after';
 

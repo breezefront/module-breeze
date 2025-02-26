@@ -1,9 +1,7 @@
 (function () {
     'use strict';
 
-    var checkScriptState,
-        scriptsContainer,
-        scopedElements,
+    var scopedElements,
         configs = new WeakMap(),
         mounted = new WeakMap(),
         parsedSettings = {},
@@ -108,9 +106,7 @@
             settings = isScript ? el.textContent : el.dataset.mageInit;
 
         if (isScript) {
-            // Move script to the bottom so it will not break :nth-child, and ~ selectors
-            // and still will be accessible for reinitialization when using turbo cache.
-            scriptsContainer.append(el);
+            el.remove();
             el = false;
         }
 
@@ -312,7 +308,6 @@
     function onBreezeLoad() {
         convertKoScopeToDataBind();
 
-        scriptsContainer = $('.breeze-container');
         scopedElements = $('[data-bind*="scope:"]');
 
         setTimeout(() => {
@@ -323,63 +318,11 @@
         }, 0);
     }
 
-    function onDomDocumentLoad() {
-        var newScripts = !checkScriptState || _.isEmpty($.breeze.loadedScripts)
-                ? [] : $('script[src]').filter(function () {
-                    if (!['', 'text/javascript', 'module'].includes(this.type)) {
-                        return false;
-                    }
-                    return !$.breeze.loadedScripts[this.src];
-                }),
-            spinnerTimeout,
-            i = 0;
-
-        if (!newScripts.length) {
-            return onBreezeLoad();
-        }
-
-        // wait for dynamic scripts when turbo is used (fixes product page/account scripts)
-        spinnerTimeout = setTimeout(function () {
-            $('body').spinner(true);
-        }, 200);
-
-        function onScriptLoad(src) {
-            $.breeze.loadedScripts[src] = true;
-
-            if (++i < newScripts.length) {
-                return;
-            }
-
-            clearTimeout(spinnerTimeout);
-            $('body').spinner(false);
-            onBreezeLoad();
-        }
-
-        newScripts.each(function () {
-            if (this.async) {
-                return onScriptLoad(this.src);
-            }
-
-            // eslint-disable-next-line max-nested-callbacks
-            $(this).on('load error', () => onScriptLoad(this.src));
-        });
-    }
-
-    if (document.readyState !== 'loading') {
-        onDomDocumentLoad();
-    } else {
-        $(document).on('DOMContentLoaded', onDomDocumentLoad);
-    }
-
-    $(document).on('breeze:turbo-ready', () => {
-        $(document).off('DOMContentLoaded', onDomDocumentLoad);
-        $(document).on('turbolinks:load', onDomDocumentLoad);
-    });
+    $(onBreezeLoad);
     $(document).on('contentUpdated', _.debounce(() => {
         scopedElements = $('[data-bind*="scope:"]');
         walk();
     }, 40));
-    document.addEventListener('turbolinks:before-render', () => !(checkScriptState = true));
 
     // automatically mount components
     $(document).on('breeze:mount', function (event, data) {

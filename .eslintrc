@@ -14,8 +14,7 @@
         "breeze": "readonly",
         "dayjs": "readonly",
         "define": "readonly",
-        "ko": "readonly",
-        "Turbolinks": "readonly"
+        "ko": "readonly"
     },
     "rules": {
         "camelcase": ["error", { "properties": "never" }],

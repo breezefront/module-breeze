@@ -31,21 +31,6 @@
                     <dataScope>breeze_excluded_urls</dataScope>
                 </settings>
             </field>
-            <field name="breeze_turbo" formElement="select">
-                <settings>
-                    <dataType>string</dataType>
-                    <label translate="true">Enable Turbo Feature</label>
-                    <notice translate="true">This feature adds a turbo.js library that provides a speed of a single-page web application for your store.</notice>
-                    <dataScope>breeze_turbo</dataScope>
-                </settings>
-                <formElements>
-                    <select>
-                        <settings>
-                            <options class="Swissup\Breeze\Model\Config\Source\YesNoTheme"/>
-                        </settings>
-                    </select>
-                </formElements>
-            </field>
             <field name="breeze_responsive_images" formElement="select">
                 <settings>
                     <dataType>string</dataType>

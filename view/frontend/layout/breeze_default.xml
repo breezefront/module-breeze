@@ -2,7 +2,6 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
-        <meta name="turbolinks-cache-control" content="no-preview"/>
         <remove src="jquery/uppy/dist/uppy-custom.css"/>
         <remove src="mage/calendar.css"/>
         <remove src="mage/gallery/gallery.css"/>
@@ -494,21 +493,6 @@
                     <item name="dynamic" xsi:type="array">
                         <item name="sort_order" xsi:type="number">100</item>
                         <item name="items" xsi:type="array">
-                            <item name="breeze-turbo" xsi:type="array">
-                                <item name="path" xsi:type="string">Swissup_Breeze/js/core/turbo</item>
-                                <item name="import" xsi:type="array">
-                                    <item name="turbo" xsi:type="string">Swissup_Breeze/js/lib/turbolinks-5.2.0.min.js</item>
-                                </item>
-                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Data::isTurboEnabled">
-                                    <param name="path">design/breeze/turbo</param>
-                                </item>
-                                <item name="load" xsi:type="array">
-                                    <item name="onDom" xsi:type="array">
-                                        <item name="0" xsi:type="string">body</item>
-                                    </item>
-                                    <item name="onInteraction" xsi:type="boolean">true</item>
-                                </item>
-                            </item>
                             <item name="Swissup_Breeze/js/core/a11y" xsi:type="string">Swissup_Breeze/js/core/a11y</item>
                             <item name="tabbable" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/lib/tabbable-6.1.1.min.js</item>
@@ -957,8 +941,6 @@
                 <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.Magento_Customer_show-password" template="Swissup_Breeze::customer/show-password.html"/>
                 <block class="Swissup\Breeze\Block\HtmlTemplate" template="Magento_Captcha::checkout/captcha.html"/>
                 <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.Magento_Paypal_paylater" template="Magento_Paypal::paylater.html"/>
-
-                <block class="Swissup\Breeze\Block\Turbo" name="breeze.turbo"/>
 
                 <!-- deprecated, use 'Magento_Catalog/product/image_with_borders' instead -->
                 <block class="Swissup\Breeze\Block\KoTemplate" name="breeze.productImage" template="Swissup_Breeze::ko/catalog/product-image.phtml"/>

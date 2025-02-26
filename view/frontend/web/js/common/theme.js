@@ -14,7 +14,6 @@
 
         $('.panel.header > .header.links')
             .clone()
-            .data('breeze-temporary', true)
             .appendTo(document.getElementById('store.links'));
 
         // see Model/Filter/Dom/LazyLoadBackground.php

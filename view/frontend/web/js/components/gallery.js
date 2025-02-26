@@ -44,7 +44,7 @@
                 this.options.magnifierOpts.gallery = this;
             }
             this.promises = {};
-            this.cache = $('<div data-breeze-temporary>').hide().appendTo(document.body);
+            this.cache = $('<div>').hide().appendTo(document.body);
             this.gallery = this.element.parent();
             this.parent = this.gallery.parent();
             this.imagesWrapper = this.gallery.find('.images');

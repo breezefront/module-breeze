@@ -160,20 +160,6 @@ class Data extends AbstractHelper
     /**
      * @return boolean
      */
-    public function isTurboEnabled()
-    {
-        $result = $this->getConfig('design/breeze/turbo');
-
-        if ($result === 'theme') {
-            $result = $this->getThemeConfig('turbo');
-        }
-
-        return (bool) $result;
-    }
-
-    /**
-     * @return boolean
-     */
     public function isResponsiveImagesEnabled()
     {
         if ($this->isResponsiveImagesEnabled !== null) {

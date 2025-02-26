@@ -41,11 +41,7 @@
     };
 
     $.breeze.visit = function (url) {
-        if (typeof Turbolinks !== 'undefined') {
-            Turbolinks.visit(url);
-        } else {
-            location.href = url;
-        }
+        location.href = url;
     };
 
     $.breeze.scrollbar = {
