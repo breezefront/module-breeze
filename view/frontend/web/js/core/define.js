@@ -2,6 +2,7 @@
     'use strict';
 
     var modules = {},
+        aliases = [],
         lastDefines = [],
         loadingCount = 0,
         config = {
@@ -291,8 +292,9 @@
     };
     window.require.config = (cfg) => $.extend(true, config, cfg || {});
 
+    $.breezemap.require = window.require;
+    aliases = Object.keys($.breezemap);
     $.breezemap = new Proxy($.extend($.breezemap, {
-        require: window.require,
         __counter: 1,
         __aliases: {},
         __getAll: () => ({ ...$.breezemap }),
@@ -334,4 +336,5 @@
             return true;
         }
     });
+    aliases.forEach(alias => getModule(alias).run());
 })();
