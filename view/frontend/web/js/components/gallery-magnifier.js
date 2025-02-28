@@ -385,7 +385,7 @@
             }
 
             // eslint-disable-next-line one-var, vars-on-top
-            var shift = parseFloat(window.getComputedStyle(this.element[0]).getPropertyValue('--magnifier-gap')),
+            var shift = parseFloat(this.element.var('--magnifier-gap')),
                 leftPosition = this.element.offset().left - this.element.width() - shift,
                 rightPosition = this.element.offset().left + this.element.width() + shift,
                 result = {
