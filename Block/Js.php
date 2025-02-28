@@ -357,11 +357,6 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         foreach ($this->getAllBundles() as $bundleName => $bundle) {
             if (!empty($bundle['active'])) {
                 $this->activeBundles[$bundleName] = $bundle;
-                continue;
-            }
-
-            if ($this->isBundlingEnabled()) {
-                continue; // all bundles are dynamic
             }
         }
 
