@@ -393,13 +393,21 @@
                     height: this.convertSize(stage.height),
                     top: this.element.offset().top + parseFloat(this.element.css('border-top-width')),
                     left: stage.position === 'right' ? rightPosition : leftPosition
-                };
+                },
+                modalContent = this.element.closest('.modal-content'),
+                minLeftPosition = 0,
+                maxRightPosition = $(window).width();
 
-            if (result.left < 0) {
+            if (modalContent.length) {
+                minLeftPosition = modalContent.offset().left;
+                maxRightPosition = minLeftPosition + modalContent.outerWidth();
+            }
+
+            if (result.left < minLeftPosition) {
                 result.width += result.left - shift;
                 result.left = shift;
-            } else if (result.left + result.width > $(window).width()) {
-                result.width -= result.left + result.width - $(window).width() + shift;
+            } else if (result.left + result.width > maxRightPosition) {
+                result.width -= result.left + result.width - maxRightPosition + shift;
             }
 
             return result;
