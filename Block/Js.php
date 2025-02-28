@@ -177,42 +177,39 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         }
 
         $result = [];
-        $activeBundles = array_keys($this->getActiveBundles());
         foreach ($this->getAllBundles() as $bundleName => $bundle) {
             foreach ($bundle['items'] as $alias => $item) {
                 $item['path'] = str_replace('::', '/', $item['path']);
                 $item['load'] = array_filter($item['load'] ?? []);
 
-                if (!empty($item['load']) || !in_array($bundleName, $activeBundles)) {
-                    $path = $item['path'];
-                    if (empty($item['load']) && $this->isBundlingEnabled()) {
-                        $path = "{$bundleName}*{$bundleIndexes[$bundleName]}";
-                    }
-
-                    $result[$bundleName][$alias] = [
-                        'path' => $path,
-                        'import' => array_values(array_filter(array_map(
-                            fn ($name) => str_replace('::', '/', $name),
-                            array_values($item['import'] ?? [])
-                        ), function ($name) use ($alias, $path) {
-                            // Importing the same name means that we trying to load original "luma" file.
-                            // if bundling is enabled we do not need to import it since it will be in the same bundle.
-                            if ($name === $alias) {
-                                return strpos($path, '*') === false;
-                            }
-
-                            $info = $this->findItemInfo($name);
-
-                            // If bundling is enabled and "import" is not a component but simple path,
-                            // our merge will put this import inside this bundle.
-                            if (strpos($path, '*') !== false && !$info) {
-                                return false;
-                            }
-
-                            return true;
-                        })),
-                    ];
+                $path = $item['path'];
+                if (empty($item['load']) && $this->isBundlingEnabled()) {
+                    $path = "{$bundleName}*{$bundleIndexes[$bundleName]}";
                 }
+
+                $result[$bundleName][$alias] = [
+                    'path' => $path,
+                    'import' => array_values(array_filter(array_map(
+                        fn ($name) => str_replace('::', '/', $name),
+                        array_values($item['import'] ?? [])
+                    ), function ($name) use ($alias, $path) {
+                        // Importing the same name means that we trying to load original "luma" file.
+                        // if bundling is enabled we do not need to import it since it will be in the same bundle.
+                        if ($name === $alias) {
+                            return strpos($path, '*') === false;
+                        }
+
+                        $info = $this->findItemInfo($name);
+
+                        // If bundling is enabled and "import" is not a component but simple path,
+                        // our merge will put this import inside this bundle.
+                        if (strpos($path, '*') !== false && !$info) {
+                            return false;
+                        }
+
+                        return true;
+                    })),
+                ];
 
                 if (!empty($item['load'])) {
                     $result[$bundleName][$alias]['load'] = array_filter([
@@ -221,10 +218,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                         'onReveal' => array_values($item['load']['onReveal'] ?? []),
                         'onDom' => array_values($item['load']['onDom'] ?? []),
                     ]);
-                } elseif (!$this->isBundlingEnabled()
-                    && !in_array($bundleName, $activeBundles)
-                    && !empty($item['autoload'])
-                ) {
+                } elseif (!$this->isBundlingEnabled() && !empty($item['autoload'])) {
                     $result[$bundleName][$alias]['autoload'] = true;
                 }
 
