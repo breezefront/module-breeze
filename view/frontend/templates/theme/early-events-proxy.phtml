@@ -8,7 +8,9 @@
     function updateSpinner(config) {
         spinnerConfig = config || spinnerConfig;
 
-        var rect = spinnerConfig.el?.getBoundingClientRect();
+        var rect = spinnerConfig.el?.getBoundingClientRect(),
+            clipPath = spinnerConfig.el ? getComputedStyle(spinnerConfig.el).getPropertyValue('clip-path') : '',
+            offset = ['none', ''].includes(clipPath) ? 2 : 0;
 
         if (!rect || !rect.width || !rect.height) {
             return spinner ? spinner.style.display = 'none' : null;
@@ -24,11 +26,12 @@
         }
 
         Object.entries({
-            top: `${rect.top + window.scrollY - 2}px`,
-            left: `${rect.left + window.scrollX - 2}px`,
-            width: `${rect.width + 4}px`,
-            height: `${rect.height + 4}px`,
+            top: `${rect.top + window.scrollY - offset}px`,
+            left: `${rect.left + window.scrollX - offset}px`,
+            width: `${rect.width + offset * 2}px`,
+            height: `${rect.height + offset * 2}px`,
             display: 'flex',
+            'clip-path': clipPath,
         }).forEach(([key, value]) => {
             spinner.style[key] = value;
         });
