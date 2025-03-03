@@ -210,7 +210,6 @@
     $.Base = Class.extend({
         create: _.noop,
         init: _.noop,
-        initConfig: _.noop,
         destroy: _.noop,
         _create: _.noop,
         _init: _.noop,
@@ -236,6 +235,10 @@
         },
 
         initialize: function () {
+            return this;
+        },
+
+        initConfig: function () {
             return this;
         },
 
