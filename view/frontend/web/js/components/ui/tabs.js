@@ -103,7 +103,7 @@ define(['collapsible'], () => {
                 self.collapsibles.not(newActiveTab).collapsible('close');
 
                 if (newActiveTab && !newActiveTab.isInViewport()) {
-                    newActiveTab.get(0).scrollIntoView();
+                    self.scrollTo(newActiveTab);
                 }
             });
 
