@@ -147,28 +147,21 @@
                 url: this.options.sectionLoadUrl,
                 data: params,
                 accept: 'json',
-                success: function (data) {
+                success: async function (data) {
                     var sectionDataIds = $.cookies.getJson('section_data_ids') || {};
 
-                    $.each(data, function (sectionName, sectionData) {
-                        // No need to store messages, but data_id must be
-                        // in storage otherwise it will expire.
-                        if (sectionName === 'messages') {
-                            sectionData = {
-                                data_id: sectionData.data_id,
-                                messages: []
-                            };
-                        }
-
-                        sectionDataIds[sectionName] = sectionData.data_id;
-                        storage.set(sectionName, sectionData);
-                        storageInvalidation.remove(sectionName);
-                        $.customerData.set(sectionName, sectionData);
-                    });
+                    await $.breezemap.uiRegistry.promise('messages');
 
                     $(document).trigger('customer-data-reload', {
                         sections: sections,
                         response: data
+                    });
+
+                    $.each(data, function (sectionName, sectionData) {
+                        sectionDataIds[sectionName] = sectionData.data_id;
+                        storage.set(sectionName, sectionData);
+                        storageInvalidation.remove(sectionName);
+                        $.customerData.set(sectionName, sectionData);
                     });
 
                     $.cookies.setJson('section_data_ids', sectionDataIds, {

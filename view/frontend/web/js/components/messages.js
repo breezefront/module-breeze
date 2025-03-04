@@ -94,18 +94,6 @@
         }
     });
 
-    // Merge cookie messages (ajax compare) with json response messages
-    $(document).on('customer-data-reload', function (event, data) {
-        var cookieMessages = $.cookies.getJson('mage-messages') || [],
-            messages = _.get(data, 'response.messages'.split('.'), {});
-
-        $.view('messages').invoke('removeCookieMessages');
-
-        messages.messages = messages.messages || [];
-        messages.messages = messages.messages.concat(cookieMessages);
-        $.customerData.set('messages', messages);
-    });
-
     function removeMessage(el) {
         var messages = $(el).parent('.messages');
 
