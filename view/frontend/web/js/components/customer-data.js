@@ -135,7 +135,7 @@
 
             sections = $.sections.filterClientSideSections(sections || []);
 
-            if (sections.length) {
+            if (sections.length && !sections.includes('*')) {
                 params.sections = sections.join(',');
             }
 
