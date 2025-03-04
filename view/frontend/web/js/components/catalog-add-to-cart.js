@@ -25,6 +25,20 @@
             $(self.options.addToCartButtonSelector, element).prop('disabled', false);
         },
 
+        _redirect: function (url) {
+            var urlParts, locationParts, forceReload;
+
+            urlParts = url.split('#');
+            locationParts = window.location.href.split('#');
+            forceReload = urlParts[0] === locationParts[0];
+
+            window.location.assign(url);
+
+            if (forceReload) {
+                window.location.reload();
+            }
+        },
+
         /**
          * @return {Boolean}
          */
@@ -67,6 +81,8 @@
                     }
                 },
                 success: function (data, status, response) {
+                    var eventData, parameters;
+
                     data = self.getResponseData(response);
 
                     $(document).trigger('ajax:addToCart', {
@@ -78,11 +94,22 @@
                     });
 
                     if (data.backUrl) {
-                        if (data.backUrl === window.location.href) {
-                            window.location.reload();
-                        } else {
-                            window.location.assign(data.backUrl);
+                        eventData = {
+                            'form': form,
+                            'redirectParameters': []
+                        };
+                        // trigger global event, so other modules will be able add parameters to redirect url
+                        $('body').trigger('catalogCategoryAddToCartRedirect', eventData);
+
+                        if (eventData.redirectParameters.length > 0 &&
+                            window.location.href.split(/[?#]/)[0] === data.backUrl
+                        ) {
+                            parameters = data.backUrl.split('#');
+                            parameters.push(eventData.redirectParameters.join('&'));
+                            data.backUrl = parameters.join('#');
                         }
+
+                        self._redirect(data.backUrl);
 
                         return;
                     }

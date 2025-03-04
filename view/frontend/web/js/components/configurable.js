@@ -746,4 +746,10 @@ define([
     });
 
     $.mage.configurable = $.breezemap.configurable;
+
+    $('body').on('catalogCategoryAddToCartRedirect', function (event, data) {
+        $(data.form).find('select[name*="super"]').each(function (index, item) {
+            data.redirectParameters.push(item.config.id + '=' + $(item).val());
+        });
+    });
 });
