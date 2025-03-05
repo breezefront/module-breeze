@@ -191,6 +191,7 @@
                 if (this.isLoaded()) {
                     this.status(true);
                     this.apply();
+                    this.move();
                 }
             });
         },
