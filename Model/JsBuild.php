@@ -296,21 +296,31 @@ class JsBuild
             return $contents;
         }
 
-        try {
-            $dir = $this->componentRegistrar->getPath(
-                ComponentRegistrar::THEME,
-                $this->design->getDesignTheme()->getFullPath()
-            );
-            $dir = $this->readDirFactory->create($dir);
-        } catch (\Exception $e) {
-            return '';
-        }
+        $theme = $this->design->getDesignTheme();
 
         try {
-            return $dir->readFile('web/' . $path);
+            return $this->readDirFactory->create(
+                $this->componentRegistrar->getPath(
+                    ComponentRegistrar::THEME,
+                    $theme->getFullPath()
+                )
+            )->readFile('web/' . $path);
         } catch (\Exception $e) {
-            return '';
         }
+
+        while ($theme = $theme->getParentTheme()) {
+            try {
+                return $this->readDirFactory->create(
+                    $this->componentRegistrar->getPath(
+                        ComponentRegistrar::THEME,
+                        $theme->getFullPath()
+                    )
+                )->readFile('web/' . $path);
+            } catch (\Exception $e) {
+            }
+        }
+
+        return '';
     }
 
     /**
