@@ -298,17 +298,7 @@ class JsBuild
 
         $theme = $this->design->getDesignTheme();
 
-        try {
-            return $this->readDirFactory->create(
-                $this->componentRegistrar->getPath(
-                    ComponentRegistrar::THEME,
-                    $theme->getFullPath()
-                )
-            )->readFile('web/' . $path);
-        } catch (\Exception $e) {
-        }
-
-        while ($theme = $theme->getParentTheme()) {
+        do {
             try {
                 return $this->readDirFactory->create(
                     $this->componentRegistrar->getPath(
@@ -318,7 +308,7 @@ class JsBuild
                 )->readFile('web/' . $path);
             } catch (\Exception $e) {
             }
-        }
+        } while ($theme = $theme->getParentTheme());
 
         return '';
     }
