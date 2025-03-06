@@ -330,14 +330,12 @@
                 nodes = $([]);
 
             $.each(errors, function () {
-                var node = $(self.options.errorTextTag);
-
-                if (element.id) {
-                    node.attr('for', element.id);
-                    node.attr('id', element.id + '-error');
-                }
+                var node = $(self.options.errorTextTag),
+                    id = element.id || element.name;
 
                 node.text(this)
+                    .attr('for', id)
+                    .attr('id', id + '-error')
                     .attr('generated', true)
                     .addClass([
                         'error-text',
@@ -360,6 +358,9 @@
                 next = $(element).nextAll().last();
 
             this.elementErrors.set(element, errorNodes);
+
+            anchor.attr('aria-invalid', true)
+                .attr('aria-describedby', errorNodes.first().attr('id'));
 
             if (this.options.errorPlacement) {
                 errorNodes.each((i, el) => this.options.errorPlacement($(el), anchor));
@@ -385,7 +386,12 @@
                 this.elementErrors.get(element).remove();
                 this.elementErrors.delete(element);
             }
-            $(element).parent().find('.error-text[generated]').remove();
+
+            $(element)
+                .removeAttr('aria-invalid aria-describedby')
+                .parent()
+                .find('.error-text[generated]')
+                .remove();
         }
     };
 
