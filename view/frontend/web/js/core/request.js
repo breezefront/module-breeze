@@ -131,7 +131,7 @@
      */
     function toFormData(data) {
         var formData,
-            formKey = $.cookies.get('form_key');
+            formKey = (document.cookie.match('(^|; )form_key=([^;]*)') || 0)[2] || '';
 
         if (data.each && data.get) {
             data = data.get(0);
