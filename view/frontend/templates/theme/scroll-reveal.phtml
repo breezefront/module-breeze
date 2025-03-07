@@ -17,7 +17,7 @@
 }
 </style>
 <script>
-require(['jquery', 'underscore'], ($, _) => {
+require(['jquery', 'underscore', 'domReady!'], ($, _) => {
     var selector = <?= $block->getJsSelector() ?>,
         containers = [
             '.scroll-reveal-cascade',
