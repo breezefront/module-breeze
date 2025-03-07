@@ -37,14 +37,12 @@
 
         // will load components from non-active bundle if needed (product.js on homepage)
         // will not load components with dynamic load rules (onReveal, onEvent, onInteraction)
-        require(['loadComponent'], loadComponent => {
-            loadComponent(component, true).then(() => {
-                if (window.requestIdleCallback) {
-                    window.requestIdleCallback(callback);
-                } else {
-                    window.setTimeout(callback, 0);
-                }
-            });
+        $.breezemap.loadComponent(component, true).then(() => {
+            if (window.requestIdleCallback) {
+                window.requestIdleCallback(callback);
+            } else {
+                window.setTimeout(callback, 0);
+            }
         });
     }
 
