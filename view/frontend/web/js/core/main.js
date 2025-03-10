@@ -122,8 +122,6 @@
         }
 
         $.each(settings, function (component, config) {
-            var selector = false;
-
             if (isScript) {
                 if (component !== '*') {
                     return;
@@ -151,10 +149,6 @@
                         }
                     });
                 } else {
-                    if (selector) {
-                        config[i].__selector = selector;
-                    }
-
                     mount(name, {
                         settings: config[i],
                         el: el
@@ -244,6 +238,12 @@
                         remove = false;
                         return;
                     }
+
+                    $.each(json, cmp => {
+                        if (cmp !== 'Magento_Ui/js/core/app') {
+                            json[cmp].__selector = selector;
+                        }
+                    });
 
                     $(selector).each((i, el) => {
                         if (!$(el).attr('data-mage-init')) {
