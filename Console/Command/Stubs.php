@@ -258,6 +258,11 @@ TEXT,
         ]));
     }
 
+    public function render(string $template, string $package)
+    {
+        return strtr($template, $this->placeholders($package));
+    }
+
     private function placeholders(string $package)
     {
         list($vendor, $name) = explode('/', $package);

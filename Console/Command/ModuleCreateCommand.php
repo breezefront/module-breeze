@@ -46,7 +46,10 @@ class ModuleCreateCommand extends AbstractCreateCommand
                 );
             }
 
-            $output->writeln('<info>Done! Do not forget to enable new module.</info>');
+            $output->writeln(sprintf(
+                '<info>Done! Do not forget to enable %s module.</info>',
+                $this->stubs->render('{{Vendor}}_{{Module}}', $package)
+            ));
         } catch (\Exception $e) {
             $output->writeln('<error>' . $e->getMessage() . '</error>');
             if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
