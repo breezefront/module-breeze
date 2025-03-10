@@ -70,7 +70,7 @@ class ThemeCreateCommand extends AbstractCreateCommand
 
             foreach ($paths as $path => $success) {
                 $this->output->writeln(
-                    $success ? "<info>✓ {$path}</info>" : "<error>✗ {$path}</error>"
+                    $success ? "✓ {$path}" : "<error>✗ {$path}</error>"
                 );
             }
 
