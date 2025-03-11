@@ -39,7 +39,7 @@
             this.result = _.get(window, config.shim[this.name].exports.split('.'));
         }
 
-        if (this.result?.component) {
+        if (this.result?.component && typeof this.result?.component === 'string') {
             $.breezemap[this.result?.component] = this.result;
         } else if (this.result === undefined && $.breezemap.__get(this.name)) {
             this.result = $.breezemap.__get(this.name);
