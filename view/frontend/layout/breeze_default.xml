@@ -272,6 +272,8 @@
                                     <item name="review" xsi:type="string">Magento_Review/js/view/review</item>
                                     <item name="form-validate" xsi:type="string">Magento_Review/js/validate-review</item>
                                     <item name="list" xsi:type="string">Magento_Review/js/process-reviews</item>
+                                    <item name="error-placement" xsi:type="string">Magento_Review/js/error-placement</item>
+                                    <item name="submit-review" xsi:type="string">Magento_Review/js/submit-review</item>
                                 </item>
                                 <item name="load" xsi:type="array">
                                     <item name="onReveal" xsi:type="array">
@@ -340,6 +342,9 @@
                                 <item name="import" xsi:type="array">
                                     <item name="priceUtils" xsi:type="string">priceUtils</item>
                                 </item>
+                                <item name="export" xsi:type="array">
+                                    <item name="addToCart" xsi:type="string">Magento_ConfigurableProduct/js/catalog-add-to-cart</item>
+                                </item>
                                 <item name="load" xsi:type="array">
                                     <item name="onReveal" xsi:type="array">
                                         <item name="0" xsi:type="string">.field.configurable</item>
@@ -350,6 +355,9 @@
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/swatch-renderer</item>
                                 <item name="import" xsi:type="array">
                                     <item name="priceUtils" xsi:type="string">priceUtils</item>
+                                </item>
+                                <item name="export" xsi:type="array">
+                                    <item name="addToCart" xsi:type="string">Magento_Swatches/js/catalog-add-to-cart</item>
                                 </item>
                                 <item name="load" xsi:type="array">
                                     <item name="onReveal" xsi:type="array">

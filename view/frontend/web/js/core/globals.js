@@ -10,5 +10,6 @@
     $.breezemap = {
         'jquery': $,
         'underscore': _,
+        'domReady!': true,
     };
 })();

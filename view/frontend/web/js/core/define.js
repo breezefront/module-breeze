@@ -88,9 +88,26 @@
         }
 
         if (this.result === undefined && this.unknown &&
-            (window.location.search.includes('breeze=1') || window.location.hash.includes('breeze')))
-        {
-            console.log(this.name);
+            ![
+                'jquery/jquery-storageapi',
+                'jquery-ui-modules/widget',
+                'loader',
+                'loaderAjax',
+                'mage/trim-input',
+                'Magento_Catalog/js/storage-manager',
+                'Magento_Checkout/js/view/cart-item-renderer',
+                'Magento_Tax/js/view/checkout/minicart/subtotal/totals',
+                'Magento_Customer/js/invalidation-processor',
+                'Magento_Customer/js/block-submit-on-send',
+                'Magento_PageBuilder/js/content-type/row/appearance/default/widget',
+                'Magento_ProductVideo/js/fotorama-add-video-events',
+                'Magento_Ui/js/lib/knockout/bootstrap',
+                'requireCookie',
+            ].includes(this.name)
+        ) {
+            if (window.location.search.includes('breeze=1') || window.location.hash.includes('breeze')) {
+                console.log(this.name);
+            }
         }
 
         return this.result;
