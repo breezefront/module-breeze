@@ -119,23 +119,31 @@
             parents = [];
         }
 
-        modules[name] = modules[name] || {
-            name,
-            parents: [],
-            deps: [],
-            run
-        };
-        modules[name].cb = modules[name].cb || cb;
-        modules[name].parents.push(...parents);
-        modules[name].deps.push(...deps.map(depname => getModule(depname, [], [modules[name]])));
+        if (!modules[name]) {
+            modules[name] = {
+                name,
+                parents: [],
+                deps: [],
+                run
+            };
 
-        if (!modules[name].path) {
             if ($.breeze.jsconfig[name]) {
                 modules[name].path = $.breeze.jsconfig[name].path;
             } else if (name.startsWith('text!')) {
                 modules[name].path = name.substr(5);
+            } else if (!_.isEmpty($.breeze.jsconfig) && !name.startsWith('__') && !$.breezemap.__get(name)) {
+                Object.keys($.breeze.jsconfig).filter(k => k.includes('*')).some(k => {
+                    if (name.startsWith(k.split('*').at(0))) {
+                        modules[name].path = name;
+                        return true;
+                    }
+                });
             }
         }
+
+        modules[name].cb = modules[name].cb || cb;
+        modules[name].parents.push(...parents);
+        modules[name].deps.push(...deps.map(depname => getModule(depname, [], [modules[name]])));
 
         return modules[name];
     }
@@ -171,6 +179,14 @@
         // When 'quickSearch' is required, resolve 'smileEs.quickSearch' too.
         Object.keys($.breeze.jsconfig).filter(key => key.endsWith(`.${alias}`)).forEach(key => {
             result.push(...collectDeps(key));
+        });
+
+        Object.entries($.breeze.jsconfig).filter(([k]) => k.includes('*')).some(([k, v]) => {
+            if (alias.startsWith(k.split('*').at(0))) {
+                (v.import || []).filter(key => key !== alias).forEach(key => {
+                    result.push(...collectDeps(key));
+                });
+            }
         });
 
         if (isKnown || $.breeze.jsconfig[dep.name]?.path) {
