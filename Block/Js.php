@@ -400,6 +400,13 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
         foreach ($this->allBundles as $bundleName => $bundle) {
             foreach ($bundle['items'] as $itemName => $item) {
+                if (strpos($itemName, '*') !== false && $bundleName !== 'dynamic') {
+                    throw new \Exception(sprintf(
+                        'Mass registration is allowed in dynamic bundles only. Please move "%s" to dynamic bundle.',
+                        $itemName
+                    ));
+                }
+
                 if (!$item) {
                     unset($this->allBundles[$bundleName]['items'][$itemName]);
                     continue;
