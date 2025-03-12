@@ -1,7 +1,10 @@
 (() => {
     'use strict';
 
-    $.breeze.jsbundles = JSON.parse($('[type="breeze/dynamic-js"]').text());
+    var config = JSON.parse($('[type="breeze/dynamic-js"]').text());
+
+    $.breeze.jsbundles = config.bundles;
+    $.breeze.jsignore = config.ignore;
 
     try {
         $.each($.breeze.jsbundles, (bundle, items) => {

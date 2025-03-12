@@ -48,6 +48,11 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
     /**
      * @var array
      */
+    protected $ignore = [];
+
+    /**
+     * @var array
+     */
     protected $activeBundles = null;
 
     /**
@@ -89,6 +94,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
             }
         }
         $this->bundles = $bundles;
+        $this->ignore = $data['ignore'] ?? [];
 
         parent::__construct($context, $data);
     }
@@ -242,7 +248,10 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
             }
         }
 
-        return $result;
+        return [
+            'bundles' => $result,
+            'ignore' => array_values($this->ignore),
+        ];
     }
 
     public function deployAssets(): array
