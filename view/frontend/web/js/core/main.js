@@ -118,7 +118,7 @@
 
         settings = parsedSettings[settings];
         if (configs.has(el)) {
-            settings = Object.assign({}, settings, configs.get(el));
+            settings = $.extend(true, {}, settings, configs.get(el));
         }
 
         $.each(settings, function (component, config) {
@@ -224,7 +224,7 @@
         if (!$(el).attr('data-mage-init')) {
             $(el).attr('data-mage-init', '{}');
         }
-        configs.set(el, Object.assign(configs.get(el) || {}, json));
+        configs.set(el, $.extend(true, configs.get(el) || {}, json));
     }
 
     function convertXMagentoInitToDataMageInit(script) {
@@ -249,7 +249,7 @@
                         if (!$(el).attr('data-mage-init')) {
                             $(el).attr('data-mage-init', '{}');
                         }
-                        configs.set(el, Object.assign(configs.get(el) || {}, json));
+                        configs.set(el, $.extend(true, configs.get(el) || {}, json));
                     });
                     delete settings[selector];
                 });
