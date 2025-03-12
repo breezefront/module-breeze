@@ -9,6 +9,7 @@
             paths: {},
             shim: {},
         },
+        defaultStackTraceLimit = Error.stackTraceLimit || 10,
         autoloadedBundles = {},
         bundlePrefixRe = /(?<prefix>Swissup_Breeze\/bundles\/\d+\/).*\.js$/,
         bundlePrefix = $('script[src*="/Swissup_Breeze/bundles/"]').attr('src')?.match(bundlePrefixRe).groups.prefix,
@@ -91,12 +92,11 @@
             (window.location.search.includes('breeze=1') || window.location.hash.includes('breeze')) &&
             !$.breeze.jsignore.includes(this.name)
         ) {
-            if (Error.stackTraceLimit < 50) {
-                Error.stackTraceLimit = 50;
-            }
+            Error.stackTraceLimit = 100;
             console.groupCollapsed(this.name);
             console.log(new Error(`Unknown component ${this.name}`));
             console.groupEnd();
+            Error.stackTraceLimit = defaultStackTraceLimit;
         }
 
         return this.result;
