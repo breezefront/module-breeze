@@ -8,15 +8,21 @@
      * @param {Object} params
      */
     function onResponse(response, params) {
+        var data = {
+            response: response,
+            responseText: response.text,
+            settings: params,
+        };
+
         if (params.global === false) {
             return;
         }
 
-        $(document).trigger('ajaxComplete', {
-            response: response,
-            responseText: response.text,
-            settings: params,
-        });
+        if (_.isObject(response.body)) {
+            data.responseJSON = response.body;
+        }
+
+        $(document).trigger('ajaxComplete', data);
     }
 
     /**
@@ -204,6 +210,7 @@
         } else if (params.method === 'post' && params.data) {
             if (typeof params.data !== 'string') {
                 params.body = toFormData(params.data);
+                params.data = params.body;
                 delete params.headers['Content-Type'];
             } else {
                 params.body = params.data;

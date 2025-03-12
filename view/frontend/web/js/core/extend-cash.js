@@ -144,11 +144,6 @@
     $.fn.fadeOut = $.fn.hide;
     $.fn.bind = $.fn.on;
     $.fn.unbind = $.fn.off;
-    $.fn.ajaxComplete = (handler) => {
-        $(document).on('ajaxComplete', (event, data) => {
-            handler(event, data, data.settings);
-        });
-    };
 
     $.each({ scrollLeft: 'pageXOffset', scrollTop: 'pageYOffset' }, function (method, prop) {
         var top = prop === 'pageYOffset';
@@ -220,16 +215,45 @@
         return original.bind(this)(event, data);
     });
 
-    $.fn.on = _.wrap($.fn.on, function (original, eventName, handler, selector, data, one) {
-        if (typeof eventName === 'string' && eventName === 'breeze:load' && $.breeze.ready) {
-            handler?.();
-            if (one) {
-                return;
-            }
-        }
+    (() => {
+        var ajaxEvents = [
+                'ajaxStart',
+                'ajaxSend',
+                'ajaxStop',
+                'ajaxComplete',
+                'ajaxSuccess',
+                'ajaxError',
+            ],
+            listeners = {};
 
-        return original.apply(this, Array.prototype.slice.call(arguments, 1));
-    });
+        // Call ajax listeners with 3 args as jQuery does
+        $(document).on(ajaxEvents.join(' '), (e, data) => {
+            (listeners[e.type] || []).forEach(fn => fn(e, data, data.settings));
+        });
+
+        $.fn.on = _.wrap($.fn.on, function (original, eventName, handler, selector, data, one) {
+            if (typeof eventName === 'string') {
+                if (eventName === 'breeze:load' && $.breeze.ready) {
+                    handler?.();
+                    // eslint-disable-next-line max-depth
+                    if (one) {
+                        return;
+                    }
+                } else if (ajaxEvents.includes(eventName)) {
+                    listeners[eventName] = listeners[eventName] || [];
+                    listeners[eventName].push(handler || selector);
+                    return;
+                }
+            }
+
+            return original.apply(this, Array.prototype.slice.call(arguments, 1));
+        });
+
+        // AbobeCommerce compatibility: fn.ajaxStart|...|ajaxError
+        ajaxEvents.forEach(eventName => {
+            $.fn[eventName] = (handler) => $(document).on(eventName, handler);
+        });
+    })();
 
     function normalizeSelector(selector) {
         if (typeof selector !== 'string') {
