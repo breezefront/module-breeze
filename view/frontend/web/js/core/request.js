@@ -144,6 +144,10 @@
         } else {
             formData = new FormData();
 
+            if (data instanceof URLSearchParams) {
+                data = data.toString();
+            }
+
             if (typeof data === 'string') {
                 data = $.parseQuery(data);
             } else if (_.isArray(data)) {
