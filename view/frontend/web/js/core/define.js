@@ -91,7 +91,12 @@
             (window.location.search.includes('breeze=1') || window.location.hash.includes('breeze')) &&
             !$.breeze.jsignore.includes(this.name)
         ) {
-            console.log(this.name);
+            if (Error.stackTraceLimit < 50) {
+                Error.stackTraceLimit = 50;
+            }
+            console.groupCollapsed(this.name);
+            console.log(new Error(`Unknown component ${this.name}`));
+            console.groupEnd();
         }
 
         return this.result;
