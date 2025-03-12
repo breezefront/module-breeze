@@ -134,7 +134,7 @@
         close: function () {
             this.status = false;
 
-            this.dialog.hide();
+            this.dialog?.hide();
             this.toggleClasses(false);
 
             $(window).off('breeze:resize-x.dropdownDialog', this.closeHandler);
