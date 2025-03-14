@@ -15,12 +15,13 @@ define(['collapsible'], () => {
         create: function () {
             var self = this,
                 activeIndex,
-                allExpanded = true;
+                allExpanded = true,
+                isNotNested = this._isNotNested.bind(this);
 
-            this.collapsibles = this.element.find(this.options.collapsibleElement);
-            this.headers = this.element.find(this.options.header);
-            this.triggers = this.element.find(this.options.trigger);
-            this.contents = this.element.find(this.options.content);
+            this.collapsibles = this.element.find(this.options.collapsibleElement).filter(isNotNested);
+            this.headers = this.element.find(this.options.header).filter(isNotNested);
+            this.triggers = this.element.find(this.options.trigger).filter(isNotNested);
+            this.contents = this.element.find(this.options.content).filter(isNotNested);
 
             if (this.headers.length === 0) {
                 this.headers = this.collapsibles;
@@ -154,6 +155,12 @@ define(['collapsible'], () => {
         destroy: function () {
             $(document).off('click.tabs');
             this._super();
+        },
+
+        _isNotNested: function (index, element) {
+            var parentContent = $(element).parents(this.options.content);
+
+            return !parentContent.length || !this.element.find(parentContent).length;
         },
 
         scrollTo: function (element) {
