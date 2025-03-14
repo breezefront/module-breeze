@@ -330,7 +330,15 @@
 
     $.fn.find = _.wrap($.fn.find, function (original, selector) {
         if (selector instanceof Node) {
-            return this[0].contains(selector) ? $(selector) : $();
+            selector = [Node];
+        } else if (selector.get) {
+            selector = selector.get();
+        }
+
+        if (selector.reduce) {
+            return selector.reduce((acc, el) => {
+                return acc.add(this[0].contains(el) ? $(el) : $());
+            }, $());
         }
 
         return original.bind(this)(selector);
