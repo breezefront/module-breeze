@@ -24,8 +24,12 @@
         },
 
         prepareMarkup() {
-            this.element.prepend(`<a href="#" class="clamp-toggle">${this.textExpand}</a>`);
             this.toggler = this.element.find('.clamp-toggle');
+            if (!this.toggler.length) {
+                this.toggler = $(
+                    `<a href="#" class="clamp-toggle"><span>${this.textExpand}</span></a>`
+                ).prependTo(this.element);
+            }
         },
 
         refresh() {
@@ -36,7 +40,7 @@
                 return this.toggler.hide();
             }
 
-            this.toggler.text(isFullyVisible ? this.textCollapse : this.textExpand).show();
+            this.toggler.show().find('span').text(isFullyVisible ? this.textCollapse : this.textExpand);
             this.element.toggleClass('expanded', isFullyVisible);
 
             if (isFullyVisible && !this.options.collapsible) {
