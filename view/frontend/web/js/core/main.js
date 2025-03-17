@@ -39,7 +39,7 @@
         // will not load components with dynamic load rules (onReveal, onEvent, onInteraction)
         $.breezemap.loadComponent(component, true).then(() => {
             if (window.requestIdleCallback) {
-                window.requestIdleCallback(callback);
+                window.requestIdleCallback(callback, { timeout: 300 });
             } else {
                 window.setTimeout(callback, 0);
             }
