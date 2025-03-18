@@ -780,4 +780,5 @@
     $.raf = requestAnimationFrame.bind(window);
     $.caf = cancelAnimationFrame.bind(window);
     $.rafraf = callback => $.raf(() => $.raf(callback));
+    $.sleep = async ms => await new Promise(resolve => setTimeout(resolve, ms));
 })();
