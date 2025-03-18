@@ -78,19 +78,12 @@
                     opacity: 1;
                 }
 
-                .slick-list {
-                    gap: 5px;
-                    &::before,
-                    &::after {
-                        content: '';
-                        width: 1000px;
-                        flex-shrink: 0;
-                    }
-                }
-                &:not(.slick-initialized) {
+                .slick-list,
+                &:not(.slick-initialized):not(:has(.slick-list)) {
                     gap: 5px;
                     scroll-snap-type: x mandatory;
-                    &::before {
+                    &::before,
+                    &::after {
                         content: '';
                         width: 1000px;
                         flex-shrink: 0;
