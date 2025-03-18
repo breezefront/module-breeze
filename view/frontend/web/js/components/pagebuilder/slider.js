@@ -469,8 +469,12 @@
         },
 
         updateScrollOffset: function () {
-            this.scrollOffset = this.slider.offset().left
-                - this.slides.eq(this.pages[this.page].slides[0]).offset().left;
+            var width = this.pages[this.page].slides.reduce((acc, index) => {
+                acc += $(this.slides.eq(index)).outerWidth();
+                return acc;
+            }, 0);
+
+            this.scrollOffset = (width - $(window).width()) / 2 + this.slider.offset().left;
         },
 
         update: function () {
