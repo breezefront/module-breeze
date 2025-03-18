@@ -260,7 +260,7 @@
             this.pages = [];
 
             this.slides.each(function (index) {
-                if (index && pageWidthTmp + this.clientWidth > sliderWidth) {
+                if (index && (pageWidthTmp >= sliderWidth || pageWidthTmp + this.clientWidth > sliderWidth)) {
                     pageWidthTmp = 0;
                     pageNumTmp++;
                 }
