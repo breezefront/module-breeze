@@ -43,7 +43,7 @@
     }
 
     $.each($.breeze.jsconfig, alias => {
-        if (!/^[a-zA-Z_.]+$/.test(alias)) {
+        if ($.fn[alias] || !/^[a-zA-Z_.]+$/.test(alias)) {
             return;
         }
         $.fn[alias] = function (settings) {
