@@ -36,9 +36,17 @@ define(['mage/utils/wrapper'], function (wrapper) {
 
         /** The dummy class constructor */
         function Class() {
-            if (!initializing && this._initialize) {
-                this._initialize.apply(this, arguments);
+            var obj = this;
+
+            if (!obj || Object.getPrototypeOf(obj) !== Class.prototype) {
+                obj = Object.create(Class.prototype);
             }
+
+            if (!initializing && obj._initialize) {
+                obj._initialize.apply(obj, arguments);
+            }
+
+            return obj;
         }
 
         Class.prototype = prototype;
