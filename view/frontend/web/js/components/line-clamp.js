@@ -33,7 +33,8 @@
         },
 
         refresh() {
-            var isFullyVisible = this.element[0].scrollHeight === this.element[0].clientHeight;
+            var isFullyVisible = this.element.hasClass('expanded') ||
+                this.element[0].scrollHeight === this.element[0].clientHeight;
 
             // hide toggler if content is fully visible without expanding
             if (!this.element.hasClass('expanded') && isFullyVisible) {
