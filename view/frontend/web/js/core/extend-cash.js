@@ -337,7 +337,7 @@
 
         if (selector.reduce) {
             return selector.reduce((acc, el) => {
-                return acc.add(this[0].contains(el) ? $(el) : $());
+                return acc.add(this[0] !== el && this[0].contains(el) ? $(el) : $());
             }, $());
         }
 
