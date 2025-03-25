@@ -474,6 +474,8 @@
                 return acc;
             }, 0);
 
+            width += parseFloat(this.slider.css('column-gap')) * (this.pages[this.page].slides.length - 1);
+
             this.scrollOffset = (width - $(window).width()) / 2 + this.slider.offset().left;
         },
 
