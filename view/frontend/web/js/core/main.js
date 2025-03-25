@@ -407,7 +407,7 @@
             if (instance) {
                 instance._options(settings).init();
             } else {
-                mount(component, { el, settings });
+                mount(component, { el: $(el), settings });
             }
         }
     };
