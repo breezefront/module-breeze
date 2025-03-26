@@ -22,6 +22,7 @@
                 <argument name="cache_lifetime" xsi:type="number">864000</argument> <!-- 10 days -->
                 <argument name="ignore" xsi:type="array"> <!-- Do not report about these components when using ?breeze=1 -->
                     <item name="jquery/jquery-storageapi" xsi:type="string">jquery/jquery-storageapi</item>
+                    <item name="jquery/jquery.parsequery" xsi:type="string">jquery/jquery.parsequery</item>
                     <item name="jquery-ui-modules/widget" xsi:type="string">jquery-ui-modules/widget</item>
                     <item name="loader" xsi:type="string">loader</item>
                     <item name="loaderAjax" xsi:type="string">loaderAjax</item>
@@ -31,6 +32,7 @@
                     <item name="Magento_Tax/js/view/checkout/minicart/subtotal/totals" xsi:type="string">Magento_Tax/js/view/checkout/minicart/subtotal/totals</item>
                     <item name="Magento_Customer/js/invalidation-processor" xsi:type="string">Magento_Customer/js/invalidation-processor</item>
                     <item name="Magento_Customer/js/block-submit-on-send" xsi:type="string">Magento_Customer/js/block-submit-on-send</item>
+                    <item name="Magento_PageBuilder/js/content-type/buttons/appearance/inline/widget" xsi:type="string">Magento_PageBuilder/js/content-type/buttons/appearance/inline/widget</item>
                     <item name="Magento_PageBuilder/js/content-type/row/appearance/default/widget" xsi:type="string">Magento_PageBuilder/js/content-type/row/appearance/default/widget</item>
                     <item name="Magento_ProductVideo/js/fotorama-add-video-events" xsi:type="string">Magento_ProductVideo/js/fotorama-add-video-events</item>
                     <item name="Magento_Ui/js/lib/knockout/bootstrap" xsi:type="string">Magento_Ui/js/lib/knockout/bootstrap</item>
