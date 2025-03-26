@@ -593,7 +593,12 @@
             }
 
             if (params.constructor === Array) {
-                key = `${prefix}[]`;
+                if (value.name) {
+                    key = prefix ? `${prefix}[${value.name}]` : value.name;
+                    value = value.value;
+                } else {
+                    key = `${prefix}[]`;
+                }
             } else if (params.constructor === Object) {
                 key = prefix ? `${prefix}[${key}]` : key;
             }
