@@ -346,8 +346,10 @@
                         <item name="items" xsi:type="array">
                             <item name="bundle" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/bundle</item>
-                                <item name="names" xsi:type="array">
+                                <item name="export" xsi:type="array">
                                     <item name="slide" xsi:type="string">slide</item>
+                                    <item name="priceBundle" xsi:type="string">priceBundle</item>
+                                    <item name="productSummary" xsi:type="string">productSummary</item>
                                 </item>
                             </item>
                         </item>
