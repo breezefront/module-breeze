@@ -42,7 +42,9 @@
 
         if (this.result?.component && typeof this.result?.component === 'string') {
             $.breezemap[this.result?.component] = this.result;
-        } else if (this.result === undefined && $.breezemap.__get(this.name)) {
+        }
+
+        if ($.breezemap.__get(this.name)) {
             this.result = $.breezemap.__get(this.name);
         }
 
