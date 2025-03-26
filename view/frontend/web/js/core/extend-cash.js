@@ -566,7 +566,9 @@
     };
 
     $.fn.serializeArray = function () {
-        return Array.from((new FormData(this[0])).entries()).map(([name, value]) => ({name, value}));
+        return this.get().reduce((acc, form) => {
+            return [...acc, ...Array.from((new FormData(form)).entries()).map(([name, value]) => ({name, value}))];
+        }, []);
     };
 
     $.proxy = _.bind;
