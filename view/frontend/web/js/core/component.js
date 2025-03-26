@@ -89,6 +89,7 @@
 
             constructor = (settings, element) => $(element || '<div>')[name](settings)[name]('instance');
             constructor._proto = prototype;
+            constructor.prototype = prototype.prototype;
             constructor.extend = obj => componentFn(
                 obj.component || `__component${$.breezemap.__counter++}`,
                 prototype,
