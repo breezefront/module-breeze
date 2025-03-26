@@ -621,7 +621,7 @@
     $.parseQuery = function (query) {
         var result = {};
 
-        query = query || window.location.search;
+        query = query?.query || query || window.location.search;
         query = query.replace(/^\?/, '');
 
         $.each(query.split('&'), function (i, param) {
