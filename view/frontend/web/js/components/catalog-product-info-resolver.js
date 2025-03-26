@@ -3,19 +3,23 @@ define([
 ], function (_) {
     'use strict';
 
+    var productInfo = ko.observableArray([]);
+
+    $.breezemap['Magento_Catalog/js/product/view/product-info'] = productInfo;
+    $.breezemap['Magento_Catalog/js/product/view/product-ids'] = ko.observableArray([]);
+
     return function ($form) {
-        var info = [],
-            product = _.findWhere($form.serializeArray(), {
+        var product = _.findWhere($form.serializeArray(), {
                 name: 'product'
             });
 
         if (!_.isUndefined(product)) {
-            info.push({
+            productInfo().push({
                 id: product.value
             });
         }
 
-        return _.uniq(info, function (item) {
+        return _.uniq(productInfo(), function (item) {
             return item.id;
         });
     };
