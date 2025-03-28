@@ -32,6 +32,7 @@
                     <item name="Magento_Tax/js/view/checkout/minicart/subtotal/totals" xsi:type="string">Magento_Tax/js/view/checkout/minicart/subtotal/totals</item>
                     <item name="Magento_Customer/js/invalidation-processor" xsi:type="string">Magento_Customer/js/invalidation-processor</item>
                     <item name="Magento_Customer/js/block-submit-on-send" xsi:type="string">Magento_Customer/js/block-submit-on-send</item>
+                    <item name="Magento_PageBuilder/js/content-type/banner/appearance/default/widget" xsi:type="string">Magento_PageBuilder/js/content-type/banner/appearance/default/widget</item>
                     <item name="Magento_PageBuilder/js/content-type/buttons/appearance/inline/widget" xsi:type="string">Magento_PageBuilder/js/content-type/buttons/appearance/inline/widget</item>
                     <item name="Magento_PageBuilder/js/content-type/row/appearance/default/widget" xsi:type="string">Magento_PageBuilder/js/content-type/row/appearance/default/widget</item>
                     <item name="Magento_ProductVideo/js/fotorama-add-video-events" xsi:type="string">Magento_ProductVideo/js/fotorama-add-video-events</item>
