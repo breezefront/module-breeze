@@ -252,6 +252,7 @@
             var self = this,
                 pageNumTmp = 0,
                 pageWidthTmp = 0,
+                gap = parseFloat(this.slider.css('column-gap')),
                 sliderWidth = this.slider.outerWidth(),
                 sliderLeft = this.slider.get(0).scrollLeft,
                 dotsTpl = _.template(this.options.templates.dots),
@@ -273,7 +274,7 @@
                     };
                 }
 
-                pageWidthTmp += this.clientWidth;
+                pageWidthTmp += this.clientWidth + gap;
                 self.pages[pageNumTmp].slides.push(index);
                 self.pages[pageNumTmp].end += this.clientWidth;
 
