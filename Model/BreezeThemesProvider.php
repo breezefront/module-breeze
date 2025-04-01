@@ -61,7 +61,7 @@ class BreezeThemesProvider
         return $this->breezeThemes[$code];
     }
 
-    private function isBreezeTheme(ThemeInterface $theme = null): bool
+    private function isBreezeTheme(?ThemeInterface $theme = null): bool
     {
         if (!$theme) {
             return false;
