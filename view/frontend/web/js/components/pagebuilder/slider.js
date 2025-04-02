@@ -252,7 +252,7 @@
             var self = this,
                 pageNumTmp = 0,
                 pageWidthTmp = 0,
-                gap = parseFloat(this.slider.css('column-gap')),
+                gap = parseFloat(this.slider.css('column-gap')) || 0,
                 sliderWidth = this.slider.outerWidth(),
                 sliderLeft = this.slider.get(0).scrollLeft,
                 dotsTpl = _.template(this.options.templates.dots),
@@ -475,7 +475,7 @@
                 return acc;
             }, 0);
 
-            width += parseFloat(this.slider.css('column-gap')) * (this.pages[this.page].slides.length - 1);
+            width += (parseFloat(this.slider.css('column-gap')) || 0) * (this.pages[this.page].slides.length - 1);
 
             this.scrollOffset = (width - $(window).width()) / 2 + this.slider.offset().left;
         },
