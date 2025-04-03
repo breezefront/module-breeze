@@ -34,6 +34,7 @@
                     <item name="Magento_Customer/js/block-submit-on-send" xsi:type="string">Magento_Customer/js/block-submit-on-send</item>
                     <item name="Magento_PageBuilder/js/content-type/banner/appearance/default/widget" xsi:type="string">Magento_PageBuilder/js/content-type/banner/appearance/default/widget</item>
                     <item name="Magento_PageBuilder/js/content-type/buttons/appearance/inline/widget" xsi:type="string">Magento_PageBuilder/js/content-type/buttons/appearance/inline/widget</item>
+                    <item name="Magento_PageBuilder/js/content-type/slide/appearance/default/widget" xsi:type="string">Magento_PageBuilder/js/content-type/slide/appearance/default/widget</item>
                     <item name="Magento_PageBuilder/js/content-type/row/appearance/default/widget" xsi:type="string">Magento_PageBuilder/js/content-type/row/appearance/default/widget</item>
                     <item name="Magento_ProductVideo/js/fotorama-add-video-events" xsi:type="string">Magento_ProductVideo/js/fotorama-add-video-events</item>
                     <item name="Magento_Ui/js/lib/knockout/bootstrap" xsi:type="string">Magento_Ui/js/lib/knockout/bootstrap</item>
