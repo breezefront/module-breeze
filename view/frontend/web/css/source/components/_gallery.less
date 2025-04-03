@@ -60,7 +60,7 @@
             top: @bz-gallery-arrow__top;
             width: @bz-gallery-arrow__width;
             height: @bz-gallery-arrow__height;
-            margin-top: -@bz-gallery-arrow__height / 2;
+            margin-top: -(@bz-gallery-arrow__height / 2);
             .lib-css(color, @bz-gallery-arrow__color);
             .lib-css(background, @bz-gallery-arrow__background);
             .lib-css(border, @bz-gallery-arrow__border);
@@ -78,7 +78,7 @@
             }
 
             svg {
-                .modrtl(transform, false, scaleX(-1));
+                .modrtl(transform, false, ~"scaleX(-1)");
             }
         }
         .next {
