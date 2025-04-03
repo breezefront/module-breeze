@@ -261,7 +261,9 @@
             this.pages = [];
 
             this.slides.each(function (index) {
-                if (index && (pageWidthTmp >= sliderWidth || pageWidthTmp + this.clientWidth > sliderWidth)) {
+                var slideWidth = $(this).width();
+
+                if (index && (pageWidthTmp >= sliderWidth || pageWidthTmp + slideWidth > sliderWidth)) {
                     pageWidthTmp = 0;
                     pageNumTmp++;
                 }
@@ -274,9 +276,9 @@
                     };
                 }
 
-                pageWidthTmp += this.clientWidth + gap;
+                pageWidthTmp += slideWidth + gap;
                 self.pages[pageNumTmp].slides.push(index);
-                self.pages[pageNumTmp].end += this.clientWidth;
+                self.pages[pageNumTmp].end += slideWidth;
 
                 // keep active slide in the viewport
                 if (index === self.slide) {
