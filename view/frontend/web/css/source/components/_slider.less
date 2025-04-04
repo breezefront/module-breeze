@@ -80,7 +80,7 @@
 
                 .slick-list,
                 &:not(.slick-initialized):not(:has(.slick-list)) {
-                    gap: 5px;
+                    gap: var(--gap, 5px);
                     scroll-snap-type: x mandatory;
                     &::before,
                     &::after {
