@@ -202,7 +202,7 @@ define([
                 tierPriceItem,
                 i;
 
-            for (i = 0; i < this.options.priceConfig.tierPrices.length; i++) {
+            for (i = 0; i < this.options.priceConfig.tierPrices?.length; i++) {
                 tierPriceItem = this.options.priceConfig.tierPrices[i];
                 if (productQty >= tierPriceItem.qty && tierPriceItem[priceKey]) {
                     result = tierPriceItem[priceKey];
