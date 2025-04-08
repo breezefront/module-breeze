@@ -924,7 +924,7 @@
                 <arguments>
                     <!-- <argument name="enabled" xsi:type="boolean">true</argument> -->
                     <argument name="selectors" xsi:type="array">
-                        <item name="basic" xsi:type="string">.scroll-reveal, .scroll-reveal-children > *</item>
+                        <item name="basic" xsi:type="string">.scroll-reveal, .scroll-reveal-children > *, .scroll-reveal-grandchildren > * > *</item>
                         <item name="heading" xsi:type="string">.scroll-reveal-container .heading, .scroll-reveal-container .block-title > *, .scroll-reveal-container .block-title:not(:has(*))</item>
                         <item name="pagebuilder-heading" xsi:type="string">.scroll-reveal-container [data-content-type="heading"]</item>
                         <item name="pagebuilder-poster-content" xsi:type="string">.scroll-reveal-container .pagebuilder-poster-content > div > *, #html-body .scroll-reveal-container .pagebuilder-poster-content > button</item>
