@@ -27,6 +27,14 @@
                 visibility: visible;
             }
         }
+
+        // Fixed "double animation" on pagebuilder slides
+        .scroll-reveal-container .pagebuilder-slider > [data-content-type="slide"] .pagebuilder-poster-content > div > *,
+        .scroll-reveal-container .pagebuilder-slider > [data-content-type="slide"] .pagebuilder-poster-content > button,
+        .scroll-reveal-container .pagebuilder-slider > [data-content-type="slide"] .pagebuilder-collage-content > div > *,
+        .scroll-reveal-container .pagebuilder-slider > [data-content-type="slide"] .pagebuilder-collage-content > button {
+            animation: none !important;
+        }
     }
 
     .scroll-reveal-finished {
