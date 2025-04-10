@@ -216,6 +216,11 @@
             deps = ['require'];
         }
 
+        // A fix for inline nested `require([], () => { require(...) })` call.
+        if (!window.require.ready && !deps.every?.(arg => $.breezemap[arg])) {
+            return window.required.push([deps, cb, extra]);
+        }
+
         if ((modules[name]?.cb || modules[name]?.ran) && cb) {
             name = `__module-${$.guid++}`;
         }
