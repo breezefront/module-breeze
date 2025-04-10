@@ -206,7 +206,9 @@
             mod = getModule(deps, cb, extra);
             mod.named = true;
             return mod;
-        } else if (typeof deps === 'string') {
+        }
+
+        if (typeof deps === 'string') {
             name = deps;
             deps = [];
         } else if (typeof deps === 'function') {
