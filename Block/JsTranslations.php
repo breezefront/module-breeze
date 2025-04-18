@@ -86,6 +86,7 @@ class JsTranslations extends \Magento\Framework\View\Element\AbstractBlock
             $curl = $this->curlFactory->create()->setConfig([
                 'header' => false,
                 'verifypeer' => false,
+                'verifyhost' => 0,
             ]);
             $curl->write('GET', $this->getDictionaryUrl());
 
