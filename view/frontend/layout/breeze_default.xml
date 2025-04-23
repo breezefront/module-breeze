@@ -189,7 +189,7 @@
                             <item name="pageCache" xsi:type="string">Swissup_Breeze/js/components/page-cache</item>
                             <item name="Magento_Theme/js/view/messages" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/messages</item>
-                                <item name="names" xsi:type="array">
+                                <item name="export" xsi:type="array">
                                     <item name="uiMessages" xsi:type="string">Magento_Ui/js/view/messages</item>
                                     <item name="messages" xsi:type="string">Magento_Theme/js/view/messages</item>
                                 </item>
@@ -251,7 +251,7 @@
                                 <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
                                     <param name="path">wishlist/general/active</param>
                                 </item>
-                                <item name="names" xsi:type="array">
+                                <item name="export" xsi:type="array">
                                     <item name="Magento_Wishlist/js/view/wishlist" xsi:type="string">Magento_Wishlist/js/view/wishlist</item>
                                     <item name="wishlist" xsi:type="string">wishlist</item>
                                     <item name="addToWishlist" xsi:type="string">addToWishlist</item>
@@ -291,7 +291,7 @@
                             </item>
                             <item name="reviews" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/reviews</item>
-                                <item name="names" xsi:type="array">
+                                <item name="export" xsi:type="array">
                                     <item name="review" xsi:type="string">Magento_Review/js/view/review</item>
                                     <item name="form-validate" xsi:type="string">Magento_Review/js/validate-review</item>
                                     <item name="list" xsi:type="string">Magento_Review/js/process-reviews</item>
@@ -420,7 +420,7 @@
                             <item name="changeEmailPassword" xsi:type="string">Swissup_Breeze/js/components/change-email-password</item>
                             <item name="regionUpdater" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/region-updater</item>
-                                <item name="names" xsi:type="array">
+                                <item name="export" xsi:type="array">
                                     <item name="region-updater" xsi:type="string">regionUpdater</item>
                                     <item name="directory-region-updater" xsi:type="string">directoryRegionUpdater</item>
                                 </item>
@@ -749,7 +749,7 @@
                             <!-- PageBuilder -->
                             <item name="Magento_PageBuilder/js/content-type/slider/appearance/default/widget" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/slider</item>
-                                <item name="names" xsi:type="array">
+                                <item name="export" xsi:type="array">
                                     <item name="pagebuilderSlider" xsi:type="string">pagebuilderSlider</item>
                                 </item>
                                 <item name="load" xsi:type="array">
@@ -760,7 +760,7 @@
                             </item>
                             <item name="Magento_PageBuilder/js/content-type/products/appearance/carousel/widget" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/carousel</item>
-                                <item name="names" xsi:type="array">
+                                <item name="export" xsi:type="array">
                                     <item name="pagebuilderCarousel" xsi:type="string">pagebuilderCarousel</item>
                                 </item>
                                 <item name="import" xsi:type="array">
@@ -782,7 +782,7 @@
                             </item>
                             <item name="Magento_PageBuilder/js/content-type/map/appearance/default/widget" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/map</item>
-                                <item name="names" xsi:type="array">
+                                <item name="export" xsi:type="array">
                                     <item name="pagebuilderMap" xsi:type="string">pagebuilderMap</item>
                                 </item>
                                 <item name="load" xsi:type="array">
