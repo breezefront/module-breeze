@@ -201,7 +201,7 @@
             scriptName = $(document.currentScript).data('name'),
             name = isRunningFromBundle() ? undefined : scriptName;
 
-        if (typeof extra === 'function') {
+        if (typeof deps === 'string' && typeof extra === 'function') {
             // define('name', [], () => {})
             mod = getModule(deps, cb, extra);
             mod.named = true;
