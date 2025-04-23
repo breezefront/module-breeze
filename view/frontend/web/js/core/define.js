@@ -23,6 +23,12 @@
         return document.currentScript?.src.includes('Swissup_Breeze/bundles/');
     }
 
+    function global() {
+        if (config.shim[this.name]?.exports) {
+            return _.get(window, config.shim[this.name].exports.split('.'));
+        }
+    }
+
     function run() {
         if (this.ran || this.deps.some(dep => !dep.loaded)) {
             return this.result;
@@ -36,8 +42,8 @@
         }
         this.loaded = true;
 
-        if (this.result === undefined && config.shim[this.name]?.exports) {
-            this.result = _.get(window, config.shim[this.name].exports.split('.'));
+        if (this.result === undefined) {
+            this.result = this.global();
         }
 
         if (this.result?.component && typeof this.result?.component === 'string') {
@@ -115,6 +121,7 @@
                 name,
                 parents: [],
                 deps: [],
+                global,
                 run
             };
 
@@ -227,6 +234,7 @@
 
         mod = getModule(name || `__module-${$.guid++}`, deps, cb);
         deps.forEach(depname => depsWithImports.push(...collectDeps(depname)));
+        depsWithImports.filter(dep => dep.global()).map(dep => dep.run());
         depsWithImports = depsWithImports
             .filter(dep => !dep.loaded && (dep.path || dep.named) && dep.name !== scriptName)
             .map(dep => {
