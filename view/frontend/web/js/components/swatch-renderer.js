@@ -612,6 +612,7 @@ define([
                 'name="super_attribute[' + config.id + ']" ' +
                 'type="text" ' +
                 'value="" ' +
+                'title="' + config.label + '" ' +
                 'data-selector="super_attribute[' + config.id + ']" ' +
                 'data-validate="{required: true}" ' +
                 'aria-required="true" ' +

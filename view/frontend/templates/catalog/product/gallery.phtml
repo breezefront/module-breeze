@@ -72,19 +72,19 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
         <?php endif ?>
 
         <div class="controls">
-            <a href="#" class="zoom zoom-in">
+            <a href="#" class="zoom zoom-in" aria-label="<?= __('Zoom In') ?>">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                 </svg>
             </a>
-            <a href="#" class="zoom zoom-out">
+            <a href="#" class="zoom zoom-out" aria-label="<?= __('Zoom Out') ?>">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4" />
                 </svg>
             </a>
         </div>
 
-        <a href="#" class="close">
+        <a href="#" class="close" aria-label="<?= __('Close') ?>">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -108,7 +108,7 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
                     title="<?= $block->escapeHtmlAttr($image->getLabel() ?: __('View Image')) ?>"
                     data-caption="<?= $block->escapeHtmlAttr($image->getLabel() ?: $block->getProduct()->getName()) ?>">
                     <img <?= $lazy ? 'loading="lazy"' : '' ?>
-                        alt="<?= $block->escapeHtmlAttr($image->getLabel()) ?>"
+                        alt="<?= $block->escapeHtmlAttr($image->getLabel() ?: __('Image')) ?>"
                         src="<?= $block->escapeUrl($image->getMediumImageUrl()) ?>"
                         <?php if ($srcset) : ?>
                             srcset="<?= $block->escapeHtmlAttr($srcset) ?>"
@@ -137,7 +137,7 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
                     href="<?= $block->escapeUrl($image->getLargeImageUrl()) ?>"
                     title="<?= $block->escapeHtmlAttr($image->getLabel() ?: __('View Image')) ?>">
                     <img loading="lazy"
-                        alt="<?= $block->escapeHtmlAttr($image->getLabel()) ?>"
+                        alt="<?= $block->escapeHtmlAttr($image->getLabel() ?: __('Image')) ?>"
                         src="<?= $block->escapeUrl($image->getSmallImageUrl()) ?>"
                         <?php if ($srcset) : ?>
                             srcset="<?= $block->escapeHtmlAttr($srcset) ?>"
