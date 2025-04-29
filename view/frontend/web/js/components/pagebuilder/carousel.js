@@ -5,12 +5,13 @@ define(['pagebuilderSlider'], () => {
         component: 'Magento_PageBuilder/js/content-type/products/appearance/carousel/widget',
 
         create: function () {
-            var slider = this.element.find('.slick-list'),
-                timer;
+            var slider = this.element.find('.slick-list');
 
-            this.element.pagebuilderSlider($.extend({}, this.options, {
-                slider: slider.length ? slider : this.element.children()
-            }));
+            this.element
+                .on('pagebuilderSlider:ready', this.onSliderReady.bind(this))
+                .pagebuilderSlider($.extend({}, this.options, {
+                    slider: slider.length ? slider : this.element.children()
+                }));
 
             this._on({
                 'mouseenter .product-item': () => {
@@ -20,6 +21,14 @@ define(['pagebuilderSlider'], () => {
                     this.element.removeClass('slide-item-hovered');
                 }
             });
+        },
+
+        slider: function () {
+            return this.element.pagebuilderSlider('instance');
+        },
+
+        onSliderReady: function () {
+            var timer;
 
             // prevent laggy scrolling when using touchpad and scrolling a lot
             this._on(this.slider().slider, {
@@ -35,10 +44,6 @@ define(['pagebuilderSlider'], () => {
                     }, 200);
                 }
             });
-        },
-
-        slider: function () {
-            return this.element.pagebuilderSlider('instance');
         }
     });
 });

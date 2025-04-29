@@ -30,6 +30,15 @@
         },
 
         create: function () {
+            this.element.a11y('skippable', {
+                id: 'slider-' + this.uuid + '-end',
+                label: $.__('Skip carousel')
+            });
+
+            this.onReveal(this.createSlider.bind(this));
+        },
+
+        createSlider: function () {
             this.page = 0;
             this.slide = 0;
 
@@ -62,6 +71,8 @@
                 if (this.options.autoplay) {
                     this.start();
                 }
+
+                this._trigger('ready');
             });
         },
 
@@ -89,11 +100,6 @@
                     label: $.__('Next')
                 }));
             }
-
-            this.element.a11y('skippable', {
-                id: 'slider-' + this.uuid + '-end',
-                label: $.__('Skip carousel')
-            });
 
             this.slider = this.element.find('.slick-list');
             this.slides = this.slider.children();
