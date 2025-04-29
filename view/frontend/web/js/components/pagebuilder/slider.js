@@ -267,7 +267,18 @@
             this.pages = [];
 
             this.slides.each(function (index) {
-                var slideWidth = $(this).width();
+                var slide = $(this),
+                    slideWidth = $(this).width();
+
+                if (!slideWidth && (slide.is('img') || slide.find('img').length)) {
+                    console.error(
+                        [
+                            'Slide width must be greater than 0.',
+                            'Consider adding width attribute for <img> tags.',
+                        ].join(' '),
+                        this
+                    );
+                }
 
                 if (index && (pageWidthTmp >= sliderWidth || pageWidthTmp + slideWidth > sliderWidth)) {
                     pageWidthTmp = 0;
@@ -277,8 +288,8 @@
                 if (!self.pages[pageNumTmp]) {
                     self.pages[pageNumTmp] = {
                         slides: [],
-                        start: Math.floor($(this).position().left + sliderLeft),
-                        end: Math.ceil($(this).position().left + sliderLeft)
+                        start: Math.floor(slide.position().left + sliderLeft),
+                        end: Math.ceil(slide.position().left + sliderLeft)
                     };
                 }
 
