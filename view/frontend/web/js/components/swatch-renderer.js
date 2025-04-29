@@ -467,7 +467,8 @@ define([
          * @private
          */
         _RenderSwatchOptions: function (config, controlId) {
-            var optionConfig = this.options.jsonSwatchConfig[config.id],
+            var $widget = this,
+                optionConfig = this.options.jsonSwatchConfig[config.id],
                 optionClass = this.options.classes.optionClass,
                 sizeConfig = this.options.jsonSwatchImageSizeConfig,
                 moreLimit = parseInt(this.options.numberToShow, 10),
@@ -513,7 +514,6 @@ define([
                     // ' id="' + controlId + '-item-' + id + '"' +
                     ' index="' + index + '"' +
                     ' aria-checked="false"' +
-                    ' aria-describedby="' + controlId + '"' +
                     ' tabindex="0"' +
                     ' data-option-type="' + type + '"' +
                     ' data-option-id="' + id + '"' +
@@ -522,6 +522,10 @@ define([
                     ' role="option"' +
                     ' data-thumb-width="' + width + '"' +
                     ' data-thumb-height="' + height + '"';
+
+                if ($widget.options.enableControlLabel) {
+                    attr += ' aria-describedby="' + controlId + '"';
+                }
 
                 attr += thumb !== '' ? ' data-option-tooltip-thumb="' + thumb + '"' : '';
                 attr += value !== '' ? ' data-option-tooltip-value="' + value + '"' : '';
