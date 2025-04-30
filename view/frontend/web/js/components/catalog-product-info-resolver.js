@@ -7,8 +7,7 @@ define([
 
     $.breezemap['Magento_Catalog/js/product/view/product-info'] = productInfo;
     $.breezemap['Magento_Catalog/js/product/view/product-ids'] = ko.observableArray([]);
-
-    return function ($form) {
+    $.breezemap['Magento_Catalog/js/product/view/product-info-resolver'] = function ($form) {
         var product = _.findWhere($form.serializeArray(), {
                 name: 'product'
             });
