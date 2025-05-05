@@ -101,6 +101,8 @@
                 }));
             }
 
+            this.element.prepend(this.element.find('.action.skip'));
+
             this.slider = this.element.find('.slick-list');
             this.slides = this.slider.children();
             this.nextEl = this.element.find('.slick-next');
