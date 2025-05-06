@@ -19,7 +19,13 @@
         // see Model/Filter/Dom/LazyLoadBackground.php
         $.async('.breeze-bg-lazy', el => {
             $.onReveal(el, () => {
+                var className = el.className.match(/background-image-[a-z0-9]+/);
+
                 $(el).css('background-image', '');
+
+                if (className) {
+                    $(`.${className[0]}`).css('background-image', '');
+                }
             }, {
                 rootMargin: '100px',
             });
