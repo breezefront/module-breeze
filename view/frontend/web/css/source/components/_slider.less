@@ -19,6 +19,7 @@
                 width: 100%;
                 flex: none;
                 scroll-snap-align: center;
+                scroll-snap-stop: always;
             }
         }
         .pagebuilder-slider,
@@ -34,13 +35,16 @@
             display: flex;
             width: 100%;
             overflow-x: auto;
-            scroll-behavior: smooth;
             scroll-snap-type: x mandatory;
             &:focus-visible {
                 outline-offset: -4px;
             }
             > div {
                 flex-shrink: 0;
+                &[data-page-start]:not([data-content-type='slide']) {
+                    scroll-snap-align: start;
+                    scroll-snap-stop: always;
+                }
             }
         }
         .slick-dots {
@@ -54,6 +58,9 @@
         }
 
         .slick-initialized {
+            .slick-list {
+                scroll-behavior: smooth;
+            }
             .action.skip {
                 position: absolute;
                 z-index: 50;
@@ -82,6 +89,9 @@
                 &:not(.slick-initialized):not(:has(.slick-list)) {
                     gap: var(--gap, 5px);
                     scroll-snap-type: x mandatory;
+                }
+                .slick-list:not(:has([data-clone])),
+                &:not(.slick-initialized):not(:has(.slick-list)) {
                     &::before,
                     &::after {
                         content: '';

@@ -56,17 +56,14 @@
                 }
             });
 
+            this.options.infinite = this.options.infinite || this.element.hasClass('containered');
+
             this.prepareMarkup();
 
-            setTimeout(() => {
-                this.buildPagination();
-                this.addEventListeners();
+            setTimeout(async () => {
+                await this.buildPagination();
                 this.element.addClass('slick-initialized');
-                this.updateScrollOffset();
-
-                if (this.element.hasClass('containered') && matchMedia('(min-width: 1024px)').matches) {
-                    this.scrollToPage(1, true); // hide empty space before first slide
-                }
+                this.addEventListeners();
 
                 if (this.options.autoplay) {
                     this.start();
@@ -115,11 +112,10 @@
 
         addEventListeners: function () {
             var self = this,
+                isFirstResize = true,
                 lastResize = new Date(),
-                updateScrollOffsetAndPagination = _.debounce(() => {
-                    this.updateScrollOffset();
-                    this.update();
-                }, 200);
+                debouncedUpdate = _.debounce(this.update.bind(this), 200),
+                debouncedUpdateCurPage = _.debounce(this.updateCurrentPage.bind(this), 200);
 
             if (!this.slider.length) {
                 return;
@@ -145,28 +141,42 @@
                 })
                 .hover(this.pause.bind(this), this.start.bind(this));
 
-            this.slider.on('scroll', _.debounce(() => {
+            this.slider.on('scroll', () => {
                 var now = new Date();
 
                 if (now - lastResize <= 200) {
                     return;
                 }
 
-                this.updateCurrentPage();
-            }, 250));
+                if (this.options.infinite) {
+                    if (this.slider[0].scrollLeft - this.scrollMin <= 2) {
+                        return this.scrollToPage(this.pages.length - 1, 'instant');
+                    }
+                    if (this.slider[0].scrollLeft - this.scrollMax >= -2) {
+                        return this.scrollToPage(0, 'instant');
+                    }
+                }
+
+                debouncedUpdateCurPage();
+            });
 
             new ResizeObserver(() => {
+                if (isFirstResize) {
+                    isFirstResize = false;
+                    return;
+                }
+
                 if (this.slider.data('breeze-prev-width') !== this.slider.width()) {
                     this.slider.data('breeze-prev-width', this.slider.width());
                     lastResize = new Date();
-                    updateScrollOffsetAndPagination();
+                    debouncedUpdate();
                 }
             }).observe(this.slider.get(0));
 
             this.slides.each((i, slide) => {
                 new MutationObserver(function (records) {
                     if (records[0].oldValue?.match(/display:\s*none/)) {
-                        updateScrollOffsetAndPagination();
+                        debouncedUpdate();
                     }
                 }).observe(slide, {
                     attributeFilter: ['style'],
@@ -224,16 +234,20 @@
                         var scrollTo = this.page,
                             percent = pos.dx / (this.slider.width() || 1);
 
-                        if (percent > 0.1 && scrollTo) {
+                        if (percent > 0.1) {
                             scrollTo--;
-                        } else if (percent < -0.1 && scrollTo < this.pages.length - 1) {
+                        } else if (percent < -0.1) {
                             scrollTo++;
                         }
 
                         $(document).off('.sliderMouseDrag');
 
                         if (pos.dx) {
-                            this.scrollToPage(scrollTo, 'smooth');
+                            if (scrollTo >= 0 && scrollTo < this.pages.length) {
+                                this.scrollToPage(scrollTo, 'smooth');
+                            } else if (this.options.infinite) {
+                                this.scrollToPageClone(scrollTo < 0 ? -1 : 0);
+                            }
                             $(document).one('click', e => e.preventDefault());
                         }
 
@@ -256,20 +270,40 @@
             });
         },
 
-        buildPagination: function () {
+        buildPagination: async function () {
             var self = this,
+                sliderLeft = 0,
+                fauxOffset = 0,
                 pageNumTmp = 0,
                 pageWidthTmp = 0,
                 gap = parseFloat(this.slider.css('column-gap')) || 0,
                 sliderWidth = this.slider.outerWidth(),
-                sliderLeft = this.slider.get(0).scrollLeft,
                 dotsTpl = _.template(this.options.templates.dots),
                 dots = [];
 
-            this.pages = [];
+            if (this.pages?.length) {
+                this.slider.find('[data-clone]').remove();
+                this.scrollTo(0, 'instant');
+            }
 
-            this.slides.each(function (index) {
-                var slide = $(this),
+            sliderLeft = this.slider.get(0).scrollLeft;
+            fauxOffset = parseFloat(
+                getComputedStyle(this.slider[0], ':before').getPropertyValue('width')
+            ) || 0;
+
+            if (fauxOffset) {
+                fauxOffset += gap;
+                // wait until scrolling is stopped
+                while (!sliderLeft) {
+                    await $.sleep(200);
+                    sliderLeft = this.slider.get(0).scrollLeft;
+                }
+            }
+
+            this.pages = [];
+            this.scrollOffset = this.slider.offset().left - this.slides.first().offset().left;
+            this.slides.removeAttr('data-page-start').each(function (index) {
+                var slide = $(this).attr('data-index', index),
                     slideWidth = $(this).width();
 
                 if (!slideWidth && (slide.is('img') || slide.find('img').length)) {
@@ -285,24 +319,35 @@
                 if (index && (pageWidthTmp >= sliderWidth || pageWidthTmp + slideWidth > sliderWidth)) {
                     pageWidthTmp = 0;
                     pageNumTmp++;
+                } else if (self.pages[pageNumTmp]) {
+                    self.pages[pageNumTmp].end += gap;
                 }
 
                 if (!self.pages[pageNumTmp]) {
                     self.pages[pageNumTmp] = {
+                        idx: '',
                         slides: [],
-                        start: Math.floor(slide.position().left + sliderLeft),
-                        end: Math.ceil(slide.position().left + sliderLeft)
+                        start: slide.position().left + sliderLeft - fauxOffset + self.scrollOffset,
+                        end: slide.position().left + sliderLeft - fauxOffset + self.scrollOffset,
                     };
+                    slide.attr('data-page-start', pageNumTmp);
                 }
 
+                pageWidthTmp = pageWidthTmp || Math.abs(self.scrollOffset);
                 pageWidthTmp += slideWidth + gap;
                 self.pages[pageNumTmp].slides.push(index);
                 self.pages[pageNumTmp].end += slideWidth;
+                self.pages[pageNumTmp].idx += index;
 
                 // keep active slide in the viewport
                 if (index === self.slide) {
                     self.page = pageNumTmp;
                 }
+            });
+
+            this.pages.forEach(page => {
+                page.start = Math.round(page.start);
+                page.end = Math.round(page.end);
             });
 
             if (this.options.dots) {
@@ -325,42 +370,81 @@
             this.dots = this.element.find('.slick-dots').children();
 
             this.updateArrows();
+
+            if (this.options.infinite && this.pages.length >= 2) {
+                this.cloneSlides();
+                this.scrollToPage(this.page, 'instant');
+            }
+        },
+
+        cloneSlides: function () {
+            var toClone = 2,
+                gap = parseFloat(this.slider.css('column-gap')) || 0,
+                offset = this.pages.at(-1).end - this.pages.at(-toClone).start + gap,
+                cloned = -1,
+                i;
+
+            while (++cloned < toClone) {
+                i = cloned % this.pages.length;
+                this.pages.at(i).slides.forEach(slideIndex => {
+                    this.slider.append(this.slides.eq(slideIndex).clone().attr('data-clone', 1));
+                });
+                [...this.pages.at(this.pages.length - i - 1).slides].reverse().forEach(slideIndex => {
+                    this.slider.prepend(this.slides.eq(slideIndex).clone().attr('data-clone', 1));
+                });
+            }
+
+            this.pages.forEach(page => {
+                page.start += offset;
+                page.end += offset;
+            });
+
+            this.scrollMin = this.pages.at(0).start - gap - (this.pages.at(-1).end - this.pages.at(-1).start);
+            this.scrollMax = this.pages.at(-1).end + gap;
         },
 
         updateCurrentPage: function () {
             var pageNum = this.page,
-                page = this.pages[pageNum],
-                offset = this.slider.get(0).scrollLeft - (this.scrollOffset || 0),
+                scrollLeft = this.slider.get(0).scrollLeft,
                 delta = 2,
                 width = this.slider.outerWidth(),
-                diffStart = Math.abs(page.start - offset),
+                diffStart = Math.abs(this.pages[pageNum].start - scrollLeft),
                 pageUpdated = false;
 
-            if (diffStart > delta) { // rounding issues
-                $.each(this.pages, function (i) {
-                    var diffTmp = Math.abs(this.start - offset);
-
-                    // if whole page is visible (last page with less slides per view)
-                    if (this.start >= offset && this.end <= offset + width + delta) {
-                        pageNum = i;
-
-                        return false;
-                    }
-
-                    if (diffTmp < diffStart) {
-                        pageNum = i;
-                        diffStart = diffTmp;
-                    }
-                });
-
-                if (this.page !== pageNum) {
-                    pageUpdated = true;
-                }
-
-                this.page = pageNum;
-                this.slide = this.pages[pageNum].slides[0];
+            if (diffStart <= delta) { // rounding issues
+                return;
             }
 
+            this.pages.some((page, i) => {
+                var diffTmp = Math.abs(page.start - scrollLeft);
+
+                // if whole page is visible (last page with less slides per view)
+                if (page.start >= scrollLeft && page.end <= scrollLeft + width + delta) {
+                    pageNum = i;
+
+                    return true;
+                }
+
+                if (diffTmp < diffStart) {
+                    pageNum = i;
+                    diffStart = diffTmp;
+                }
+            });
+
+            if (this.options.infinite) {
+                if (scrollLeft > this.pages.at(-1).start + width / 2) {
+                    pageNum = 0;
+                } else if (scrollLeft < this.pages.at(0).start - width / 2) {
+                    pageNum = this.pages.length - 1;
+                }
+            }
+
+            if (this.page !== pageNum) {
+                pageUpdated = true;
+            }
+
+            this.page = pageNum;
+            this.slide = this.pages[pageNum].slides[0];
             this.dots.removeClass('slick-active')
                 .eq(this.page)
                 .addClass('slick-active');
@@ -406,11 +490,7 @@
             var page = this.page + 1;
 
             if (page >= this.pages.length) {
-                if (!this.options.infinite) {
-                    return false;
-                }
-
-                page = 0;
+                return this.options.infinite ? this.scrollToPageClone(0) : false;
             }
 
             this.scrollToPage(page);
@@ -420,47 +500,58 @@
             var page = this.page - 1;
 
             if (page < 0) {
-                if (!this.options.infinite) {
-                    return false;
-                }
-
-                page = this.pages.length - 1;
+                return this.options.infinite ? this.scrollToPageClone(-1) : false;
             }
 
             this.scrollToPage(page);
         },
 
-        scrollToPage: function (page, instant) {
-            var slider = this.slider.get(0),
-                slide = this.slides.eq(this.pages[page].slides[0]),
-                pageUpdated = false,
-                behavior = 'auto';
+        scrollToPageClone: function (index) {
+            var left = 0,
+                gap = parseFloat(this.slider.css('column-gap')) || 0;
 
-            if (instant) {
-                behavior = instant === 'smooth' ? 'smooth' : 'instant';
+            this.dots.removeClass('slick-active')
+                .eq(index === -1 ? this.pages.length - 1 : 0)
+                .addClass('slick-active');
+
+            if (!index) {
+                left = this.pages.at(this.page).end + gap;
+            } else {
+                left = this.pages.at(this.page).start
+                    + (index || 1) * (this.pages.at(index).end - this.pages.at(index).start + gap);
             }
+
+            this.scrollTo(left, 'smooth');
+        },
+
+        scrollToPage: function (page, instant) {
+            var pageUpdated = false;
 
             this.dots.removeClass('slick-active')
                 .eq(page)
                 .addClass('slick-active');
-            slider.scrollTo({
-                left: slider.scrollLeft -
-                    parseFloat(getComputedStyle(slider).getPropertyValue('padding-left')) +
-                    slide.position().left +
-                    this.scrollOffset || 0, // offset when scroll-snap-align: center is used
-                behavior: behavior
-            });
+            this.scrollTo(this.pages[page].start, instant);
 
             if (this.page !== page) {
                 pageUpdated = true;
             }
 
             this.page = page;
-            this.slide = slide.index();
+            this.slide = this.pages[page].slides[0];
 
             if (pageUpdated) {
                 this._trigger('slideChange');
             }
+        },
+
+        scrollTo: function (left, instant) {
+            var behavior = 'auto';
+
+            if (instant) {
+                behavior = instant === 'smooth' ? 'smooth' : 'instant';
+            }
+
+            this.slider[0].scrollTo({ left, behavior });
         },
 
         start: function () {
@@ -490,19 +581,8 @@
             clearTimeout(this.timer);
         },
 
-        updateScrollOffset: function () {
-            var width = this.pages[this.page].slides.reduce((acc, index) => {
-                acc += $(this.slides.eq(index)).outerWidth();
-                return acc;
-            }, 0);
-
-            width += (parseFloat(this.slider.css('column-gap')) || 0) * (this.pages[this.page].slides.length - 1);
-
-            this.scrollOffset = (width - $(window).width()) / 2 + this.slider.offset().left;
-        },
-
         update: function () {
-            this.slides = this.slider.children();
+            this.slides = this.slider.children(':not([data-clone])');
             this.buildPagination();
         },
 
