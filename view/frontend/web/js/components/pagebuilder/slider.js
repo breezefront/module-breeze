@@ -385,8 +385,9 @@
 
             if (this.options.infinite && this.pages.length >= 2) {
                 this.cloneSlides();
-                this.scrollToPage(this.page, 'instant');
             }
+
+            this.scrollToPage(this.page, 'instant');
         },
 
         cloneSlides: function () {
