@@ -1,4 +1,9 @@
-(function () {
+define([
+    'jquery',
+    'underscore',
+    'Magento_Customer/js/customer-data',
+    'escaper'
+], function ($, _, customerData, escaper) {
     'use strict';
 
     $.view('uiMessages', {
@@ -55,12 +60,15 @@
 
     $.view('messages', {
         component: 'Magento_Theme/js/view/messages',
+        defaults: {
+            allowedTags: ['div', 'span', 'b', 'strong', 'i', 'em', 'u', 'a']
+        },
 
         create: function () {
             this.observe({'cookieMessagesObservable': []});
             this.cookieMessages = _.unique($.cookies.getJson('mage-messages') || [], 'text');
             this.cookieMessagesObservable(this.cookieMessages);
-            this.messages = $.customerData.get('messages').extend({
+            this.messages = customerData.get('messages').extend({
                 disposableCustomerData: 'messages'
             });
 
@@ -74,17 +82,13 @@
             });
         },
 
-        /**
-         * @param {String} message
-         * @return {String}
-         */
         prepareMessageForHtml: function (message) {
-            return message.replace(/\+/g, ' ');
+            return escaper.escapeHtml(message, this.allowedTags);
         },
 
         purgeMessages: function () {
             if (!_.isEmpty(this.messages().messages)) {
-                $.customerData.set('messages', {});
+                customerData.set('messages', {});
             }
         },
 
@@ -132,4 +136,4 @@
             }, 100);
         });
     });
-})();
+});
