@@ -564,6 +564,13 @@
             }
 
             this.slider[0].scrollTo({ left, behavior });
+
+            if (behavior === 'instant') {
+                this.slider.css('overflow', 'hidden');
+                setTimeout(() => {
+                    this.slider.css('overflow', '');
+                });
+            }
         },
 
         start: function () {
