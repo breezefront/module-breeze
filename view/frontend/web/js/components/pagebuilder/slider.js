@@ -423,40 +423,39 @@
                 diffStart = Math.abs(this.pages[pageNum].start - scrollLeft),
                 pageUpdated = false;
 
-            if (diffStart <= delta) { // rounding issues
-                return;
-            }
+            if (diffStart > delta) { // rounding issues
+                this.pages.some((page, i) => {
+                    var diffTmp = Math.abs(page.start - scrollLeft);
 
-            this.pages.some((page, i) => {
-                var diffTmp = Math.abs(page.start - scrollLeft);
+                    // if whole page is visible (last page with less slides per view)
+                    if (page.start >= scrollLeft && page.end <= scrollLeft + width + delta) {
+                        pageNum = i;
 
-                // if whole page is visible (last page with less slides per view)
-                if (page.start >= scrollLeft && page.end <= scrollLeft + width + delta) {
-                    pageNum = i;
+                        return true;
+                    }
 
-                    return true;
+                    if (diffTmp < diffStart) {
+                        pageNum = i;
+                        diffStart = diffTmp;
+                    }
+                });
+
+                if (this.options.infinite) {
+                    if (scrollLeft > this.pages.at(-1).start + width / 2) {
+                        pageNum = 0;
+                    } else if (scrollLeft < this.pages.at(0).start - width / 2) {
+                        pageNum = this.pages.length - 1;
+                    }
                 }
 
-                if (diffTmp < diffStart) {
-                    pageNum = i;
-                    diffStart = diffTmp;
+                if (this.page !== pageNum) {
+                    pageUpdated = true;
                 }
-            });
 
-            if (this.options.infinite) {
-                if (scrollLeft > this.pages.at(-1).start + width / 2) {
-                    pageNum = 0;
-                } else if (scrollLeft < this.pages.at(0).start - width / 2) {
-                    pageNum = this.pages.length - 1;
-                }
+                this.page = pageNum;
+                this.slide = this.pages[pageNum].slides[0];
             }
 
-            if (this.page !== pageNum) {
-                pageUpdated = true;
-            }
-
-            this.page = pageNum;
-            this.slide = this.pages[pageNum].slides[0];
             this.dots.removeClass('slick-active')
                 .eq(this.page)
                 .addClass('slick-active');
