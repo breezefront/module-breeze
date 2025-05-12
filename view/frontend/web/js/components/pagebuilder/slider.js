@@ -240,6 +240,7 @@
                         this.slider.css({
                             'scroll-behavior': 'auto',
                             'scroll-snap-type': 'none',
+                            'interactivity': 'inert',
                         });
                     })
                     .on('mouseup.sliderMouseDrag', () => {
@@ -276,6 +277,7 @@
                             this.slider.css({
                                 'scroll-behavior': '',
                                 'scroll-snap-type': '',
+                                'interactivity': '',
                             });
                         }, 800);
                     });
