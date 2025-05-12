@@ -193,7 +193,7 @@ class JsBuild
 
             $build[$name] = $this->getContents($item['path']);
             if (!empty($item['anonymous'])) {
-                $build[$name] .= ";$.breezemap.__register('{$name}');";
+                $build[$name] .= ";define([], () => $.breezemap.__register('{$name}'));";
             }
             $loadedDeps[$item['path']] = $item['path'];
         }
