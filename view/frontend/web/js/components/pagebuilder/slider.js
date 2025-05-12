@@ -116,7 +116,7 @@
                 isFirstResize = true,
                 lastResize = new Date(),
                 debouncedUpdate = _.debounce(this.update.bind(this), 200),
-                debouncedUpdateCurPage = _.debounce(this.updateCurrentPage.bind(this), 200);
+                throttledUpdateCurPage = _.throttle(this.updateCurrentPage.bind(this), 50);
 
             if (!this.slider.length) {
                 return;
@@ -169,7 +169,7 @@
                     }
                 }
 
-                debouncedUpdateCurPage();
+                throttledUpdateCurPage();
             });
 
             new ResizeObserver(() => {
@@ -522,10 +522,6 @@
             var left = 0,
                 gap = parseFloat(this.slider.css('column-gap')) || 0;
 
-            this.dots.removeClass('slick-active')
-                .eq(index === -1 ? this.pages.length - 1 : 0)
-                .addClass('slick-active');
-
             if (!index) {
                 left = this.pages.at(this.page).end + gap;
             } else {
@@ -539,9 +535,6 @@
         scrollToPage: function (page, instant) {
             var pageUpdated = false;
 
-            this.dots.removeClass('slick-active')
-                .eq(page)
-                .addClass('slick-active');
             this.scrollTo(this.pages[page].start, instant);
 
             if (this.page !== page) {
