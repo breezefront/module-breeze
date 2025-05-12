@@ -112,6 +112,7 @@
 
         addEventListeners: function () {
             var self = this,
+                scrollToTimer,
                 isFirstResize = true,
                 lastResize = new Date(),
                 debouncedUpdate = _.debounce(this.update.bind(this), 200),
@@ -142,18 +143,29 @@
                 .hover(this.pause.bind(this), this.start.bind(this));
 
             this.slider.on('scroll', () => {
-                var now = new Date();
+                var now = new Date(),
+                    overscrollLeft = this.slider[0].scrollLeft - this.scrollMin,
+                    overscrollRight = this.slider[0].scrollLeft - this.scrollMax;
 
                 if (now - lastResize <= 200) {
                     return;
                 }
 
                 if (this.options.infinite) {
-                    if (this.slider[0].scrollLeft - this.scrollMin <= 2) {
+                    clearTimeout(scrollToTimer);
+
+                    if (overscrollLeft <= 0) {
                         return this.scrollToPage(this.pages.length - 1, 'instant');
+                    } else if (overscrollLeft <= 2) {
+                        scrollToTimer = setTimeout(() => this.scrollToPage(this.pages.length - 1, 'instant'), 200);
+                        return;
                     }
-                    if (this.slider[0].scrollLeft - this.scrollMax >= -2) {
+
+                    if (overscrollRight >= 0) {
                         return this.scrollToPage(0, 'instant');
+                    } else if (overscrollRight >= -2) {
+                        scrollToTimer = setTimeout(() => this.scrollToPage(0, 'instant'), 200);
+                        return;
                     }
                 }
 
