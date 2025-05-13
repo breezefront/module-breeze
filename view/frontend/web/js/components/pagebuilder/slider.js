@@ -208,10 +208,11 @@
 
             this._on('mousedown', event => {
                 var pos = {
-                    dx: 0,
-                    left: this.slider[0].scrollLeft,
-                    x: event.clientX,
-                };
+                        dx: 0,
+                        left: this.slider[0].scrollLeft,
+                        x: event.clientX,
+                    },
+                    initialPage = this.page;
 
                 if (touching) {
                     return;
@@ -244,13 +245,13 @@
                         });
                     })
                     .on('mouseup.sliderMouseDrag', () => {
-                        var scrollTo = this.page,
+                        var scrollTo = initialPage,
                             percent = pos.dx / (this.slider.width() || 1);
 
                         if (percent > 0.1) {
-                            scrollTo--;
+                            scrollTo -= Math.max(1, Math.ceil(percent));
                         } else if (percent < -0.1) {
-                            scrollTo++;
+                            scrollTo += Math.max(1, Math.ceil(Math.abs(percent)));
                         }
 
                         $(document).off('.sliderMouseDrag');
@@ -525,10 +526,10 @@
                 gap = parseFloat(this.slider.css('column-gap')) || 0;
 
             if (!index) {
-                left = this.pages.at(this.page).end + gap;
+                left = this.pages.at(-1).end + gap;
             } else {
-                left = this.pages.at(this.page).start
-                    + (index || 1) * (this.pages.at(index).end - this.pages.at(index).start + gap);
+                left = this.pages.at(0).start
+                    - (this.pages.at(-1).end - this.pages.at(-1).start + gap);
             }
 
             this.scrollTo(left, 'smooth');
