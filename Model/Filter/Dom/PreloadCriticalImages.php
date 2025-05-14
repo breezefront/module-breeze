@@ -77,6 +77,7 @@ class PreloadCriticalImages extends AbstractFilter
             }
 
             $this->addPreloadLink($attributes);
+            $node->setAttribute('fetchpriority', 'high');
 
             if ($i + 1 >= $maxLinksToAdd) {
                 break;
