@@ -18,16 +18,12 @@ class PreloadCriticalImages extends AbstractFilter
         $preloadImages = [];
         $preloadBackgrounds = [];
         if (!$this->isProductPage($body)) {
-            $preloadImages = $xpath->query(implode('', [
-                '//img[@class]',
-                '[contains(concat(" ", normalize-space(@class), " "), " data-preload ")]',
-                ' | ',
-                '//figure[@class]',
-                '[contains(concat(" ", normalize-space(@class), " "), " data-preload ")]/img',
+            $preloadImages = $xpath->query(implode(' | ', [
+                '//img[@class][contains(concat(" ", normalize-space(@class), " "), " data-preload ")]',
+                '//figure[@class][contains(concat(" ", normalize-space(@class), " "), " data-preload ")]/img',
             ]), $content);
-            $preloadBackgrounds = $xpath->query(implode('', [
-                '//div[@data-background-images]',
-                '[contains(concat(" ", normalize-space(@class), " "), " data-preload ")]',
+            $preloadBackgrounds = $xpath->query(implode(' | ', [
+                '//div[@data-background-images][contains(concat(" ", normalize-space(@class), " "), " data-preload ")]',
             ]), $content);
         }
 
