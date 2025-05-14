@@ -21,9 +21,11 @@ class PreloadCriticalImages extends AbstractFilter
             $preloadImages = $xpath->query(implode(' | ', [
                 '//img[@class][contains(concat(" ", normalize-space(@class), " "), " data-preload ")]',
                 '//figure[@class][contains(concat(" ", normalize-space(@class), " "), " data-preload ")]/img',
+                ...$this->getCriticalImagesBlock()->getImageXpaths(),
             ]), $content);
             $preloadBackgrounds = $xpath->query(implode(' | ', [
                 '//div[@data-background-images][contains(concat(" ", normalize-space(@class), " "), " data-preload ")]',
+                ...$this->getCriticalImagesBlock()->getBackgroundXpaths(),
             ]), $content);
         }
 
@@ -127,5 +129,10 @@ class PreloadCriticalImages extends AbstractFilter
     private function isProductPage($body): bool
     {
         return $body && strpos($body->getAttribute('class'), 'catalog-product-view') !== false;
+    }
+
+    private function getCriticalImagesBlock()
+    {
+        return $this->layout->getBlock('breeze.criticalImages');
     }
 }

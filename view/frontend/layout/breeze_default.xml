@@ -1051,6 +1051,12 @@
                     </argument>
                 </arguments>
             </block>
+            <block class="Swissup\Breeze\Block\Theme\CriticalImages" name="breeze.criticalImages">
+                <arguments>
+                    <argument name="image_xpaths" xsi:type="array"></argument>
+                    <argument name="background_xpaths" xsi:type="array"></argument>
+                </arguments>
+            </block>
         </referenceContainer>
     </body>
 </page>
