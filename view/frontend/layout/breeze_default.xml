@@ -1057,6 +1057,12 @@
                     <argument name="background_xpaths" xsi:type="array"></argument>
                 </arguments>
             </block>
+            <block class="Swissup\Breeze\Block\Theme\LazyImages" name="breeze.lazyImages">
+                <arguments>
+                    <argument name="image_xpaths" xsi:type="array"></argument>
+                    <argument name="background_xpaths" xsi:type="array"></argument>
+                </arguments>
+            </block>
         </referenceContainer>
     </body>
 </page>
