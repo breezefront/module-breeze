@@ -10,7 +10,7 @@ class LazyLoadImages extends AbstractFilter
     {
         $xpath = new \DOMXPath($document);
 
-        // Automatically lozyload pagebuilder backgrounds except first one
+        // Automatically lazyload pagebuilder backgrounds except first one
         $content = $document->getElementById('maincontent');
         $nodes = $xpath->query('//div[@data-background-images]', $content);
         $i = 0;
