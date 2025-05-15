@@ -35,7 +35,7 @@ class LazyLoadImages extends AbstractFilter
             $images = $xpath->query(implode(' | ', $xpaths));
             foreach ($images as $node) {
                 $node->setAttribute('loading', 'lazy');
-                $node->removeAttribute('fetchpriority');
+                $node->setAttribute('fetchpriority', 'low');
             }
         }
 
