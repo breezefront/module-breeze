@@ -16,7 +16,7 @@
             .clone()
             .appendTo(document.getElementById('store.links'));
 
-        // see Model/Filter/Dom/LazyLoadBackground.php
+        // see Model/Filter/Dom/LazyLoadImages.php
         $.async('.breeze-bg-lazy', el => {
             $.onReveal(el, () => {
                 var className = el.className.match(/background-image-[a-z0-9]+/);
