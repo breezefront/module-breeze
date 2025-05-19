@@ -1063,6 +1063,7 @@
                     <argument name="background_xpaths" xsi:type="array"></argument>
                 </arguments>
             </block>
+            <block name="breeze.speculationRules" template="Swissup_Breeze::theme/speculation-rules.phtml"/>
         </referenceContainer>
     </body>
 </page>

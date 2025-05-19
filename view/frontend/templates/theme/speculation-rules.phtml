@@ -1,0 +1,31 @@
+<script type="speculationrules">
+{
+    "prerender": [{
+        "eagerness": "moderate",
+        "source": "document",
+        "where": {
+            "and": [
+                { "href_matches": "/*" },
+                { "not": {
+                    "href_matches": [
+                        "**/checkout/*",
+                        "**/customer/*",
+                        "**/download/*",
+                        "**/redirect/*",
+                        "**/sales/*",
+                        "**/wishlist/*",
+                        "*.pdf"
+                    ]
+                }},
+                { "not": {
+                    "selector_matches": [
+                        ".do-not-prerender",
+                        "[data-post]",
+                        "[rel~=nofollow]"
+                    ]
+                }}
+            ]
+        }
+    }]
+}
+</script>
