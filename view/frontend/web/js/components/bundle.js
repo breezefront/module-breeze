@@ -155,6 +155,23 @@ define([
             isOptionsInitialized: false
         },
 
+        _init: function () {
+            var form = this.element,
+                options = $(this.options.productBundleSelector, form),
+                priceBox = $(this.options.priceBoxSelector, form),
+                qty = $(this.options.qtyFieldSelector, form);
+
+            if (priceBox.priceBox('instance')) {
+                options.trigger('change');
+                qty.trigger('change');
+            } else {
+                priceBox.on('price-box-initialized', function () {
+                    options.trigger('change');
+                    qty.trigger('change');
+                });
+            }
+        },
+
         /**
          * @private
          */
@@ -168,10 +185,6 @@ define([
             priceBox.on('price-box-initialized', this._updatePriceBox.bind(this));
             options.on('change', this._onBundleOptionChanged.bind(this));
             qty.on('change', this._onQtyFieldChanged.bind(this));
-
-            priceBox.on('price-box-initialized', function () {
-                options.trigger('change');
-            });
         },
 
         /**
