@@ -448,6 +448,8 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                     if (isset($this->allBundles[$info['bundle']]['items'][$info['itemName']]['load'])) {
                         $this->allBundles[$bundleName]['items'][$itemName]['load']['onRequire'] = true;
                     }
+
+                    $this->clearFindItemInfoMemo($mixinItemName);
                 }
             }
         }
@@ -560,5 +562,10 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         }
 
         return $this->itemInfoMap[$itemName];
+    }
+
+    private function clearFindItemInfoMemo($itemName)
+    {
+        unset($this->itemInfoMap[$itemName]);
     }
 }
