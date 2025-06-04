@@ -371,8 +371,6 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
             }
         }
 
-        $this->processImports($this->activeBundles);
-
         uasort($this->activeBundles, function ($a, $b) {
             $a = $a['sort_order'] ?? 1000;
             $b = $b['sort_order'] ?? 1000;
@@ -490,39 +488,6 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         }
 
         return $this->allBundles;
-    }
-
-    /**
-     * @param array $bundles
-     * @return void
-     */
-    private function processImports($bundles)
-    {
-        foreach ($bundles as $bundleName => $bundle) {
-            foreach ($bundle['items'] as $itemName => $item) {
-                if (empty($item['import'])) {
-                    continue;
-                }
-
-                foreach ($item['import'] as $key => $value) {
-                    $info = $this->findItemInfo($value);
-                    if (!$info) {
-                        continue;
-                    }
-
-                    if (!empty($info['item']['load'])) {
-                        continue;
-                    }
-
-                    $importBundle = $info['bundle'];
-                    unset($this->allBundles[$bundleName]['items'][$itemName]['import'][$key]);
-                    if (empty($this->activeBundles[$importBundle])) {
-                        $this->activeBundles[$importBundle] = $this->allBundles[$importBundle];
-                        $this->processImports([$importBundle => $this->allBundles[$importBundle]]);
-                    }
-                }
-            }
-        }
     }
 
     /**
