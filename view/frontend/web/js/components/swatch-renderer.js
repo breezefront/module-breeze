@@ -12,7 +12,7 @@ define([
         $title,
         $corner;
 
-    $.widget('SwatchRendererTooltip', {
+    $.widget('mage.SwatchRendererTooltip', {
         options: {
             delay: 200,
             tooltipClass: 'swatch-option-tooltip'
@@ -137,7 +137,7 @@ define([
         }
     });
 
-    $.widget('SwatchRenderer', {
+    $.widget('mage.SwatchRenderer', {
         component: 'Magento_Swatches/js/swatch-renderer',
         options: {
             classes: {
