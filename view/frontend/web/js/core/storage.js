@@ -36,7 +36,18 @@ var createStorage = function (storage) {
         if (value && typeof value === 'object') {
             value = JSON.stringify(value);
         }
-        storage.setItem(key, value);
+
+        try {
+            storage.setItem(key, value);
+        } catch (e) {
+            if (e.name === 'QuotaExceededError') {
+                console.warn('Storage quota exceeded - clearing the data');
+                storage.clear();
+                storage.setItem(key, value);
+            } else {
+                throw e;
+            }
+        }
     }
 
     return {
