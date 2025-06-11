@@ -22,23 +22,26 @@ var createStorage = function (storage) {
         }
     }
 
+    function get(key) {
+        var result = storage.getItem(key);
+
+        try {
+            result = JSON.parse(result);
+        } catch (e) {}
+
+        return result;
+    }
+
+    function set(key, value) {
+        if (value && typeof value === 'object') {
+            value = JSON.stringify(value);
+        }
+        storage.setItem(key, value);
+    }
+
     return {
-        get: function (key) {
-            var result = storage.getItem(key);
-
-            try {
-                result = JSON.parse(result);
-            } catch (e) {}
-
-            return result;
-        },
-
-        set: function (key, value) {
-            if (value && typeof value === 'object') {
-                value = JSON.stringify(value);
-            }
-            storage.setItem(key, value);
-        },
+        get,
+        set,
 
         /**
          * @param {Mixed} keys
@@ -86,7 +89,7 @@ var createStorage = function (storage) {
 
                     data[namespace][key] = value;
 
-                    storage.setItem(namespace, JSON.stringify(data[namespace]));
+                    set(namespace, data[namespace]);
                 },
 
                 /**
@@ -112,7 +115,7 @@ var createStorage = function (storage) {
                         delete data[namespace][key];
                     });
 
-                    storage.setItem(namespace, JSON.stringify(data[namespace]));
+                    set(namespace, data[namespace]);
                 },
 
                 /** Remove all data */
