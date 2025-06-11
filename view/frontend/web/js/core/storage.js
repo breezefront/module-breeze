@@ -73,11 +73,7 @@ var createStorage = function (storage) {
                 get: function (key) {
                     loadNamespace(namespace);
 
-                    if (!key) {
-                        return data[namespace];
-                    }
-
-                    return data[namespace][key];
+                    return key ? data[namespace][key] : data[namespace];
                 },
 
                 /**
