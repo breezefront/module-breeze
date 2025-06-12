@@ -229,7 +229,9 @@
             settings: params,
         });
         if (params.beforeSend) {
-            params.beforeSend(params);
+            if (params.beforeSend(params) === false) {
+                return;
+            }
         }
 
         $.active++;
