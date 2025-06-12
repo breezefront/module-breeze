@@ -217,13 +217,11 @@
             }
         }
 
-        if (params.context) {
-            ['done', 'always', 'fail', 'success', 'complete', 'error', 'beforeSend'].forEach(function (fn) {
-                if (params[fn]) {
-                    params[fn] = params[fn].bind(params.context);
-                }
-            });
-        }
+        ['done', 'always', 'fail', 'success', 'complete', 'error', 'beforeSend'].forEach(function (fn) {
+            if (params[fn]) {
+                params[fn] = params[fn].bind(params.context || params);
+            }
+        });
 
         $(document).trigger('ajaxSend', {
             settings: params,
