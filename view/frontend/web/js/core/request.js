@@ -4,13 +4,13 @@
     $.active = 0;
 
     /**
-     * @param {Object} response
+     * @param {Object} jqXHR
      * @param {Object} params
      */
-    function onResponse(response, params) {
+    function onResponse(jqXHR, params) {
         var data = {
-            response: response,
-            responseText: response.text,
+            response: jqXHR,
+            responseText: jqXHR.text,
             settings: params,
         };
 
@@ -18,47 +18,43 @@
             return;
         }
 
-        if (_.isObject(response.body)) {
-            data.responseJSON = response.body;
+        if (jqXHR.responseJSON) {
+            data.responseJSON = jqXHR.responseJSON;
         }
 
         $(document).trigger('ajaxComplete', data);
     }
 
     /**
+     * @param {Object} jqXHR
+     * @param {Object} params
      * @param {Object} error
      * @throws {Exception}
      */
-    function onError(error, params) {
-        var response = error.response || error.original?.response;
-
+    function onError(jqXHR, params, error) {
         params.fail.push(params.error);
-        params.always.push(params.complete);
-
-        params.fail.filter(fn => fn).forEach(fn => fn(response, 'error', error));
-        params.always.filter(fn => fn).forEach(fn => fn(response, 'error', response));
+        params.fail.filter(fn => fn).forEach(fn => fn(jqXHR, 'error', error));
+        params.always.filter(fn => fn).forEach(fn => fn(jqXHR, 'error', error));
+        params.complete?.(jqXHR, 'error');
 
         $(document).trigger('ajaxError', {
-            response: response,
-            responseText: response?.text,
+            response: jqXHR,
+            responseText: jqXHR.text,
             settings: params,
             error: error,
-            status: response?.status,
+            status: jqXHR.status,
         });
     }
 
     /**
-     * @param {Object} response
-     * @return {Object}
+     * @param {Object} jqXHR
+     * @param {Object} params
      */
-    function onSuccess(response, params) {
+    function onSuccess(jqXHR, params) {
         params.done.push(params.success);
-        params.always.push(params.complete);
-
-        params.done.filter(fn => fn).forEach(fn => fn(response.body || response.text, 'success', response));
-        params.always.filter(fn => fn).forEach(fn => fn(response.body || response, 'success', response));
-
-        return response;
+        params.done.filter(fn => fn).forEach(fn => fn(jqXHR.body, 'success', jqXHR));
+        params.always.filter(fn => fn).forEach(fn => fn(jqXHR.body, 'success', jqXHR));
+        params.complete?.(jqXHR, 'success');
     }
 
     /**
@@ -192,6 +188,29 @@
         return formData;
     }
 
+    async function emulateJqXHR(response, params) {
+        var text = await response.text();
+
+        return {
+            text: text,
+            body: text,
+            response: response,
+            responseText: text,
+            readyState: 4,
+            status: response.status,
+            statusText: response.statusText,
+            url: params.url,
+            method: params.method,
+            ...(params.body && { data: params.body }),
+            getResponseHeader: (name) => response.headers.get(name),
+            getAllResponseHeaders: () => {
+                return [...response.headers.entries()].reduce((acc, [key, value]) => {
+                  return acc + `${key}: ${value}\r\n`;
+                }, '');
+            },
+        };
+    }
+
     function send(params) {
         var controller = new AbortController();
 
@@ -235,50 +254,38 @@
         // eslint-disable-next-line one-var, vars-on-top
         var result = fetch(params.url, params)
             .then(async function (response) {
-                var error;
+                var error,
+                    jqXHR = await emulateJqXHR(response, params),
+                    contentType = jqXHR.getResponseHeader('Content-Type');
 
                 if (!response.ok) {
                     error = new Error(response.code);
-                    error.response = response;
-                    error.response.text = await response.text();
+                    error.xhr = jqXHR;
                     throw error;
                 }
 
-                return response.text();
-            })
-            .then(function (text) {
-                var response = {
-                    text: text,
-                    req: params
-                };
-
-                response.body = (function () {
+                if (params.dataType === 'json' || contentType?.includes('application/json')) {
                     try {
-                        return JSON.parse(text);
+                        jqXHR.body = JSON.parse(jqXHR.text);
+                        jqXHR.responseJSON = jqXHR.body;
                     } catch (e) {
-                        if (!params.dataType || params.dataType !== 'json') {
-                            return text;
-                        }
-
-                        e.response = response;
-
+                        e.xhr = jqXHR;
                         throw e;
                     }
-                })();
+                }
 
-                onResponse(response, params);
+                onResponse(jqXHR, params);
 
-                return response;
-            })
-            .then(function (response) {
                 try {
-                    return onSuccess(response, params);
+                    onSuccess(jqXHR, params);
                 } catch (e) {
                     console.error(e);
                 }
+
+                return jqXHR;
             })
             .catch(function (error) {
-                return onError(error, params);
+                return onError(error.xhr, params, error);
             })
             .finally(() => {
                 $.active--;
