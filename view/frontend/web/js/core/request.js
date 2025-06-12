@@ -228,10 +228,8 @@
         $(document).trigger('ajaxSend', {
             settings: params,
         });
-        if (params.beforeSend) {
-            if (params.beforeSend(params) === false) {
-                return;
-            }
+        if (params.beforeSend && params.beforeSend(params, params) === false) {
+            return;
         }
 
         $.active++;
