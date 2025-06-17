@@ -325,6 +325,16 @@
                 }).length > 0;
         }
 
+        if (selector.includes(':data(')) {
+            selector = selector
+                .replace(/:data\(([-_\w]+)\)/g, '$1')
+                .replace(/-(\w)/g, (_, c) => c.toUpperCase());
+
+            return this.filter(function () {
+                return $(this).data(selector);
+            }).length > 0;
+        }
+
         return original.bind(this)(normalizeSelector(selector));
     });
 
