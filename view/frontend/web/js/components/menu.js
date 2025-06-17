@@ -22,7 +22,7 @@
             this.mql = window.matchMedia(this.mediaBreakpoint);
 
             // Postponing initialization on mobile until menu became visible
-            if (this.mql.matches) {
+            if (this.mql.matches && this.element.closest('.navigation').length) {
                 this.mql.addEventListener('change', this.initMenu.bind(this), { once: true });
                 if ($('html').hasClass('nav-before-open')) {
                     this.initMenu();
