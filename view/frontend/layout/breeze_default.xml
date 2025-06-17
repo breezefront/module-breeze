@@ -707,6 +707,7 @@
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/validate-product</item>
                                 <item name="import" xsi:type="array">
                                     <item name="validation" xsi:type="string">validation</item>
+                                    <item name="catalogAddToCart" xsi:type="string">catalogAddToCart</item>
                                 </item>
                             </item>
 
