@@ -325,7 +325,7 @@
                 }).length > 0;
         }
 
-        if (selector.includes(':data(')) {
+        if (typeof selector === 'string' && selector.includes(':data(')) {
             selector = selector
                 .replace(/:data\(([-_\w]+)\)/g, '$1')
                 .replace(/-(\w)/g, (_, c) => c.toUpperCase());
