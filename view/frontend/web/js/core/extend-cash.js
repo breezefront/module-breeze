@@ -144,6 +144,7 @@
     $.fn.fadeOut = $.fn.hide;
     $.fn.bind = $.fn.on;
     $.fn.unbind = $.fn.off;
+    $.fn.parseJSON = JSON.parse;
 
     $.each({ scrollLeft: 'pageXOffset', scrollTop: 'pageYOffset' }, function (method, prop) {
         var top = prop === 'pageYOffset';
