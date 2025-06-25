@@ -144,7 +144,6 @@
     $.fn.fadeOut = $.fn.hide;
     $.fn.bind = $.fn.on;
     $.fn.unbind = $.fn.off;
-    $.fn.parseJSON = JSON.parse;
 
     $.each({ scrollLeft: 'pageXOffset', scrollTop: 'pageYOffset' }, function (method, prop) {
         var top = prop === 'pageYOffset';
@@ -587,6 +586,7 @@
     $.now = Date.now;
     $.isEmptyObject = _.isEmpty;
     $.inArray = (elem, arr, i) => arr == null ? -1 : Array.prototype.indexOf.call(arr, elem, i);
+    $.parseJSON = JSON.parse;
 
     $.each = _.wrap($.each, function (original, object, callback) {
         return original(object || [], callback);
