@@ -147,7 +147,12 @@
         return modules[name];
     }
 
-    function collectDeps(alias, aliasAsPath, isKnown) {
+    function collectDeps(alias, aliasAsPath, isKnown, visited = new Set()) {
+        if (visited.has(alias)) {
+            return [];
+        }
+        visited.add(alias);
+
         var result = [],
             path = aliasAsPath ? alias : $.breeze.jsconfig[alias]?.path || alias,
             imports = aliasAsPath ? [] : $.breeze.jsconfig[alias]?.import || [],
@@ -172,18 +177,17 @@
         }
 
         imports.forEach((item, i) => {
-            result.push(...collectDeps(item, i === index, true));
+            result.push(...collectDeps(item, i === index, true, visited));
         });
 
-        // When 'quickSearch' is required, resolve 'smileEs.quickSearch' too.
         Object.keys($.breeze.jsconfig).filter(key => key.endsWith(`.${alias}`)).forEach(key => {
-            result.push(...collectDeps(key));
+            result.push(...collectDeps(key, false, false, visited));
         });
 
         Object.entries($.breeze.jsconfig).filter(([k]) => k.includes('*')).some(([k, v]) => {
             if (alias.startsWith(k.split('*').at(0))) {
                 (v.import || []).filter(key => key !== alias).forEach(key => {
-                    result.push(...collectDeps(key));
+                    result.push(...collectDeps(key, false, false, visited));
                 });
             }
         });
