@@ -141,7 +141,8 @@
 
         modules[name].cb = modules[name].cb || cb;
         modules[name].parents.push(...parents);
-        modules[name].deps.push(...deps.map(depname => getModule(depname, [], [modules[name]])));
+        const safeDeps = [...deps];
+        modules[name].deps.push(...safeDeps.map(depname => getModule(depname, [], [modules[name]])));
 
         return modules[name];
     }
