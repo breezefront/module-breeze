@@ -148,10 +148,12 @@
     }
 
     function collectDeps(alias, aliasAsPath, isKnown, visited = new Set()) {
-        if (visited.has(alias)) {
+        const visitedKey = alias + '|' + (aliasAsPath ? 'path' : 'alias');
+        if (visited.has(visitedKey)) {
+            // throw new Error(`Circular dependency detected for alias: ${alias}`);
             return [];
         }
-        visited.add(alias);
+        visited.add(visitedKey);
 
         var result = [],
             path = aliasAsPath ? alias : $.breeze.jsconfig[alias]?.path || alias,
