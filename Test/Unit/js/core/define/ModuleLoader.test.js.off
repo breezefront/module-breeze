@@ -1,0 +1,93 @@
+// __tests__/ModuleLoader.test.js
+import { jest } from '@jest/globals';
+
+// Імпортуємо або вставляємо ModuleLoader та Module, якщо не через import
+import '../../Test/jest.setup';
+import '../../path/to/moduleloader'; // заміни шлях на фактичний, якщо треба
+
+// Скидаємо глобали для чистоти
+beforeEach(() => {
+  global.cash.breezemap = {
+    __counter: 1,
+    __aliases: {},
+    __getAll: function() { return {}; },
+    __get: function(key) { return this[key]; },
+    __lastComponent: function() { return null; },
+    __register: function(name, module) { this[name] = module; },
+  };
+
+  global.cash.mixin = jest.fn();
+  global.cash.mixin.pending = {};
+
+  global.cash.get.mockClear();
+  global.cash.preloadScript.mockResolvedValue(true);
+  global.cash.loadScript.mockResolvedValue(true);
+
+  global.console.error.mockClear();
+});
+
+describe('ModuleLoader', () => {
+  test('обробляє циклічні залежності', () => {
+    const loader = new ModuleLoader();
+
+    loader.createModule('A', ['B'], [], () => 'module A');
+    loader.createModule('B', ['A'], [], () => 'module B');
+
+    const aModule = loader.createModule('A');
+    const result = aModule.run();
+
+    expect(result).toBe('module A');
+  });
+
+  test('text! модулі повертають контент', async () => {
+    const loader = new ModuleLoader();
+
+    const textModule = loader.createModule('text!templates/example.html');
+    textModule.path = 'templates/example.html';
+    textModule.url = 'http://test.com/templates/example.html';
+
+    await loader.loadSingleModule(textModule);
+
+    const result = textModule.run();
+
+    expect(global.cash.get).toHaveBeenCalledWith(expect.stringContaining('templates/example.html'));
+    expect(result()).toBe('mock content');
+  });
+
+  test('breezemap.__register копіює з попереднього компоненту', () => {
+    const loader = new ModuleLoader();
+
+    global.cash.breezemap['oldComponent'] = { test: 123 };
+
+    loader.registerComponent('newComponent', 'oldComponent');
+
+    expect(global.cash.breezemap['newComponent']).toEqual({ test: 123 });
+  });
+
+  test('міксини викликаються з pending і очищуються', () => {
+    const loader = new ModuleLoader();
+
+    const alias = 'testAlias';
+    global.cash.mixin.pending = {
+      [alias]: [['arg1', 'arg2'], ['arg3']]
+    };
+
+    loader.setBreezeMapValue(global.cash.breezemap, alias, {});
+
+    expect(global.cash.mixin).toHaveBeenCalledWith('arg1', 'arg2');
+    expect(global.cash.mixin).toHaveBeenCalledWith('arg3');
+    expect(global.cash.mixin.pending[alias]).toBeUndefined();
+  });
+
+  test('pending require зберігається у required буфер', () => {
+    const loader = new ModuleLoader();
+
+    global.window.required = [];
+    global.cash.breezemap = {}; // empty map, simulate unready state
+
+    global.window.require(['someUnknown'], () => {});
+
+    expect(global.window.required.length).toBe(1);
+    expect(global.window.required[0][0]).toEqual(['someUnknown']);
+  });
+});
