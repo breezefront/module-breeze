@@ -96,27 +96,7 @@ class JsBuild
             return $this->assets;
         }
 
-        $curPath = $this->getPath();
-        $pathinfo = pathinfo($curPath);
-        $file = str_replace('.min', '', $pathinfo['filename']);
-        $dir = $pathinfo['dirname'];
-
-        $paths = $this->staticDir->read($dir);
-        sort($paths, SORT_NATURAL);
-        $suffix = strpos($curPath, '.min.js') === false ? '.js' : '.min.js';
-
-        foreach ($paths as $path) {
-            $pos = strrpos($path, $suffix);
-            $expectedPos = strlen($path) - strlen($suffix);
-            if ($pos !== $expectedPos) {
-                continue;
-            }
-
-            $regex = str_replace('.', '\.', "/{$file}(\d+)?{$suffix}/");
-            if (!preg_match($regex, $path)) {
-                continue;
-            }
-
+        foreach ($this->getBundledAssetsPaths() as $path) {
             $this->assets[] = $this->getAsset($path);
         }
 
@@ -165,6 +145,8 @@ class JsBuild
         if (!$this->items || !$this->staticDir->isWritable()) {
             return $this;
         }
+
+        $this->cleanupBundledAssets();
 
         $build = [];
         $loadedDeps = [];
@@ -232,6 +214,43 @@ class JsBuild
         $this->publishVersion();
 
         return $this;
+    }
+
+    private function cleanupBundledAssets()
+    {
+        foreach ($this->getBundledAssetsPaths() as $path) {
+            $this->staticDir->delete($path);
+        }
+    }
+
+    private function getBundledAssetsPaths()
+    {
+        $curPath = $this->getPath();
+        $pathinfo = pathinfo($curPath);
+        $file = str_replace('.min', '', $pathinfo['filename']);
+        $dir = $pathinfo['dirname'];
+
+        $allPaths = $this->staticDir->read($dir);
+        sort($allPaths, SORT_NATURAL);
+        $suffix = strpos($curPath, '.min.js') === false ? '.js' : '.min.js';
+
+        $paths = [];
+        foreach ($allPaths as $path) {
+            $pos = strrpos($path, $suffix);
+            $expectedPos = strlen($path) - strlen($suffix);
+            if ($pos !== $expectedPos) {
+                continue;
+            }
+
+            $regex = str_replace('.', '\.', "/{$file}(\d+)?{$suffix}/");
+            if (!preg_match($regex, $path)) {
+                continue;
+            }
+
+            $paths[] = $path;
+        }
+
+        return $paths;
     }
 
     private function getVersion()
