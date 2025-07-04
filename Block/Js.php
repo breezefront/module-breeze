@@ -173,7 +173,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         foreach ($bundledAssets as $asset) {
             $pathParts = explode('/', $asset->getUrl());
             $filename = array_pop($pathParts);
-            preg_match("/(?<bundle>.*)(?<index>\d+)(\.min)?\.js$/", $filename, $matches);
+            preg_match("/(?<bundle>.*?)(?<index>\d+)(\.min\.js|\.js)$/", $filename, $matches);
 
             if (!$matches || !isset($bundleIndexes[$matches['bundle']])) {
                 continue;
