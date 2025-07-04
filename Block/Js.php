@@ -272,7 +272,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                 foreach ($paths as $key => $path) {
                     $asset = $this->jsBuildFactory->create([
                         'name' => $path,
-                        'type' => $bundle['type'] ?? 'async',
+                        'type' => $bundle['type'],
                     ])->getAsset();
                     if (empty(array_filter($item['load'] ?? []))) {
                         $assets[] = $asset;
@@ -292,7 +292,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
             $staticItems = array_filter($bundle['items'], fn ($item) => empty(array_filter($item['load'] ?? [])));
             $builds[$name] = $this->jsBuildFactory->create(array_merge([
                 'name' => 'Swissup_Breeze/bundles/' . $this->storeManager->getStore()->getId() . '/' . $name,
-                'type' => $bundle['type'] ?? 'async',
+                'type' => $bundle['type'],
                 'items' => $staticItems,
             ], $jsBuildParams));
 
@@ -307,7 +307,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
             foreach ($dynamicItems as $item) {
                 $this->jsBuildFactory->create([
                     'name' => $item['path'],
-                    'type' => $bundle['type'] ?? 'async',
+                    'type' => $bundle['type'],
                 ])->getAsset();
             }
         }
@@ -397,6 +397,8 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         $this->allBundles = $this->bundles;
 
         foreach ($this->allBundles as $bundleName => $bundle) {
+            $this->allBundles[$bundleName]['type'] ??= 'async';
+
             foreach ($bundle['items'] as $itemName => $item) {
                 if (strpos($itemName, '*') !== false && $bundleName !== 'dynamic') {
                     throw new \Exception(sprintf(
