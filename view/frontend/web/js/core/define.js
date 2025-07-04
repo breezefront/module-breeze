@@ -11,6 +11,7 @@
         },
         defaultStackTraceLimit = Error.stackTraceLimit || 10,
         autoloadedBundles = {},
+        bundlePathRe = /(?<path>Swissup_Breeze\/bundles\/\d+\/.*?)\d*(\.min\.js|\.js)$/,
         bundlePrefixRe = /(?<prefix>Swissup_Breeze\/bundles\/\d+\/).*\.js$/,
         bundlePrefix = $('script[src*="/Swissup_Breeze/bundles/"]').attr('src')?.match(bundlePrefixRe).groups.prefix,
         suffixRe = /Swissup_Breeze\/.*?(core|main)(?<suffix>\.min\.js|\.js)$/,
@@ -206,7 +207,9 @@
         var mod,
             depsWithImports = [],
             scriptName = $(document.currentScript).data('name'),
-            name = isRunningFromBundle() ? undefined : scriptName;
+            isBundle = isRunningFromBundle(),
+            bundlePath = isBundle ? document.currentScript?.src.match(bundlePathRe)?.groups.path : undefined,
+            name = isBundle ? undefined : scriptName;
 
         if (typeof deps === 'string' && typeof extra === 'function') {
             // define('name', [], () => {})
@@ -235,6 +238,11 @@
         mod = getModule(name || `__module-${$.guid++}`, deps, cb);
         deps.forEach(depname => depsWithImports.push(...collectDeps(depname)));
         depsWithImports.filter(dep => dep.global()).map(dep => dep.run());
+
+        if (bundlePath) {
+            depsWithImports = depsWithImports.filter(dep => !dep.name.includes(bundlePath));
+        }
+
         depsWithImports = depsWithImports
             .filter(dep => !dep.loaded && (dep.path || dep.named) && dep.name !== scriptName)
             .map(dep => {
