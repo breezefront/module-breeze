@@ -184,6 +184,10 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
         $result = [];
         foreach ($this->getAllBundles() as $bundleName => $bundle) {
+            if ($bundle['type'] === 'defer') {
+                continue;
+            }
+
             foreach ($bundle['items'] as $alias => $item) {
                 $item['path'] = str_replace('::', '/', $item['path']);
                 $item['load'] = array_filter($item['load'] ?? []);
