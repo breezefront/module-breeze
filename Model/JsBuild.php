@@ -230,6 +230,10 @@ class JsBuild
         $file = str_replace('.min', '', $pathinfo['filename']);
         $dir = $pathinfo['dirname'];
 
+        if (!$this->staticDir->isReadable($dir)) {
+            return [];
+        }
+
         $allPaths = $this->staticDir->read($dir);
         sort($allPaths, SORT_NATURAL);
         $suffix = strpos($curPath, '.min.js') === false ? '.js' : '.min.js';
