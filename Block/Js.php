@@ -294,6 +294,17 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         $allAssets = [];
         foreach ($this->getAllBundles() as $name => $bundle) {
             $staticItems = array_filter($bundle['items'], fn ($item) => empty(array_filter($item['load'] ?? [])));
+
+            // unset imports from other bundles
+            foreach ($staticItems as $key => $item) {
+                foreach ($item['import'] ?? [] as $importKey => $importName) {
+                    $importItem = $this->findItemInfo($importName);
+                    if ($importItem && $importItem['bundle'] !== $name) {
+                        unset($staticItems[$key]['import'][$importKey]);
+                    }
+                }
+            }
+
             $builds[$name] = $this->jsBuildFactory->create(array_merge([
                 'name' => 'Swissup_Breeze/bundles/' . $this->storeManager->getStore()->getId() . '/' . $name,
                 'type' => $bundle['type'],
