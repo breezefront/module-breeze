@@ -84,9 +84,14 @@
 
         /** Hide expanded widgets */
         destroy: function () {
-            if (!this.options.saveState && !this.options.active) {
-                this.close();
+            if (this.options.openedState) {
+                this.element.removeClass(this.options.openedState);
             }
+
+            if (this.options.collateral.element && this.options.collateral.openedState) {
+                $(this.options.collateral.element).removeClass(this.options.collateral.openedState);
+            }
+
             this._super();
         },
 

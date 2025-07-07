@@ -755,6 +755,14 @@
         return this;
     };
 
+    $.fn.animate = function (props) {
+        if (props.scrollTop !== undefined) {
+            this.scrollTop(props.scrollTop);
+        }
+
+        return this;
+    };
+
     //Microtasks
     (() => {
         var methods = [

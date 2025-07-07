@@ -96,27 +96,7 @@ class JsBuild
             return $this->assets;
         }
 
-        $curPath = $this->getPath();
-        $pathinfo = pathinfo($curPath);
-        $file = str_replace('.min', '', $pathinfo['filename']);
-        $dir = $pathinfo['dirname'];
-
-        $paths = $this->staticDir->read($dir);
-        sort($paths, SORT_NATURAL);
-        $suffix = strpos($curPath, '.min.js') === false ? '.js' : '.min.js';
-
-        foreach ($paths as $path) {
-            $pos = strrpos($path, $suffix);
-            $expectedPos = strlen($path) - strlen($suffix);
-            if ($pos !== $expectedPos) {
-                continue;
-            }
-
-            $regex = str_replace('.', '\.', "/{$file}(\d+)?{$suffix}/");
-            if (!preg_match($regex, $path)) {
-                continue;
-            }
-
+        foreach ($this->getBundledAssetsPaths() as $path) {
             $this->assets[] = $this->getAsset($path);
         }
 
@@ -166,6 +146,8 @@ class JsBuild
             return $this;
         }
 
+        $this->cleanupBundledAssets();
+
         $build = [];
         $loadedDeps = [];
 
@@ -182,8 +164,10 @@ class JsBuild
             }
             $deps = array_diff($deps, $loadedDeps);
 
+            $build[$name] ??= [];
             foreach ($deps as $depPath) {
-                $build[$name . '-' . $depPath] = $this->getContents($depPath);
+                // $build[$name][] = "// dependency of {$name} - {$depPath}";
+                $build[$name][] = $this->getContents($depPath);
                 $loadedDeps[$depPath] = $depPath;
             }
 
@@ -191,11 +175,16 @@ class JsBuild
                 continue;
             }
 
-            $build[$name] = $this->getContents($item['path']);
+            // $build[$name][] = "// {$item['path']}";
+            $build[$name][] = $this->getContents($item['path']);
             if (!empty($item['anonymous'])) {
-                $build[$name] .= ";define([], () => $.breezemap.__register('{$name}'));";
+                $build[$name][] = ";define([], () => $.breezemap.__register('{$name}'));";
             }
             $loadedDeps[$item['path']] = $item['path'];
+        }
+
+        foreach ($build as $name => $items) {
+            $build[$name] = implode("\n", array_filter($items));
         }
 
         $build = array_values(array_filter($build));
@@ -232,6 +221,47 @@ class JsBuild
         $this->publishVersion();
 
         return $this;
+    }
+
+    private function cleanupBundledAssets()
+    {
+        foreach ($this->getBundledAssetsPaths() as $path) {
+            $this->staticDir->delete($path);
+        }
+    }
+
+    private function getBundledAssetsPaths()
+    {
+        $curPath = $this->getPath();
+        $pathinfo = pathinfo($curPath);
+        $file = str_replace('.min', '', $pathinfo['filename']);
+        $dir = $pathinfo['dirname'];
+
+        if (!$this->staticDir->isReadable($dir)) {
+            return [];
+        }
+
+        $allPaths = $this->staticDir->read($dir);
+        sort($allPaths, SORT_NATURAL);
+        $suffix = strpos($curPath, '.min.js') === false ? '.js' : '.min.js';
+
+        $paths = [];
+        foreach ($allPaths as $path) {
+            $pos = strrpos($path, $suffix);
+            $expectedPos = strlen($path) - strlen($suffix);
+            if ($pos !== $expectedPos) {
+                continue;
+            }
+
+            $regex = str_replace('.', '\.', "/{$file}(\d+)?{$suffix}/");
+            if (!preg_match($regex, $path)) {
+                continue;
+            }
+
+            $paths[] = $path;
+        }
+
+        return $paths;
     }
 
     private function getVersion()

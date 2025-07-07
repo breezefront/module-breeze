@@ -13,13 +13,11 @@
             this.defaultStackTraceLimit = Error.stackTraceLimit || 10;
             this.autoloadedBundles = new Set();
             this.lastDefines = [];
-
+            this.bundlePathRe = /(?<path>Swissup_Breeze\/bundles\/\d+\/.*?)\d*(\.min\.js|\.js)$/;
             this.bundlePrefixRe = /(?<prefix>Swissup_Breeze\/bundles\/\d+\/).*\.js$/;
             this.suffixRe = /Swissup_Breeze\/.*?(core|main)(?<suffix>\.min\.js|\.js)$/;
-
             this.bundlePrefix = this.extractBundlePrefix();
             this.jsSuffix = this.extractJsSuffix();
-
             this.initializeGlobals();
         }
 
@@ -28,7 +26,6 @@
                 const script = this.$('script[src*="/Swissup_Breeze/bundles/"]').first();
                 const src = script.attr('src');
                 if (!src) return '';
-
                 const match = src.match(this.bundlePrefixRe);
                 return match?.groups?.prefix || '';
             } catch (error) {
@@ -41,9 +38,7 @@
             try {
                 const scripts = this.$('script[src*="/Swissup_Breeze/"]')
                     .filter((i, el) => el.src.includes('/core.') || el.src.includes('/main.'));
-
                 if (scripts.length === 0) return '.js';
-
                 const src = scripts.first().attr('src');
                 const match = src?.match(this.suffixRe);
                 return match?.groups?.suffix || '.js';
@@ -76,42 +71,38 @@
 
             const module = new BreezeModule(name, this);
             this.modules.set(name, module);
-
             this.configureModulePath(module);
             this.setModuleCallback(module, callback);
             this.addModuleDependencies(module, deps, parents);
-
             return module;
         }
 
         updateModule(module, deps, parents, callback) {
             if (callback && module.callback && callback !== module.callback) {
-                console.warn(`[BreezeModuleLoader] Callback override for "${module.name}"]`);
+                console.warn(`[BreezeModuleLoader] Callback override for "${module.name}"`);
             }
-
             if (!module.callback && callback) {
                 module.callback = callback;
             }
-
             module.addParents(parents);
             module.addDependencies(deps.map(depName => this.createModule(depName, [], [module])));
         }
 
         configureModulePath(module) {
             const jsconfig = this.$.breeze?.jsconfig || {};
-
             if (jsconfig[module.name]) {
                 module.path = jsconfig[module.name].path;
             } else if (module.name.startsWith('text!')) {
                 module.path = module.name.substr(5);
             } else if (!_.isEmpty(jsconfig) && !module.name.startsWith('__') && !this.$.breezemap?.__get(module.name)) {
+                module.unknown = true;
+                module.waitForResult = true;
                 this.findWildcardPath(module, jsconfig);
             }
         }
 
         findWildcardPath(module, jsconfig) {
             const wildcardKeys = Object.keys(jsconfig).filter(k => k.includes('*'));
-
             for (const key of wildcardKeys) {
                 const prefix = key.split('*')[0];
                 if (module.name.startsWith(prefix)) {
@@ -133,37 +124,32 @@
             module.addDependencies(dependencies);
         }
 
-        initializeGlobals() {
-            window.require = this.createRequireFunction();
-            window.define = window.requirejs = window.require;
+        collectDeps(depname) {
+            const dep = this.createModule(depname);
+            if (dep.collectedDeps) {
+                return dep.collectedDeps;
+            }
 
-            window.require.defined = (name) => this.createModule(name).loaded;
-            window.require.toUrl = (path) => path;
-            window.require.config = (cfg) => this.$.extend(true, this.config, cfg || {});
-            window.require.async = (deps) => new Promise(resolve => {
-                const isMultipleDeps = Array.isArray(deps);
-                if (!isMultipleDeps) {
-                    deps = [deps];
-                }
-
-                window.require(deps, (...args) => {
-                    resolve(isMultipleDeps ? args : args[0]);
-                });
-            });
-
-            this.initializeBreezeMap();
+            const result = [];
+            dep.dependencies.forEach(childDep => result.push(...this.collectDeps(childDep.name)));
+            result.push(dep);
+            dep.collectedDeps = result;
+            return result;
         }
 
         createRequireFunction() {
             return (deps, callback, extra) => {
-                if (Array.isArray(deps) && typeof callback === 'function') {
-                    const module = this.createModule(`__module-${this.$.guid++}`, deps, callback);
-                    module.run();
-                    return;
-                }
+                let mod, depsWithImports = [];
+                const scriptName = this.$(document.currentScript).data('name');
+                const isBundle = this.isRunningFromBundle();
+                const bundlePath = isBundle ? document.currentScript?.src.match(this.bundlePathRe)?.groups.path : undefined;
+                const name = isBundle ? undefined : scriptName;
 
                 if (typeof deps === 'string' && typeof extra === 'function') {
-                    return this.createModule(deps, callback, extra);
+                    // define('name', [], () => {})
+                    mod = this.createModule(deps, callback, extra);
+                    mod.named = true;
+                    return mod;
                 }
 
                 if (typeof deps === 'string') {
@@ -175,9 +161,65 @@
                     deps = ['require'];
                 }
 
-                const module = this.createModule(`__module-${this.$.guid++}`, deps, callback);
-                return module.run();
+                mod = this.createModule(name || `__module-${this.$.guid++}`, deps, callback);
+                deps.forEach(depname => depsWithImports.push(...this.collectDeps(depname)));
+                depsWithImports.filter(dep => dep.getGlobalValue()).map(dep => dep.run());
+
+                // Filter out dependencies that are already loaded from the same bundle
+                if (bundlePath) {
+                    depsWithImports = depsWithImports.filter(dep => !dep.name.includes(bundlePath));
+                }
+
+                depsWithImports = depsWithImports
+                    .filter(dep => !dep.loaded && (dep.path || dep.named) && dep.name !== scriptName)
+                    .map(dep => {
+                        if (dep.path?.includes('//')) {
+                            if (dep.path.endsWith('.js') || dep.path.endsWith('/') || dep.path.includes('?')) {
+                                dep.url = dep.path;
+                            } else {
+                                dep.url = dep.path + '.js';
+                            }
+                        } else if (dep.path) {
+                            dep.url = window.require.toUrl(dep.path);
+                        }
+                        return dep;
+                    });
+
+                if (depsWithImports.length) {
+                    this.loadingCount++;
+                    this.$(depsWithImports.map(dep => dep.url)).loadScript()
+                        .done(() => {
+                            this.loadingCount--;
+                            setTimeout(() => mod.run(), 1);
+                        })
+                        .fail(e => {
+                            this.loadingCount--;
+                            console.error(e);
+                        });
+                } else {
+                    setTimeout(() => mod.run(), 1);
+                }
+
+                return mod;
             };
+        }
+
+        initializeGlobals() {
+            window.require = this.createRequireFunction();
+            window.define = window.requirejs = window.require;
+            window.require.defined = (name) => this.createModule(name).loaded;
+            window.require.toUrl = (path) => path;
+            window.require.config = (cfg) => this.$.extend(true, this.config, cfg || {});
+            window.require.async = (deps) => new Promise(resolve => {
+                const isMultipleDeps = Array.isArray(deps);
+                if (!isMultipleDeps) {
+                    deps = [deps];
+                }
+                window.require(deps, (...args) => {
+                    resolve(isMultipleDeps ? args : args[0]);
+                });
+            });
+            this.initializeBreezeMap();
         }
 
         initializeBreezeMap() {
@@ -185,7 +227,6 @@
 
             this.$.breezemap.require = window.require;
             const aliases = Object.keys(this.$.breezemap);
-
             this.$.breezemap = new Proxy(this.$.extend(this.$.breezemap, {
                 __counter: 1,
                 __aliases: {},
@@ -196,7 +237,6 @@
                     if (this.$.breezemap[name]) {
                         return;
                     }
-
                     if (!oldName || typeof oldName === 'number') {
                         this.$.breezemap[name] = this.$.breezemap.__lastComponent(oldName);
                     } else if (this.$.breezemap[oldName] !== undefined) {
@@ -206,21 +246,16 @@
             }), {
                 set: (obj, alias, value) => {
                     obj[alias] = value;
-
                     if (this.$.mixin?.pending?.[alias]) {
                         this.$.mixin.pending[alias].forEach(args => this.$.mixin(...args));
                         delete this.$.mixin.pending[alias];
                     }
-
                     this.createModule(alias).run();
-
                     this.$(document).trigger('breeze:component:load', { alias, value });
                     this.$(document).trigger('breeze:component:load:' + alias, { value });
-
                     return true;
                 }
             });
-
             aliases.forEach(alias => this.createModule(alias).run());
         }
     }
