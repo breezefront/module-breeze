@@ -5,7 +5,9 @@
 
     function processMatchedLoadRule(loadRules, alias, callback) {
         callback = callback || (() => {
-            require([alias], () => $(document).trigger('contentUpdated'));
+            require([alias], () => {
+                $(document).trigger('contentUpdated');
+            });
         });
 
         if (loadRules.onInteraction) {
@@ -89,7 +91,9 @@
 
         if (!result) {
             result = new Promise(resolve => {
-                var callback = () => require([alias], () => resolve($.breezemap.__get(alias))),
+                var callback = () => require([alias], () => {
+                        resolve($.breezemap.__get(alias));
+                    }),
                     loadRules = $.breeze.jsconfig[alias]?.load || {},
                     hasLoadRules = !_.isEmpty(_.pick(loadRules, 'onReveal', 'onEvent', 'onDom'));
 
