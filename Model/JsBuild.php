@@ -164,8 +164,10 @@ class JsBuild
             }
             $deps = array_diff($deps, $loadedDeps);
 
+            $build[$name] ??= [];
             foreach ($deps as $depPath) {
-                $build[$name . '-' . $depPath] = $this->getContents($depPath);
+                // $build[$name][] = "// dependency of {$name} - {$depPath}";
+                $build[$name][] = $this->getContents($depPath);
                 $loadedDeps[$depPath] = $depPath;
             }
 
@@ -173,11 +175,16 @@ class JsBuild
                 continue;
             }
 
-            $build[$name] = $this->getContents($item['path']);
+            // $build[$name][] = "// {$item['path']}";
+            $build[$name][] = $this->getContents($item['path']);
             if (!empty($item['anonymous'])) {
-                $build[$name] .= ";define([], () => $.breezemap.__register('{$name}'));";
+                $build[$name][] = ";define([], () => $.breezemap.__register('{$name}'));";
             }
             $loadedDeps[$item['path']] = $item['path'];
+        }
+
+        foreach ($build as $name => $items) {
+            $build[$name] = implode("\n", array_filter($items));
         }
 
         $build = array_values(array_filter($build));
