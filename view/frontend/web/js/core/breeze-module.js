@@ -151,4 +151,5 @@
     }
 
     window.BreezeModule = BreezeModule;
+    console.log('breeze-module.js loaded');
 })(window.cash || window.$);

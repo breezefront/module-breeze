@@ -1,6 +1,13 @@
 ((cash) => {
     'use strict';
 
+    const originalLog = console.log;
+    const debug = function (...args) {
+        const err = new Error();
+        const stackLine = err.stack.split('\n')[2];
+        originalLog(...args, `(${stackLine.trim()})`);
+    };
+
     class BreezeModuleLoader {
         constructor($) {
             this.$ = $;
@@ -139,33 +146,33 @@
 
         createRequireFunction() {
             return (deps, callback, extra) => {
-                let mod, depsWithImports = [];
-                const scriptName = this.$(document.currentScript).data('name');
+                debug(['require Function() called', arguments]);
+                let module, depsWithImports = [];
+                const currentScript = document.currentScript;
+                const scriptName = currentScript?.dataset?.name;
                 const isBundle = this.isRunningFromBundle();
-                const bundlePath = isBundle ? document.currentScript?.src.match(this.bundlePathRe)?.groups.path : undefined;
+                const bundlePath = isBundle && currentScript?.src
+                    ? currentScript.src.match(this.bundlePathRe)?.groups?.path
+                    : undefined;
+
                 const name = isBundle ? undefined : scriptName;
 
+                // Handle define('name', [], callback)
                 if (typeof deps === 'string' && typeof extra === 'function') {
-                    // define('name', [], () => {})
-                    mod = this.createModule(deps, callback, extra);
-                    mod.named = true;
-                    return mod;
+                    module = this.createModule(deps, callback, extra);
+                    module.named = true;
+                    debug('[define()] called with deps:', deps);
+                    return module;
                 }
 
                 if (typeof deps === 'string') {
-                    return this.createModule(deps);
+                    deps = [deps];
                 }
 
-                if (typeof deps === 'function') {
-                    callback = deps;
-                    deps = ['require'];
-                }
-
-                mod = this.createModule(name || `__module-${this.$.guid++}`, deps, callback);
+                module = this.createModule(name || `__module-${this.$.guid++}`, deps, callback);
                 deps.forEach(depname => depsWithImports.push(...this.collectDeps(depname)));
-                depsWithImports.filter(dep => dep.getGlobalValue()).map(dep => dep.run());
+                depsWithImports.filter(dep => dep.getGlobalValue()).forEach(dep => dep.run());
 
-                // Filter out dependencies that are already loaded from the same bundle
                 if (bundlePath) {
                     depsWithImports = depsWithImports.filter(dep => !dep.name.includes(bundlePath));
                 }
@@ -174,37 +181,41 @@
                     .filter(dep => !dep.loaded && (dep.path || dep.named) && dep.name !== scriptName)
                     .map(dep => {
                         if (dep.path?.includes('//')) {
-                            if (dep.path.endsWith('.js') || dep.path.endsWith('/') || dep.path.includes('?')) {
-                                dep.url = dep.path;
-                            } else {
-                                dep.url = dep.path + '.js';
-                            }
+                            dep.url = dep.path.endsWith('.js') || dep.path.endsWith('/') || dep.path.includes('?')
+                                ? dep.path
+                                : dep.path + '.js';
                         } else if (dep.path) {
                             dep.url = window.require.toUrl(dep.path);
                         }
                         return dep;
                     });
 
+                const ranModule = (mod, timeout = 1) => {
+                    setTimeout(() => {
+                        console.debug('[Breeze] Running module', mod.name);
+                        mod.run();
+                    }, timeout);
+                };
+
                 if (depsWithImports.length) {
                     this.loadingCount++;
                     this.$(depsWithImports.map(dep => dep.url)).loadScript()
-                        .done(() => {
+                        .always(() => {
                             this.loadingCount--;
-                            setTimeout(() => mod.run(), 1);
+                            ranModule(module);
                         })
-                        .fail(e => {
-                            this.loadingCount--;
-                            console.error(e);
-                        });
+                        .fail(console.error);
                 } else {
-                    setTimeout(() => mod.run(), 1);
+                    ranModule(module);
                 }
 
-                return mod;
+                debug('[define()] called with deps:', deps);
+                return module;
             };
         }
 
         initializeGlobals() {
+            debug('define.js initializing globals');
             window.require = this.createRequireFunction();
             window.define = window.requirejs = window.require;
             window.require.defined = (name) => this.createModule(name).loaded;
