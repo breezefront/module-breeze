@@ -3,6 +3,7 @@
     const SCRIPT_TIMEOUT = 10000;
     const MAX_CACHE_SIZE = 100;
 
+    $.breeze.loadedScripts = $.breeze.loadedScripts || {};
     $.breeze.preloadedScripts = $.breeze.preloadedScripts || {};
 
     function cleanupCache(cache, maxSize) {
@@ -14,6 +15,10 @@
     }
 
     $.preloadScript = function (src, success) {
+        if ($.breeze && $.breeze.loadedScripts && $.breeze.loadedScripts[src]) {
+            return Promise.resolve().then(success || _.noop);
+        }
+
         if ($.breeze.preloadedScripts[src]) {
             return Promise.resolve().then(success || _.noop);
         }

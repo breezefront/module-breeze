@@ -9,6 +9,7 @@
     window.mage = $.mage = window.mage || {};
 
     $.breeze.loadedScripts = $.breeze.loadedScripts || {};
+    $.breeze.preloadedScripts = $.breeze.preloadedScripts || {};
     $.breeze.jsconfig = $.breeze.jsconfig || {};
     $.breeze._initialized = true;
 
