@@ -1,57 +1,79 @@
-(function () {
-    'use strict';
+(() => {
+    const memo = new Map();
+    const SCRIPT_TIMEOUT = 10000;
+    const MAX_CACHE_SIZE = 100;
+    const ALLOWED_SCRIPT_ATTRIBUTES = [
+        'src', 'type', 'async', 'defer', 'crossorigin',
+        'integrity', 'referrerpolicy', 'nomodule', 'data-name'
+    ];
 
-    var memo = {},
-        preloadMemo = {};
+    $.breeze.loadedScripts = $.breeze.loadedScripts || {};
+
+    function cleanupCache(cache, maxSize) {
+        if (cache.size > maxSize) {
+            const entries = Array.from(cache.entries());
+            const toDelete = entries.slice(0, cache.size - maxSize);
+            toDelete.forEach(([key]) => cache.delete(key));
+        }
+    }
 
     $.loadScript = function (src, success) {
-        var obj = typeof src === 'object' ? src : { src: src };
+        const obj = typeof src === 'object' ? src : { src };
 
-        if (!memo[obj.src]) {
-            memo[obj.src] = new Promise((resolve, reject) => {
-                var script = document.createElement('script');
+        if ($.breeze.loadedScripts[obj.src]) {
+            return Promise.resolve().then(success || _.noop);
+        }
 
-                if ($.breeze.loadedScripts[obj.src]) {
-                    return resolve();
+        if (memo.has(obj.src)) {
+            return memo.get(obj.src).then(success || _.noop);
+        }
+
+        cleanupCache(memo, MAX_CACHE_SIZE);
+
+        const promise = new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            const timeoutId = setTimeout(() => {
+                script.onload = script.onerror = null;
+                if (script.parentNode) {
+                    document.head.removeChild(script);
                 }
+                memo.delete(obj.src);
+                reject(new Error(`Script loading timeout: ${obj.src}`));
+            }, SCRIPT_TIMEOUT);
 
-                script.onload = () => {
-                    $.breeze.loadedScripts[obj.src] = true;
-                    resolve();
-                };
-                script.onerror = reject;
-                script.async = true;
+            script.onload = () => {
+                clearTimeout(timeoutId);
+                $.breeze.loadedScripts[obj.src] = true;
+                resolve();
+            };
 
-                for (const [key, value] of Object.entries(obj)) {
+            script.onerror = (event) => {
+                clearTimeout(timeoutId);
+                memo.delete(obj.src);
+                const error = new Error(`Script load failed: ${obj.src}`);
+                error.event = event;
+                reject(error);
+            };
+
+            for (const [key, value] of Object.entries(obj)) {
+                if (ALLOWED_SCRIPT_ATTRIBUTES.includes(key)) {
                     script.setAttribute(key, value);
+                } else if (key !== 'src') {
+                    console.warn(`Ignored unsafe script attribute: ${key}`);
                 }
+            }
 
-                document.head.appendChild(script);
-            });
-        }
+            if (obj.async === undefined || obj.async === null) {
+                script.async = true;
+            }
 
-        return memo[obj.src].then(success || _.noop);
+            document.head.appendChild(script);
+        });
+
+        memo.set(obj.src, promise);
+        return promise.then(success || _.noop);
     };
 
-    $.preloadScript = function (src, success) {
-        if (!preloadMemo[src]) {
-            preloadMemo[src] = new Promise((resolve, reject) => {
-                var link = document.createElement('link');
-
-                if ($.breeze.loadedScripts[src]) {
-                    return resolve();
-                }
-
-                link.onload = resolve;
-                link.onerror = reject;
-                link.href = src;
-                link.rel = 'preload';
-                link.as = 'script';
-
-                document.head.appendChild(link);
-            });
-        }
-
-        return preloadMemo[src].then(success || _.noop);
-    };
+    $.loadScript.clearCache = () => memo.clear();
+    $.loadScript.getCacheSize = () => memo.size;
 })();

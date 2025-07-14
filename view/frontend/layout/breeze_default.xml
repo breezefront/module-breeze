@@ -50,6 +50,7 @@
                             <item name="cash" xsi:type="string">Swissup_Breeze/js/lib/cash-9.0.0.min.js</item>
                             <item name="breeze-cash-extend" xsi:type="string">Swissup_Breeze/js/core/extend-cash</item>
                             <item name="breeze-globals" xsi:type="string">Swissup_Breeze/js/core/globals</item>
+                            <item name="breeze-preload-script" xsi:type="string">Swissup_Breeze/js/core/preload-script</item>
                             <item name="breeze-load-script" xsi:type="string">Swissup_Breeze/js/core/load-script</item>
                             <item name="breeze-async" xsi:type="string">Swissup_Breeze/js/core/async</item>
                             <item name="breeze-lazy" xsi:type="string">Swissup_Breeze/js/core/lazy</item>
