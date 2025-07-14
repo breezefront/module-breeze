@@ -1,11 +1,16 @@
 (function () {
     'use strict';
 
-    window.breeze = $.breeze = {};
-    window.mage = $.mage = {};
+    if (window.breeze && window.breeze._initialized) {
+        return;
+    }
 
-    $.breeze.loadedScripts = {};
-    $.breeze.jsconfig = {};
+    window.breeze = $.breeze = window.breeze || {};
+    window.mage = $.mage = window.mage || {};
+
+    $.breeze.loadedScripts = $.breeze.loadedScripts || {};
+    $.breeze.jsconfig = $.breeze.jsconfig || {};
+    $.breeze._initialized = true;
 
     $.breezemap = {
         'jquery': $,
