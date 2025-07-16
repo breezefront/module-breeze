@@ -1,7 +1,8 @@
 (() => {
-    const memo = new Map();
+    const preloadMemo = new Map();
     const SCRIPT_TIMEOUT = 10000;
     const MAX_CACHE_SIZE = 100;
+    const DEBUG = false;
 
     $.breeze.loadedScripts = $.breeze.loadedScripts || {};
     $.breeze.preloadedScripts = $.breeze.preloadedScripts || {};
@@ -15,6 +16,7 @@
     }
 
     $.preloadScript = function (src, success) {
+        if (DEBUG) console.log('preloadScript', src);
         if ($.breeze && $.breeze.loadedScripts && $.breeze.loadedScripts[src]) {
             return Promise.resolve().then(success || _.noop);
         }
@@ -23,11 +25,12 @@
             return Promise.resolve().then(success || _.noop);
         }
 
-        if (memo.has(src)) {
-            return memo.get(src).then(success || _.noop);
+        if (preloadMemo.has(src)) {
+            return preloadMemo.get(src).then(success || _.noop);
         }
+        if (DEBUG) console.log('preload request:', src);
 
-        cleanupCache(memo, MAX_CACHE_SIZE);
+        cleanupCache(preloadMemo, MAX_CACHE_SIZE);
 
         const promise = new Promise((resolve, reject) => {
             const link = document.createElement('link');
@@ -36,11 +39,12 @@
                 if (link.parentNode) {
                     document.head.removeChild(link);
                 }
-                memo.delete(src);
+                preloadMemo.delete(src);
                 reject(new Error(`Preload timeout: ${src}`));
             }, SCRIPT_TIMEOUT);
 
             link.onload = () => {
+                if (DEBUG) console.log('on preloadScript', src);
                 clearTimeout(timeoutId);
                 $.breeze.preloadedScripts[src] = true;
                 resolve();
@@ -48,7 +52,7 @@
 
             link.onerror = (event) => {
                 clearTimeout(timeoutId);
-                memo.delete(src);
+                preloadMemo.delete(src);
                 const error = new Error(`Preload failed: ${src}`);
                 error.event = event;
                 reject(error);
@@ -61,10 +65,10 @@
             document.head.appendChild(link);
         });
 
-        memo.set(src, promise);
+        preloadMemo.set(src, promise);
         return promise.then(success || _.noop);
     };
 
-    $.preloadScript.clearCache = () => memo.clear();
-    $.preloadScript.getCacheSize = () => memo.size;
+    $.preloadScript.clearCache = () => preloadMemo.clear();
+    $.preloadScript.getCacheSize = () => preloadMemo.size;
 })();
