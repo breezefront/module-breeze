@@ -3,8 +3,11 @@
     const SCRIPT_TIMEOUT = 10000;
     const MAX_CACHE_SIZE = 100;
     const ALLOWED_SCRIPT_ATTRIBUTES = [
-        'src', 'type', 'async', 'defer', 'crossorigin',
-        'integrity', 'referrerpolicy', 'nomodule', 'data-name'
+        'type',
+        'crossorigin',
+        'integrity',
+        'referrerpolicy',
+        'nomodule'
     ];
 
     $.breeze.loadedScripts = $.breeze.loadedScripts || {};
@@ -55,16 +58,19 @@
                 reject(error);
             };
 
+            script.src = obj.src;
+            script.async = obj.async !== false;
+            script.defer = obj.defer === true;
+
             for (const [key, value] of Object.entries(obj)) {
-                if (ALLOWED_SCRIPT_ATTRIBUTES.includes(key)) {
+                if (['src', 'async', 'defer'].includes(key)) {
+                    continue;
+                }
+                if (key.startsWith('data-') || ALLOWED_SCRIPT_ATTRIBUTES.includes(key)) {
                     script.setAttribute(key, value);
-                } else if (key !== 'src') {
+                } else {
                     console.warn(`Ignored unsafe script attribute: ${key}`);
                 }
-            }
-
-            if (obj.async === undefined || obj.async === null) {
-                script.async = true;
             }
 
             document.head.appendChild(script);

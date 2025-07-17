@@ -144,12 +144,10 @@
 
         if (!listeners) return;
 
-        // Відфільтровуємо тільки ті, які НЕ є цим callback
         mapping[args.selector] = listeners.filter(data =>
             !(data.ctx === args.ctx && data.callback === args.callback)
         );
 
-        // Якщо всі обробники зняті, можна видалити ключ
         if (mapping[args.selector].length === 0) {
             delete mapping[args.selector];
         }
