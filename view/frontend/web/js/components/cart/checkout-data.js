@@ -1,7 +1,13 @@
 (() => {
     'use strict';
 
-    var storage = $.storage.ns('mage-cache-storage');
+    var storage = $.storage.ns('mage-cache-storage'),
+        getMethodName = function (name, prefix, suffix) {
+            prefix = prefix || '';
+            suffix = suffix || '';
+
+            return prefix + name.charAt(0).toUpperCase() + name.slice(1) + suffix;
+        };
 
     (() => {
         var cacheKey = 'checkout-data',
@@ -41,7 +47,20 @@
                 return data ? data[key] : null;
             },
             isChanged: function (key, value) {
+                var methodName = getMethodName(key, '_is', 'Changed');
+
+                if (this[methodName]) {
+                    return this[methodName](value);
+                }
+
                 return this.get(key) !== value;
+            },
+            _isAddressChanged: function (address) {
+                return JSON.stringify(_.pick(this.get('address'), this.requiredFields)) !==
+                    JSON.stringify(_.pick(address, this.requiredFields));
+            },
+            _isSubtotalChanged: function (subtotal) {
+                return subtotal !== parseFloat(this.get('totals').subtotal);
             },
         };
     })();
