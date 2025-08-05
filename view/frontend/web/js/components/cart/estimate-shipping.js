@@ -60,8 +60,8 @@ define([
 
             if (!cartData.get('rates') || !quote.shippingAddress()) {
                 this.updateShippingAddress();
-            } else {
-                this.fetchTotals();
+            } else if (cartData.isChanged('cartVersion', $.customerData.get('cart')()['data_id'])) {
+                this.fetchShippingRates();
             }
         },
 
@@ -154,6 +154,10 @@ define([
             checkoutData.setShippingAddressFromData(address);
             quote.shippingAddress(addressModel(address));
 
+            this.fetchShippingRates();
+        }, 200),
+
+        fetchShippingRates: function () {
             this.isLoading(true);
 
             estimation.getShippingRates().then(result => {
@@ -164,11 +168,12 @@ define([
                 this.shippingMethodToQuote();
                 this.fetchTotals();
             });
-        }, 200),
+        },
 
         fetchTotals: function () {
             return estimation.getTotals().then(result => {
                 quote.setTotals(result.body);
+                cartData.set('cartVersion', $.customerData.get('cart')()['data_id']);
             });
         },
 

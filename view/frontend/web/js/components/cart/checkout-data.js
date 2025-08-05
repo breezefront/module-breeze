@@ -39,7 +39,10 @@
                 }
 
                 return data ? data[key] : null;
-            }
+            },
+            isChanged: function (key, value) {
+                return this.get(key) !== value;
+            },
         };
     })();
 })();
