@@ -40,7 +40,7 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
 
 <div class="breeze-gallery <?= $block->escapeHtmlAttr($mode) ?> <?= $block->escapeHtmlAttr($navDir) ?> <?= $showCaption ? 'caption' : '' ?>">
     <div class="stage <?= $mainImage && $mainImage->getVideoUrl() ? 'video' : '' ?>"
-        data-gallery-id="<?= $galleryId ?>"
+        data-gallery-id="<?= /* @noEscape */ $galleryId ?>"
         data-gallery-role="gallery-placeholder"
         data-caption="<?= $block->escapeHtmlAttr($mainImageLabel) ?>">
         <div class="main-image-wrapper" tabindex="0">
@@ -48,8 +48,8 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
                 fetchpriority="high"
                 class="main-image"
                 src="<?= $block->escapeUrl($mainImageUrl) ?>"
-                width="<?= $width ?>"
-                height="<?= $height ?>"
+                width="<?= $block->escapeHtmlAttr($width) ?>"
+                height="<?= $block->escapeHtmlAttr($height) ?>"
                 <?php if ($srcset) : ?>
                     srcset="<?= $block->escapeHtmlAttr($srcset) ?>"
                     sizes="<?= $block->escapeHtmlAttr($sizes) ?>"
@@ -59,12 +59,12 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
         </div>
 
         <?php if (count($images) > 1) : ?>
-            <a href="#" class="prev" tabindex="-1" aria-label="<?= __('Previous Image') ?>">
+            <a href="#" class="prev" tabindex="-1" aria-label="<?= $block->escapeHtmlAttr(__('Previous Image')) ?>">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                 </svg>
             </a>
-            <a href="#" class="next" tabindex="-1" aria-label="<?= __('Next Image') ?>">
+            <a href="#" class="next" tabindex="-1" aria-label="<?= $block->escapeHtmlAttr(__('Next Image')) ?>">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                 </svg>
@@ -72,19 +72,19 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
         <?php endif ?>
 
         <div class="controls">
-            <a href="#" class="zoom zoom-in" aria-label="<?= __('Zoom In') ?>">
+            <a href="#" class="zoom zoom-in" aria-label="<?= $block->escapeHtmlAttr(__('Zoom In')) ?>">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                 </svg>
             </a>
-            <a href="#" class="zoom zoom-out" aria-label="<?= __('Zoom Out') ?>">
+            <a href="#" class="zoom zoom-out" aria-label="<?= $block->escapeHtmlAttr(__('Zoom Out')) ?>">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4" />
                 </svg>
             </a>
         </div>
 
-        <a href="#" class="close" aria-label="<?= __('Close') ?>">
+        <a href="#" class="close" aria-label="<?= $block->escapeHtmlAttr(__('Close')) ?>">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -103,7 +103,7 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
 
                     $srcset = $responsiveImageHelper->getSrcset($image, 'product_page_image_medium');
                 ?>
-                <a class="<?= implode(' ', $classes) ?>"
+                <a class="<?= $block->escapeHtmlAttr(implode(' ', $classes)) ?>"
                     href="<?= $block->escapeUrl($image->getLargeImageUrl()) ?>"
                     title="<?= $block->escapeHtmlAttr($image->getLabel() ?: __('View Image')) ?>"
                     data-caption="<?= $block->escapeHtmlAttr($image->getLabel() ?: $block->getProduct()->getName()) ?>">
@@ -114,8 +114,8 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
                             srcset="<?= $block->escapeHtmlAttr($srcset) ?>"
                             sizes="<?= $block->escapeHtmlAttr($sizes) ?>"
                         <?php endif ?>
-                        width="<?= $width ?>"
-                        height="<?= $height ?>"/>
+                        width="<?= $block->escapeHtmlAttr($width) ?>"
+                        height="<?= $block->escapeHtmlAttr($height) ?>"/>
                 </a>
             <?php endforeach ?>
         </div>
@@ -133,7 +133,7 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
 
                     $srcset = $responsiveImageHelper->getSrcset($image, 'product_page_image_small');
                 ?>
-                <a class="<?= implode(' ', $classes) ?>"
+                <a class="<?= $block->escapeHtmlAttr(implode(' ', $classes)) ?>"
                     href="<?= $block->escapeUrl($image->getLargeImageUrl()) ?>"
                     title="<?= $block->escapeHtmlAttr($image->getLabel() ?: __('View Image')) ?>">
                     <img loading="lazy"
@@ -143,8 +143,8 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
                             srcset="<?= $block->escapeHtmlAttr($srcset) ?>"
                             sizes="<?= $block->escapeHtmlAttr($thumbSizes) ?>"
                         <?php endif ?>
-                        width="<?= $thumbWidth ?>"
-                        height="<?= $thumbHeight ?>"
+                        width="<?= $block->escapeHtmlAttr($thumbWidth) ?>"
+                        height="<?= $block->escapeHtmlAttr($thumbHeight) ?>"
                     />
                 </a>
             <?php endforeach ?>
@@ -154,7 +154,7 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
 
 <script type="text/x-magento-init">
     {
-        "[data-gallery-id='<?= $galleryId ?>']": {
+        "[data-gallery-id='<?= /* @noEscape */ $galleryId ?>']": {
             "mage/gallery/gallery": {
                 "data": <?= /* @noEscape */ $block->getGalleryImagesJson() ?>,
                 "options": <?= /* @noEscape */ $block->getGalleryOptions()->getOptionsJson() ?>,
@@ -170,9 +170,9 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
             <img loading="lazy" alt="<%- caption %>"
                 src="<%- img %>"
                 srcset="<%- srcset ? srcset.medium : '' %>"
-                sizes="<?= $sizes ?>"
-                width="<?= $width ?>"
-                height="<?= $height ?>"
+                sizes="<?= $block->escapeHtmlAttr($sizes) ?>"
+                width="<?= $block->escapeHtmlAttr($width) ?>"
+                height="<?= $block->escapeHtmlAttr($height) ?>"
             />
         </a>
     </script>
@@ -183,9 +183,9 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
         <img loading="lazy" alt="<%- caption %>"
             src="<%- thumb %>"
             srcset="<%- srcset ? srcset.small : '' %>"
-            sizes="<?= $thumbSizes ?>"
-            width="<?= $thumbWidth ?>"
-            height="<?= $thumbHeight ?>"
+            sizes="<?= $block->escapeHtmlAttr($thumbSizes) ?>"
+            width="<?= $block->escapeHtmlAttr($thumbWidth) ?>"
+            height="<?= $block->escapeHtmlAttr($thumbHeight) ?>"
         />
     </a>
 </script>

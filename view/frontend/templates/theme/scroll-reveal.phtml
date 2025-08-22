@@ -1,16 +1,16 @@
 <style>
 @media (prefers-reduced-motion: no-preference) {
-    <?= $block->getCssSelector() ?> {
+    <?= /* @noEscape */ $block->getCssSelector() ?> {
         opacity: .01;
         visibility: hidden;
     }
-    <?= $block->getCssSelectorForActiveKeyboard() ?> {
+    <?= /* @noEscape */ $block->getCssSelectorForActiveKeyboard() ?> {
         visibility: visible;
     }
 
     /* Fixed unclickable elements in Safari 18 */
     @supports (font: -apple-system-body) and (-webkit-appearance: none) {
-        <?= $block->getCssSelector() ?> {
+        <?= /* @noEscape */ $block->getCssSelector() ?> {
             visibility: visible;
         }
     }
@@ -18,7 +18,7 @@
 </style>
 <script>
 require(['jquery', 'underscore'], ($, _) => {
-    var selector = <?= $block->getJsSelector() ?>,
+    var selector = <?= /* @noEscape */ $block->getJsSelector() ?>,
         containers = [
             '.scroll-reveal-cascade',
             '.scroll-reveal-container',

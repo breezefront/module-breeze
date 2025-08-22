@@ -1,6 +1,6 @@
 <script data-defer-js-ignore>
 (() => {
-    var rules = <?= $block->getRules() ?>,
+    var rules = <?= /* @noEscape */ $block->getRules() ?>,
         spinner,
         selectors = [],
         spinnerConfig = {};

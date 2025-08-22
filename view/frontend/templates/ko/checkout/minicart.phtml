@@ -86,7 +86,7 @@
     <?php $promo = $block->getChildHtml('promotion') ?>
     <?php if ($promo) : ?>
         <div id="minicart-widgets" class="minicart-widgets">
-            <?= $promo ?>
+            <?= /* @noEscape */ $promo ?>
         </div>
     <?php endif ?>
 </div>
