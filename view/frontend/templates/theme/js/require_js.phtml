@@ -22,7 +22,7 @@ $scriptString = <<<script
 script;
 
 if (isset($secureRenderer)) {
-    echo /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false);
+    /* @noEscape */ echo $secureRenderer->renderTag('script', [], $scriptString, false);
 } else {
-    echo "<script>{$scriptString}</script>";
+    /* @noEscape */ echo "<script>{$scriptString}</script>";
 }

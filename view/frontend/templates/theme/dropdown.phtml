@@ -3,26 +3,26 @@
     $srOnly = $block->getSrOnly();
 ?>
 
-<div class="<?= $block->getSwitcherCssClass() ?>">
+<div class="<?= $block->escapeHtmlAttr($block->getSwitcherCssClass()) ?>">
     <?php if ($block->getLabel()) : ?>
         <strong class="label switcher-label">
             <span><?= $block->escapeHtml($block->getLabel()) ?></span>
         </strong>
     <?php endif ?>
 
-    <div class="<?= $block->getCssClass() ?>">
+    <div class="<?= $block->escapeHtmlAttr($block->getCssClass()) ?>">
         <a class="action toggle switcher-trigger"
             href="<?= $block->escapeUrl($block->getHref()) ?>"
             title="<?= $block->escapeHtml($block->getTitle()) ?>"
             <?php if ($childHtml) : ?>
-                data-mage-init='<?php echo $this->getJsonConfig() ?>'
+                data-mage-init='<?= $block->escapeHtmlAttr($this->getJsonConfig()) ?>'
                 data-toggle="dropdown"
                 data-trigger-keypress-button="true"
             <?php endif ?>
         >
             <?php if ($block->getIcon()) : ?>
                 <?php $srOnly = true ?>
-                <?= $block->getIcon() ?>
+                <?= /* @noEscape */ $block->getIcon() ?>
             <?php endif ?>
 
             <strong class="<?= $srOnly ? 'abs-visually-hidden' : '' ?>">
@@ -32,7 +32,7 @@
 
         <?php if ($childHtml) : ?>
             <div class="dropdown switcher-dropdown" data-target="dropdown">
-                <?= $childHtml ?>
+                <?= /* @noEscape */ $childHtml ?>
             </div>
         <?php endif ?>
     </div>

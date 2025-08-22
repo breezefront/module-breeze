@@ -3,7 +3,7 @@
 ?>
 
 <div class="block widget widget-recent" data-bind="
-    scope: '<?= $config['scope'] ?>',
+    scope: '<?= /* @noEscape */ $config['scope'] ?>',
     css: options.additionalClasses,
     visible: visible
 "><!-- ko template: { if: visible, name: 'recent-products' } --><!-- /ko --></div>
@@ -13,9 +13,9 @@
     "*": {
         "Magento_Ui/js/core/app": {
             "components": {
-                "<?= $config['scope'] ?>": {
-                    "component": "<?= $config['component'] ?>",
-                    "config": <?= json_encode($config) ?>
+                "<?= /* @noEscape */ $config['scope'] ?>": {
+                    "component": "<?= /* @noEscape */ $config['component'] ?>",
+                    "config": <?= /* @noEscape */ json_encode($config) ?>
                 }
             }
         }

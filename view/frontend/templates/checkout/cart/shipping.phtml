@@ -13,15 +13,15 @@ if ($block->getQuote()->isVirtual()) {
     class="block shipping"
     data-mage-init='{"collapsible":{"openedState": "active", "saveState": true}}'>
     <div class="title" data-role="title">
-        <strong id="block-shipping-heading" role="heading" aria-level="2"><?= $title ?></strong>
+        <strong id="block-shipping-heading" role="heading" aria-level="2"><?= /* @noEscape */ $title ?></strong>
     </div>
     <div id="block-summary" class="content" data-role="content" aria-labelledby="block-shipping-heading">
         <form method="post" id="shipping-zip-form">
             <fieldset class="fieldset estimate">
                 <legend class="legend">
-                    <span><?= $title ?></span>
+                    <span><?= /* @noEscape */ $title ?></span>
                 </legend>
-                <p class="field note"><?= $note ?></p>
+                <p class="field note"><?= /* @noEscape */ $note ?></p>
                 <?= $this->getChildHtml('checkout.cart.shipping.fields') ?>
             </fieldset>
         </form>

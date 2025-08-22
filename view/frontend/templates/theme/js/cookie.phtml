@@ -7,7 +7,7 @@ var cookiesConfig = {
     expires: null,
     path: '<?= $block->escapeJs($block->getPath()) ?>',
     domain: '<?= $block->escapeJs($block->getDomain()) ?>',
-    secure: <?= $isCookieSecure ?>,
+    secure: <?= /* @noEscape */ $isCookieSecure ?>,
     lifetime: '<?= $block->escapeJs($block->getLifetime()) ?>'
 };
 </script>

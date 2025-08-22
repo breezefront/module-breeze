@@ -59,7 +59,7 @@ class AbstractCreateCommand extends Command
     {
         $this->input = $input;
         $this->output = $output;
-        return parent::initialize($input, $output);
+        parent::initialize($input, $output);
     }
 
     protected function create($files)

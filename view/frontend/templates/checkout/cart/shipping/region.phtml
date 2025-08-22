@@ -1,5 +1,5 @@
 <div class="field" data-bind="visible: hasAvailableRegions()" style="display:none">
-    <label class="label" for="estimate_region_id"><span><?= __('State/Province') ?></span></label>
+    <label class="label" for="estimate_region_id"><span><?= $block->escapeHtml(__('State/Province')) ?></span></label>
     <div class="control">
         <select class="select" name="region_id" id="estimate_region_id"
             data-bind="value: regionId,
@@ -9,7 +9,7 @@
     </div>
 </div>
 <div class="field" data-bind="visible: !hasAvailableRegions()">
-    <label class="label" for="estimate_region"><span><?= __('State/Province') ?></span></label>
+    <label class="label" for="estimate_region"><span><?= $block->escapeHtml(__('State/Province')) ?></span></label>
     <div class="control">
         <input type="text" class="input-text" name="region" id="estimate_region" data-bind="value: region">
     </div>
