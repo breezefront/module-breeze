@@ -4,7 +4,7 @@
         <?php if ($block->getOptions()): ?>
             <select class="select" name="<?= $block->escapeHtmlAttr($block->getName()) ?>" id="estimate_<?= $block->escapeHtmlAttr($block->getName()) ?>">
                 <?php foreach ($block->getOptions() as $option): ?>
-                    <option value="<?= $option['value'] ?? '' ?>"><?= $option['label'] ?? '' ?></option>
+                    <option value="<?= $block->escapeHtmlAttr($option['value'] ?? '') ?>"><?= $block->escapeHtml($option['label'] ?? '') ?></option>
                 <?php endforeach ?>
            </select>
         <?php else: ?>
