@@ -41,6 +41,7 @@
         createSlider: function () {
             this.page = 0;
             this.slide = 0;
+            this.isRtl = this.element.css('direction') === 'rtl';
 
             $.each({
                 autoplay: 'autoplay',
@@ -144,14 +145,17 @@
 
             this.slider.on('scroll', () => {
                 var now = new Date(),
-                    overscrollLeft = this.slider[0].scrollLeft - this.scrollMin,
-                    overscrollRight = this.slider[0].scrollLeft - this.scrollMax;
+                    overscrollLeft,
+                    overscrollRight;
 
                 if (now - lastResize <= 200) {
                     return;
                 }
 
                 if (this.options.infinite) {
+                    overscrollLeft = (this.slider[0].scrollLeft - this.scrollMin) * (this.isRtl ? -1 : 1);
+                    overscrollRight = (this.slider[0].scrollLeft - this.scrollMax) * (this.isRtl ? -1 : 1);
+
                     clearTimeout(scrollToTimer);
 
                     if (overscrollLeft <= 0) {
@@ -246,7 +250,7 @@
                     })
                     .on('mouseup.sliderMouseDrag', () => {
                         var scrollTo = initialPage,
-                            percent = pos.dx / (this.slider.width() || 1);
+                            percent = pos.dx / (this.slider.width() || 1) * (this.isRtl ? -1 : 1);
 
                         if (percent > 0.1) {
                             scrollTo -= Math.max(1, Math.ceil(percent));
@@ -287,10 +291,12 @@
 
         buildPagination: async function () {
             var self = this,
+                slideStart = 0,
                 sliderLeft = 0,
                 fauxOffset = 0,
                 pageNumTmp = 0,
                 pageWidthTmp = 0,
+                offsetParentRect = this.slides.first().offsetParent()[0].getBoundingClientRect(),
                 gap = parseFloat(this.slider.css('column-gap')) || 0,
                 sliderWidth = this.slider.outerWidth(),
                 dotsTpl = _.template(this.options.templates.dots),
@@ -316,7 +322,9 @@
             }
 
             this.pages = [];
-            this.scrollOffset = this.slider.offset().left - this.slides.first().offset().left;
+            this.scrollOffset = this.slider[0].getBoundingClientRect()[this.isRtl ? 'right' : 'left'] -
+                this.slides[0].getBoundingClientRect()[this.isRtl ? 'right' : 'left'];
+
             this.slides.removeAttr('data-page-start').each(function (index) {
                 var slide = $(this).attr('data-index', index),
                     slideWidth = $(this).width();
@@ -338,12 +346,17 @@
                     self.pages[pageNumTmp].end += gap;
                 }
 
+                slideStart = Math.abs(
+                    slide[0].getBoundingClientRect()[self.isRtl ? 'right' : 'left'] -
+                    offsetParentRect[self.isRtl ? 'right' : 'left']
+                );
+
                 if (!self.pages[pageNumTmp]) {
                     self.pages[pageNumTmp] = {
                         idx: '',
                         slides: [],
-                        start: slide.position().left + sliderLeft - fauxOffset + self.scrollOffset,
-                        end: slide.position().left + sliderLeft - fauxOffset + self.scrollOffset,
+                        start: slideStart + sliderLeft - fauxOffset + self.scrollOffset,
+                        end: slideStart + sliderLeft - fauxOffset + self.scrollOffset,
                     };
                     slide.attr('data-page-start', pageNumTmp);
                 }
@@ -417,11 +430,16 @@
 
             this.scrollMin = this.pages.at(0).start - gap - (this.pages.at(-1).end - this.pages.at(-1).start);
             this.scrollMax = this.pages.at(-1).end + gap;
+
+            if (this.isRtl) {
+                this.scrollMin *= -1;
+                this.scrollMax *= -1;
+            }
         },
 
         updateCurrentPage: function () {
             var pageNum = this.page,
-                scrollLeft = this.slider.get(0).scrollLeft,
+                scrollLeft = this.slider.get(0).scrollLeft * (this.isRtl ? -1 : 1),
                 delta = 2,
                 width = this.slider.outerWidth(),
                 diffStart = Math.abs(this.pages[pageNum].start - scrollLeft),
@@ -532,13 +550,13 @@
                     - (this.pages.at(-1).end - this.pages.at(-1).start + gap);
             }
 
-            this.scrollTo(left, 'smooth');
+            this.scrollTo(left * (this.isRtl ? -1 : 1), 'smooth');
         },
 
         scrollToPage: function (page, instant) {
             var pageUpdated = false;
 
-            this.scrollTo(this.pages[page].start, instant);
+            this.scrollTo(this.pages[page].start * (this.isRtl ? -1 : 1), instant);
 
             if (this.page !== page) {
                 pageUpdated = true;
