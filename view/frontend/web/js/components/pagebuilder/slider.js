@@ -158,6 +158,12 @@
 
                     clearTimeout(scrollToTimer);
 
+                    if (overscrollLeft <= 2) {
+                        this.pages.at(-1).slides.forEach(slideIndex => {
+                            this.slides.eq(slideIndex).addClass('scroll-reveal-finished');
+                        });
+                    }
+
                     if (overscrollLeft <= 0) {
                         return this.scrollToPage(this.pages.length - 1, 'instant');
                     } else if (overscrollLeft <= 2) {
