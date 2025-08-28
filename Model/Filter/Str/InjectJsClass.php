@@ -18,6 +18,6 @@ class InjectJsClass extends AbstractFilter
             return $html;
         }
 
-        return $this->insertBefore($html, '<script ', $block->toHtml());
+        return $this->insertBefore($html, '<link ', $block->toHtml());
     }
 }
