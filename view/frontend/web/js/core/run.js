@@ -30,6 +30,8 @@ define(['jquery'], async function ($) {
 
     // process inline scripts
     require.ready = true;
-    required.map(args => require(...args));
+    required.map(args => setTimeout(() => {
+        require(...args);
+    }, 0));
     required = [];
 });
