@@ -13,9 +13,7 @@ define(['collapsible'], () => {
         },
 
         create: function () {
-            var self = this,
-                activeIndex,
-                allExpanded = true,
+            var activeIndex,
                 isNotNested = this._isNotNested.bind(this);
 
             this.collapsibles = this.element.find(this.options.collapsibleElement).filter(isNotNested);
@@ -43,7 +41,16 @@ define(['collapsible'], () => {
 
             if (activeIndex > -1) {
                 this.options.active = activeIndex;
+                this.scrollTo(this.collapsibles.eq(activeIndex));
             }
+
+            this.onReveal(this._callCollapsible.bind(this));
+            this.addEventListeners();
+        },
+
+        _callCollapsible: function () {
+            var self = this,
+                allExpanded = true;
 
             this.collapsibles.each(function (index, el) {
                 var isActive;
@@ -60,12 +67,7 @@ define(['collapsible'], () => {
                     allExpanded = false;
                 }
 
-                $(el).collapsible($.extend({}, self.options, {
-                    active: isActive,
-                    header: self.headers.eq(index),
-                    content: self.contents.eq(index),
-                    trigger: self.triggers.eq(index)
-                }));
+                self._instantiateCollapsible(el, index, isActive);
             });
 
             if (allExpanded && this.component === 'tabs') {
@@ -77,21 +79,7 @@ define(['collapsible'], () => {
                 });
             }
 
-            this.addEventListeners();
-            if (activeIndex > -1) {
-                this.scrollTo(this.getActiveTab());
-            }
-        },
-
-        addEventListeners: function () {
-            var self = this;
-
-            this._on('[role="tab"]', 'a11y:focus', function (event) {
-                if ($(event.target).attr('aria-expanded') !== 'true') {
-                    $(event.target).click();
-                }
-            });
-
+            // listeners must be added after initialization to avoid early callback (scrollTo when tab is reveled)
             $(this.element).on('collapsible:beforeOpen', function (event, data) {
                 var oldActiveTab = self.getActiveTab(),
                     newActiveTab = data.instance.element,
@@ -125,6 +113,25 @@ define(['collapsible'], () => {
 
             $(this.element).on('collapsible:afterLoad', function (event, data) {
                 data.instance.content.css('height', 'auto');
+            });
+        },
+
+        _instantiateCollapsible: function (el, index, isActive) {
+            $(el).collapsible($.extend({}, this.options, {
+                active: isActive,
+                header: this.headers.eq(index),
+                content: this.contents.eq(index),
+                trigger: this.triggers.eq(index)
+            }));
+        },
+
+        addEventListeners: function () {
+            var self = this;
+
+            this._on('[role="tab"]', 'a11y:focus', function (event) {
+                if ($(event.target).attr('aria-expanded') !== 'true') {
+                    $(event.target).click();
+                }
             });
 
             // Reviews and other third-party links
