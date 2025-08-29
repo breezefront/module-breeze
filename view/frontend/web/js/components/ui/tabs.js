@@ -52,6 +52,11 @@ define(['collapsible'], () => {
             var self = this,
                 allExpanded = true;
 
+            if (this._callCollapsibleDone) {
+                return;
+            }
+            this._callCollapsibleDone = true;
+
             this.collapsibles.each(function (index, el) {
                 var isActive;
 
@@ -155,6 +160,7 @@ define(['collapsible'], () => {
                 }
 
                 event.preventDefault();
+                self._callCollapsible();
                 self.collapsibles.eq(index).collapsible('open');
                 element = self.contents.find('#' + anchor);
 
