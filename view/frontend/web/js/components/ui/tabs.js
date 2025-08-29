@@ -38,6 +38,7 @@ define(['collapsible'], () => {
 
             this.triggers.attr('role', 'tab');
             this.triggers.last().addClass('last');
+            this.addEventListeners();
 
             activeIndex = this.findActiveTabIndex(location.hash);
 
@@ -76,6 +77,10 @@ define(['collapsible'], () => {
                     selectable: '[role="tab"]',
                 });
             }
+        },
+
+        addEventListeners: function () {
+            var self = this;
 
             this._on('[role="tab"]', 'a11y:focus', function (event) {
                 if ($(event.target).attr('aria-expanded') !== 'true') {
@@ -171,7 +176,7 @@ define(['collapsible'], () => {
             var tab;
 
             this.collapsibles.each(function (index, el) {
-                if ($(el).collapsible('isActive')) {
+                if ($(el).collapsible('instance') && $(el).collapsible('isActive')) {
                     tab = $(el);
 
                     return false;
