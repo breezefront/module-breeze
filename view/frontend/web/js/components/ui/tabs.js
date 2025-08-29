@@ -38,7 +38,6 @@ define(['collapsible'], () => {
 
             this.triggers.attr('role', 'tab');
             this.triggers.last().addClass('last');
-            this.addEventListeners();
 
             activeIndex = this.findActiveTabIndex(location.hash);
 
@@ -76,6 +75,11 @@ define(['collapsible'], () => {
                 this.element.a11y('selectable', {
                     selectable: '[role="tab"]',
                 });
+            }
+
+            this.addEventListeners();
+            if (activeIndex > -1) {
+                this.scrollTo(this.getActiveTab());
             }
         },
 
