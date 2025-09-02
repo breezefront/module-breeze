@@ -50,6 +50,7 @@ class DomDocument
             '“' => 'bz-ldquo',
             '”' => 'bz-rdquo',
             '@' => 'bz-at',
+            '=>' => 'bz-arrow-fn',
         ];
     }
 }
