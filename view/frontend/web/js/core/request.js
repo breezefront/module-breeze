@@ -349,6 +349,10 @@
     $.post = $.request.post;
 
     function storageRequest(url, global, contentType, headers, method, data) {
+        if (!url.startsWith('http')) {
+            url = window.BASE_URL + url;
+        }
+
         return $.ajax(url, {
             data, global, headers, method,
             contentType: contentType || 'application/json',
