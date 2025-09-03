@@ -282,7 +282,7 @@
                     console.error(e);
                 }
 
-                return jqXHR;
+                return jqXHR.body;
             })
             .catch(function (error) {
                 return onError(error.xhr, params, error);
