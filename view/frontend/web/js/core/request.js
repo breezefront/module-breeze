@@ -301,16 +301,9 @@
         });
 
         result.abort = () => controller.abort();
+        result.catch = result.fail;
 
-        function createWrapper(o) {
-            return {
-                then: (...args) => createWrapper(o.then(...args)),
-                catch: (...args) => createWrapper(o.catch(...args)),
-                always: cb => createWrapper(o.then(cb, cb)),
-            };
-        }
-
-        return createWrapper(result);
+        return result;
     }
 
     $.request = {
