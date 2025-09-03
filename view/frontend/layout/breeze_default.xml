@@ -273,7 +273,14 @@
                                     </item>
                                 </item>
                             </item>
-                            <item name="Magento_Customer/js/view/authentication-popup" xsi:type="string">Swissup_Breeze/js/components/authentication-popup</item>
+                            <item name="Magento_Customer/js/view/authentication-popup" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/authentication-popup</item>
+                                <item name="export" xsi:type="array">
+                                    <item name="view" xsi:type="string">Magento_Customer/js/view/authentication-popup</item>
+                                    <item name="model" xsi:type="string">Magento_Customer/js/model/authentication-popup</item>
+                                    <item name="login" xsi:type="string">Magento_Customer/js/action/login</item>
+                                </item>
+                            </item>
                             <item name="Magento_Ui/js/block-loader" xsi:type="string">Swissup_Breeze/js/components/block-loader</item>
                             <item name="Magento_PageBuilder/js/widget-initializer" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/initializer</item>

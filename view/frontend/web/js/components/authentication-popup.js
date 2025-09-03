@@ -5,7 +5,7 @@ define([
 ], function (Component, modal, customerData) {
     'use strict';
 
-    var loginAction, loginCallbacks = [];
+    var authenticationPopup, loginAction, loginCallbacks = [];
 
     loginAction = function (loginData, redirectUrl, isGlobal, messageContainer) {
         messageContainer = messageContainer || $.registry.first('uiMessages');
@@ -34,6 +34,28 @@ define([
     loginAction.registerLoginCallback = (callback) => loginCallbacks.push(callback);
     $.breezemap['Magento_Customer/js/action/login'] = loginAction;
 
+    authenticationPopup = $.breezemap['Magento_Customer/js/model/authentication-popup'] = {
+        modalWindow: null,
+
+        createPopUp: function (element) {
+            this.modalWindow = element;
+            modal({
+                'modalClass': 'popup-authentication',
+                'focus': '[name=username]',
+                'trigger': '.proceed-to-checkout',
+                'buttons': []
+            }, $(this.modalWindow));
+
+            $(this.modalWindow).on('modal:opened', () => {
+                $(this.modalWindow).trigger('contentUpdated');
+            });
+        },
+
+        showModal: function () {
+            $(this.modalWindow || '#authenticationPopup').authPopup('showModal');
+        }
+    };
+
     $.view('authPopup', {
         component: 'Magento_Customer/js/view/authentication-popup',
         defaults: {
@@ -49,7 +71,8 @@ define([
         },
 
         _applyBindings: async function (element, force) {
-            if (force) {
+            if (force && !this.applied) {
+                this.applied = true;
                 return this._super(element);
             }
         },
@@ -57,22 +80,16 @@ define([
         isActive: () => !customerData.get('customer')(),
 
         setModalElement: function (element) {
-            if (this.modalWindow) {
-                return;
+            if (!this.modalWindow) {
+                this.modalWindow = element;
+                this.createPopup(element);
             }
+        },
 
-            this.modalWindow = element;
-
-            modal({
-                'modalClass': 'popup-authentication',
-                'focus': '[name=username]',
-                'trigger': '.proceed-to-checkout',
-                'buttons': []
-            }, $(this.modalWindow));
-
-            $(this.modalWindow).on('modal:opened', () => {
-                $(this.modalWindow).trigger('contentUpdated');
-            });
+        createPopup: function (element) {
+            if (!authenticationPopup.modalWindow) {
+                authenticationPopup.createPopUp(element);
+            }
         },
 
         showModal: async function () {
