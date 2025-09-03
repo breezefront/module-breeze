@@ -34,7 +34,7 @@
                 url: href || this.options.productReviewUrl,
                 type: 'html'
             }).then(function (response) {
-                $('#product-review-container').html(response.text).trigger('contentUpdated');
+                $('#product-review-container').html(response).trigger('contentUpdated');
             });
         }
     });

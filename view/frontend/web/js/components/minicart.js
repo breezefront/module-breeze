@@ -209,11 +209,11 @@
             }).then(function (response) {
                 elem.prop('disabled', false);
 
-                if (response.body.success) {
+                if (response.success) {
                     callback.call(self, elem, response);
-                } else if (response.body.error_message) {
+                } else if (response.error_message) {
                     $.alert({
-                        content: response.body.error_message
+                        content: response.error_message
                     });
                 }
             });

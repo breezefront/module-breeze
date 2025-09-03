@@ -1091,7 +1091,7 @@ define([
                     url: $widget.options.mediaCallback,
                     data: mediaCallData
                 }).then(function (response) {
-                    mediaSuccessCallback(response.body);
+                    mediaSuccessCallback(response);
                 });
             }
         },

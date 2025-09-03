@@ -164,7 +164,7 @@
                 type: 'json'
             }).then(function (response) {
                 $.each(placeholders, function () {
-                    self._replacePlaceholder(this, response.body[this.name]);
+                    self._replacePlaceholder(this, response[this.name]);
                 });
             });
         }

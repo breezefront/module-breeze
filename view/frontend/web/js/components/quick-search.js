@@ -382,7 +382,7 @@
                     q: value
                 }
             }).then(function (response) {
-                this.prepareResponse(response.body);
+                this.prepareResponse(response);
                 this.processResponse();
             }.bind(this));
         },
