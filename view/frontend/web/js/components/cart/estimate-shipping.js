@@ -161,10 +161,10 @@ define([
             this.isLoading(true);
 
             estimation.getShippingRates().then(result => {
-                cartData.set('rates', result.body);
+                cartData.set('rates', result);
                 this.isLoading(false);
                 this.isShippingBlockVisible(true);
-                this.rates(result.body);
+                this.rates(result);
                 this.shippingMethodToQuote();
                 this.fetchTotals();
             });
@@ -172,7 +172,7 @@ define([
 
         fetchTotals: function () {
             return estimation.getTotals().then(result => {
-                quote.setTotals(result.body);
+                quote.setTotals(result);
                 cartData.set('cartVersion', $.customerData.get('cart')()['data_id']);
             });
         },

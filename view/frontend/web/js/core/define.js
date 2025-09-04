@@ -286,7 +286,7 @@
                             dep.cb = () => el.html();
                         } else {
                             await $.get(dep.url).then(res => {
-                                dep.cb = () => res.body;
+                                dep.cb = () => res;
                             }).catch(e => console.error(e));
                         }
                     } else if (dep.url) {
