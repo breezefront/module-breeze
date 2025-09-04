@@ -1,10 +1,57 @@
 define([
     'jquery',
     'underscore',
+    'uiClass',
     'Magento_Customer/js/customer-data',
     'escaper'
-], function ($, _, customerData, escaper) {
+], function ($, _, uiClass, customerData, escaper) {
     'use strict';
+
+    $.breezemap['Magento_Ui/js/model/messages'] = uiClass.extend({
+        initialize: function () {
+            this._super().initObservable();
+            return this;
+        },
+
+        initObservable: function () {
+            this.errorMessages = ko.observableArray([]);
+            this.successMessages = ko.observableArray([]);
+            return this;
+        },
+
+        add: function (message, type) {
+            this.clear();
+            type.push(message.message || message);
+            return true;
+        },
+
+        addSuccessMessage: function (message) {
+            return this.add(message, this.successMessages);
+        },
+
+        addErrorMessage: function (message) {
+            return this.add(message, this.errorMessages);
+        },
+
+        getErrorMessages: function () {
+            return this.errorMessages;
+        },
+
+        getSuccessMessages: function () {
+            return this.successMessages;
+        },
+
+        hasMessages: function () {
+            return this.errorMessages().length || this.successMessages().length;
+        },
+
+        clear: function () {
+            this.errorMessages.removeAll();
+            this.successMessages.removeAll();
+        }
+    });
+
+    $.breezemap['Magento_Ui/js/model/messageList'] = new $.breezemap['Magento_Ui/js/model/messages'];
 
     $.view('uiMessages', {
         component: 'Magento_Ui/js/view/messages',
@@ -13,48 +60,16 @@ define([
         },
 
         create: function () {
-            this.messageContainer = this.options.messageContainer || this;
-            this.errorMessages = this.messageContainer.errorMessages || ko.observableArray([]);
-            this.successMessages = this.messageContainer.successMessages || ko.observableArray([]);
+            this.messageContainer = this.options.messageContainer || $.breezemap['Magento_Ui/js/model/messageList'];
         },
 
         isVisible: function () {
-            return this.hasMessages();
-        },
-
-        hasMessages: function () {
-            return this.errorMessages().length > 0 || this.successMessages().length > 0;
+            return this.messageContainer.hasMessages();
         },
 
         removeAll: function () {
-            this.errorMessages.removeAll();
-            this.successMessages.removeAll();
+            this.messageContainer.clear();
             return this;
-        },
-
-        clear: function () {
-            return this.removeAll();
-        },
-
-        add: function (message, type) {
-            this.removeAll();
-            type.push(message);
-        },
-
-        addErrorMessage: function (message) {
-            this.add(message, this.errorMessages);
-        },
-
-        addSuccessMessage: function (message) {
-            this.add(message, this.successMessages);
-        },
-
-        getErrorMessages: function () {
-            return this.errorMessages();
-        },
-
-        getSuccessMessages: function () {
-            return this.successMessages();
         }
     });
 
