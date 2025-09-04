@@ -54,6 +54,7 @@ define(['Magento_Ui/js/lib/validation/validator'], function () {
         }
     });
 
+    $.breezemap['mage/validation'] = $.breezemap['validation'];
     $.fn.validation = $.fn.validator;
 
     $.fn.valid = function (inputs, silent) {
