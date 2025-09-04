@@ -23,6 +23,7 @@
                 <argument name="ignore" xsi:type="array"> <!-- Do not report about these components when using ?breeze=1 -->
                     <item name="jquery/jquery-storageapi" xsi:type="string">jquery/jquery-storageapi</item>
                     <item name="jquery/jquery.parsequery" xsi:type="string">jquery/jquery.parsequery</item>
+                    <item name="jquery/validate" xsi:type="string">jquery/validate</item>
                     <item name="jquery-ui-modules/widget" xsi:type="string">jquery-ui-modules/widget</item>
                     <item name="loader" xsi:type="string">loader</item>
                     <item name="loaderAjax" xsi:type="string">loaderAjax</item>
@@ -36,6 +37,7 @@
                     <item name="Magento_PageBuilder/js/content-type/buttons/appearance/inline/widget" xsi:type="string">Magento_PageBuilder/js/content-type/buttons/appearance/inline/widget</item>
                     <item name="Magento_PageBuilder/js/content-type/slide/appearance/default/widget" xsi:type="string">Magento_PageBuilder/js/content-type/slide/appearance/default/widget</item>
                     <item name="Magento_PageBuilder/js/content-type/row/appearance/default/widget" xsi:type="string">Magento_PageBuilder/js/content-type/row/appearance/default/widget</item>
+                    <item name="Magento_Persistent/js/remember-me-config" xsi:type="string">Magento_Persistent/js/remember-me-config</item>
                     <item name="Magento_ProductVideo/js/fotorama-add-video-events" xsi:type="string">Magento_ProductVideo/js/fotorama-add-video-events</item>
                     <item name="Magento_Ui/js/lib/knockout/bootstrap" xsi:type="string">Magento_Ui/js/lib/knockout/bootstrap</item>
                     <item name="requireCookie" xsi:type="string">requireCookie</item>
