@@ -32,7 +32,7 @@ define(['collapsible'], () => {
             this.collapsibles
                 .attr('role', 'presentation')
                 .parent()
-                .attr('role', 'tablist');
+                .prepend(`<div role="tablist" aria-owns="${this.triggers.map((i, t) => t.id).get().join(' ')}">`);
 
             this.triggers.attr('role', 'tab');
             this.triggers.last().addClass('last');
