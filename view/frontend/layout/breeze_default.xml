@@ -889,6 +889,11 @@
                                 </item>
                             </item>
 
+                            <!-- Checkout -->
+                            <item name="Magento_Checkout/js/model/full-screen-loader" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/cart/full-screen-loader</item>
+                            </item>
+
                             <!-- Rarely used magento components -->
                             <item name="deletableItem" xsi:type="array">
                                 <item name="path" xsi:type="string">mage/deletable-item</item>
