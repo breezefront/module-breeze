@@ -188,7 +188,7 @@
                     return;
                 }
 
-                if (this.slider.data('breeze-prev-width') !== this.slider.width()) {
+                if (this.slider.width() && this.slider.data('breeze-prev-width') !== this.slider.width()) {
                     this.slider.data('breeze-prev-width', this.slider.width());
                     lastResize = new Date();
                     debouncedUpdate();
