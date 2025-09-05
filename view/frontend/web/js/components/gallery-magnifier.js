@@ -315,9 +315,7 @@
                     .css({ width: 0, height: 0 })
                     .css(this.calculateStageSizeAndPosition());
 
-                if (parseFloat(this.stage.css('width')) < 150 ||
-                    this.image.closest('.images').css('overflow') === 'auto'
-                ) {
+                if (parseFloat(this.stage.css('width')) < 150) {
                     // eslint-disable-next-line max-depth
                     if (this.options.mode === 'auto') {
                         this.mode('lens');
