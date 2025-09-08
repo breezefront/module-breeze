@@ -151,9 +151,11 @@
                 }, 250);
             });
 
-            this._on(document, 'scroll', () => {
-                this.touchTimer = clearTimeout(this.touchTimer);
-                this.touchActive = false;
+            [document, '.breeze-gallery .images'].forEach(el => {
+                this._on(el, 'scroll', () => {
+                    this.touchTimer = clearTimeout(this.touchTimer);
+                    this.touchActive = false;
+                });
             });
 
             this._on(document, 'scroll', _.debounce(() => {
@@ -161,11 +163,6 @@
                     this.updateSizeAndPosition();
                 }
             }, 500));
-
-            this._on('.breeze-gallery .images', 'scroll', () => {
-                this.touchTimer = clearTimeout(this.touchTimer);
-                this.touchActive = false;
-            });
 
             this._on(isTouch ? 'touchend' : 'mouseleave', () => {
                 if (this.activateTimer) {
