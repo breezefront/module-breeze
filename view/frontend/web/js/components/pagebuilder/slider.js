@@ -490,7 +490,7 @@
 
             this.updateArrows();
 
-            if (pageUpdated) {
+            if (pageUpdated && !this._pageIsChanging) {
                 this._trigger('slideChange');
             }
         },
@@ -573,6 +573,9 @@
 
             if (pageUpdated) {
                 this._trigger('slideChange');
+                clearTimeout(this._pageIsChangingTimer);
+                this._pageIsChanging = true;
+                this._pageIsChangingTimer = setTimeout(() => { this._pageIsChanging = false; }, 300);
             }
         },
 
