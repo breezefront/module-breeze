@@ -368,6 +368,18 @@
         return value === undefined ? this.data(`component:${key}`) : this.data(`component:${key}`, value);
     };
 
+    $.fn.componentAsync = function (key) {
+        key = $.breezemap.__aliases[key] || key;
+
+        return new Promise(resolve => {
+            var instance = this.data(`component:${key}`);
+
+            instance
+                ? resolve(instance)
+                : this.one(`${key}:afterCreate`, (e, data) => resolve(data.instance));
+        });
+    };
+
     $.fn.data = _.wrap($.fn.data, function (original, key, value) {
         var collection = this,
             result,
