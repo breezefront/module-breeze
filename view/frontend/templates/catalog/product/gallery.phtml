@@ -135,7 +135,8 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
                 ?>
                 <a class="<?= $block->escapeHtmlAttr(implode(' ', $classes)) ?>"
                     href="<?= $block->escapeUrl($image->getLargeImageUrl()) ?>"
-                    title="<?= $block->escapeHtmlAttr($image->getLabel() ?: __('View Image')) ?>">
+                    title="<?= $block->escapeHtmlAttr($image->getLabel() ?: __('View Image')) ?>"
+                    tabindex="-1">
                     <img loading="lazy"
                         alt="<?= $block->escapeHtmlAttr($image->getLabel() ?: __('Image')) ?>"
                         src="<?= $block->escapeUrl($image->getSmallImageUrl()) ?>"
@@ -179,7 +180,7 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
 <?php endif ?>
 
 <script type="text/x-magento-template" id="gallery-thumbnail">
-    <a class="<%- classes %>" href="<%- full %>">
+    <a class="<%- classes %>" href="<%- full %>" tabindex="-1">
         <img loading="lazy" alt="<%- caption %>"
             src="<%- thumb %>"
             srcset="<%- srcset ? srcset.small : '' %>"
