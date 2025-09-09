@@ -264,6 +264,13 @@
 
 & when (@media-common = true) {
 & when (@critical = unsure), (@critical = false) {
+    .breeze-gallery .action.skip {
+        position: absolute;
+        z-index: 50;
+        width: 100%;
+        outline-offset: 0;
+        background: ~"rgb(var(--base-bg, 255, 255, 255))";
+    }
     .breeze-gallery.caption {
         [data-caption]:not([data-caption=""]) {
             &::after {

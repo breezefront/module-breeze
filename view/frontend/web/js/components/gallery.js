@@ -57,6 +57,20 @@
                 initialFocus: this.element.find('.close')[0],
             });
 
+            if (this.imagesWrapper.length) {
+                $.lazy(async () => {
+                    var tabbable = (await require.async('tabbable')).tabbable;
+
+                    this.gallery.a11y('skippable', {
+                        id: 'gallery-' + this.uuid + '-end',
+                        label: $.__('Skip gallery'),
+                        destination: this.gallery.nextAll().get().some(el => tabbable(el).length)
+                            ? null
+                            : '.product-info-main'
+                    });
+                });
+            }
+
             if (this.activeIndex === -1) {
                 this.activeIndex = 0;
             }
