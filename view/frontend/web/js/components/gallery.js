@@ -397,6 +397,8 @@
 
             this.options.data = data;
 
+            this._trigger('beforeUpdateData');
+
             _.each(data, function (picture) {
                 var pictureData = $.extend({}, {
                     srcset: '',
@@ -420,6 +422,8 @@
             this.thumbs = this.thumbsWrapper.find('a');
             this.activate(data.findIndex(img => img.isMain));
             this.showImageLoaders();
+
+            this._trigger('afterUpdateData');
         },
 
         /**
