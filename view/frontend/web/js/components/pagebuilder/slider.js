@@ -422,10 +422,16 @@
             while (++cloned < toClone) {
                 i = cloned % this.pages.length;
                 this.pages.at(i).slides.forEach(slideIndex => {
-                    this.slider.append(this.slides.eq(slideIndex).clone().attr('data-clone', 1));
+                    this.slider.append(this.slides.eq(slideIndex).clone().attr({
+                        'data-clone': 1,
+                        'inert': true
+                    }));
                 });
                 [...this.pages.at(this.pages.length - i - 1).slides].reverse().forEach(slideIndex => {
-                    this.slider.prepend(this.slides.eq(slideIndex).clone().attr('data-clone', 1));
+                    this.slider.prepend(this.slides.eq(slideIndex).clone().attr({
+                        'data-clone': 1,
+                        'inert': true
+                    }));
                 });
             }
 
