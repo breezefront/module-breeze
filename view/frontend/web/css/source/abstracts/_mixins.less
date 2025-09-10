@@ -57,12 +57,9 @@
     .item::after {
         .lib-css(border-radius, @bz-gallery-dots-thumb__border-radius);
     }
-    .item.active,
-    .item:focus {
-        &::after {
-            .lib-css(box-shadow, @bz-gallery-dots-thumb__active__box-shadow);
-            .lib-css(background, @bz-gallery-dots-thumb__active__background);
-        }
+    .item.active::after {
+        .lib-css(box-shadow, @bz-gallery-dots-thumb__active__box-shadow);
+        .lib-css(background, @bz-gallery-dots-thumb__active__background);
     }
 }
 
