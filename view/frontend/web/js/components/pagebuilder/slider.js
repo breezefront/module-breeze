@@ -30,10 +30,12 @@
         },
 
         create: function () {
-            this.element.a11y('skippable', {
-                id: 'slider-' + this.uuid + '-end',
-                label: $.__('Skip carousel')
-            });
+            if (this.options.skippable !== false) {
+                this.element.a11y('skippable', {
+                    id: 'slider-' + this.uuid + '-end',
+                    label: $.__('Skip carousel')
+                });
+            }
 
             this.onReveal(this.createSlider.bind(this));
         },
