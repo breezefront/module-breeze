@@ -118,15 +118,15 @@
                 });
 
             this.gallery.on('click', '.item', function (event) {
-                var index = $(this).index();
+                var index = $(this).parent().children().not('[data-clone="1"]').index(this);
 
                 event.preventDefault();
 
                 if (index !== self.activeIndex) {
-                    self.activate($(this).index());
+                    self.activate(index);
                 }
 
-                if (self.gallery.hasClass('expanded') && !$(this).parent().hasClass('thumbnails')) {
+                if (!$(this).parent().hasClass('thumbnails')) {
                     self.open();
                     if (self.options.data[self.activeIndex].videoUrl) {
                         self.play();
