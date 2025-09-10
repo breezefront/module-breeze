@@ -124,11 +124,9 @@
 
                 if (index !== self.activeIndex) {
                     self.activate($(this).index());
-                } else if (!self.thumbsWrapper.hasClass('dots')) {
-                    self.open();
                 }
 
-                if (self.gallery.hasClass('expanded')) {
+                if (self.gallery.hasClass('expanded') && !$(this).parent().hasClass('thumbnails')) {
                     self.open();
                     if (self.options.data[self.activeIndex].videoUrl) {
                         self.play();
