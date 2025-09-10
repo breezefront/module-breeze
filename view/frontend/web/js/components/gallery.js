@@ -284,7 +284,7 @@
             }
 
             this.imagesWrapper[0]?.scrollTo(
-                this.imagesWrapper.find('.item').eq(index).offsetLeft,
+                this.imagesWrapper.find('.item').eq(index)[0]?.offsetLeft || 0,
                 0
             );
 
