@@ -66,7 +66,7 @@
             setTimeout(async () => {
                 await this.buildPagination();
                 this.element.addClass('slick-initialized');
-                this.addEventListeners();
+                await this.addEventListeners();
 
                 if (this.options.autoplay) {
                     this.start();
@@ -113,7 +113,7 @@
             }
         },
 
-        addEventListeners: function () {
+        addEventListeners: async function () {
             var self = this,
                 scrollToTimer,
                 isFirstResize = true,
@@ -123,6 +123,10 @@
 
             if (!this.slider.length) {
                 return;
+            }
+
+            if (!('onscrollend' in window)) {
+                await require.async('scrollyfills');
             }
 
             this.handleMouseDrag();
@@ -581,9 +585,10 @@
 
             if (pageUpdated) {
                 this._trigger('slideChange');
-                clearTimeout(this._pageIsChangingTimer);
                 this._pageIsChanging = true;
-                this._pageIsChangingTimer = setTimeout(() => { this._pageIsChanging = false; }, 300);
+                this.slider.one('scrollend', _.debounce(() => {
+                    this._pageIsChanging = false;
+                }, 200));
             }
         },
 

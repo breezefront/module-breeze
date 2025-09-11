@@ -561,6 +561,9 @@
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/match-media</item>
                                 <item name="global" xsi:type="string">mediaCheck</item>
                             </item>
+                            <item name="scrollyfills" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/lib/scrollyfills-1.0.3.js</item>
+                            </item>
                             <item name="moment" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/lib/dayjs-1.11.7.min.js</item>
                                 <item name="global" xsi:type="string">dayjs</item>
