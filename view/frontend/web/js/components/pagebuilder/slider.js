@@ -457,8 +457,7 @@
                 scrollLeft = this.slider.get(0).scrollLeft * (this.isRtl ? -1 : 1),
                 delta = 2,
                 width = this.slider.outerWidth(),
-                diffStart = Math.abs(this.pages[pageNum].start - scrollLeft),
-                pageUpdated = false;
+                diffStart = Math.abs(this.pages[pageNum].start - scrollLeft);
 
             if (diffStart > delta) { // rounding issues
                 this.pages.some((page, i) => {
@@ -485,10 +484,6 @@
                     }
                 }
 
-                if (this.page !== pageNum) {
-                    pageUpdated = true;
-                }
-
                 this.page = pageNum;
                 this.slide = this.pages[pageNum].slides[0];
             }
@@ -499,7 +494,14 @@
 
             this.updateArrows();
 
-            if (pageUpdated && !this._pageIsChanging) {
+            if (!this._pageIsChanging) {
+                this.notifySlideChange();
+            }
+        },
+
+        notifySlideChange: function () {
+            if (this._lastNotifiedPage !== this.page) {
+                this._lastNotifiedPage = this.page;
                 this._trigger('slideChange');
             }
         },
@@ -569,23 +571,26 @@
         },
 
         scrollToPage: function (page, instant) {
-            var pageUpdated = false;
+            var pageUpdated = this.page !== page;
 
             this.scrollTo(this.pages[page].start * (this.isRtl ? -1 : 1), instant);
 
-            if (this.page !== page) {
-                pageUpdated = true;
-            }
-
             this.page = page;
             this.slide = this.pages[page].slides[0];
+            this.notifySlideChange();
 
             if (pageUpdated) {
-                this._trigger('slideChange');
-                this._pageIsChanging = true;
-                this.slider.one('scrollend', _.debounce(() => {
-                    this._pageIsChanging = false;
-                }, 200));
+                if (!this._pageIsChanging) {
+                    this._pageIsChanging = _.debounce(() => {
+                        this._pageIsChanging = false;
+                    }, 200);
+                } else {
+                    this._pageIsChanging.cancel();
+                }
+
+                this.slider
+                    .off('scrollend', this._pageIsChanging)
+                    .one('scrollend', this._pageIsChanging);
             }
         },
 
