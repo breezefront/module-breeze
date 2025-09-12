@@ -114,8 +114,7 @@
         },
 
         addEventListeners: async function () {
-            var self = this,
-                scrollToTimer,
+            var scrollToTimer,
                 isFirstResize = true,
                 lastResize = new Date(),
                 debouncedUpdate = _.debounce(this.update.bind(this), 200),
@@ -127,25 +126,27 @@
 
             this.handleMouseDrag();
 
-            this.element
-                .on('click', this.stop.bind(this))
-                .on('click', '.slick-next, .slick-prev', function (event) {
+            this._on({
+                click: this.stop,
+                mouseenter: this.pause,
+                mouseleave: this.start,
+                'click .slick-next, .slick-prev': event => {
                     event.preventDefault();
 
-                    if ($(this).closest('.slick-initialized').is(self.element)) {
-                        self[$(this).hasClass('slick-prev') ? 'prev' : 'next']();
+                    if ($(event.target).closest('.slick-initialized').is(this.element)) {
+                        this[$(event.target).hasClass('slick-prev') ? 'prev' : 'next']();
                     }
-                })
-                .on('click', '.slick-dots li', function (event) {
+                },
+                'click .slick-dots li': event => {
                     event.preventDefault();
 
-                    if ($(this).closest('.slick-initialized').is(self.element)) {
-                        self.scrollToPage($(this).index());
+                    if ($(event.target).closest('.slick-initialized').is(this.element)) {
+                        this.scrollToPage($(event.target).index());
                     }
-                })
-                .hover(this.pause.bind(this), this.start.bind(this));
+                },
+            });
 
-            this.slider.on('scroll', () => {
+            this._on(this.slider, 'scroll', () => {
                 var now = new Date(),
                     overscrollLeft,
                     overscrollRight;
