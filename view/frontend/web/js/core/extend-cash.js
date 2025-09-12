@@ -243,6 +243,11 @@
                     listeners[eventName] = listeners[eventName] || [];
                     listeners[eventName].push(handler || selector);
                     return this;
+                } else if (eventName === 'scrollend' && !('onscrollend' in window)) {
+                    require.async('scrollyfills').then(() => {
+                        original.apply(this, Array.prototype.slice.call(arguments, 1));
+                    });
+                    return this;
                 }
             }
 

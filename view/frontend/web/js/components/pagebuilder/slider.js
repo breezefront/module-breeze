@@ -125,10 +125,6 @@
                 return;
             }
 
-            if (!('onscrollend' in window)) {
-                await require.async('scrollyfills');
-            }
-
             this.handleMouseDrag();
 
             this.element
