@@ -237,12 +237,12 @@
                     handler?.();
                     // eslint-disable-next-line max-depth
                     if (one) {
-                        return;
+                        return this;
                     }
                 } else if (ajaxEvents.includes(eventName)) {
                     listeners[eventName] = listeners[eventName] || [];
                     listeners[eventName].push(handler || selector);
-                    return;
+                    return this;
                 }
             }
 
