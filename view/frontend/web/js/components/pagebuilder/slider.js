@@ -108,7 +108,9 @@
             this.nextEl = this.element.find('.slick-next');
             this.prevEl = this.element.find('.slick-prev');
 
-            if (!this.slides.first().find('a, button').length) {
+            if (this.options.tabbable !== false &&
+                !this.slides.first().find('a, button').length
+            ) {
                 this.slider.attr('tabindex', 0);
             }
         },
