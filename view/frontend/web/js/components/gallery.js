@@ -126,7 +126,7 @@
                     self.activate(index);
                 }
 
-                if (!$(this).parent().hasClass('thumbnails')) {
+                if (!self.thumbsWrapper.has(this).length) {
                     self.open();
                     if (self.options.data[self.activeIndex].videoUrl) {
                         self.play();
