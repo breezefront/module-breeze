@@ -295,7 +295,7 @@
                                 'scroll-snap-type': '',
                                 'interactivity': '',
                             });
-                        }, 800);
+                        }, 250);
                     });
             });
         },
