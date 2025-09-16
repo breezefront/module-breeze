@@ -596,6 +596,12 @@
             }
         },
 
+        scrollToSlide: function (index, instant) {
+            if (this.pages) {
+                this.scrollToPage(this.pages.findIndex(page => page.slides.includes(index)), instant);
+            }
+        },
+
         scrollTo: function (left, instant) {
             var behavior = 'auto';
 
