@@ -55,6 +55,7 @@
             this.activeIndex = this.gallery.find('.thumbnails a.active').index();
             this.focusTrap = this.createFocusTrap(this.gallery, {
                 initialFocus: this.element.find('.close')[0],
+                returnFocusOnDeactivate: false,
             });
 
             if (this.imagesWrapper.length) {
