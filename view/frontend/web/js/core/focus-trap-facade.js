@@ -18,12 +18,12 @@
         }
 
         return {
-            async activate() {
-                return (await load()).activate();
+            async activate(opts) {
+                return (await load()).activate(opts);
             },
 
-            async deactivate() {
-                return trap?.deactivate();
+            async deactivate(opts) {
+                return trap?.deactivate(opts);
             }
         };
     }
