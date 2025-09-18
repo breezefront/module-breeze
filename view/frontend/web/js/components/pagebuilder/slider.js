@@ -43,7 +43,6 @@
         createSlider: function () {
             this.page = 0;
             this.slide = 0;
-            this.isRtl = this.element.css('direction') === 'rtl';
 
             $.each({
                 autoplay: 'autoplay',
@@ -158,8 +157,8 @@
                 }
 
                 if (this.options.infinite) {
-                    overscrollLeft = (this.slider[0].scrollLeft - this.scrollMin) * (this.isRtl ? -1 : 1);
-                    overscrollRight = (this.slider[0].scrollLeft - this.scrollMax) * (this.isRtl ? -1 : 1);
+                    overscrollLeft = (this.scrollValue() - this.scrollMin) * (this.isRtl ? -1 : 1);
+                    overscrollRight = (this.scrollValue() - this.scrollMax) * (this.isRtl ? -1 : 1);
 
                     clearTimeout(scrollToTimer);
 
@@ -212,6 +211,16 @@
             });
         },
 
+        scrollValue: function (value) {
+            var key = this.isHorizontal ? 'scrollLeft' : 'scrollTop';
+
+            if (value !== undefined) {
+                this.slider[0][key] = value;
+            }
+
+            return this.slider[0][key];
+        },
+
         handleMouseDrag: function () {
             var touching = false,
                 timer;
@@ -223,10 +232,12 @@
 
             this._on('mousedown', event => {
                 var pos = {
-                        dx: 0,
-                        left: this.slider[0].scrollLeft,
+                        delta: 0,
+                        scroll: this.scrollValue(),
                         x: event.clientX,
+                        y: event.clientY,
                     },
+                    sliderSize = this.isHorizontal ? this.slider.width() : this.slider.height(),
                     initialPage = this.page;
 
                 if (touching) {
@@ -240,13 +251,13 @@
                         e.preventDefault();
 
                         clearTimeout(timer);
-                        pos.dx = e.clientX - pos.x;
-                        this.slider[0].scrollLeft = pos.left - pos.dx;
+                        pos.delta = this.isHorizontal ? e.clientX - pos.x : e.clientY - pos.y;
+                        this.scrollValue(pos.scroll - pos.delta);
 
-                        if (this.slider[0].scrollLeft !== pos.left - pos.dx) {
+                        if (this.scrollValue() !== pos.scroll - pos.delta) {
                             $.raf(() => {
-                                this.slider.css('transform', `translateX(
-                                    ${(this.slider[0].scrollLeft + pos.dx - pos.left) / 5}px
+                                this.slider.css('transform', `${this.isHorizontal ? 'translateX' : 'translateY'}(
+                                    ${(this.scrollValue() + pos.delta - pos.scroll) / 5}px
                                 )`);
                             });
                             this.element.css('overflow', 'hidden');
@@ -261,7 +272,7 @@
                     })
                     .on('mouseup.sliderMouseDrag', () => {
                         var scrollTo = initialPage,
-                            percent = pos.dx / (this.slider.width() || 1) * (this.isRtl ? -1 : 1);
+                            percent = pos.delta / (sliderSize || 1) * (this.isRtl ? -1 : 1);
 
                         if (percent > 0.1) {
                             scrollTo -= Math.max(1, Math.ceil(percent));
@@ -271,7 +282,7 @@
 
                         $(document).off('.sliderMouseDrag');
 
-                        if (pos.dx) {
+                        if (pos.delta) {
                             if (scrollTo >= 0 && scrollTo < this.pages.length) {
                                 this.scrollToPage(scrollTo, 'smooth');
                             } else if (this.options.infinite) {
@@ -308,8 +319,11 @@
                 pageNumTmp = 0,
                 pageWidthTmp = 0,
                 offsetParentRect = this.slides.first().offsetParent()[0].getBoundingClientRect(),
-                gap = parseFloat(this.slider.css('column-gap')) || 0,
-                sliderWidth = this.slider.outerWidth(),
+                gap = parseFloat(this.slider.css('gap')) || 0,
+                isHorizontal = this.slider.css('flex-direction') === 'row',
+                isRtl = $('body').hasClass('rtl') && isHorizontal,
+                scrollKey = isHorizontal ? isRtl ? 'right' : 'left' : 'top',
+                sliderWidth = isHorizontal ? this.slider.outerWidth() : this.slider.outerHeight(),
                 dotsTpl = _.template(this.options.templates.dots),
                 dots = [];
 
@@ -318,7 +332,7 @@
                 this.scrollTo(0, 'instant');
             }
 
-            sliderLeft = this.slider.get(0).scrollLeft;
+            sliderLeft = this.scrollValue();
             fauxOffset = parseFloat(
                 getComputedStyle(this.slider[0], ':before').getPropertyValue('width')
             ) || 0;
@@ -328,17 +342,19 @@
                 // wait until scrolling is stopped
                 while (!sliderLeft) {
                     await $.sleep(200);
-                    sliderLeft = this.slider.get(0).scrollLeft;
+                    sliderLeft = this.scrollValue();
                 }
             }
 
             this.pages = [];
-            this.scrollOffset = this.slider[0].getBoundingClientRect()[this.isRtl ? 'right' : 'left'] -
-                this.slides[0].getBoundingClientRect()[this.isRtl ? 'right' : 'left'];
+            this.isRtl = isRtl;
+            this.isHorizontal = isHorizontal;
+            this.scrollOffset = this.slider[0].getBoundingClientRect()[scrollKey] -
+                this.slides[0].getBoundingClientRect()[scrollKey];
 
             this.slides.removeAttr('data-page-start').each(function (index) {
                 var slide = $(this).attr('data-index', index),
-                    slideWidth = $(this).width();
+                    slideWidth = isHorizontal ? $(this).width() : $(this).height();
 
                 if (!slideWidth && (slide.is('img') || slide.find('img').length)) {
                     console.error(
@@ -358,8 +374,8 @@
                 }
 
                 slideStart = Math.abs(
-                    slide[0].getBoundingClientRect()[self.isRtl ? 'right' : 'left'] -
-                    offsetParentRect[self.isRtl ? 'right' : 'left']
+                    slide[0].getBoundingClientRect()[scrollKey] -
+                    offsetParentRect[scrollKey]
                 );
 
                 if (!self.pages[pageNumTmp]) {
@@ -410,7 +426,7 @@
 
             this.updateArrows();
 
-            if (this.options.infinite && this.pages.length >= 2) {
+            if (this.options.infinite && this.pages.length > 1) {
                 this.cloneSlides();
             }
 
@@ -419,7 +435,7 @@
 
         cloneSlides: function () {
             var toClone = 2,
-                gap = parseFloat(this.slider.css('column-gap')) || 0,
+                gap = parseFloat(this.slider.css('gap')) || 0,
                 offset = this.pages.at(-1).end - this.pages.at(-toClone).start + gap,
                 cloned = -1,
                 i;
@@ -456,9 +472,9 @@
 
         updateCurrentPage: function () {
             var pageNum = this.page,
-                scrollLeft = this.slider.get(0).scrollLeft * (this.isRtl ? -1 : 1),
+                scrollLeft = this.scrollValue() * (this.isRtl ? -1 : 1),
                 delta = 2,
-                width = this.slider.outerWidth(),
+                width = this.isHorizontal ? this.slider.outerWidth() : this.slider.outerHeight(),
                 diffStart = Math.abs(this.pages[pageNum].start - scrollLeft);
 
             if (diffStart > delta) { // rounding issues
@@ -559,17 +575,17 @@
         },
 
         scrollToPageClone: function (index) {
-            var left = 0,
-                gap = parseFloat(this.slider.css('column-gap')) || 0;
+            var scrollTo = 0,
+                gap = parseFloat(this.slider.css('gap')) || 0;
 
             if (!index) {
-                left = this.pages.at(-1).end + gap;
+                scrollTo = this.pages.at(-1).end + gap;
             } else {
-                left = this.pages.at(0).start
+                scrollTo = this.pages.at(0).start
                     - (this.pages.at(-1).end - this.pages.at(-1).start + gap);
             }
 
-            this.scrollTo(left * (this.isRtl ? -1 : 1), 'smooth');
+            this.scrollTo(scrollTo * (this.isRtl ? -1 : 1), 'smooth');
         },
 
         scrollToPage: function (page, instant) {
@@ -602,14 +618,17 @@
             }
         },
 
-        scrollTo: function (left, instant) {
+        scrollTo: function (offset, instant) {
             var behavior = 'auto';
 
             if (instant) {
                 behavior = instant === 'smooth' ? 'smooth' : 'instant';
             }
 
-            this.slider[0].scrollTo({ left, behavior });
+            this.slider[0].scrollTo({
+                [this.isHorizontal ? 'left' : 'top']: offset,
+                behavior
+            });
 
             if (behavior === 'instant') {
                 this.slider.css('overflow', 'hidden');
