@@ -22,8 +22,8 @@
     flex-direction: row;
     align-items: flex-start;
     justify-content: flex-end;
+    --gallery-thumbs-direction: column;
     .thumbnails {
-        flex-direction: column;
         flex-wrap: nowrap;
         order: -1;
         max-height: @bz-gallery-vertical-thumb__max-height;
@@ -31,6 +31,19 @@
         .padding-right(@bz-gallery-vertical-thumb__padding-right);
         padding-bottom: 0;
         overflow-y: overlay;
+
+        .slick-prev {
+            transform: ~"rotate(90deg) translateY(calc(-50% + @{bz-gallery-vertical-thumb__padding-right}))";
+            transform-origin: 0 0;
+            top: 0;
+            left: 50%;
+        }
+        .slick-next {
+            transform: ~"rotate(90deg) translateX(-100%) translateY(calc(100% - @{bz-gallery-vertical-thumb__padding-right}))";
+            transform-origin: 0 100%;
+            bottom: 0;
+            top: auto;
+        }
     }
 }
 

@@ -447,14 +447,19 @@
                 }
 
                 // keep lens inside viewport to prevent scrollbars
-                if (!this.rtl && lensX + rect.left + lensWidth > $(window).width()) {
-                    lensX = $(window).width() - lensWidth - rect.left;
-                } else if (this.rtl && lensX + rect.left < 0) {
-                    lensX = -rect.left;
-                }
+                if (this.element.closest('.slick-list').length) {
+                    lensX = Math.max(0, Math.min(lensX, this.element.width() - lensWidth));
+                    lensY = Math.max(0, Math.min(lensY, this.element.height() - lensHeight));
+                } else {
+                    if (!this.rtl && lensX + rect.left + lensWidth > $(window).width()) {
+                        lensX = $(window).width() - lensWidth - rect.left;
+                    } else if (this.rtl && lensX + rect.left < 0) {
+                        lensX = -rect.left;
+                    }
 
-                if (lensY + rect.top < 0) {
-                    lensY = -rect.top;
+                    if (lensY + rect.top < 0) {
+                        lensY = -rect.top;
+                    }
                 }
             } else {
                 imageX = lensX = Math.max(0, Math.min(lensX, this.element.width() - lensWidth));

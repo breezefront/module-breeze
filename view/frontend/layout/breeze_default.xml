@@ -650,6 +650,15 @@
                                 </item>
                             </item>
 
+                            <item name="Swissup_Breeze/js/components/gallery-slider" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/gallery-slider</item>
+                                <item name="load" xsi:type="array">
+                                    <item name="onDom" xsi:type="array">
+                                        <item name="gallery" xsi:type="string">.breeze-gallery.slider</item>
+                                    </item>
+                                </item>
+                            </item>
+
                             <!-- Validation -->
                             <item name="Magento_Ui/js/lib/validation/validator" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/core/validator</item>
