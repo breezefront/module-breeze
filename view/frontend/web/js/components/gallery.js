@@ -249,7 +249,7 @@
             index = this.options.data[index] ? index : 0;
             data = this.options.data[index];
 
-            if (!data || this.activeIndex === index) {
+            if (!data) {
                 return;
             }
 
