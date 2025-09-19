@@ -318,6 +318,8 @@
                 fauxOffset = 0,
                 pageNumTmp = 0,
                 pageWidthTmp = 0,
+                isFirstRun = !this.pages?.length,
+                shouldScroll = !isFirstRun,
                 offsetParentRect = this.slides.first().offsetParent()[0].getBoundingClientRect(),
                 gap = parseFloat(this.slider.css('gap')) || 0,
                 isHorizontal = this.slider.css('flex-direction') === 'row',
@@ -327,7 +329,7 @@
                 dotsTpl = _.template(this.options.templates.dots),
                 dots = [];
 
-            if (this.pages?.length) {
+            if (!isFirstRun) {
                 this.slider.find('[data-clone]').remove();
                 this.scrollTo(0, 'instant');
             }
@@ -347,6 +349,7 @@
             }
 
             this.pages = [];
+            this.gap = gap;
             this.isRtl = isRtl;
             this.isHorizontal = isHorizontal;
             this.scrollOffset = this.slider[0].getBoundingClientRect()[scrollKey] -
@@ -428,15 +431,17 @@
 
             if (this.options.infinite && this.pages.length > 1) {
                 this.cloneSlides();
+                shouldScroll = true;
             }
 
-            this.scrollToPage(this.page, 'instant');
+            if (shouldScroll) {
+                this.scrollToPage(this.page, 'instant');
+            }
         },
 
         cloneSlides: function () {
             var toClone = 2,
-                gap = parseFloat(this.slider.css('gap')) || 0,
-                offset = this.pages.at(-1).end - this.pages.at(-toClone).start + gap,
+                offset = this.pages.at(-1).end - this.pages.at(-toClone).start + this.gap,
                 cloned = -1,
                 i;
 
@@ -461,8 +466,8 @@
                 page.end += offset;
             });
 
-            this.scrollMin = this.pages.at(0).start - gap - (this.pages.at(-1).end - this.pages.at(-1).start);
-            this.scrollMax = this.pages.at(-1).end + gap;
+            this.scrollMin = this.pages.at(0).start - this.gap - (this.pages.at(-1).end - this.pages.at(-1).start);
+            this.scrollMax = this.pages.at(-1).end + this.gap;
 
             if (this.isRtl) {
                 this.scrollMin *= -1;
@@ -589,9 +594,14 @@
         },
 
         scrollToPage: function (page, instant) {
-            var pageUpdated = this.page !== page;
+            var pageUpdated = this.page !== page,
+                offset = this.pages[page].start * (this.isRtl ? -1 : 1);
 
-            this.scrollTo(this.pages[page].start * (this.isRtl ? -1 : 1), instant);
+            if (offset === this.scrollValue()) {
+                return;
+            }
+
+            this.scrollTo(offset, instant);
 
             this.page = page;
             this.slide = this.pages[page].slides[0];
