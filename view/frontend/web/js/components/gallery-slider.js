@@ -13,7 +13,6 @@ define([
             skippable: false,
             tabbable: false
         });
-
         $('.images a', galleryEl).attr('tabindex', -1);
         $('.images', galleryEl).pagebuilderSlider('destroy').pagebuilderSlider({
             lazy: true,
