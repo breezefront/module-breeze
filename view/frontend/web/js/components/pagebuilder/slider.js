@@ -187,13 +187,18 @@
             });
 
             new ResizeObserver(() => {
-                if (isFirstResize) {
+                if (isFirstResize || !this.slider.width()) {
                     isFirstResize = false;
                     return;
                 }
 
-                if (this.slider.width() && this.slider.data('breeze-prev-width') !== this.slider.width()) {
-                    this.slider.data('breeze-prev-width', this.slider.width());
+                if (this.slider.data('breeze-prev-width') !== this.slider.width() ||
+                    !this.isHorizontal && this.slider.data('breeze-prev-height') !== this.slider.height()
+                ) {
+                    this.slider.data({
+                        'breeze-prev-width': this.slider.width(),
+                        'breeze-prev-height': this.slider.height(),
+                    });
                     lastResize = new Date();
                     debouncedUpdate();
                 }
