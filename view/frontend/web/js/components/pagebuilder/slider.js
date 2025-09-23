@@ -345,6 +345,10 @@
                 dotsTpl = _.template(this.options.templates.dots),
                 dots = [];
 
+            this.gap = gap;
+            this.isRtl = isRtl;
+            this.isHorizontal = isHorizontal;
+
             if (!isFirstRun) {
                 this.slider.find('[data-clone]').remove();
                 this.scrollTo(0, 'instant');
@@ -365,9 +369,6 @@
             }
 
             this.pages = [];
-            this.gap = gap;
-            this.isRtl = isRtl;
-            this.isHorizontal = isHorizontal;
             this.scrollOffset = this.slider[0].getBoundingClientRect()[scrollKey] -
                 this.slides[0].getBoundingClientRect()[scrollKey];
 
