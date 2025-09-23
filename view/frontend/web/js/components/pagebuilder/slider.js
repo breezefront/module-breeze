@@ -266,7 +266,7 @@
                             return $(document).mouseup();
                         }
 
-                        if (this.scrollValue() !== pos.scroll - pos.delta) {
+                        if (!this.options.infinite && this.scrollValue() !== pos.scroll - pos.delta) {
                             $.raf(() => {
                                 this.slider.css('transform', `${this.isHorizontal ? 'translateX' : 'translateY'}(
                                     ${(this.scrollValue() + pos.delta - pos.scroll) / 5}px
