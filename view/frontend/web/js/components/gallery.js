@@ -192,6 +192,7 @@
                 .off('load error')
                 .on('load error', function () {
                     $(this).parent().spinner(false);
+                    self.imagesWrapper.find(`a[data-clone] img[src="${this.src}"]`).parent().spinner(false);
                 })
                 .on('load', function () {
                     if (!self.cache.find(`[src="${this.src}"]`).length) {

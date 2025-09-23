@@ -259,8 +259,11 @@
                     overflow: visible !important;
                 }
 
-                .slick-list:focus-visible {
-                    outline-offset: 0;
+                .slick-list {
+                    gap: var(--gallery-columns-gap);
+                    &:focus-visible {
+                        outline-offset: 0;
+                    }
                 }
                 .slick-arrow {
                     z-index: 110;
