@@ -112,6 +112,10 @@
             ) {
                 this.slider.attr('tabindex', 0);
             }
+
+            if (this.options.infinite) {
+                this.slider.css('overscroll-behavior', 'none');
+            }
         },
 
         addEventListeners: async function () {
