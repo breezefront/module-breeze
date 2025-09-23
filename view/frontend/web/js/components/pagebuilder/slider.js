@@ -276,7 +276,7 @@
                                     ${(this.scrollValue() + pos.delta - pos.scroll) / 5}px
                                 )`);
                             });
-                            this.element.css('overflow', 'hidden');
+                            this.element[0].style.setProperty('overflow', 'hidden', 'important');
                         }
 
                         this.element.css('user-select', 'none');
