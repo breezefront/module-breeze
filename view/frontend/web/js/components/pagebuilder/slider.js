@@ -457,7 +457,7 @@
         },
 
         cloneSlides: function () {
-            var toClone = 2,
+            var toClone = this.slider.width() > this.slides.first().width() ? 2 : 1,
                 offset = this.pages.at(-1).end - this.pages.at(-toClone).start + this.gap,
                 cloned = -1,
                 i;
