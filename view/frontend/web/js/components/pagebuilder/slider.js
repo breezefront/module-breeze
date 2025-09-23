@@ -242,6 +242,7 @@
                         x: event.clientX,
                         y: event.clientY,
                     },
+                    sliderRect = this.slider[0].getBoundingClientRect(),
                     sliderSize = this.isHorizontal ? this.slider.width() : this.slider.height(),
                     initialPage = this.page;
 
@@ -258,6 +259,12 @@
                         clearTimeout(timer);
                         pos.delta = this.isHorizontal ? e.clientX - pos.x : e.clientY - pos.y;
                         this.scrollValue(pos.scroll - pos.delta);
+
+                        if (sliderRect.left > e.clientX || sliderRect.right < e.clientX ||
+                            sliderRect.top > e.clientY || sliderRect.bottom < e.clientY
+                        ) {
+                            return $(document).mouseup();
+                        }
 
                         if (this.scrollValue() !== pos.scroll - pos.delta) {
                             $.raf(() => {
