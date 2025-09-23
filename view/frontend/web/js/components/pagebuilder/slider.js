@@ -112,6 +112,10 @@
             ) {
                 this.slider.attr('tabindex', 0);
             }
+
+            if (this.options.infinite) {
+                this.slider.css('overscroll-behavior', 'none');
+            }
         },
 
         addEventListeners: async function () {
@@ -242,6 +246,7 @@
                         x: event.clientX,
                         y: event.clientY,
                     },
+                    sliderRect = this.slider[0].getBoundingClientRect(),
                     sliderSize = this.isHorizontal ? this.slider.width() : this.slider.height(),
                     initialPage = this.page;
 
@@ -259,13 +264,19 @@
                         pos.delta = this.isHorizontal ? e.clientX - pos.x : e.clientY - pos.y;
                         this.scrollValue(pos.scroll - pos.delta);
 
-                        if (this.scrollValue() !== pos.scroll - pos.delta) {
+                        if (sliderRect.left > e.clientX || sliderRect.right < e.clientX ||
+                            sliderRect.top > e.clientY || sliderRect.bottom < e.clientY
+                        ) {
+                            return $(document).mouseup();
+                        }
+
+                        if (!this.options.infinite && this.scrollValue() !== pos.scroll - pos.delta) {
                             $.raf(() => {
                                 this.slider.css('transform', `${this.isHorizontal ? 'translateX' : 'translateY'}(
                                     ${(this.scrollValue() + pos.delta - pos.scroll) / 5}px
                                 )`);
                             });
-                            this.element.css('overflow', 'hidden');
+                            this.element[0].style.setProperty('overflow', 'hidden', 'important');
                         }
 
                         this.element.css('user-select', 'none');
@@ -334,6 +345,10 @@
                 dotsTpl = _.template(this.options.templates.dots),
                 dots = [];
 
+            this.gap = gap;
+            this.isRtl = isRtl;
+            this.isHorizontal = isHorizontal;
+
             if (!isFirstRun) {
                 this.slider.find('[data-clone]').remove();
                 this.scrollTo(0, 'instant');
@@ -354,9 +369,6 @@
             }
 
             this.pages = [];
-            this.gap = gap;
-            this.isRtl = isRtl;
-            this.isHorizontal = isHorizontal;
             this.scrollOffset = this.slider[0].getBoundingClientRect()[scrollKey] -
                 this.slides[0].getBoundingClientRect()[scrollKey];
 
