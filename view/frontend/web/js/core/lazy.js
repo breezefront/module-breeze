@@ -2,6 +2,7 @@
     'use strict';
 
     var interacted = false,
+        timeout = 0,
         callbacks = [];
 
     $.lazy = function (callback) {
@@ -41,9 +42,17 @@
 
             interacted = true;
 
-            while (callbacks.length > 0) {
-                callbacks.shift()();
+            // Safari: initial click is "swallowed" if lazy cb (gallery slider)
+            // modifies state of other clickable elements.
+            if (e.type === 'touchstart' && e.target.closest('a, button, label, [tabindex="0"]')) {
+                timeout = 600;
             }
+
+            setTimeout(() => {
+                while (callbacks.length > 0) {
+                    callbacks.shift()();
+                }
+            }, timeout);
         });
     });
 })();

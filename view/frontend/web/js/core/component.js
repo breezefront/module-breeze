@@ -87,7 +87,9 @@
                 return result;
             };
 
-            constructor = (settings, element) => $(element || '<div>')[name](settings)[name]('instance');
+            constructor = function (settings, element) {
+                return $(element || '<div>')[name](settings)[name]('instance');
+            };
             constructor._proto = prototype;
             constructor.prototype = prototype.prototype;
             constructor.extend = obj => componentFn(
@@ -605,7 +607,7 @@
             this._super(values);
 
             _.each(values, (value, key) => {
-                if (!_.has(this, key)) {
+                if (value !== undefined && !_.has(this, key)) {
                     this[key] = $.copyProp(value);
                 }
             });
