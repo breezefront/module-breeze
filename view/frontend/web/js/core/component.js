@@ -87,7 +87,9 @@
                 return result;
             };
 
-            constructor = (settings, element) => $(element || '<div>')[name](settings)[name]('instance');
+            constructor = function (settings, element) {
+                return $(element || '<div>')[name](settings)[name]('instance');
+            };
             constructor._proto = prototype;
             constructor.prototype = prototype.prototype;
             constructor.extend = obj => componentFn(
