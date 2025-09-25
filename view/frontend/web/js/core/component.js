@@ -607,7 +607,7 @@
             this._super(values);
 
             _.each(values, (value, key) => {
-                if (!_.has(this, key)) {
+                if (value !== undefined && !_.has(this, key)) {
                     this[key] = $.copyProp(value);
                 }
             });
