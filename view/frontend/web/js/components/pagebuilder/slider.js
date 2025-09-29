@@ -550,10 +550,10 @@
             var arrows = this.nextEl.add(this.prevEl);
 
             if (this.pages.length < 2) {
-                return arrows.hide();
+                return arrows.css('visibility', 'hidden');
             }
 
-            arrows.css('display', 'block');
+            arrows.css('visibility', 'visible');
 
             if (this.options.infinite) {
                 return;
