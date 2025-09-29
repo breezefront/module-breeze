@@ -32,17 +32,26 @@
         padding-bottom: 0;
         overflow-y: overlay;
 
+        .slick-arrow {
+            transform: ~"translateX(calc(-50% - @{bz-gallery-vertical-thumb__padding-right} / 2))";
+            height: @bz-gallery-arrow__width;
+            width: @bz-gallery-arrow__height;
+        }
         .slick-prev {
-            transform: ~"rotate(90deg) translateY(calc(-50% + @{bz-gallery-vertical-thumb__padding-right}))";
-            transform-origin: 0 0;
             top: 0;
             left: 50%;
+            &::before {
+                transform: ~"rotate(-90deg)";
+            }
         }
         .slick-next {
-            transform: ~"rotate(90deg) translateX(-100%) translateY(calc(100% - @{bz-gallery-vertical-thumb__padding-right}))";
-            transform-origin: 0 100%;
             bottom: 0;
             top: auto;
+            left: 50%;
+            right: auto;
+            &::before {
+                transform: ~"rotate(90deg)";
+            }
         }
     }
 }
