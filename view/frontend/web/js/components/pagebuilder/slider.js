@@ -11,7 +11,7 @@
             dots: false,
             templates: {
                 arrow: [
-                    '<button style="visibility:hidden" class="<%- css %> slick-arrow" aria-label="<%- label %>" type="button" tabindex="-1">',
+                    '<button class="<%- css %> slick-arrow" aria-label="<%- label %>" type="button" tabindex="-1">',
                         '<%- label %>',
                     '</button>'
                 ].join(''),
@@ -550,10 +550,10 @@
             var arrows = this.nextEl.add(this.prevEl);
 
             if (this.pages.length < 2) {
-                return arrows.css('visibility', 'hidden');
+                return arrows.hide();
             }
 
-            arrows.css('visibility', 'visible');
+            arrows.css('display', 'flex');
 
             if (this.options.infinite) {
                 return;
