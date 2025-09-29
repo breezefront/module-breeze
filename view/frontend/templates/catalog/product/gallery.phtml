@@ -101,7 +101,7 @@ $galleryCss = array_filter([
         <div class="images">
             <?php if ($mode === 'slider') : ?>
                 <?php if (count($images) > 1) : ?>
-                    <button style="display:block;" class="slick-prev slick-arrow" type="button" tabindex="-1"
+                    <button class="slick-prev slick-arrow" type="button" tabindex="-1"
                         aria-label="<?= $escaper->escapeHtmlAttr(__('Previous Image')) ?>">
                         <?= $escaper->escapeHtml(__('Previous Image')) ?>
                     </button>
@@ -138,7 +138,7 @@ $galleryCss = array_filter([
             <?php if ($mode === 'slider') : ?>
                 </div>
                 <?php if (count($images) > 1) : ?>
-                    <button style="display:block;" class="slick-next slick-arrow" type="button" tabindex="-1"
+                    <button class="slick-next slick-arrow" type="button" tabindex="-1"
                         aria-label="<?= $escaper->escapeHtmlAttr(__('Next Image')) ?>">
                         <?= $escaper->escapeHtml(__('Next Image')) ?>
                     </button>
