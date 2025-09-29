@@ -41,10 +41,10 @@
             }
             > div {
                 flex-shrink: 0;
-                &[data-page-start]:not([data-content-type='slide']) {
-                    scroll-snap-align: start;
-                    scroll-snap-stop: always;
-                }
+            }
+            [data-page-start]:not([data-content-type='slide']) {
+                scroll-snap-align: start;
+                scroll-snap-stop: always;
             }
         }
         .slick-dots {
