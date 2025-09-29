@@ -114,7 +114,7 @@
             }
 
             if (this.options.infinite) {
-                this.slider.css('overscroll-behavior', 'none');
+                this.slider.css('overscroll-behavior-x', 'none');
             }
         },
 
