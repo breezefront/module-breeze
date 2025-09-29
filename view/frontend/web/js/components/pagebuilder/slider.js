@@ -62,7 +62,7 @@
 
             this.prepareMarkup();
 
-            (this.options.lazy ? $.lazy : setTimeout)(async () => {
+            setTimeout(async () => {
                 await this.buildPagination();
                 this.element.addClass('slick-initialized');
                 await this.addEventListeners();
