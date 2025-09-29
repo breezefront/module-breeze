@@ -11,7 +11,7 @@
             dots: false,
             templates: {
                 arrow: [
-                    '<button class="<%- css %> slick-arrow" aria-label="<%- label %>" type="button" tabindex="-1">',
+                    '<button style="visibility:hidden" class="<%- css %> slick-arrow" aria-label="<%- label %>" type="button" tabindex="-1">',
                         '<%- label %>',
                     '</button>'
                 ].join(''),
