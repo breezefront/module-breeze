@@ -120,7 +120,8 @@ $galleryCss = array_filter([
                     $srcset = $responsiveImageHelper->getSrcset($image, 'product_page_image_medium');
                 ?>
                 <a class="<?= $block->escapeHtmlAttr(implode(' ', $classes)) ?>"
-                    href="<?= $block->escapeUrl($image->getLargeImageUrl()) ?>"
+                    role="button"
+                    data-href="<?= $block->escapeUrl($image->getLargeImageUrl()) ?>"
                     title="<?= $block->escapeHtmlAttr($image->getLabel() ?: __('View Image')) ?>"
                     data-caption="<?= $block->escapeHtmlAttr($image->getLabel() ?: $block->getProduct()->getName()) ?>">
                     <img <?= $lazy ? 'loading="lazy"' : '' ?>
@@ -160,7 +161,8 @@ $galleryCss = array_filter([
                     $srcset = $responsiveImageHelper->getSrcset($image, 'product_page_image_small');
                 ?>
                 <a class="<?= $block->escapeHtmlAttr(implode(' ', $classes)) ?>"
-                    href="<?= $block->escapeUrl($image->getLargeImageUrl()) ?>"
+                    role="button"
+                    data-href="<?= $block->escapeUrl($image->getLargeImageUrl()) ?>"
                     title="<?= $block->escapeHtmlAttr($image->getLabel() ?: __('View Image')) ?>"
                     tabindex="-1">
                     <img loading="lazy"
@@ -193,7 +195,7 @@ $galleryCss = array_filter([
 
 <?php if (in_array($mode, ['expanded', 'slider'])) : ?>
     <script type="text/x-magento-template" id="gallery-image">
-        <a class="<%- classes %>" href="<%- full %>" data-caption="<%- caption %>">
+        <a class="<%- classes %>" role="button" data-href="<%- full %>" data-caption="<%- caption %>">
             <img loading="lazy" alt="<%- caption %>"
                 src="<%- img %>"
                 srcset="<%- srcset ? srcset.medium : '' %>"
@@ -206,7 +208,7 @@ $galleryCss = array_filter([
 <?php endif ?>
 
 <script type="text/x-magento-template" id="gallery-thumbnail">
-    <a class="<%- classes %>" href="<%- full %>" tabindex="-1">
+    <a class="<%- classes %>" role="button" data-href="<%- full %>" tabindex="-1">
         <img loading="lazy" alt="<%- caption %>"
             src="<%- thumb %>"
             srcset="<%- srcset ? srcset.small : '' %>"
