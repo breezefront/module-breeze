@@ -336,7 +336,7 @@
                 pageWidthTmp = 0,
                 isFirstRun = !this.pages?.length,
                 shouldScroll = !isFirstRun,
-                offsetParentRect = this.slides.first().offsetParent()[0].getBoundingClientRect(),
+                offsetParentRect = this.slides.first().offsetParent()[0]?.getBoundingClientRect(),
                 gap = parseFloat(this.slider.css('gap')) || 0,
                 isHorizontal = this.slider.css('flex-direction') === 'row',
                 isRtl = $('body').hasClass('rtl') && isHorizontal,
@@ -370,7 +370,7 @@
 
             this.pages = [];
             this.scrollOffset = this.slider[0].getBoundingClientRect()[scrollKey] -
-                this.slides[0].getBoundingClientRect()[scrollKey];
+                this.slides[0]?.getBoundingClientRect()[scrollKey];
 
             this.slides.removeAttr('data-page-start').each(function (index) {
                 var slide = $(this).attr('data-index', index),

@@ -8,10 +8,14 @@ define([
         slideChanged = false;
 
     function createSlider() {
-        $('.thumbnails', galleryEl).pagebuilderSlider('destroy').pagebuilderSlider({
-            skippable: false,
-            tabbable: false
-        });
+        $('.thumbnails', galleryEl).pagebuilderSlider('destroy');
+        if ($('.thumbnails img', galleryEl).length) {
+            $('.thumbnails', galleryEl).pagebuilderSlider({
+                skippable: false,
+                tabbable: false
+            });
+        }
+
         $('.images a', galleryEl).attr('tabindex', -1);
         $('.images', galleryEl).pagebuilderSlider('destroy').pagebuilderSlider({
             infinite: gallery.options.loop,
@@ -58,7 +62,7 @@ define([
                     data.instance.activeIndex
                 );
             }
-            $('.thumbnails', galleryEl).data('pagebuilderSlider').scrollToSlide(
+            $('.thumbnails', galleryEl).data('pagebuilderSlider')?.scrollToSlide(
                 data.instance.activeIndex
             );
         })
@@ -67,7 +71,7 @@ define([
                 data.instance.activeIndex,
                 true
             );
-            $('.thumbnails', galleryEl).data('pagebuilderSlider').scrollToSlide(
+            $('.thumbnails', galleryEl).data('pagebuilderSlider')?.scrollToSlide(
                 data.instance.activeIndex,
                 true
             );
