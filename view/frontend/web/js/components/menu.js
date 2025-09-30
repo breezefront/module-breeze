@@ -368,7 +368,7 @@
             setTimeout(() => {
                 $('html').removeClass('nav-before-open');
                 this._trigger('afterClose');
-                setTimeout(() => $.breeze.scrollbar.reset(), 300); // wait till css animation is over
+                $.breeze.scrollbar.reset();
             }, this.options.closeDelay);
         }
     });
