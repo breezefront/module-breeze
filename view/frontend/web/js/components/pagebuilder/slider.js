@@ -614,8 +614,14 @@
         },
 
         scrollToPage: function (page, instant) {
-            var pageUpdated = this.page !== page,
-                offset = this.pages[page].start * (this.isRtl ? -1 : 1);
+            var pageUpdated, offset;
+
+            if (!this.pages) {
+                return;
+            }
+
+            pageUpdated = this.page !== page;
+            offset = this.pages[page].start * (this.isRtl ? -1 : 1);
 
             if (offset === this.scrollValue()) {
                 return;

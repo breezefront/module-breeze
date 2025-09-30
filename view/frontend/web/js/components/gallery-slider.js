@@ -58,7 +58,7 @@ define([
     galleryEl
         .on('gallery:afterActivate', (e, data) => {
             if (!slideChanged && !data.instance.opened()) {
-                data.instance.imagesWrapper.data('pagebuilderSlider').scrollToPage(
+                data.instance.imagesWrapper.data('pagebuilderSlider')?.scrollToPage(
                     data.instance.activeIndex
                 );
             }
@@ -67,7 +67,7 @@ define([
             );
         })
         .on('gallery:afterClose', (e, data) => {
-            data.instance.imagesWrapper.data('pagebuilderSlider').scrollToPage(
+            data.instance.imagesWrapper.data('pagebuilderSlider')?.scrollToPage(
                 data.instance.activeIndex,
                 true
             );
