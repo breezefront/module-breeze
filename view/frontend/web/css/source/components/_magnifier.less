@@ -102,7 +102,7 @@
                 }
             }
             .main-image,
-            .images .magnifier-active > img {
+            .images .magnifier-active img {
                 & when not (@critical = unsure) {
                     & when not (@product-image__filter = false) {
                         filter: ~"@{product-image__filter} grayscale(100%) opacity(60%)";
@@ -114,6 +114,9 @@
                 & when (@critical = unsure) {
                     filter: grayscale(100%) opacity(60%);
                 }
+            }
+            .images .magnifier-active .image-magnifier-lens img {
+                filter: none;
             }
         }
     }
