@@ -46,18 +46,26 @@
 
     $.breeze.scrollbar = {
         counter: 0,
+        scrollTop: 0,
 
         hide: function () {
             var padding = parseFloat($('body').css('padding-right')),
                 scrollbar = Math.abs(window.innerWidth - document.documentElement.clientWidth);
 
-            this.counter++;
+            if (++this.counter > 1) {
+                return;
+            }
 
-            $('body')
-                .css('box-sizing', 'border-box')
-                .css('padding-right', padding + scrollbar);
+            this.scrollTop = window.pageYOffset;
 
-            $('html, body').css('overflow', 'hidden');
+            $('body').css({
+                'box-sizing': 'border-box',
+                'padding-right': padding + scrollbar,
+                'overflow': 'hidden',
+                'position': 'fixed',
+                'width': '100%',
+                'top': `-${this.scrollTop}px`,
+            });
         },
 
         reset: function () {
@@ -65,11 +73,16 @@
                 return;
             }
 
-            $('body')
-                .css('box-sizing', '')
-                .css('padding-right', '');
+            $('body').css({
+                'box-sizing': '',
+                'padding-right': '',
+                'overflow': '',
+                'position': '',
+                'width': '',
+                'top': '',
+            });
 
-            $('html, body').css('overflow', '');
+            window.scrollTo(0, this.scrollTop);
         }
     };
 })();
