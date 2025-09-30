@@ -22,8 +22,8 @@
     flex-direction: row;
     align-items: flex-start;
     justify-content: flex-end;
+    --gallery-thumbs-direction: column;
     .thumbnails {
-        flex-direction: column;
         flex-wrap: nowrap;
         order: -1;
         max-height: @bz-gallery-vertical-thumb__max-height;
@@ -31,6 +31,28 @@
         .padding-right(@bz-gallery-vertical-thumb__padding-right);
         padding-bottom: 0;
         overflow-y: overlay;
+
+        .slick-arrow {
+            transform: ~"translateX(calc(-50% - @{bz-gallery-vertical-thumb__padding-right} / 2))";
+            height: @bz-gallery-arrow__width;
+            width: @bz-gallery-arrow__height;
+        }
+        .slick-prev {
+            top: 0;
+            left: 50%;
+            &::before {
+                transform: ~"rotate(-90deg)";
+            }
+        }
+        .slick-next {
+            bottom: 0;
+            top: auto;
+            left: 50%;
+            right: auto;
+            &::before {
+                transform: ~"rotate(90deg)";
+            }
+        }
     }
 }
 

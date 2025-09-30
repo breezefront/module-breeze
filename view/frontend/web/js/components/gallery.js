@@ -181,7 +181,7 @@
 
         updateThumbsMaxHeight: function () {
             if (this.gallery.hasClass('vertical')) {
-                this.thumbsWrapper.css('max-height', this.stage.height() || this.imagesWrapper.height());
+                this.thumbsWrapper.css('max-height', Math.max(this.stage.height(), this.imagesWrapper.height()));
             }
         },
 
@@ -192,6 +192,7 @@
                 .off('load error')
                 .on('load error', function () {
                     $(this).parent().spinner(false);
+                    self.imagesWrapper.find(`a[data-clone] img[src="${this.src}"]`).parent().spinner(false);
                 })
                 .on('load', function () {
                     if (!self.cache.find(`[src="${this.src}"]`).length) {

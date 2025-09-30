@@ -36,9 +36,15 @@ $sizes = $responsiveImageHelper->getSizes('product_page_image_medium');
 $thumbSizes = $responsiveImageHelper->getSizes('product_page_image_small');
 
 $galleryId = 'gallery-' . $block->getProduct()->getId();
+$galleryCss = array_filter([
+    $mode,
+    $mode === 'slider' ? 'expanded' : '',
+    $navDir,
+    $showCaption ? 'caption' : '',
+]);
 ?>
 
-<div class="breeze-gallery <?= $block->escapeHtmlAttr($mode) ?> <?= $block->escapeHtmlAttr($navDir) ?> <?= $showCaption ? 'caption' : '' ?>">
+<div class="breeze-gallery <?= $block->escapeHtmlAttr(implode(' ', $galleryCss)) ?>">
     <div class="stage <?= $mainImage && $mainImage->getVideoUrl() ? 'video' : '' ?>"
         data-gallery-id="<?= /* @noEscape */ $galleryId ?>"
         data-gallery-role="gallery-placeholder"
@@ -91,8 +97,18 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
         </a>
     </div>
 
-    <?php if ($mode === 'expanded') : ?>
+    <?php if (in_array($mode, ['expanded', 'slider'])) : ?>
         <div class="images">
+            <?php if ($mode === 'slider') : ?>
+                <?php if (count($images) > 1) : ?>
+                    <button class="slick-prev slick-arrow" type="button" tabindex="-1"
+                        aria-label="<?= $escaper->escapeHtmlAttr(__('Previous Image')) ?>">
+                        <?= $escaper->escapeHtml(__('Previous Image')) ?>
+                    </button>
+                <?php endif ?>
+                <div class="slick-list">
+            <?php endif ?>
+
             <?php $i = 0; foreach ($images as $image) : ?>
                 <?php
                     $lazy = (bool) $i++;
@@ -118,6 +134,16 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
                         height="<?= $block->escapeHtmlAttr($height) ?>"/>
                 </a>
             <?php endforeach ?>
+
+            <?php if ($mode === 'slider') : ?>
+                </div>
+                <?php if (count($images) > 1) : ?>
+                    <button class="slick-next slick-arrow" type="button" tabindex="-1"
+                        aria-label="<?= $escaper->escapeHtmlAttr(__('Next Image')) ?>">
+                        <?= $escaper->escapeHtml(__('Next Image')) ?>
+                    </button>
+                <?php endif ?>
+            <?php endif ?>
         </div>
     <?php endif ?>
 
@@ -165,7 +191,7 @@ $galleryId = 'gallery-' . $block->getProduct()->getId();
     }
 </script>
 
-<?php if ($mode === 'expanded') : ?>
+<?php if (in_array($mode, ['expanded', 'slider'])) : ?>
     <script type="text/x-magento-template" id="gallery-image">
         <a class="<%- classes %>" href="<%- full %>" data-caption="<%- caption %>">
             <img loading="lazy" alt="<%- caption %>"

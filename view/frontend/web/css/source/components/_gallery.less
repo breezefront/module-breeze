@@ -7,7 +7,8 @@
         .prev,
         .next,
         .controls a,
-        .close {
+        .close,
+        .slick-arrow {
             color: @bz-gallery-controls__color;
             &:hover {
                 color: @bz-gallery-controls__hover__color;
@@ -52,7 +53,8 @@
         }
 
         .prev,
-        .next {
+        .next,
+        .slick-arrow {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -60,14 +62,21 @@
             top: @bz-gallery-arrow__top;
             width: @bz-gallery-arrow__width;
             height: @bz-gallery-arrow__height;
-            margin-top: -(@bz-gallery-arrow__height / 2);
             .lib-css(color, @bz-gallery-arrow__color);
             .lib-css(background, @bz-gallery-arrow__background);
             .lib-css(border, @bz-gallery-arrow__border);
             .lib-css(border-radius, @bz-gallery-arrow__border-radius);
             z-index: 11;
             transition: all 150ms ease-in;
+            transform: ~"translateY(-50%)";
 
+            svg {
+                .modrtl(transform, false, ~"scaleX(-1)");
+            }
+        }
+        .prev,
+        .next,
+        .images .slick-arrow {
             @media (hover: hover) {
                 visibility: hidden;
                 opacity: 0;
@@ -76,22 +85,18 @@
                     .lib-css(color, @bz-gallery-arrow__hover__color);
                 }
             }
-
-            svg {
-                .modrtl(transform, false, ~"scaleX(-1)");
-            }
         }
-        .next {
+        .next,
+        .slick-next {
             .left(auto);
             .right(@bz-gallery-arrow__left);
         }
         @media (hover: hover) {
-            .stage:hover {
-                .prev,
-                .next {
-                    visibility: visible;
-                    opacity: .8;
-                }
+            .stage:hover .prev,
+            .stage:hover .next,
+            .images:hover .slick-arrow {
+                visibility: visible;
+                opacity: .8;
             }
         }
 
@@ -106,6 +111,7 @@
             flex-shrink: 0;
         }
 
+        .images .item.video,
         .stage.video .main-image-wrapper,
         .thumbnails:not(.dots) .item.video {
             &::before {
@@ -155,21 +161,23 @@
                     opacity: 0;
                 }
             }
+        }
 
-            &.video .main-image-wrapper {
-                cursor: pointer;
-                &::before {
-                    transform: scale(1.3);
-                    pointer-events: all;
-                }
-                &:hover::before {
-                    transform: scale(1.3) translateX(2px);
-                }
+        .images .item.video,
+        .stage.video .main-image-wrapper {
+            cursor: pointer;
+            &::before {
+                transform: scale(1.3);
+                pointer-events: all;
+            }
+            &:hover::before {
+                transform: scale(1.3) translateX(2px);
             }
         }
 
         .thumbnails {
             display: flex;
+            flex-direction: var(--gallery-thumbs-direction, row);
             flex-grow: 0;
             flex-shrink: 0;
             gap: @bz-gallery-thumb__gap;
@@ -241,6 +249,49 @@
                 scroll-snap-align: center;
                 text-align: center;
                 cursor: zoom-in;
+            }
+        }
+
+        &.slider {
+            .action.skip {
+                display: none;
+            }
+
+            .images {
+                flex-wrap: nowrap !important;
+                overflow: auto !important;
+                scrollbar-width: none;
+
+                &.slick-initialized:has(:focus-visible) {
+                    overflow: visible !important;
+                }
+
+                .slick-list {
+                    gap: var(--gallery-columns-gap);
+                    &:focus-visible {
+                        outline-offset: 0;
+                    }
+                }
+                .slick-arrow {
+                    z-index: 110;
+                }
+            }
+
+            .thumbnails{
+                &:not(.hidden) {
+                    display: flex !important;
+                    scrollbar-width: none;
+                    position: relative;
+                    overflow: hidden;
+                }
+                .slick-list {
+                    gap: @bz-gallery-thumb__gap;
+                    flex-direction: var(--gallery-thumbs-direction, row);
+                }
+                .slick-arrow {
+                    transition: opacity var(--transition-duration);
+                    top: ~"calc(50% - 12px / 2)";
+                }
             }
         }
     }

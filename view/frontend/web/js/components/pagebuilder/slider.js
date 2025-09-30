@@ -62,7 +62,7 @@
 
             this.prepareMarkup();
 
-            (this.options.lazy ? $.lazy : setTimeout)(async () => {
+            setTimeout(async () => {
                 await this.buildPagination();
                 this.element.addClass('slick-initialized');
                 await this.addEventListeners();
@@ -114,7 +114,7 @@
             }
 
             if (this.options.infinite) {
-                this.slider.css('overscroll-behavior', 'none');
+                this.slider.css('overscroll-behavior-x', 'none');
             }
         },
 
@@ -457,7 +457,7 @@
         },
 
         cloneSlides: function () {
-            var toClone = 2,
+            var toClone = this.slider.width() > this.slides.first().width() ? 2 : 1,
                 offset = this.pages.at(-1).end - this.pages.at(-toClone).start + this.gap,
                 cloned = -1,
                 i;
@@ -553,7 +553,7 @@
                 return arrows.hide();
             }
 
-            arrows.css('display', 'block');
+            arrows.css('display', 'flex');
 
             if (this.options.infinite) {
                 return;
