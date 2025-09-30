@@ -338,6 +338,7 @@
                 .attr('width', this.options.width)
                 .attr('height', this.options.height);
 
+            this.stage.find('.video-wrapper').remove();
             this.gallery.removeClass('opened');
             this.activate(this.activeIndex);
             $('body').removeClass('_has-modal');
