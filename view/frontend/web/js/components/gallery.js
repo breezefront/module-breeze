@@ -181,7 +181,7 @@
 
         updateThumbsMaxHeight: function () {
             if (this.gallery.hasClass('vertical')) {
-                this.thumbsWrapper.css('max-height', this.stage.height() || this.imagesWrapper.height());
+                this.thumbsWrapper.css('max-height', Math.max(this.stage.height(), this.imagesWrapper.height()));
             }
         },
 
