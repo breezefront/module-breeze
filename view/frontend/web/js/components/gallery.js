@@ -54,8 +54,8 @@
             this.image = this.stage.find('.stage img.main-image');
             this.activeIndex = this.gallery.find('.thumbnails a.active').index();
             this.focusTrap = this.createFocusTrap(this.gallery, {
-                initialFocus: this.element.find('.main-image-wrapper')[0],
-                returnFocusOnDeactivate: false,
+                initialFocus: false,
+                preventScroll: true,
             });
 
             if (this.imagesWrapper.length) {
@@ -156,6 +156,14 @@
                 }
 
                 switch (event.key) {
+                    case 'Enter':
+                        if (self.options.data[self.activeIndex].videoUrl &&
+                            !self.stage.find('.video-wrapper').length
+                        ) {
+                            self.play();
+                        }
+                        break;
+
                     case 'Escape':
                         self.close();
                         break;
