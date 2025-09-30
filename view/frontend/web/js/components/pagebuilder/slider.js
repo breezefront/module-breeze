@@ -107,10 +107,13 @@
             this.nextEl = this.element.find('.slick-next');
             this.prevEl = this.element.find('.slick-prev');
 
-            if (this.options.tabbable !== false &&
-                !this.slides.first().find('a, button').length
-            ) {
+            if (!this.slides.first().find('a, button').length) {
                 this.slider.attr('tabindex', 0);
+            }
+
+            // make slider container not tabbable (overflow makes is tabbable)
+            if (this.options.tabbable === false) {
+                this.slider.attr('tabindex', -1);
             }
 
             if (this.options.infinite) {
