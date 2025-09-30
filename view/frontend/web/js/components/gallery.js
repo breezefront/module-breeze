@@ -6,7 +6,7 @@
         options: {
             video: {
                 template: '<div class="video-wrapper"><iframe src="<%- src %>"' +
-                    ' width="<%- width %>" height="<%- height %>" frameborder="0" allowfullscreen' +
+                    ' width="<%- width %>" height="<%- height %>" frameborder="0" tabindex="0" allowfullscreen' +
                     ' allow="accelerometer; autoplay; clipboard-write;' +
                     ' encrypted-media; gyroscope; picture-in-picture"></iframe></div>',
                 providers: {
