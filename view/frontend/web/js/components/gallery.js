@@ -20,7 +20,7 @@
                         params: {
                             width: 560,
                             height: 315,
-                            src: 'https://www.youtube.com/embed/$id'
+                            src: 'https://www.youtube.com/embed/$id?autoplay=1'
                         }
                     },
                     vimeo: {
@@ -31,7 +31,7 @@
                         params: {
                             width: 640,
                             height: 380,
-                            src: 'https://player.vimeo.com/video/$id'
+                            src: 'https://player.vimeo.com/video/$id?autoplay=1'
                         }
                     }
                 }
