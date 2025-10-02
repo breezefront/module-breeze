@@ -141,14 +141,14 @@
                     event.preventDefault();
 
                     if ($(event.target).closest('.slick-initialized').is(this.element)) {
-                        this[$(event.target).hasClass('slick-prev') ? 'prev' : 'next']();
+                        this[$(event.currentTarget).hasClass('slick-prev') ? 'prev' : 'next']();
                     }
                 },
                 'click .slick-dots li': event => {
                     event.preventDefault();
 
                     if ($(event.target).closest('.slick-initialized').is(this.element)) {
-                        this.scrollToPage($(event.target).index());
+                        this.scrollToPage($(event.currentTarget).index());
                     }
                 },
             });
