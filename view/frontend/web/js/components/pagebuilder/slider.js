@@ -339,6 +339,7 @@
                 fauxOffset = 0,
                 pageNumTmp = 0,
                 pageWidthTmp = 0,
+                scrollOffset = 0,
                 isFirstRun = !this.pages?.length,
                 shouldScroll = !isFirstRun,
                 offsetParentRect = this.slides.first().offsetParent()[0]?.getBoundingClientRect(),
@@ -374,7 +375,7 @@
             }
 
             this.pages = [];
-            this.scrollOffset = this.slider[0].getBoundingClientRect()[scrollKey] -
+            scrollOffset = this.slider[0].getBoundingClientRect()[scrollKey] -
                 this.slides[0]?.getBoundingClientRect()[scrollKey];
 
             this.slides.removeAttr('data-page-start').each(function (index) {
@@ -398,29 +399,35 @@
                     self.pages[pageNumTmp].end += gap;
                 }
 
-                slideStart = Math.abs(
-                    slide[0].getBoundingClientRect()[scrollKey] -
-                    offsetParentRect[scrollKey]
-                );
-
                 if (!self.pages[pageNumTmp]) {
+                    slideStart = slide[0].getBoundingClientRect()[scrollKey] + sliderLeft - offsetParentRect[scrollKey];
+                    slideStart = isRtl ? Math.abs(slideStart) : slideStart;
+                    slideStart -= fauxOffset;
+
+                    if (scrollOffset !== sliderLeft) {
+                        slideStart += scrollOffset * (isRtl ? -1 : 1);
+                    }
+
                     self.pages[pageNumTmp] = {
                         idx: '',
                         slides: [],
-                        start: slideStart + sliderLeft - fauxOffset + self.scrollOffset,
-                        end: slideStart + sliderLeft - fauxOffset + self.scrollOffset,
+                        start: slideStart,
+                        end: slideStart,
                     };
                     slide.attr('data-page-start', pageNumTmp);
                 }
 
-                pageWidthTmp = pageWidthTmp || Math.abs(self.scrollOffset);
+                pageWidthTmp = pageWidthTmp || Math.abs(scrollOffset);
                 pageWidthTmp += slideWidth + gap;
                 self.pages[pageNumTmp].slides.push(index);
                 self.pages[pageNumTmp].end += slideWidth;
                 self.pages[pageNumTmp].idx += index;
 
                 // keep active slide in the viewport
-                if (index === self.slide) {
+                if ((self.slide && index === self.slide) ||
+                    Math.abs(sliderLeft) >= self.pages[pageNumTmp].start - 2 &&
+                    Math.abs(sliderLeft) <= self.pages[pageNumTmp].end + 2
+                ) {
                     self.page = pageNumTmp;
                 }
             });
