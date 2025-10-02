@@ -415,7 +415,9 @@
             var thumbnails = [],
                 images = [],
                 thumbTemplate = $('#gallery-thumbnail').html(),
-                imageTemplate = $('#gallery-image').html();
+                imageTemplate = $('#gallery-image').html(),
+                markedAsMain = false,
+                isMain = false;
 
             this.options.data = data;
 
@@ -435,6 +437,11 @@
                 }
 
                 if (imageTemplate) {
+                    isMain = !markedAsMain && picture.isMain;
+                    if (isMain) {
+                        markedAsMain = true;
+                    }
+                    pictureData.classes += ' ' + (isMain ? 'item-main' : '');
                     images.push(_.template(imageTemplate)(pictureData));
                 }
             });

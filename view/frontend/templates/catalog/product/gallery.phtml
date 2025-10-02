@@ -109,15 +109,21 @@ $galleryCss = array_filter([
                 <div class="slick-list">
             <?php endif ?>
 
-            <?php $i = 0; foreach ($images as $image) : ?>
+            <?php $i = 0; $markedAsMain = false; foreach ($images as $image) : ?>
                 <?php
                     $lazy = (bool) $i++;
+                    $isMain = !$markedAsMain && $image->getMediumImageUrl() === $mainImageUrl;
                     $classes = array_filter([
                         'item',
-                        $image->getVideoUrl() ? 'video' : ''
+                        $image->getVideoUrl() ? 'video' : '',
+                        $isMain ? 'item-main' : '',
                     ]);
 
                     $srcset = $responsiveImageHelper->getSrcset($image, 'product_page_image_medium');
+
+                    if ($isMain) {
+                        $markedAsMain = true;
+                    }
                 ?>
                 <a class="<?= $block->escapeHtmlAttr(implode(' ', $classes)) ?>"
                     role="button"
@@ -127,6 +133,9 @@ $galleryCss = array_filter([
                     <img <?= $lazy ? 'loading="lazy"' : '' ?>
                         alt="<?= $block->escapeHtmlAttr($image->getLabel() ?: __('Image')) ?>"
                         src="<?= $block->escapeUrl($image->getMediumImageUrl()) ?>"
+                        <?php if ($isMain) : ?>
+                            fetchpriority="high"
+                        <?php endif ?>
                         <?php if ($srcset) : ?>
                             srcset="<?= $block->escapeHtmlAttr($srcset) ?>"
                             sizes="<?= $block->escapeHtmlAttr($sizes) ?>"
