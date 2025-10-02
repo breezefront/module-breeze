@@ -123,7 +123,6 @@
 
         addEventListeners: async function () {
             var scrollToTimer,
-                isFirstResize = true,
                 lastResize = new Date(),
                 debouncedUpdate = _.debounce(this.update.bind(this), 200),
                 throttledUpdateCurPage = _.throttle(this.updateCurrentPage.bind(this), 50);
@@ -194,20 +193,23 @@
             });
 
             new ResizeObserver(() => {
-                if (isFirstResize || !this.slider.width()) {
-                    isFirstResize = false;
-                    return;
-                }
+                var width = this.slider.width(),
+                    height = this.slider.height(),
+                    prevWidth = this.slider.data('breeze-prev-width'),
+                    prevHeight = this.slider.data('breeze-prev-height');
 
-                if (this.slider.data('breeze-prev-width') !== this.slider.width() ||
-                    !this.isHorizontal && this.slider.data('breeze-prev-height') !== this.slider.height()
-                ) {
+                if (width && height) {
                     this.slider.data({
-                        'breeze-prev-width': this.slider.width(),
-                        'breeze-prev-height': this.slider.height(),
+                        'breeze-prev-width': width,
+                        'breeze-prev-height': height,
                     });
-                    lastResize = new Date();
-                    debouncedUpdate();
+
+                    if (prevWidth && prevHeight &&
+                        (prevWidth !== width || !this.isHorizontal && prevHeight !== height)
+                    ) {
+                        lastResize = new Date();
+                        debouncedUpdate();
+                    }
                 }
             }).observe(this.slider.get(0));
 
