@@ -227,3 +227,13 @@ $galleryCss = array_filter([
         />
     </a>
 </script>
+
+<?php if ($mode === 'slider') : ?>
+    <script>
+        document.querySelector('.breeze-gallery .slick-list .item-main').scrollIntoView({
+            behavior: 'instant',
+            block: 'end',
+            inline: 'nearest',
+        });
+    </script>
+<?php endif ?>
