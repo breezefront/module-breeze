@@ -429,6 +429,7 @@
                     Math.abs(sliderLeft) <= self.pages[pageNumTmp].end + 2
                 ) {
                     self.page = pageNumTmp;
+                    self.slide = self.pages[pageNumTmp].slides[0];
                 }
             });
 
