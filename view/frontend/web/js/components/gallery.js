@@ -145,6 +145,8 @@
                 });
 
             $(document).on('keydown.gallery', function (event) {
+                var isRtl = $('body').hasClass('rtl');
+
                 if (self.options.keyboard === false) {
                     return;
                 }
@@ -170,12 +172,12 @@
 
                     case 'ArrowLeft':
                         event.preventDefault();
-                        self.prev();
+                        self[isRtl ? 'next' : 'prev']();
                         break;
 
                     case 'ArrowRight':
                         event.preventDefault();
-                        self.next();
+                        self[isRtl ? 'prev' : 'next']();
                         break;
                 }
             });
