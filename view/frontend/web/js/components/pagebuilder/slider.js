@@ -404,7 +404,7 @@
                     slideStart = isRtl ? Math.abs(slideStart) : slideStart;
                     slideStart -= fauxOffset;
 
-                    if (scrollOffset !== sliderLeft) {
+                    if (Math.abs(scrollOffset - sliderLeft) > 1) {
                         slideStart += scrollOffset * (isRtl ? -1 : 1);
                     }
 
