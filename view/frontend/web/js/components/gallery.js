@@ -130,9 +130,10 @@
                     }
 
                     if (!self.thumbsWrapper.has(this).length || self.opened()) {
-                        self.open();
                         if (self.options.data[self.activeIndex].videoUrl) {
                             self.play();
+                        } else {
+                            self.open();
                         }
                     }
                 }, 10);
@@ -313,7 +314,7 @@
             );
 
             if (this.activeIndex !== index) {
-                this.stage.find('.video-wrapper').remove();
+                this.gallery.find('.video-wrapper').remove();
             }
 
             this.activeIndex = index;
