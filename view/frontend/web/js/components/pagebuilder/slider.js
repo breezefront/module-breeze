@@ -198,7 +198,7 @@
                     prevWidth = this.slider.data('breeze-prev-width'),
                     prevHeight = this.slider.data('breeze-prev-height');
 
-                if (width && height) {
+                if (width && height && !document.fullscreenElement) {
                     this.slider.data({
                         'breeze-prev-width': width,
                         'breeze-prev-height': height,
