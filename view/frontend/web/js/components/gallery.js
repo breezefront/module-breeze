@@ -144,6 +144,9 @@
                         self.close();
                         event.stopPropagation();
                     }
+                    if (event.key === 'Enter') {
+                        $(event.target).click();
+                    }
                 })
                 .find('.close').on('click', function (event) {
                     event.preventDefault();

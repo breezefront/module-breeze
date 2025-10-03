@@ -126,7 +126,7 @@ $galleryCss = array_filter([
                     }
                 ?>
                 <a class="<?= $block->escapeHtmlAttr(implode(' ', $classes)) ?>"
-                    role="button"
+                    role="button" tabindex="0"
                     data-href="<?= $block->escapeUrl($image->getLargeImageUrl()) ?>"
                     title="<?= $block->escapeHtmlAttr($image->getLabel() ?: __('View Image')) ?>"
                     data-caption="<?= $block->escapeHtmlAttr($image->getLabel() ?: $block->getProduct()->getName()) ?>">
