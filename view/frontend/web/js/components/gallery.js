@@ -116,20 +116,26 @@
                 });
 
             this.gallery.on('click', '.item', function (event) {
-                var index = $(this).parent().children().not('[data-clone="1"]').index(this);
+                setTimeout(() => { // allow prevent default in document listener
+                    var index = $(this).parent().children().not('[data-clone="1"]').index(this);
 
-                event.preventDefault();
-
-                if (index !== self.activeIndex) {
-                    self.activate(index);
-                }
-
-                if (!self.thumbsWrapper.has(this).length) {
-                    self.open();
-                    if (self.options.data[self.activeIndex].videoUrl) {
-                        self.play();
+                    if (event.defaultPrevented) {
+                        return;
                     }
-                }
+
+                    event.preventDefault();
+
+                    if (index !== self.activeIndex) {
+                        self.activate(index);
+                    }
+
+                    if (!self.thumbsWrapper.has(this).length) {
+                        self.open();
+                        if (self.options.data[self.activeIndex].videoUrl) {
+                            self.play();
+                        }
+                    }
+                }, 10);
             });
 
             this.gallery
