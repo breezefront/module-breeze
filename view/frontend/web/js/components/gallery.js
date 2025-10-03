@@ -374,9 +374,18 @@
 
         /** Plays active video */
         play: function () {
-            this.stage.prepend(
-                this.renderVideo(this.options.data[this.activeIndex].videoUrl)
-            );
+            var html = this.renderVideo(this.options.data[this.activeIndex].videoUrl),
+                dest = this.stage;
+
+            if (dest.is(':visible')) {
+                dest.prepend(html);
+            } else {
+                dest = this.imagesWrapper.find('.item:not([data-clone])').eq(this.activeIndex);
+
+                if (!dest.find('.video-wrapper').length) {
+                    dest.prepend(html);
+                }
+            }
         },
 
         /** Render video iframe */

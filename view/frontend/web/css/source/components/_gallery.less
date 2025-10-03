@@ -150,19 +150,20 @@
                 justify-content: center;
                 align-items: flex-start;
             }
+        }
 
-            .video-wrapper {
-                position: absolute !important;
-                z-index: 10;
-                top: 0;
-                right: 0;
-                left: 0;
-                bottom: 0;
-                align-items: center !important;
-                + div {
-                    // do not hide this element to keep frame size.
-                    opacity: 0;
-                }
+        .video-wrapper {
+            display: flex;
+            position: absolute !important;
+            z-index: 10;
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
+            align-items: center !important;
+            + * {
+                // do not hide this element to keep frame size.
+                opacity: 0;
             }
         }
 
