@@ -115,7 +115,7 @@
                     }
                 });
 
-            this.gallery.on('click', '.item', function (event) {
+            function onClick(event) {
                 setTimeout(() => { // allow prevent default in document listener
                     var index = $(this).parent().children().not('[data-clone="1"]').index(this);
 
@@ -129,16 +129,22 @@
                         self.activate(index);
                     }
 
-                    if (!self.thumbsWrapper.has(this).length) {
+                    if (!self.thumbsWrapper.has(this).length || self.opened()) {
                         self.open();
                         if (self.options.data[self.activeIndex].videoUrl) {
                             self.play();
                         }
                     }
                 }, 10);
-            });
+            }
 
             this.gallery
+                .on('click', '.item', onClick)
+                .on('keydown', '.item', (event) => {
+                    if (event.key === 'Enter') {
+                        onClick.bind(event.currentTarget)(event);
+                    }
+                })
                 .on('keydown', function (event) {
                     if (event.key === 'Escape' && self.opened()) {
                         self.close();
@@ -163,7 +169,6 @@
 
                 switch (event.key) {
                     case 'Enter':
-                        self.open();
                         if (self.options.data[self.activeIndex].videoUrl &&
                             !self.stage.find('.video-wrapper').length
                         ) {

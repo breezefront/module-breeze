@@ -26,6 +26,11 @@ define([
     createSlider();
 
     $('.images', galleryEl)
+        .on('keydown', e => {
+            if (e.key === 'Enter') {
+                gallery.open();
+            }
+        })
         .on('pagebuilderSlider:ready', (e, data) => {
             var timer,
                 magnifierEl = $(gallery.imagesWrapper.find('.item').add(gallery.element));
