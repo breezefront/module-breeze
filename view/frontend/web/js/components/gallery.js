@@ -144,9 +144,6 @@
                         self.close();
                         event.stopPropagation();
                     }
-                    if (event.key === 'Enter') {
-                        $(event.target).click();
-                    }
                 })
                 .find('.close').on('click', function (event) {
                     event.preventDefault();
@@ -160,14 +157,13 @@
                     return;
                 }
 
-                if (!self.opened() &&
-                    !self.gallery.is(':focus-within')
-                ) {
+                if (!self.opened() && !self.gallery.is(':focus-within')) {
                     return;
                 }
 
                 switch (event.key) {
                     case 'Enter':
+                        self.open();
                         if (self.options.data[self.activeIndex].videoUrl &&
                             !self.stage.find('.video-wrapper').length
                         ) {
