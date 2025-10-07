@@ -58,6 +58,9 @@
                             <item name="breeze-define" xsi:type="string">Swissup_Breeze/js/core/define</item>
                             <item name="breeze-dynamic-widgets" xsi:type="string">Swissup_Breeze/js/core/dynamic-widgets</item>
                             <item name="breeze-request" xsi:type="string">Swissup_Breeze/js/core/request</item>
+                            <item name="cookie" xsi:type="string">Swissup_Breeze/js/lib/js.cookie-3.0.1.min.js</item>
+                            <item name="breeze-cookie" xsi:type="string">Swissup_Breeze/js/core/cookie</item>
+                            <item name="breeze-form-key" xsi:type="string">Swissup_Breeze/js/core/form-key</item>
                         </item>
                     </item>
                     <item name="run" xsi:type="array">
@@ -80,14 +83,12 @@
                         <item name="active" xsi:type="boolean">true</item>
                         <item name="sort_order" xsi:type="number">2</item>
                         <item name="items" xsi:type="array">
-                            <item name="cookie" xsi:type="string">Swissup_Breeze/js/lib/js.cookie-3.0.1.min.js</item>
                             <item name="breeze-wrapper" xsi:type="string">Swissup_Breeze/js/core/wrapper</item>
                             <item name="class" xsi:type="string">Swissup_Breeze/js/lib/class</item>
                             <item name="breeze-registry" xsi:type="string">Swissup_Breeze/js/core/registry</item>
                             <item name="breeze-component" xsi:type="string">Swissup_Breeze/js/core/component</item>
                             <item name="breeze-dynamic-js" xsi:type="string">Swissup_Breeze/js/core/dynamic-js</item>
                             <item name="breeze-translate" xsi:type="string">Swissup_Breeze/js/core/translate</item>
-                            <item name="breeze-cookie" xsi:type="string">Swissup_Breeze/js/core/cookie</item>
                             <item name="breeze-storage" xsi:type="string">Swissup_Breeze/js/core/storage</item>
                             <item name="Magento_Customer/js/section-config" xsi:type="string">Swissup_Breeze/js/core/sections</item>
                             <item name="Magento_Customer/js/customer-data" xsi:type="string">Swissup_Breeze/js/components/customer-data</item>
