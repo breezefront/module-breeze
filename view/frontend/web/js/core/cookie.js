@@ -25,34 +25,26 @@
              * @param {String} name
              * @return {String}
              */
-            get: function (name) {
-                return cookies.get(name);
-            },
+            get: cookies.get,
 
             /**
              * @param {String} name
              * @param {String} value
              * @param {Object} attributes
              */
-            set: function (name, value, attributes) {
-                cookies.set(name, value, attributes);
-            },
+            set: cookies.set,
 
             /**
              * @param {String} name
              * @param {Object} attributes
              */
-            remove: function (name, attributes) {
-                cookies.remove(name, attributes);
-            },
+            remove: cookies.remove,
 
             /**
              * @param {String} name
              * @param {Object} attributes
              */
-            clear: function (name, attributes) {
-                cookies.remove(name, attributes);
-            },
+            clear: cookies.remove,
 
             /**
              * @param {String} name
