@@ -36,7 +36,7 @@ TEXT,
 
 ```bash
 composer require {{package}}
-bin/magento setup:upgrade --safe-mode=1
+bin/magento module:enable {{Vendor}}_{{Module}}
 ```
 
 TEXT,
@@ -68,7 +68,7 @@ TEXT,
                 'content' => <<<TEXT
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="breeze.js">
             <arguments>
@@ -77,11 +77,7 @@ TEXT,
                         <item name="items" xsi:type="array">
                             <item name="{{Vendor}}_{{Module}}/js/script" xsi:type="array">
                                 <item name="path" xsi:type="string">{{Vendor}}_{{Module}}/js/script</item>
-                                <!--
-                                <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
-                                    <param name="path">module/general/enabled</param>
-                                </item>
-                                -->
+                                <item name="autoload" xsi:type="boolean">true</item>
                             </item>
                         </item>
                     </item>
@@ -109,21 +105,11 @@ TEXT,
 
             'code/{{Vendor}}/{{Module}}/view/frontend/web/js/script.js' => [
                 'content' => <<<TEXT
-(function () {
+define(['jquery'], function ($) {
     'use strict';
 
-    // $.widget('widgetName', {
-    //     component: '{{Vendor}}_{{Module}}/js/component',
-    //     create: function () {
-    //         console.log(this.element);
-    //         console.log(this.options);
-    //     }
-    // });
-
-    $(document).on('breeze:load', () => {
-        console.log('hello from view/frontend/web/js/script.js');
-    });
-})();
+    console.log('hello from view/frontend/web/js/script.js');
+});
 
 TEXT,
                 'skip' => 'nojs',
@@ -159,7 +145,8 @@ TEXT,
 
             'design/frontend/{{Vendor}}/{{theme}}/theme.xml' => [
                 'content' => <<<TEXT
-<theme xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Config/etc/theme.xsd">
+<theme xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:framework:Config/etc/theme.xsd">
     <title>{{Theme}}</title>
     <parent>{{parent_theme_code}}</parent>
 </theme>
@@ -197,6 +184,9 @@ TEXT,
 <view xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:Config/etc/view.xsd">
     <vars module="Magento_Catalog">
+        <var name="gallery">
+            <var name="mode">slider</var> <!-- default/expanded/slider -->
+        </var>
         <var name="magnifier">
             <var name="enabled">true</var>
         </var>
@@ -209,7 +199,7 @@ TEXT,
                 'content' => <<<TEXT
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <!-- <move element="navigation.wrapper" destination="header-wrapper" after="logo"/> -->
         <!-- <move element="navigation.wrapper" destination="header.container"/> -->
@@ -233,20 +223,11 @@ TEXT,
 
             'design/frontend/{{Vendor}}/{{theme}}/web/js/breeze/extend.js' => [
                 'content' => <<<TEXT
-(function () {
+define(['jquery'], function ($) {
     'use strict';
 
-    // $.mixin('collapsible', {
-    //     create: function (original) {
-    //         console.log('hello collapsible.js mixin');
-    //         original();
-    //     }
-    // });
-
-    $(document).on('breeze:load', () => {
-        console.log('hello from web/js/breeze/extend.js');
-    });
-})();
+    console.log('hello from web/js/breeze/extend.js');
+});
 
 TEXT,
             ],
