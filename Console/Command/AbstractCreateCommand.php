@@ -65,8 +65,17 @@ class AbstractCreateCommand extends Command
     protected function create($files)
     {
         $result = [];
+        $isFirst = true;
 
         foreach ($files as $path => $values) {
+            if ($isFirst) {
+                $isFirst = false;
+                $dir = dirname($path);
+                if ($this->directory->isExist($dir)) {
+                    throw new \Exception("Failed. Directory already exist: {$dir}");
+                }
+            }
+
             if (!empty($values['skip']) && $this->input->getOption($values['skip'])) {
                 continue;
             }
