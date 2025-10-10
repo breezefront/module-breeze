@@ -672,6 +672,9 @@
                                 <item name="import" xsi:type="array">
                                     <item name="validator" xsi:type="string">Magento_Ui/js/lib/validation/validator</item>
                                 </item>
+                                <item name="export" xsi:type="array">
+                                    <item name="mage/validation" xsi:type="string">mage/validation</item>
+                                </item>
                                 <item name="load" xsi:type="array">
                                     <item name="onInteraction" xsi:type="boolean">true</item>
                                 </item>
