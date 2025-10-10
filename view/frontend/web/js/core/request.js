@@ -295,7 +295,7 @@
         ['done', 'fail', 'always'].forEach(name => {
             params[name] = params[name] ? [params[name]] : [];
             result[name] = function (fn) {
-                params[name].push(fn);
+                params[name].push(fn.bind(params.context || params));
                 return this;
             };
         });
