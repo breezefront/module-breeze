@@ -69,7 +69,7 @@ define([
             totals: totals,
             isLoading: ko.observable(false),
             getItems: () => quoteItems,
-            getSegment: (code) => totals().total_segments?.find(item => item.code === code)
+            getSegment: (code) => totals().total_segments?.find(item => item.code === code) || null
         };
     })();
 });
