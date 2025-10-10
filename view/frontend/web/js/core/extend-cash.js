@@ -609,6 +609,14 @@
         return original(object || [], callback);
     });
 
+    $.extend = _.wrap($.extend, function (original, ...sources) {
+        // https://github.com/jquery/jquery/blob/main/src/core.js#L132-L134
+        if (typeof sources[0] === 'string') {
+            sources[0] = {};
+        }
+        return original(...sources);
+    });
+
     /** Serialize object to query string */
     $.param = $.params = function (params, prefix, doNotEncode) {
         if (params instanceof FormData) {
