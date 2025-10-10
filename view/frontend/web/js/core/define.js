@@ -130,7 +130,7 @@
                 modules[name].path = $.breeze.jsconfig[name].path;
             } else if (name.startsWith('text!')) {
                 modules[name].path = name.substr(5);
-            } else if (!_.isEmpty($.breeze.jsconfig) && !name.startsWith('__') && !$.breezemap.__get(name)) {
+            } else if (!name.startsWith('__') && !$.breezemap.__get(name) && !$.breeze.jsignore.includes(name)) {
                 Object.keys($.breeze.jsconfig).filter(k => k.includes('*')).some(k => {
                     if (name.startsWith(k.split('*').at(0))) {
                         modules[name].path = name;
