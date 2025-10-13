@@ -109,6 +109,22 @@ $galleryCss = array_filter([
                 <div class="slick-list">
             <?php endif ?>
 
+            <?php if (!count($images)) : ?>
+                <a class="item item-main" role="button"
+                    title="<?= $block->escapeHtmlAttr($mainImageLabel) ?>"
+                    data-caption="<?= $block->escapeHtmlAttr($mainImageLabel) ?>">
+                    <img alt="<?= $block->escapeHtmlAttr($mainImageLabel) ?>"
+                        src="<?= $block->escapeUrl($mainImageUrl) ?>"
+                        fetchpriority="high"
+                        <?php if ($srcset) : ?>
+                            srcset="<?= $block->escapeHtmlAttr($srcset) ?>"
+                            sizes="<?= $block->escapeHtmlAttr($sizes) ?>"
+                        <?php endif ?>
+                        width="<?= $block->escapeHtmlAttr($width) ?>"
+                        height="<?= $block->escapeHtmlAttr($height) ?>"/>
+                </a>
+            <?php endif ?>
+
             <?php $i = 0; $markedAsMain = false; foreach ($images as $image) : ?>
                 <?php
                     $lazy = (bool) $i++;
@@ -230,7 +246,7 @@ $galleryCss = array_filter([
 
 <?php if ($mode === 'slider') : ?>
     <script>
-        document.querySelector('.breeze-gallery .slick-list .item-main').scrollIntoView({
+        document.querySelector('.breeze-gallery .slick-list .item-main')?.scrollIntoView({
             behavior: 'instant',
             block: 'end',
             inline: 'nearest',
