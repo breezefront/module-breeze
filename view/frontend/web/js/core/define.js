@@ -11,6 +11,7 @@
         },
         defaultStackTraceLimit = Error.stackTraceLimit || 10,
         autoloadedBundles = {},
+        origSuffix = '-mage-original',
         bundlePathRe = /(?<path>Swissup_Breeze\/bundles\/\d+\/.*?)\d*(\.min\.js|\.js)$/,
         bundlePrefixRe = /(?<prefix>Swissup_Breeze\/bundles\/\d+\/).*\.js$/,
         bundlePrefix = $('script[src*="/Swissup_Breeze/bundles/"]').attr('src')?.match(bundlePrefixRe).groups.prefix,
@@ -62,8 +63,8 @@
 
         if (this.result !== undefined && !(this.result instanceof $)) {
             [this.name].forEach(alias => {
-                if (alias.endsWith('-orig')) {
-                    alias = alias.slice(0, -5);
+                if (alias.endsWith(origSuffix)) {
+                    alias = alias.slice(0, -1 * origSuffix.length);
                 } else {
                     alias = alias.startsWith('__module-') ? `__component${$.breezemap.__counter++}` : alias;
                 }
@@ -129,7 +130,7 @@
                 modules[name].path = $.breeze.jsconfig[name].path;
             } else if (name.startsWith('text!')) {
                 modules[name].path = name.substr(5);
-            } else if (!name.startsWith('__') && !$.breezemap.__has(name)) {
+            } else if (!name.startsWith('__') && !name.endsWith(origSuffix) && !$.breezemap.__has(name)) {
                 Object.keys($.breeze.jsconfig).filter(k => k.includes('*')).some(k => {
                     if (name.startsWith(k.split('*').at(0))) {
                         modules[name].path = name;
@@ -163,7 +164,7 @@
 
         dep = getModule(alias);
         if (aliasAsPath && dep.path !== path) {
-            dep = getModule(alias + '-orig');
+            dep = getModule(alias + origSuffix);
         }
 
         if (dep.collectedDeps) {
