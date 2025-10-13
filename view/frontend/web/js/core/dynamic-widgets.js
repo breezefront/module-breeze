@@ -7,6 +7,9 @@
     $.breeze.jsignore = config.ignore;
 
     try {
+        config.ignore.forEach(alias => {
+            $.breezemap[alias] = false;
+        });
         $.each($.breeze.jsbundles, (bundle, items) => {
             $.each(items, (alias, values) => {
                 if (values.ref) {

@@ -51,7 +51,7 @@
             $.breezemap[this.result?.component] = this.result;
         }
 
-        if ($.breezemap.__get(this.name)) {
+        if ($.breezemap.__has(this.name)) {
             this.result = $.breezemap.__get(this.name);
         }
 
@@ -98,8 +98,7 @@
         }
 
         if (this.result === undefined && this.unknown &&
-            (window.location.search.includes('breeze=1') || window.location.hash.includes('breeze')) &&
-            !$.breeze.jsignore.includes(this.name)
+            (true || window.location.search.includes('breeze=1') || window.location.hash.includes('breeze'))
         ) {
             Error.stackTraceLimit = 100;
             console.groupCollapsed(this.name);
@@ -130,7 +129,7 @@
                 modules[name].path = $.breeze.jsconfig[name].path;
             } else if (name.startsWith('text!')) {
                 modules[name].path = name.substr(5);
-            } else if (!name.startsWith('__') && !$.breezemap.__get(name) && !$.breeze.jsignore.includes(name)) {
+            } else if (!name.startsWith('__') && !$.breezemap.__has(name)) {
                 Object.keys($.breeze.jsconfig).filter(k => k.includes('*')).some(k => {
                     if (name.startsWith(k.split('*').at(0))) {
                         modules[name].path = name;
@@ -346,6 +345,7 @@
         __aliases: {},
         __getAll: () => ({ ...$.breezemap }),
         __get: key => $.breezemap[key],
+        __has: key => key in $.breezemap,
         __lastComponent: (offset = 0) => $.breezemap[`__component${$.breezemap.__counter - 1 - offset}`],
         __register: (name, oldName) => {
             if ($.breezemap[name]) {
