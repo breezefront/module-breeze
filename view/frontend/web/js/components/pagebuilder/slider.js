@@ -1,6 +1,8 @@
 (function () {
     'use strict';
 
+    var isTouch = 'ontouchstart' in window;
+
     $.widget('pagebuilderSlider', {
         component: 'Magento_PageBuilder/js/content-type/slider/appearance/default/widget',
         options: {
@@ -239,10 +241,12 @@
             var touching = false,
                 timer;
 
-            this._on({
-                touchstart: () => { touching = true; },
-                touchend: () => { touching = false; },
-            });
+            if (isTouch) {
+                this._on({
+                    touchstart: () => { touching = true; },
+                    touchend: () => { touching = false; },
+                });
+            }
 
             this._on('mousedown', event => {
                 var pos = {

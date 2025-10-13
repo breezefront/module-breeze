@@ -135,21 +135,20 @@
                 this._on('mousedown .breeze-gallery:not(.opened) .stage', (e) => e.preventDefault());
                 this._on('.breeze-gallery .images', 'contextmenu', (e) => e.preventDefault());
                 this._on('.breeze-gallery .images', 'mousedown', (e) => e.preventDefault());
+                this._on('touchstart', (e) => {
+                    if (this.touchTimer || this.gallery.opened()) {
+                        return;
+                    }
+
+                    this.touchTimer = setTimeout(() => {
+                        this.touchTimer = null;
+                        this.touchActive = true;
+                        this.onMouseMove(e);
+                    }, 250);
+                });
             }
 
             this._on(isTouch ? 'touchmove' : 'mousemove', this.onMouseMove);
-
-            this._on('touchstart', (e) => {
-                if (this.touchTimer || this.gallery.opened()) {
-                    return;
-                }
-
-                this.touchTimer = setTimeout(() => {
-                    this.touchTimer = null;
-                    this.touchActive = true;
-                    this.onMouseMove(e);
-                }, 250);
-            });
 
             [document, '.breeze-gallery .images'].forEach(el => {
                 this._on(el, 'scroll', () => {
