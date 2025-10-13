@@ -318,7 +318,7 @@
     window.require.defined = (name) => getModule(name).loaded;
     window.require.toUrl = (path) => {
         if (config.paths[path]) {
-            return config.paths[path];
+            path = config.paths[path];
         }
 
         if (path.includes('//')) {
