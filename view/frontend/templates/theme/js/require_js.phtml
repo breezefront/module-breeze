@@ -17,7 +17,7 @@ $scriptString = <<<script
     var VIEW_URL = '{$block->escapeJs($block->getViewFileUrl("/"))}';
     window.required = window.required || [];
     window.define = window.require = window.requirejs = window.require || ((...args) => required.push(args));
-    window.require.config = () => {};
+    window.require.config = (...args) => require([], () => { require.config(...args) });
 
 script;
 
