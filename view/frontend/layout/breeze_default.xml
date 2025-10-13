@@ -959,6 +959,7 @@
         <referenceBlock name="requirejs-config" remove="true"/>
         <referenceBlock name="cookie-status-check" remove="true"/>
         <referenceBlock name="js_cookies" remove="true"/>
+        <referenceBlock name="theme.active.editor" remove="true" />
         <referenceBlock name="product.info.addtocart.instantPurchase" remove="true"/>
         <referenceBlock name="product.info.addtocart.instantPurchase.additional" remove="true"/>
 
