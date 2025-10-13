@@ -598,6 +598,7 @@
         }, []);
     };
 
+    $.noConflict = () => {};
     $.proxy = _.bind;
     $.map = _.map;
     $.now = Date.now;
