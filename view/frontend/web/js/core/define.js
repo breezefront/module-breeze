@@ -254,6 +254,14 @@
                     }
                 } else if (dep.path) {
                     dep.url = window.require.toUrl(dep.path);
+
+                    if (!dep.name.startsWith('text!')) {
+                        if (dep.path.endsWith('.min')) {
+                            dep.url += '.js';
+                        } else if (!dep.path.endsWith('.js')) {
+                            dep.url += jsSuffix;
+                        }
+                    }
                 }
 
                 return dep;
@@ -322,17 +330,8 @@
             path = config.paths[path];
         }
 
-        if (path.includes('//')) {
+        if (path.includes(':') || path.startsWith('/')) {
             return path;
-        }
-
-        if (path.endsWith('.min')) {
-            path += '.js';
-        } else if (!path.endsWith('.min.js') &&
-            (path.endsWith('.js') || !path.split('/').at(-1).includes('.'))
-        ) {
-            path = path.replace(/\.js$/, '');
-            path += jsSuffix;
         }
 
         return window.VIEW_URL + '/' + path;
