@@ -914,6 +914,17 @@
                             </item>
 
                             <!-- Rarely used magento components -->
+                            <item name="mageUtils" xsi:type="array">
+                                <item name="path" xsi:type="string">mage/utils/main</item>
+                                <item name="import" xsi:type="array">
+                                    <item name="arrays" xsi:type="string">mage/utils/arrays</item>
+                                    <item name="compare" xsi:type="string">mage/utils/compare</item>
+                                    <item name="misc" xsi:type="string">mage/utils/misc</item>
+                                    <item name="objects" xsi:type="string">mage/utils/objects</item>
+                                    <item name="strings" xsi:type="string">mage/utils/strings</item>
+                                    <item name="template" xsi:type="string">mage/utils/template</item>
+                                </item>
+                            </item>
                             <item name="deletableItem" xsi:type="array">
                                 <item name="path" xsi:type="string">mage/deletable-item</item>
                             </item>

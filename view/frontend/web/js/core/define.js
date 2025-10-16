@@ -203,6 +203,29 @@
         return result;
     }
 
+    function resolveRelativePath(moduleName, relativePath) {
+        var basePath, parts;
+
+        if (!relativePath.startsWith('.')) {
+            return relativePath;
+        }
+
+        basePath = getModule(moduleName).path;
+        parts = basePath.split('/').slice(0, -1);
+
+        for (const seg of relativePath.split('/')) {
+            if (seg === '.' || seg === '') {
+                continue;
+            } else if (seg === '..') {
+                parts.pop();
+            } else {
+                parts.push(seg);
+            }
+        }
+
+        return parts.join('/');
+    }
+
     window.require = function (deps, cb, extra) {
         var mod,
             depsWithImports = [],
@@ -219,12 +242,17 @@
         }
 
         if (typeof deps === 'string') {
-            name = deps;
+            name = resolveRelativePath(name, deps);
+            if (!modules[name]) {
+                throw new Error(`Module name "${name}" has not been loaded yet. Use require([])`);
+            }
             deps = [];
         } else if (typeof deps === 'function') {
             cb = deps;
             deps = ['require'];
         }
+
+        deps = deps.map(dep => resolveRelativePath(name, dep));
 
         // A fix for inline nested `require([], () => { require(...) })` call.
         if (!window.require.ready && !deps.every?.(arg => $.breezemap[arg])) {
