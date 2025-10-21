@@ -5,7 +5,8 @@ define([
 ], function ($, $date) {
     'use strict';
 
-    $.validator.validators['validate-date'] = [
+    $.validator.addMethod(
+        'validate-date',
         (value, el, settings) => $.validator.utils.isEmpty(value) || $date(value, settings.dateFormat).isValid(),
         (value, el, settings) => {
             var format = $date.normalizeFormat(settings.dateFormat);
@@ -14,9 +15,10 @@ define([
                 .replace('{0}', format)
                 .replace('{1}', $date('May 4, 2001').format(format));
         }
-    ];
+    );
 
-    $.validator.validators['validate-dob'] = [
+    $.validator.addMethod(
+        'validate-dob',
         (value, el, settings) => {
             if ($.validator.utils.isEmpty(value)) {
                 return true;
@@ -31,5 +33,5 @@ define([
             return date < $date();
         },
         $t('The Date of Birth should not be greater than today.')
-    ];
+    );
 });

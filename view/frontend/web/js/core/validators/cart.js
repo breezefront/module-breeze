@@ -1,7 +1,8 @@
 define(['Magento_Ui/js/lib/validation/validator'], function () {
     'use strict';
 
-    $.validator.validators['validate-item-quantity'] = [
+    $.validator.addMethod(
+        'validate-item-quantity',
         function (value, element, settings) {
             var result = false,
                 qty = parseFloat(value),
@@ -49,5 +50,5 @@ define(['Magento_Ui/js/lib/validation/validator'], function () {
         function () {
             return this.itemQtyErrorMessage;
         }
-    ];
+    );
 });

@@ -404,6 +404,8 @@
     };
     $.validator.regex = {};
     $.validator.validators = {};
+    $.validator.methods = {};
+    $.validator.messages = {};
     $.validator.utils = {
         isEmpty: function (value) {
             return value === '' || value == null || value.length === 0 || /^\s+$/.test(value);
@@ -415,6 +417,8 @@
     };
     $.validator.addMethod = (id, fn, message) => {
         $.validator.validators[id] = [fn, message];
+        $.validator.methods[id] = fn;
+        $.validator.messages[id] = message;
     };
 
     $.breezemap['Magento_Ui/js/lib/validation/utils'] = $.validator.utils;

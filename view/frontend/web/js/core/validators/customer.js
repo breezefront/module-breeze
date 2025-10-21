@@ -1,7 +1,8 @@
 define(['Magento_Ui/js/lib/validation/validator'], function () {
     'use strict';
 
-    $.validator.validators['validate-emails'] = [
+    $.validator.addMethod(
+        'validate-emails',
         function (value) {
             var emails, i;
 
@@ -20,9 +21,10 @@ define(['Magento_Ui/js/lib/validation/validator'], function () {
             return true;
         },
         $.__('Please enter valid email addresses, separated by commas. For example, johndoe@domain.com, johnsmith@domain.com.') //eslint-disable-line max-len
-    ];
+    );
 
-    $.validator.validators['password-not-equal-to-user-name'] = [
+    $.validator.addMethod(
+        'password-not-equal-to-user-name',
         function (value, element, params) {
             if (typeof params === 'string') {
                 return value.toLowerCase() !== params.toLowerCase();
@@ -31,9 +33,10 @@ define(['Magento_Ui/js/lib/validation/validator'], function () {
             return true;
         },
         $.__('The password can\'t be the same as the email address. Create a new password and try again.')
-    ];
+    );
 
-    $.validator.validators['validate-customer-password'] = [
+    $.validator.addMethod(
+        'validate-customer-password',
         function (value, element) {
             var counter = 0,
                 passwordMinLength = $(element).data('password-min-length'),
@@ -72,5 +75,5 @@ define(['Magento_Ui/js/lib/validation/validator'], function () {
         function () {
             return this.passwordErrorMessage;
         }
-    ];
+    );
 });

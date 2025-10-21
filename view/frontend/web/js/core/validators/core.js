@@ -1,10 +1,15 @@
-define(['Magento_Ui/js/lib/validation/validator'], function () {
+define([
+    'underscore',
+    'Magento_Ui/js/lib/validation/validator'
+], function (_) {
     'use strict';
+
+    var rules = {};
 
     // eslint-disable-next-line max-len
     $.validator.regex.email = /^([a-z0-9,!\#\$%&'\*\+\/=\?\^_`\{\|\}~-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z0-9,!\#\$%&'\*\+\/=\?\^_`\{\|\}~-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*@([a-z0-9-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z0-9-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*\.(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]){2,})$/i;
 
-    $.validator.validators = _.extend($.validator.validators, {
+    rules = {
         required: [
             (value) => !$.validator.utils.isEmpty(value),
             $t('This is a required field.')
@@ -72,5 +77,10 @@ define(['Magento_Ui/js/lib/validation/validator'], function () {
                 return $t('Please remove invalid characters: {0}.').replace('{0}', matches.join());
             }
         ],
+    };
+
+    _.each(rules, (value, key) => {
+        value = _.isArray(value) ? value : rules[value];
+        $.validator.addMethod(key, value[0], value[1]);
     });
 });
