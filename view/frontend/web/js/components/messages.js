@@ -76,7 +76,8 @@ define([
     $.view('messages', {
         component: 'Magento_Theme/js/view/messages',
         defaults: {
-            allowedTags: ['div', 'span', 'b', 'strong', 'i', 'em', 'u', 'a']
+            allowedTags: ['div', 'span', 'b', 'strong', 'i', 'em', 'u', 'a'],
+            template: 'uiComponent',
         },
 
         create: function () {
