@@ -324,7 +324,7 @@
             this.uuid = this.__uuid;
             this.element = $(element);
             this.__element.one(`${this.__name}:beforeCreate`, () => {
-                this.element.component(name, this);
+                this.__element.component(name, this);
                 $.registry.set(name, element, this);
             });
 
