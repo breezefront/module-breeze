@@ -759,6 +759,14 @@
         return deferred;
     };
 
+    $.when = (...args) => {
+        return $.Deferred((defer) => {
+            Promise.all(args.map(arg => arg instanceof Promise ? arg : arg?.promise?.() || arg))
+                .then(results => defer.resolve(...results))
+                .catch(err => defer.reject(err));
+        }).promise();
+    };
+
     $.onReveal = function (element, callback, options = {}) {
         var revealObserver = new IntersectionObserver(entries => {
             var nodes = entries
