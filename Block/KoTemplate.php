@@ -26,6 +26,9 @@ class KoTemplate extends Template
             return $html;
         }
 
+        $html = preg_replace_callback('/<!--[\s\S]*?-->/', function ($matches) {
+            return (strpos($matches[0], '/**') !== false) ? '' : $matches[0];
+        }, $html);
         $html = str_replace("\n", ' ', $html);
         $html = preg_replace("/\s{2,}/", ' ', $html);
 
