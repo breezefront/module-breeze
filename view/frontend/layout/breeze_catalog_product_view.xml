@@ -3,9 +3,9 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="breeze.container">
-            <block class="Swissup\Breeze\Block\KoTemplate"
+            <block class="Swissup\Breeze\Block\HtmlTemplate"
                 name="breeze.breadcrumbs"
-                template="Swissup_Breeze::ko/theme/breadcrumbs.phtml"/>
+                template="Magento_Theme::breadcrumbs.html"/>
         </referenceContainer>
 
         <referenceBlock name="product.info.media.image" template="Swissup_Breeze::catalog/product/gallery.phtml"/>

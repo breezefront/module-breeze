@@ -1021,7 +1021,7 @@
                 <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.modal.promptTpl" template="Magento_Ui::modal/modal-prompt-content.html"/>
                 <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.uiMessages" template="Magento_Ui::messages.html"/>
                 <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.uiComponent" template="Swissup_Breeze::ui/component.html"/>
-                <block class="Swissup\Breeze\Block\KoTemplate" name="breeze.image_with_borders" template="Swissup_Breeze::ko/catalog/product-image.phtml">
+                <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.image_with_borders" template="Swissup_Breeze::catalog/product-image.html">
                     <arguments>
                         <argument name="id" xsi:type="string">Magento_Catalog/product/image_with_borders</argument>
                     </arguments>
@@ -1052,7 +1052,7 @@
                 <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.Magento_Paypal_paylater" template="Magento_Paypal::paylater.html"/>
 
                 <!-- deprecated, use 'Magento_Catalog/product/image_with_borders' instead -->
-                <block class="Swissup\Breeze\Block\KoTemplate" name="breeze.productImage" template="Swissup_Breeze::ko/catalog/product-image.phtml"/>
+                <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.productImage" template="Swissup_Breeze::catalog/product-image.html"/>
             </container>
             <block class="Swissup\Breeze\Block\Theme\EarlyEventsProxy" name="breeze.earlyEventsProxy">
                 <arguments>
