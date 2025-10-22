@@ -24,6 +24,7 @@
                     <item name="jquery/jquery-storageapi" xsi:type="string">jquery/jquery-storageapi</item>
                     <item name="jquery/jquery.parsequery" xsi:type="string">jquery/jquery.parsequery</item>
                     <item name="jquery/validate" xsi:type="string">jquery/validate</item>
+                    <item name="jquery-ui-modules/datepicker" xsi:type="string">jquery-ui-modules/datepicker</item>
                     <item name="jquery-ui-modules/widget" xsi:type="string">jquery-ui-modules/widget</item>
                     <item name="loader" xsi:type="string">loader</item>
                     <item name="loaderAjax" xsi:type="string">loaderAjax</item>
@@ -31,6 +32,7 @@
                     <item name="Magento_Catalog/js/storage-manager" xsi:type="string">Magento_Catalog/js/storage-manager</item>
                     <item name="Magento_Customer/js/invalidation-processor" xsi:type="string">Magento_Customer/js/invalidation-processor</item>
                     <item name="Magento_Customer/js/block-submit-on-send" xsi:type="string">Magento_Customer/js/block-submit-on-send</item>
+                    <item name="Magento_Customer/js/zxcvbn" xsi:type="string">Magento_Customer/js/zxcvbn</item>
                     <item name="Magento_PageBuilder/js/content-type/banner/appearance/default/widget" xsi:type="string">Magento_PageBuilder/js/content-type/banner/appearance/default/widget</item>
                     <item name="Magento_PageBuilder/js/content-type/buttons/appearance/inline/widget" xsi:type="string">Magento_PageBuilder/js/content-type/buttons/appearance/inline/widget</item>
                     <item name="Magento_PageBuilder/js/content-type/slide/appearance/default/widget" xsi:type="string">Magento_PageBuilder/js/content-type/slide/appearance/default/widget</item>
@@ -39,6 +41,7 @@
                     <item name="Magento_ProductVideo/js/fotorama-add-video-events" xsi:type="string">Magento_ProductVideo/js/fotorama-add-video-events</item>
                     <item name="Magento_Ui/js/lib/knockout/bootstrap" xsi:type="string">Magento_Ui/js/lib/knockout/bootstrap</item>
                     <item name="requireCookie" xsi:type="string">requireCookie</item>
+                    <item name="passwordStrengthIndicator" xsi:type="string">passwordStrengthIndicator</item>
                 </argument>
                 <argument name="bundles" xsi:type="array">
                     <item name="main" xsi:type="array">
