@@ -2,6 +2,7 @@
     'use strict';
 
     var modules = {},
+        htmls = {},
         aliases = [],
         lastDefines = [],
         loadingCount = 0,
@@ -321,7 +322,11 @@
                         if (el.length) {
                             dep.cb = () => el.html();
                         } else {
-                            await $.get(dep.url).then(res => {
+                            if (!htmls[dep.url]) {
+                                htmls[dep.url] = $.get(dep.url);
+                            }
+
+                            await htmls[dep.url].then(res => {
                                 dep.cb = () => res;
                             }).catch(e => console.error(e));
                         }
