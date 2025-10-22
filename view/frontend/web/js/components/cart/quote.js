@@ -14,6 +14,8 @@ define([
 
             return data;
         },
+        billingAddress = ko.observable(null),
+        paymentMethod = ko.observable(null),
         shippingAddress = ko.observable(null),
         shippingMethod = ko.observable(null),
         totals = ko.observable(processTotalsData(window.checkoutConfig || {
@@ -47,9 +49,11 @@ define([
     totals.subscribe(data => cartData.set('totals', data));
 
     $.breezemap['Magento_Checkout/js/model/quote'] = {
-        totals: totals,
-        shippingAddress: shippingAddress,
-        shippingMethod: shippingMethod,
+        totals,
+        billingAddress,
+        paymentMethod,
+        shippingAddress,
+        shippingMethod,
         getQuoteId: () => window.checkoutConfig?.quoteData?.entity_id,
         isVirtual: () => !!Number(window.checkoutConfig?.quoteData?.is_virtual),
         getPriceFormat: () => window.checkoutConfig?.priceFormat,

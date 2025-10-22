@@ -35,6 +35,9 @@
             country_id: countryId,
             region_id: regionId,
             region_code: data.region?.region_code || data.regionCode || data.region_code,
+            canUseForBilling: function () {
+                return true;
+            },
             getType: function () {
                 return 'new-customer-address';
             },

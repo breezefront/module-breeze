@@ -31,7 +31,7 @@ define([
                 url: urlBuilder.rest(url),
                 global: false,
                 data: {
-                    address: _.omit(quote.shippingAddress(), 'getType', 'getKey', 'getCacheKey')
+                    address: _.omit(quote.shippingAddress(), value => typeof value === 'function')
                 },
                 always: () => isLoading('shippingRates', false)
             });
