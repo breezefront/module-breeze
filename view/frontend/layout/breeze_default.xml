@@ -29,8 +29,6 @@
                     <item name="loaderAjax" xsi:type="string">loaderAjax</item>
                     <item name="mage/trim-input" xsi:type="string">mage/trim-input</item>
                     <item name="Magento_Catalog/js/storage-manager" xsi:type="string">Magento_Catalog/js/storage-manager</item>
-                    <item name="Magento_Checkout/js/view/cart-item-renderer" xsi:type="string">Magento_Checkout/js/view/cart-item-renderer</item>
-                    <item name="Magento_Tax/js/view/checkout/minicart/subtotal/totals" xsi:type="string">Magento_Tax/js/view/checkout/minicart/subtotal/totals</item>
                     <item name="Magento_Customer/js/invalidation-processor" xsi:type="string">Magento_Customer/js/invalidation-processor</item>
                     <item name="Magento_Customer/js/block-submit-on-send" xsi:type="string">Magento_Customer/js/block-submit-on-send</item>
                     <item name="Magento_PageBuilder/js/content-type/banner/appearance/default/widget" xsi:type="string">Magento_PageBuilder/js/content-type/banner/appearance/default/widget</item>
@@ -214,6 +212,14 @@
                             </item>
                             <item name="menu" xsi:type="string">Swissup_Breeze/js/components/menu</item>
                             <item name="Magento_Checkout/js/view/minicart" xsi:type="string">Swissup_Breeze/js/components/minicart</item>
+                            <item name="Magento_Checkout/js/view/cart-item-renderer" xsi:type="string">Magento_Checkout/js/view/cart-item-renderer</item>
+                            <item name="Magento_Catalog/js/view/image" xsi:type="string">Magento_Catalog/js/view/image</item>
+                            <item name="Magento_Tax/js/view/checkout/minicart/subtotal/totals" xsi:type="array">
+                                <item name="path" xsi:type="string">Magento_Tax/js/view/checkout/minicart/subtotal/totals</item>
+                            </item>
+                            <item name="Magento_Msrp/js/view/checkout/minicart/subtotal/totals" xsi:type="array">
+                                <item name="path" xsi:type="string">Magento_Msrp/js/view/checkout/minicart/subtotal/totals</item>
+                            </item>
                             <item name="Magento_Checkout/js/proceed-to-checkout" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/proceed-to-checkout</item>
                                 <item name="load" xsi:type="array">
@@ -1027,24 +1033,17 @@
                     </arguments>
                 </block>
                 <block class="Swissup\Breeze\Block\KoTemplate" name="breeze.Magento_Checkout_minicart_content" template="Swissup_Breeze::ko/checkout/minicart.phtml">
-                    <container name="subtotalContainer">
-                        <block class="Magento\Framework\View\Element\Template" name="subtotal" template="Swissup_Breeze::ko/checkout/minicart/subtotal.phtml">
-                            <block class="Magento\Framework\View\Element\Template" name="subtotal.totals" template="Swissup_Breeze::ko/checkout/minicart/subtotal/totals.phtml">
-                                <container name="minicart-subtotal-hidden">
-                                    <block class="Magento\Framework\View\Element\Template" template="Swissup_Breeze::ko/checkout/minicart/subtotal/msrp.phtml"/>
-                                </container>
-                            </block>
-                        </block>
-                    </container>
+                    <container name="subtotalContainer"></container>
                     <container name="extraInfo"></container>
                     <container name="promotion"></container>
                     <container name="signInPopup"></container>
                 </block>
-                <block class="Swissup\Breeze\Block\KoTemplate" name="breeze.minicart.defaultRenderer" template="Swissup_Breeze::ko/checkout/minicart/item/default.phtml">
-                    <container name="priceSidebar">
-                        <block class="Magento\Framework\View\Element\Template" template="Swissup_Breeze::ko/checkout/minicart/item/price.phtml"/>
-                    </container>
-                </block>
+                <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.Magento_Checkout_minicart_subtotal" template="Magento_Checkout::minicart/subtotal.html"/>
+                <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.Magento_Tax_checkout_minicart_subtotal_totals" template="Magento_Tax::checkout/minicart/subtotal/totals.html"/>
+                <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.Magento_Msrp_checkout_minicart_subtotal_totals" template="Magento_Msrp::checkout/minicart/subtotal/totals.html" ifconfig="sales/msrp/enabled"/>
+                <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.Magento_Checkout_minicart_item_default" template="Swissup_Breeze::checkout/minicart/item/default.html"/>
+                <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.Magento_Checkout_minicart_item_price" template="Magento_Checkout::minicart/item/price.html"/>
+
                 <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.Magento_ReCaptchaFrontendUi_reCaptcha" template="Magento_ReCaptchaFrontendUi::reCaptcha.html"/>
                 <block class="Swissup\Breeze\Block\HtmlTemplate" template="Magento_Customer::authentication-popup.html"/>
                 <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.Magento_Customer_show-password" template="Swissup_Breeze::customer/show-password.html"/>

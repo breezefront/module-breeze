@@ -363,14 +363,8 @@
          * @param {Object} item
          * @return {*|String}
          */
-        getItemRenderer: function (item) {
-            var renderer = this.options.itemRenderer[item.product_type];
-
-            if (renderer && document.getElementById(renderer)) {
-                return renderer;
-            }
-
-            return 'defaultRenderer';
+        getItemRenderer: function (productType) {
+            return this.itemRenderer[productType] || 'defaultRenderer';
         },
 
         /**
@@ -426,20 +420,6 @@
             var items = this.getCartParamUnsanitizedHtml('items') || [];
 
             return parseInt(items.length, 10);
-        }
-    });
-
-    ko.components.register('subtotal.totals', {
-        viewModel: function (options) {
-            this.cart = $.customerData.get('cart');
-            this.displaySubtotal = options.$root.displaySubtotal;
-            $.extend(
-                this,
-                options.$root._option('children/subtotal.container/children/subtotal/children/subtotal.totals/config')
-            );
-        },
-        template: {
-            element: 'subtotal.totals'
         }
     });
 })();

@@ -36,7 +36,14 @@
             <!--/ko-->
         </div>
 
+        <!-- ko foreach: getRegion('subtotalContainer') -->
+            <!-- ko template: getTemplate() --><!--/ko-->
+        <!--/ko-->
         <?= $block->getChildHtml('subtotalContainer') ?>
+
+        <!-- ko foreach: getRegion('extraInfo') -->
+            <!-- ko template: getTemplate() --><!--/ko-->
+        <!--/ko-->
         <?= $block->getChildHtml('extraInfo') ?>
 
         <!-- ko if: (getCartParam('possible_onepage_checkout')) -->
@@ -60,12 +67,11 @@
 
         <strong class="subtitle" data-bind="text: $t('Recently added item(s)')"></strong>
         <div data-action="scroll" class="minicart-items-wrapper">
-            <ol id="mini-cart" class="minicart-items" data-bind="
-                template: {
-                    name: getItemRenderer.bind($data),
-                    foreach: getCartItems(), as: 'item'
-                }
-            "></ol>
+            <ol id="mini-cart" class="minicart-items" data-bind="foreach: { data: getCartItems(), as: 'item' }">
+                <!-- ko foreach: $parent.getRegion($parent.getItemRenderer(item.product_type)) -->
+                    <!-- ko template: {name: getTemplate(), data: item} --><!-- /ko -->
+                <!-- /ko -->
+            </ol>
         </div>
     <!--/ko-->
 
@@ -83,6 +89,13 @@
         </div>
     <!--/ko-->
 
+    <!-- ko if: regionHasElements('promotion') -->
+        <div id="minicart-widgets" class="minicart-widgets">
+            <!-- ko foreach: getRegion('promotion') -->
+                <!-- ko template: getTemplate() --><!--/ko-->
+            <!--/ko-->
+        </div>
+    <!--/ko-->
     <?php $promo = $block->getChildHtml('promotion') ?>
     <?php if ($promo) : ?>
         <div id="minicart-widgets" class="minicart-widgets">
@@ -91,4 +104,7 @@
     <?php endif ?>
 </div>
 
+<!-- ko foreach: getRegion('signInPopup') -->
+    <!-- ko template: getTemplate() --><!--/ko-->
+<!--/ko-->
 <?= $block->getChildHtml('signInPopup') ?>

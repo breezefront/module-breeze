@@ -547,10 +547,11 @@
             }).forEach(key => {
                 var cmp, config = children[key];
 
-                if (!config.component) {
+                if (this.hasChild(key)) {
                     return;
                 }
 
+                config.component = config.component || 'uiComponent';
                 config.index = key;
                 cmp = this.mount(config);
 
@@ -565,6 +566,8 @@
         },
 
         _updateCollection: function () {
+            this.regions = {};
+
             this._elems.forEach(el => {
                 var displayArea = el.displayArea || null;
 
@@ -579,6 +582,14 @@
             this.elems(this._elems);
         },
 
+        hasChild: function (index) {
+            return !!this.getChild(index);
+        },
+
+        getChild: function (index) {
+            return _.findWhere(this._elems, { index });
+        },
+
         insertChild: function (elems) {
             if (!_.isArray(elems)) {
                 elems = [elems];
@@ -586,6 +597,10 @@
             this._elems.push(...elems);
             this._updateCollection();
             return this;
+        },
+
+        regionHasElements: function (name) {
+            return this.getRegion(name)().length > 0;
         },
 
         getRegion: function (name) {
