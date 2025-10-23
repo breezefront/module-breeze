@@ -231,17 +231,34 @@
             (listeners[e.type] || []).forEach(fn => fn(e, data, data.settings));
         });
 
-        $.fn.on = _.wrap($.fn.on, function (original, eventName, handler, selector, data, one) {
+        $.fn.on = _.wrap($.fn.on, function (original, eventName, selector, data, fn, one) {
             if (typeof eventName === 'string') {
+                if (typeof selector !== 'string') {
+                    if (typeof selector === 'undefined' || selector === null) {
+                        selector = '';
+                    } else if (typeof data === 'undefined') {
+                        data = selector;
+                        selector = '';
+                    } else {
+                        fn = data;
+                        data = selector;
+                        selector = '';
+                    }
+                }
+                if (typeof fn !== 'function') {
+                    fn = data;
+                    data = undefined;
+                }
+
                 if (eventName === 'breeze:load' && $.breeze.ready) {
-                    handler?.();
+                    fn?.();
                     // eslint-disable-next-line max-depth
                     if (one) {
                         return this;
                     }
                 } else if (ajaxEvents.includes(eventName)) {
                     listeners[eventName] = listeners[eventName] || [];
-                    listeners[eventName].push(handler || selector);
+                    listeners[eventName].push(fn);
                     return this;
                 } else if (eventName === 'scrollend' && !('onscrollend' in window)) {
                     require.async('scrollyfills').then(() => {
