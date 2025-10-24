@@ -1,0 +1,43 @@
+<?php
+    if (!$block->getEnabled()) {
+        return;
+    }
+?>
+
+<style>
+    @view-transition {
+        navigation: auto;
+    }
+</style>
+
+<script>
+const setTemporaryViewTransitionNames = async (entries, promise) => {
+    entries.filter(pair => pair[0]).forEach(async ([el, name]) => {
+        if (!el) return;
+
+        el.style.viewTransitionName = name;
+        await promise;
+        el.style.viewTransitionName = '';
+    });
+}
+
+window.addEventListener('pageswap', (e) => {
+    if (e.viewTransition) {
+        setTemporaryViewTransitionNames([
+            [document.querySelector('.main-image-wrapper'), 'product-gallery'],
+            [document.querySelector('.breeze-gallery.slider .images'), 'product-gallery'],
+            [document.querySelector(`a[href="${e.activation.entry.url}"]:has(.product-image-photo)`), 'product-gallery'],
+        ], e.viewTransition.finished);
+    }
+});
+
+window.addEventListener('pagereveal', (e) => {
+    if (e.viewTransition && navigation.activation.from) {
+        setTemporaryViewTransitionNames([
+            [document.querySelector('.main-image-wrapper'), 'product-gallery'],
+            [document.querySelector('.breeze-gallery.slider .images'), 'product-gallery'],
+            [document.querySelector(`a[href="${navigation.activation.from.url}"]:has(.product-image-photo)`), 'product-gallery'],
+        ], e.viewTransition.finished);
+    }
+});
+</script>

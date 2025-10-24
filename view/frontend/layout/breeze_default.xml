@@ -1125,6 +1125,7 @@
                 </arguments>
             </block>
             <block name="breeze.speculationRules" template="Swissup_Breeze::theme/speculation-rules.phtml"/>
+            <block name="breeze.viewTransition" template="Swissup_Breeze::theme/view-transition.phtml"/>
         </referenceContainer>
     </body>
 </page>
