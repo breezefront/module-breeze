@@ -97,6 +97,7 @@ class Css extends \Magento\Framework\View\Element\AbstractBlock
         try {
             $asset = $this->assetRepo->createAsset('css/' . $name . '.css', ['_secure' => 'false']);
             $content = $asset->getContent();
+            $content = $this->removeSourceMap($content);
             $content = $this->cssResolver->relocateRelativeUrls($content, $asset->getUrl(), '..');
         } catch (\Exception $e) {
             return '';
@@ -106,5 +107,21 @@ class Css extends \Magento\Framework\View\Element\AbstractBlock
         $content = preg_replace('/\s{2,}/', ' ', $content);
 
         return '<style>' . $content . '</style>';
+    }
+
+    private function removeSourceMap($content)
+    {
+        $start = '/*# sourceMappingURL=data:application/json,%7B%';
+        $end = '%22%7D */';
+        $startPos = strrpos($content, $start);
+        $endPos = strrpos($content, $end);
+
+        if ($startPos !== false && $endPos !== false && $endPos > $startPos) {
+            $endPos += strlen($end);
+            $content = substr_replace($content, '', $startPos, $endPos - $startPos);
+            $content = rtrim($content);
+        }
+
+        return $content;
     }
 }
