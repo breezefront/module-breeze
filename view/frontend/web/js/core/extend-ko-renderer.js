@@ -171,7 +171,7 @@ define([
          * @param {String} data - Data associated with a binding.
          *
          * @example
-         *      <div id="example"><span/></div>
+         *      <div id="example"><span></span></div>
          *      wrapChildren(document.getElementById('example'), 'foreach', 'data');
          *      =>
          *      <div id="example">
@@ -239,11 +239,11 @@ define([
          *
          * @example Sample syntaxes conversions.
          *      <with args="model">
-         *          <span/>
+         *          <span></span>
          *      </with>
          *      =>
          *      <!-- ko with: model-->
-         *          <span/>
+         *          <span></span>
          *      <!-- /ko -->
          */
         node: function (node, data, element) {
