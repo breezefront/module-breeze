@@ -142,6 +142,21 @@
                         return true;
                     }
                 });
+
+                // Experimental: load unknown components
+                // AutoRegister short names like 'navpro'
+                if (!modules[name].path && require.config().map?.['*']?.[name]) {
+                    console.debug(`AutoRegister alias: ${name}`);
+                    modules[name].path = require.config().map['*'][name];
+                }
+
+                // AutoRegister paths: Vendor_Module/js/file, js/hello, main
+                if (!modules[name].path// &&
+                    // !name.startsWith('Magento_')
+                ) {
+                    console.debug(`AutoRegister path: ${name}`);
+                    modules[name].path = name;
+                }
             }
         }
 

@@ -1,4 +1,4 @@
-(function () {
+define(['ko/template/renderer'], (renderer) => {
     'use strict';
 
     function isVirtualElement(node) {
@@ -72,9 +72,13 @@
     };
 
     ko.virtualElements.allowedBindings.i18n = true;
-
-    ko.bindingHandlers.translate = ko.bindingHandlers.i18n;
-    ko.virtualElements.allowedBindings.translate = true;
+    renderer
+        .addNode('translate', {
+            binding: 'i18n'
+        })
+        .addAttribute('translate', {
+            binding: 'i18n'
+        });
 
     ko.bindingHandlers.scope = {
         init: function () {
@@ -147,4 +151,4 @@
     };
 
     $.breezemap.ko = $.breezemap.knockout = ko;
-})();
+});

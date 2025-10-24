@@ -663,7 +663,7 @@
                 ],
                 found = _.find(templates, (id) => document.getElementById(id));
 
-            return found || templates[0];
+            return found || template;
         },
 
         mount: function (config) {
