@@ -131,7 +131,9 @@
                 modules[name].path = $.breeze.jsconfig[name].path;
             } else if (name.startsWith('text!')) {
                 modules[name].path = name.substr(5);
-            } else if ($.breeze.jsignore?.includes(name)) {
+            } else if ($.breeze.jsignore?.includes(name) ||
+                $.breeze.jsignore?.filter(k => k.includes('*')).some(k => name.startsWith(k.split('*').at(0)))
+            ) {
                 modules[name].ignored = true;
                 modules[name].loaded = true;
                 modules[name].result = false;

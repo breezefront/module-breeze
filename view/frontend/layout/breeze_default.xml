@@ -24,8 +24,7 @@
                     <item name="jquery/jquery-storageapi" xsi:type="string">jquery/jquery-storageapi</item>
                     <item name="jquery/jquery.parsequery" xsi:type="string">jquery/jquery.parsequery</item>
                     <item name="jquery/validate" xsi:type="string">jquery/validate</item>
-                    <item name="jquery-ui-modules/datepicker" xsi:type="string">jquery-ui-modules/datepicker</item>
-                    <item name="jquery-ui-modules/widget" xsi:type="string">jquery-ui-modules/widget</item>
+                    <item name="jquery-ui-modules/*" xsi:type="string">jquery-ui-modules/*</item>
                     <item name="loader" xsi:type="string">loader</item>
                     <item name="loaderAjax" xsi:type="string">loaderAjax</item>
                     <item name="mage/loader" xsi:type="string">mage/loader</item>
