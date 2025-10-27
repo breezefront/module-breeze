@@ -99,17 +99,17 @@
             );
             $.breezemap[name] = constructor;
 
+            if (ns) {
+                $[ns] = $[ns] || {};
+                $[ns][name] = constructor;
+            }
+
             if (prototype.prototype.hasOwnProperty('component') &&
                 prototype.prototype.component &&
                 prototype.prototype.component !== name
             ) {
                 $.breezemap[prototype.prototype.component] = constructor;
                 $.breezemap.__aliases[prototype.prototype.component] = name;
-            }
-
-            if (ns) {
-                $[ns] = $[ns] || {};
-                $[ns][name] = constructor;
             }
 
             return constructor;
