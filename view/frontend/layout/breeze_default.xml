@@ -211,7 +211,7 @@
                                     <item name="messages" xsi:type="string">Magento_Theme/js/view/messages</item>
                                 </item>
                             </item>
-                            <item name="dataPost" xsi:type="array">
+                            <item name="mage/dataPost" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/data-post</item>
                                 <item name="load" xsi:type="array">
                                     <item name="onReveal" xsi:type="array">
@@ -1066,7 +1066,7 @@
                 <arguments>
                     <argument name="rules" xsi:type="array">
                         <item name="dataPost" xsi:type="array">
-                            <item name="component" xsi:type="string">dataPost</item>
+                            <item name="component" xsi:type="string">mage/dataPost</item>
                             <item name="events" xsi:type="array">
                                 <item name="0" xsi:type="string">click [data-post], [data-post-remove]</item>
                             </item>

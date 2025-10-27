@@ -1,29 +1,64 @@
-(function () {
+define([
+    'jquery',
+    'mage/template'
+], function ($, mageTemplate) {
     'use strict';
 
-    $.widget('dataPost', {
+    $.widget('mage.dataPost', {
+        component: 'mage/dataPost',
         options: {
             formTemplate: '<form action="<%- data.action %>" method="post">' +
             '<% _.each(data.data, function(value, index) { %>' +
             '<input name="<%- index %>" value="<%- value %>">' +
             '<% }) %></form>',
+            postTrigger: ['[data-post]', '[data-post-remove]'],
             formKeyInputSelector: 'input[name="form_key"]'
+        },
+
+        _create: function () {
+            this._bind();
+        },
+
+        _bind: function () {
+            var events = {};
+
+            $.each(this.options.postTrigger, function (index, value) {
+                events['click ' + value] = '_postDataAction';
+            });
+
+            this._on(events);
+        },
+
+        _postDataAction: function (e) {
+            var params = $(e.currentTarget).data('post') || $(e.currentTarget).data('post-remove');
+
+            e.preventDefault();
+            this.postData(params);
         },
 
         postData: function (params) {
             var formKey = $(this.options.formKeyInputSelector).val(),
-                $form;
+                $form, input;
 
             if (formKey) {
                 params.data.form_key = formKey;
             }
 
-            $form = $(_.template(this.options.formTemplate)({
+            $form = $(mageTemplate(this.options.formTemplate, {
                 data: params
             }));
 
             if (params.files) {
-                console.error('Send files is not implemented');
+                $form[0].enctype = 'multipart/form-data';
+                $.each(params.files, function (key, files) {
+                    if (files instanceof FileList) {
+                        input = document.createElement('input');
+                        input.type = 'file';
+                        input.name = key;
+                        input.files = files;
+                        $form[0].appendChild(input);
+                    }
+                });
             }
 
             $form.appendTo('body').hide();
@@ -48,16 +83,5 @@
         }
     });
 
-    $.mage = $.mage || {};
-    $.mage.dataPost = $.fn.dataPost;
-
-    $(document).on('click.dataPost', '[data-post], [data-post-remove]', function () {
-        var params = $(this).data('post') || $(this).data('post-remove') || {};
-
-        params.target = $(this);
-
-        $.fn.dataPost().postData(params);
-
-        return false;
-    });
-})();
+    $(document).dataPost();
+});
