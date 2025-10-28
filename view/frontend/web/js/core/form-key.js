@@ -1,6 +1,4 @@
-define([
-    'mage/cookies'
-], function (cookies) {
+(cookies => {
     'use strict';
 
     function generateFormKeyString() {
@@ -27,4 +25,4 @@ define([
 
         return formKey;
     };
-});
+})($.cookies);

@@ -28,7 +28,9 @@
                     <item name="loader" xsi:type="string">loader</item>
                     <item name="loaderAjax" xsi:type="string">loaderAjax</item>
                     <item name="mage/loader" xsi:type="string">mage/loader</item>
+                    <item name="mage/polyfill" xsi:type="string">mage/polyfill</item>
                     <item name="mage/trim-input" xsi:type="string">mage/trim-input</item>
+                    <item name="Magento_Bundle/js/validation" xsi:type="string">Magento_Bundle/js/validation</item>
                     <item name="Magento_Catalog/js/storage-manager" xsi:type="string">Magento_Catalog/js/storage-manager</item>
                     <item name="Magento_Checkout/js/action/update-shopping-cart" xsi:type="string">Magento_Checkout/js/action/update-shopping-cart</item>
                     <item name="Magento_Customer/js/invalidation-processor" xsi:type="string">Magento_Customer/js/invalidation-processor</item>
@@ -39,7 +41,9 @@
                     <item name="Magento_PageBuilder/js/content-type/slide/appearance/default/widget" xsi:type="string">Magento_PageBuilder/js/content-type/slide/appearance/default/widget</item>
                     <item name="Magento_PageBuilder/js/content-type/row/appearance/default/widget" xsi:type="string">Magento_PageBuilder/js/content-type/row/appearance/default/widget</item>
                     <item name="Magento_Persistent/js/remember-me-config" xsi:type="string">Magento_Persistent/js/remember-me-config</item>
+                    <item name="Magento_Persistent/js/view/customer-data-mixin" xsi:type="string">Magento_Persistent/js/view/customer-data-mixin</item>
                     <item name="Magento_ProductVideo/js/fotorama-add-video-events" xsi:type="string">Magento_ProductVideo/js/fotorama-add-video-events</item>
+                    <item name="Magento_ReCaptchaFrontendUi/*" xsi:type="string">Magento_ReCaptchaFrontendUi/*</item>
                     <item name="Magento_Ui/js/lib/knockout/bootstrap" xsi:type="string">Magento_Ui/js/lib/knockout/bootstrap</item>
                     <item name="Magento_Weee/js/view/cart/totals/weee" xsi:type="string">Magento_Weee/js/view/cart/totals/weee</item>
                     <item name="Magento_Weee/js/view/checkout/summary/weee" xsi:type="string">Magento_Weee/js/view/checkout/summary/weee</item>

@@ -390,7 +390,14 @@
 
         return window.VIEW_URL + '/' + path;
     };
-    window.require.config = (cfg) => $.extend(true, config, cfg || {});
+    window.require.config = (cfg) => cfg ? $.extend(true, config, cfg) : config;
+    window.require.s = {
+        contexts: {
+            _: {
+                config,
+            }
+        }
+    };
 
     $.breezemap.require = window.require;
     aliases = Object.keys($.breezemap);
@@ -422,14 +429,25 @@
             }
         }
     }), {
-        set(obj, alias, value) {
-            obj[alias] = value;
+        async set(obj, alias, value) {
+            var mixins = require.config().config?.mixins?.[alias] || {},
+                mixin;
+
+            for (const [path, flag] of Object.entries(mixins)) {
+                if (!flag || !(mixin = await require.async(path))) {
+                    continue;
+                }
+
+                console.log(`APPLYING LUMA MIXIN ${path} TO ${alias}`);
+                value = mixin(value);
+            }
 
             if ($.mixin?.pending[alias]) {
                 $.mixin.pending[alias].forEach(args => $.mixin(...args));
                 delete $.mixin.pending[alias];
             }
 
+            obj[alias] = value;
             getModule(alias).run();
             $(document).trigger('breeze:component:load', { alias, value });
             $(document).trigger('breeze:component:load:' + alias, { value });

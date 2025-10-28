@@ -55,12 +55,18 @@ define([
 
     $.view('uiMessages', {
         component: 'Magento_Ui/js/view/messages',
+        isHidden: false,
         defaults: {
             template: 'uiMessages'
         },
 
-        create: function () {
+        initialize: function () {
+            this._super();
             this.messageContainer = this.options.messageContainer || $.breezemap['Magento_Ui/js/model/messageList'];
+        },
+
+        initObservable: function () {
+            return this._super().observe('isHidden');
         },
 
         isVisible: function () {
