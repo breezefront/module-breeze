@@ -3,6 +3,7 @@
 namespace Swissup\Breeze\Block;
 
 use Magento\Csp\Api\InlineUtilInterface;
+use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\ObjectManager;
 
 class Css extends \Magento\Framework\View\Element\AbstractBlock
@@ -13,11 +14,17 @@ class Css extends \Magento\Framework\View\Element\AbstractBlock
 
     private $moduleManager;
 
+    private $filesystem;
+
+    private $curlHelper;
+
     public function __construct(
         \Magento\Framework\View\Element\Context $context,
         \Magento\Framework\View\Asset\Repository $assetRepo,
         \Magento\Framework\View\Url\CssResolver $cssResolver,
         \Magento\Framework\Module\Manager $moduleManager,
+        \Magento\Framework\Filesystem $filesystem,
+        \Swissup\Breeze\Helper\Curl $curlHelper,
         array $data = []
     ) {
         parent::__construct($context, $data);
@@ -25,6 +32,8 @@ class Css extends \Magento\Framework\View\Element\AbstractBlock
         $this->assetRepo = $assetRepo;
         $this->cssResolver = $cssResolver;
         $this->moduleManager = $moduleManager;
+        $this->filesystem = $filesystem;
+        $this->curlHelper = $curlHelper;
     }
 
     /**
@@ -94,14 +103,26 @@ class Css extends \Magento\Framework\View\Element\AbstractBlock
      */
     private function renderCss($name)
     {
-        try {
-            $asset = $this->assetRepo->createAsset('css/' . $name . '.css', ['_secure' => 'false']);
-            $content = $asset->getContent();
-            $content = $this->removeSourceMap($content);
-            $content = $this->cssResolver->relocateRelativeUrls($content, $asset->getUrl(), '..');
-        } catch (\Exception $e) {
-            return '';
+        $url = $this->getViewFileUrl('css/' . $name . '.css');
+        $parts = preg_split('#/static(/version\d+)?/frontend/#', $url);
+        $content = false;
+
+        if (!empty($parts[1])) {
+            $staticDir = $this->filesystem->getDirectoryRead(DirectoryList::STATIC_VIEW);
+            $path = 'frontend/' . $parts[1];
+
+            if ($staticDir->isExist($path)) {
+                $content = $staticDir->readFile($path);
+            }
         }
+
+        if ($content === false) {
+            $content = $this->curlHelper->deployAndRead($url);
+        }
+
+        $asset = $this->assetRepo->createAsset('css/' . $name . '.css', ['_secure' => 'false']);
+        $content = $this->removeSourceMap($content);
+        $content = $this->cssResolver->relocateRelativeUrls($content, $asset->getUrl(), '..');
 
         $content = str_replace("\n", ' ', $content);
         $content = preg_replace('/\s{2,}/', ' ', $content);

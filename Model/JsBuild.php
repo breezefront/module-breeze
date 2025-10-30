@@ -26,7 +26,7 @@ class JsBuild
 
     private \Magento\Framework\Code\Minifier\AdapterInterface $minifier;
 
-    private \Magento\Framework\HTTP\Adapter\CurlFactory $curlFactory;
+    private \Swissup\Breeze\Helper\Curl $curlHelper;
 
     private \Magento\Framework\View\DesignInterface $design;
 
@@ -50,7 +50,7 @@ class JsBuild
         \Magento\Framework\View\Asset\Minification $minification,
         \Magento\Framework\Code\Minifier\AdapterInterface $minifier,
         \Magento\Framework\View\DesignInterface $design,
-        \Magento\Framework\HTTP\Adapter\CurlFactory $curlFactory,
+        \Swissup\Breeze\Helper\Curl $curlHelper,
         ComponentRegistrar $componentRegistrar,
         Dir $moduleDir,
         JsAssetFactory $jsAssetFactory,
@@ -70,7 +70,7 @@ class JsBuild
         $this->moduleManager = $moduleManager;
         $this->minification = $minification;
         $this->minifier = $minifier;
-        $this->curlFactory = $curlFactory;
+        $this->curlHelper = $curlHelper;
         $this->name = $name;
         $this->type = $type;
         $this->items = $items;
@@ -450,22 +450,6 @@ class JsBuild
         $path = trim($path, '/');
         $url = $this->assetRepo->getUrl($path);
 
-        $curl = $this->curlFactory->create()->setConfig([
-            'header' => false,
-            'verifypeer' => false,
-            'verifyhost' => 0,
-        ]);
-        $curl->write('GET', $url);
-
-        $data = $curl->read();
-        $responseCode = (int) $curl->getInfo(CURLINFO_HTTP_CODE);
-
-        $curl->close();
-
-        if ($responseCode !== 200) {
-            throw new \Exception('Unable to read ' . $url);
-        }
-
-        return $data;
+        return $this->curlHelper->deployAndRead($url);
     }
 }
