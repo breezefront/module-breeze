@@ -66,8 +66,14 @@ class AsyncCssPlugin
             }
 
             preg_match('@media=("|\')(.*?)\1@', $style, $mediaAttribute);
+            $media = $mediaAttribute[2] ?? 'all';
 
-            $onloadValue = sprintf('this.onload=null;this.media=\'%s\'', $mediaAttribute[2] ?? 'all');
+            if ($media === 'print') {
+                $styleOpenPos = strpos($content, $styleOpen, $styleClosePos);
+                continue;
+            }
+
+            $onloadValue = sprintf('this.onload=null;this.media=\'%s\'', $media);
             $onload = sprintf('onload="%s"', $onloadValue);
             if (interface_exists(InlineUtilInterface::class) && $this->moduleManager->isEnabled('Magento_Csp')) {
                 $onload = $this->objectManager->get(InlineUtilInterface::class)->renderEventListener(
