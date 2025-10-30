@@ -7,8 +7,8 @@ define([
 
     var authenticationPopup, loginAction, loginCallbacks = [];
 
-    loginAction = function (loginData, redirectUrl, isGlobal, messageContainer) {
-        messageContainer = messageContainer || $.registry.first('uiMessages');
+    loginAction = async function (loginData, redirectUrl, isGlobal, messageContainer) {
+        messageContainer = messageContainer || await require.async('Magento_Ui/js/model/messageList');
 
         return $.post({
             url: window.authenticationPopup.customerLoginUrl,
