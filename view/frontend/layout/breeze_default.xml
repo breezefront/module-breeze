@@ -203,6 +203,8 @@
                                 <item name="export" xsi:type="array">
                                     <item name="uiMessages" xsi:type="string">Magento_Ui/js/view/messages</item>
                                     <item name="messages" xsi:type="string">Magento_Theme/js/view/messages</item>
+                                    <item name="messagesModel" xsi:type="string">Magento_Ui/js/model/messages</item>
+                                    <item name="messageList" xsi:type="string">Magento_Ui/js/model/messageList</item>
                                 </item>
                             </item>
                             <item name="dataPost" xsi:type="array">
