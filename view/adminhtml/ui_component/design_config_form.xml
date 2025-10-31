@@ -61,6 +61,46 @@
                     </select>
                 </formElements>
             </field>
+            <fieldset name="experimental">
+                <settings>
+                    <level>2</level>
+                    <collapsible>true</collapsible>
+                    <label translate="true">Experimental Settings</label>
+                </settings>
+                <field name="breeze_experimental_better_compatibility" formElement="select">
+                    <settings>
+                        <dataType>text</dataType>
+                        <label translate="true">Better Compatibility</label>
+                        <notice translate="true">When enabled, Breeze will fallback to Luma-based components, templates, and mixins.</notice>
+                        <dataScope>breeze_compatibility_mode</dataScope>
+                    </settings>
+                    <formElements>
+                        <select>
+                            <settings>
+                                <options class="Magento\Config\Model\Config\Source\YesNo"/>
+                            </settings>
+                        </select>
+                    </formElements>
+                </field>
+                <field name="breeze_experimental_better_compatibility_ignore" formElement="textarea">
+                    <settings>
+                        <dataType>text</dataType>
+                        <label translate="true">Excluded from Better Compatibility</label>
+                        <notice translate="true">One alias or path per line. Use '*' to ignore whole path: Vendor_Module/*</notice>
+                        <tooltip>
+                            <description><![CDATA[Examples:<br/>Vendor_Module/js/cmp<br/>Vendor_Module/*<br/>component]]></description>
+                        </tooltip>
+                        <dataScope>breeze_compatibility_mode_ignore</dataScope>
+                    </settings>
+                    <formElements>
+                        <textarea>
+                            <settings>
+                                <rows>7</rows>
+                            </settings>
+                        </textarea>
+                    </formElements>
+                </field>
+            </fieldset>
         </fieldset>
     </fieldset>
 </form>

@@ -6,7 +6,8 @@
         aliases = [],
         lastDefines = [],
         loadingCount = 0,
-        config = {
+        rjsConfig = {
+            config: {},
             paths: {},
             shim: {},
         },
@@ -22,13 +23,19 @@
             .attr('src')
             .match(suffixRe).groups.suffix;
 
+    function isIgnored(name) {
+        return $.breeze.jsignore?.includes(name) || $.breeze.jsignore
+            ?.filter(k => k.includes('*'))
+            .some(k => name.startsWith(k.split('*').at(0)));
+    }
+
     function isRunningFromBundle() {
         return document.currentScript?.src.includes('Swissup_Breeze/bundles/');
     }
 
     function global() {
-        if (config.shim[this.name]?.exports) {
-            return _.get(window, config.shim[this.name].exports.split('.'));
+        if (rjsConfig.shim[this.name]?.exports) {
+            return _.get(window, rjsConfig.shim[this.name].exports.split('.'));
         }
     }
 
@@ -101,9 +108,7 @@
             this.parents.forEach(parent => parent.run());
         }
 
-        if (this.result === undefined && this.unknown && !this.ignored &&
-            (true || window.location.search.includes('breeze=1') || window.location.hash.includes('breeze'))
-        ) {
+        if (this.result === undefined && this.unknown && !this.ignored && $.breeze.isDebugMode()) {
             Error.stackTraceLimit = 100;
             console.groupCollapsed(this.name);
             console.log(new Error(`Unknown component ${this.name}`));
@@ -133,9 +138,7 @@
                 modules[name].path = $.breeze.jsconfig[name].path;
             } else if (name.startsWith('text!')) {
                 modules[name].path = name.substr(5);
-            } else if ($.breeze.jsignore?.includes(name) ||
-                $.breeze.jsignore?.filter(k => k.includes('*')).some(k => name.startsWith(k.split('*').at(0)))
-            ) {
+            } else if (isIgnored(name)) {
                 modules[name].ignored = true;
                 modules[name].loaded = true;
                 modules[name].result = false;
@@ -147,19 +150,18 @@
                     }
                 });
 
-                // Experimental: load unknown components
-                // AutoRegister short names like 'navpro'
-                if (!modules[name].path && require.config().map?.['*']?.[name]) {
-                    console.debug(`AutoRegister alias: ${name}`);
-                    modules[name].path = require.config().map['*'][name];
-                }
+                if ($.breeze.isCompatMode()) {
+                    // AutoRegister alias declared in rjsConfig
+                    if (!modules[name].path && rjsConfig.map?.['*']?.[name]) {
+                        $.breeze.debug(`Better compatibility alias: ${name}`);
+                        modules[name].path = rjsConfig.map['*'][name];
+                    }
 
-                // AutoRegister paths: Vendor_Module/js/file, js/hello, main
-                if (!modules[name].path// &&
-                    // !name.startsWith('Magento_')
-                ) {
-                    console.debug(`AutoRegister path: ${name}`);
-                    modules[name].path = name;
+                    // AutoRegister paths: Vendor_Module/js/file, js/hello, main
+                    if (!modules[name].path) {
+                        $.breeze.debug(`Better compatibility path: ${name}`);
+                        modules[name].path = name;
+                    }
                 }
             }
         }
@@ -214,7 +216,7 @@
 
         if (isKnown || $.breeze.jsconfig[dep.name]?.path) {
             dep.path = path;
-        } else if (config.paths[alias] || alias.includes('//')) {
+        } else if (rjsConfig.paths[alias] || alias.includes('//')) {
             dep.path = alias;
         } else if (!dep.path && !dep.named) {
             dep.unknown = true;
@@ -382,8 +384,8 @@
     window.define = window.requirejs = window.require;
     window.require.defined = (name) => getModule(name).loaded;
     window.require.toUrl = (path) => {
-        if (config.paths[path]) {
-            path = config.paths[path];
+        if (rjsConfig.paths[path]) {
+            path = rjsConfig.paths[path];
         }
 
         if (path.includes(':') || path.startsWith('/')) {
@@ -392,11 +394,11 @@
 
         return window.VIEW_URL + '/' + path;
     };
-    window.require.config = (cfg) => cfg ? $.extend(true, config, cfg) : config;
+    window.require.config = (cfg) => cfg ? $.extend(true, rjsConfig, cfg) : rjsConfig;
     window.require.s = {
         contexts: {
             _: {
-                config,
+                config: rjsConfig,
             }
         }
     };
@@ -432,21 +434,22 @@
         }
     }), {
         async set(obj, alias, value) {
-            var mixins = require.config().config?.mixins?.[alias],
+            var mixins = rjsConfig.config.mixins?.[alias],
                 mixin;
 
-            if (mixins) {
+            if (mixins && $.breeze.isCompatMode()) {
                 if (modules[alias]) {
                     modules[alias].mixinsPromise = $.Deferred();
                 }
 
                 for (const [path, flag] of Object.entries(mixins)) {
-                    if (!flag || !(mixin = await require.async(path))) {
+                    if (!flag || isIgnored(path)) {
                         continue;
                     }
 
-                    console.log(`APPLYING LUMA MIXIN ${path} TO ${alias}`);
-                    value = mixin(value);
+                    $.breeze.debug(`Better compatibility mixin: ${path}`);
+                    mixin = await require.async(path);
+                    value = mixin?.(value);
                 }
 
                 modules[alias]?.mixinsPromise?.resolve();
