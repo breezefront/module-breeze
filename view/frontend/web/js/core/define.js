@@ -95,6 +95,8 @@
                 this.failed = true;
                 this.run();
             }.bind(this), 100);
+        } else if (this.mixinsPromise) {
+            this.mixinsPromise.then(() => this.parents.forEach(parent => parent.run()));
         } else {
             this.parents.forEach(parent => parent.run());
         }
@@ -430,16 +432,24 @@
         }
     }), {
         async set(obj, alias, value) {
-            var mixins = require.config().config?.mixins?.[alias] || {},
+            var mixins = require.config().config?.mixins?.[alias],
                 mixin;
 
-            for (const [path, flag] of Object.entries(mixins)) {
-                if (!flag || !(mixin = await require.async(path))) {
-                    continue;
+            if (mixins) {
+                if (modules[alias]) {
+                    modules[alias].mixinsPromise = $.Deferred();
                 }
 
-                console.log(`APPLYING LUMA MIXIN ${path} TO ${alias}`);
-                value = mixin(value);
+                for (const [path, flag] of Object.entries(mixins)) {
+                    if (!flag || !(mixin = await require.async(path))) {
+                        continue;
+                    }
+
+                    console.log(`APPLYING LUMA MIXIN ${path} TO ${alias}`);
+                    value = mixin(value);
+                }
+
+                modules[alias]?.mixinsPromise?.resolve();
             }
 
             if ($.mixin?.pending[alias]) {
