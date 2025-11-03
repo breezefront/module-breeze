@@ -43,9 +43,19 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
     protected $storeManager;
 
     /**
+     * @var \Magento\RequireJs\Model\FileManager
+     */
+    protected $requireJsFileManager;
+
+    /**
      * @var \Swissup\Breeze\Model\JsBuildFactory
      */
     protected $jsBuildFactory;
+
+    /**
+     * @var \Swissup\Breeze\Helper\Data
+     */
+    protected $breezeHelper;
 
     /**
      * @var array
@@ -77,16 +87,20 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         \Magento\Framework\App\View\Deployment\Version $deploymentVersion,
         \Magento\Framework\View\Asset\ConfigInterface $assetConfig,
         \Magento\Framework\View\Page\Config $pageConfig,
+        \Magento\RequireJs\Model\FileManager $requireJsFileManager,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Swissup\Breeze\Model\JsBuildFactory $jsBuildFactory,
+        \Swissup\Breeze\Helper\Data $breezeHelper,
         array $data = []
     ) {
         $this->scopeConfig = $scopeConfig;
         $this->deploymentVersion = $deploymentVersion;
         $this->assetConfig = $assetConfig;
         $this->pageConfig = $pageConfig;
+        $this->requireJsFileManager = $requireJsFileManager;
         $this->storeManager = $storeManager;
         $this->jsBuildFactory = $jsBuildFactory;
+        $this->breezeHelper = $breezeHelper;
 
         $bundles = $data['bundles'] ?? [];
         foreach ($bundles as $key => $bundle) {
@@ -102,10 +116,19 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
     protected function _prepareLayout()
     {
-        if (!$this->getData('assets')) {
-            return $this;
+        if ($this->getData('assets')) {
+            $this->addPageAssets();
         }
 
+        if ($this->breezeHelper->isBetterCompatibilityEnabled()) {
+            $this->addRequireJsConfig();
+        }
+
+        return $this;
+    }
+
+    private function addPageAssets()
+    {
         $properties = [
             'attributes' => 'defer',
         ];
@@ -129,8 +152,13 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                 );
             }
         }
+    }
 
-        return $this;
+    private function addRequireJsConfig()
+    {
+        $assetCollection = $this->pageConfig->getAssetCollection();
+        $requireJsConfig = $this->requireJsFileManager->createRequireJsConfigAsset();
+        $assetCollection->add($requireJsConfig->getFilePath(), $requireJsConfig);
     }
 
     /**
@@ -261,12 +289,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
     private function getIgnoredPaths()
     {
-        $betterCompatibility = $this->scopeConfig->isSetFlag(
-            'design/breeze/better_compatibility',
-            ScopeInterface::SCOPE_STORE
-        );
-
-        if ($betterCompatibility) {
+        if ($this->breezeHelper->isBetterCompatibilityEnabled()) {
             $ignore = (string) $this->scopeConfig->getValue(
                 'design/breeze/better_compatibility_ignore',
                 ScopeInterface::SCOPE_STORE

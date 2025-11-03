@@ -64,7 +64,7 @@
                 <settings>
                     <dataType>string</dataType>
                     <label translate="true">Debug Mode</label>
-                    <notice translate="true">Allows to force breeze status via query parameter: ?breeze=1 or ?breeze=0</notice>
+                    <notice translate="true"><![CDATA[Allows forcing "Breeze Experience" using ?breeze=1 query string. Or, use ?breeze=1&compat=1 to force "Better compatibility" mode.]]></notice>
                     <dataScope>breeze_debug_mode</dataScope>
                 </settings>
                 <formElements>
@@ -86,7 +86,7 @@
                         <dataType>text</dataType>
                         <label translate="true">Better Compatibility</label>
                         <notice translate="true">When enabled, Breeze will fallback to Luma-based components, templates, and mixins.</notice>
-                        <dataScope>breeze_compatibility_mode</dataScope>
+                        <dataScope>breeze_experimental_better_compatibility</dataScope>
                     </settings>
                     <formElements>
                         <select>
@@ -104,7 +104,7 @@
                         <tooltip>
                             <description><![CDATA[Examples:<br/>Vendor_Module/js/cmp<br/>Vendor_Module/*<br/>component]]></description>
                         </tooltip>
-                        <dataScope>breeze_compatibility_mode_ignore</dataScope>
+                        <dataScope>breeze_experimental_better_compatibility_ignore</dataScope>
                     </settings>
                     <formElements>
                         <textarea>
