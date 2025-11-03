@@ -104,7 +104,7 @@
                     return;
                 }
 
-                if (loadingCount) {
+                if (loadingCount || this.tries++ < 10) {
                     return setTimeout(reportUnresolved.bind(this), 1000);
                 }
 
@@ -140,6 +140,7 @@
                 name,
                 parents: [],
                 deps: [],
+                tries: 0,
                 global,
                 run
             };
@@ -420,7 +421,7 @@
         __aliases: {},
         __getAll: () => ({ ...$.breezemap }),
         __get: key => $.breezemap[key],
-        __has: key => key in $.breezemap,
+        __has: key => $.breezemap[key] !== undefined,
         __lastComponent: (offset = 0) => $.breezemap[`__component${$.breezemap.__counter - 1 - offset}`],
         __register: (name, oldName) => {
             if ($.breezemap[name]) {
@@ -446,6 +447,8 @@
         async set(obj, alias, value) {
             var mixins = rjsConfig.config.mixins?.[alias],
                 mixin;
+
+            obj[alias] = value;
 
             if (mixins && $.breeze.isCompatMode()) {
                 if (modules[alias]) {
