@@ -12,6 +12,10 @@
                     <item name="path" xsi:type="string">design/breeze/excluded_urls</item>
                     <item name="fieldset" xsi:type="string">other_settings/breeze</item>
                 </item>
+                <item name="breeze_excluded_urls_exceptions" xsi:type="array">
+                    <item name="path" xsi:type="string">design/breeze/excluded_urls_exceptions</item>
+                    <item name="fieldset" xsi:type="string">other_settings/breeze</item>
+                </item>
                 <item name="breeze_responsive_images" xsi:type="array">
                     <item name="path" xsi:type="string">design/breeze/responsive_images</item>
                     <item name="fieldset" xsi:type="string">other_settings/breeze</item>

@@ -97,10 +97,17 @@ class Data extends AbstractHelper
      */
     public function getExcludeExceptionUrls()
     {
-        return [
-            'checkout/cart/configure',
-            'customer/section/load',
-        ];
+        $exceptionUrls = trim((string)$this->getConfig('design/breeze/excluded_urls_exceptions'));
+        $exceptionUrls = array_filter(explode("\n", $exceptionUrls));
+
+        foreach ($exceptionUrls as $i => $url) {
+            $exceptionUrls[$i] = trim($url);
+        }
+
+        $exceptionUrls[] = 'checkout/cart/configure';
+        $exceptionUrls[] = 'customer/section/load';
+
+        return $exceptionUrls;
     }
 
     /**
