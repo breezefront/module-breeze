@@ -28,7 +28,21 @@
                     <dataType>string</dataType>
                     <label translate="true">Disable Breeze for specified URLs</label>
                     <notice translate="true">One url per line. Example: /helpdesk or ?param=1</notice>
+                    <tooltip>
+                        <description translate="true">Breeze will be disabled on this pages</description>
+                    </tooltip>
                     <dataScope>breeze_excluded_urls</dataScope>
+                </settings>
+            </field>
+            <field name="breeze_excluded_urls_exceptions" formElement="textarea">
+                <settings>
+                    <dataType>string</dataType>
+                    <label translate="true">Exceptions for Disable Breeze URLs</label>
+                    <notice translate="true">One url per line. Example: /helpdesk-with-breeze</notice>
+                    <tooltip>
+                        <description translate="true">Breeze will be enabled on this pages</description>
+                    </tooltip>
+                    <dataScope>breeze_excluded_urls_exceptions</dataScope>
                 </settings>
             </field>
             <field name="breeze_responsive_images" formElement="select">
