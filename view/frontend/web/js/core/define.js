@@ -13,6 +13,7 @@
         },
         defaultStackTraceLimit = Error.stackTraceLimit || 10,
         autoloadedBundles = {},
+        jsignorePrefixes = [],
         origSuffix = '-mage-original',
         bundlePathRe = /(?<path>Swissup_Breeze\/bundles\/\d+\/.*?)\d*(\.min\.js|\.js)$/,
         bundlePrefixRe = /(?<prefix>Swissup_Breeze\/bundles\/\d+\/).*\.js$/,
@@ -24,9 +25,18 @@
             .match(suffixRe).groups.suffix;
 
     function isIgnored(name) {
-        return $.breeze.jsignore?.includes(name) || $.breeze.jsignore
-            ?.filter(k => k.includes('*'))
-            .some(k => name.startsWith(k.split('*').at(0)));
+        if (!$.breeze.jsignore) {
+            return false;
+        }
+
+        if (!jsignorePrefixes.length) {
+            jsignorePrefixes = $.breeze.jsignore
+                .filter(prefix => prefix.endsWith('*'))
+                .map(prefix => prefix.slice(0, -1));
+        }
+
+        return $.breeze.jsignore.includes(name) ||
+            jsignorePrefixes.some(prefix => name.startsWith(prefix));
     }
 
     function isRunningFromBundle() {
