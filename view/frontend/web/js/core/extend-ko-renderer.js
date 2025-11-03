@@ -30,7 +30,7 @@ define([
             tmplPath = tmplPath.replace(/^([^/]+)/g, '$1/template');
         }
 
-        console.log(`Loading template: ${tmplPath}`);
+        $.breeze.debug(`Loading template: ${tmplPath}`);
 
         return require.async(`text!${tmplPath}`).then(html => {
             return html.replace(/<!--[\s\S]*?-->/, match => {
