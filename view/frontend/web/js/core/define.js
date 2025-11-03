@@ -457,7 +457,6 @@
                         continue;
                     }
 
-                    $.breeze.debug(`Better compatibility mixin: ${path}`);
                     mixin = await require.async(path);
                     value = mixin?.(value);
                 }

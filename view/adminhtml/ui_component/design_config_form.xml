@@ -33,6 +33,13 @@
                     </tooltip>
                     <dataScope>breeze_excluded_urls</dataScope>
                 </settings>
+                <formElements>
+                    <textarea>
+                        <settings>
+                            <rows>3</rows>
+                        </settings>
+                    </textarea>
+                </formElements>
             </field>
             <field name="breeze_excluded_urls_exceptions" formElement="textarea">
                 <settings>
@@ -44,6 +51,13 @@
                     </tooltip>
                     <dataScope>breeze_excluded_urls_exceptions</dataScope>
                 </settings>
+                <formElements>
+                    <textarea>
+                        <settings>
+                            <rows>3</rows>
+                        </settings>
+                    </textarea>
+                </formElements>
             </field>
             <field name="breeze_responsive_images" formElement="select">
                 <settings>
@@ -100,16 +114,16 @@
                     <settings>
                         <dataType>text</dataType>
                         <label translate="true">Excluded from Better Compatibility</label>
-                        <notice translate="true">One alias or path per line. Use '*' to ignore whole path: Vendor_Module/*</notice>
+                        <notice translate="true">One alias or path per line. Use asterisk to ignore whole path: Vendor_Module/*</notice>
                         <tooltip>
-                            <description><![CDATA[Examples:<br/>Vendor_Module/js/cmp<br/>Vendor_Module/*<br/>component]]></description>
+                            <description><![CDATA[Examples:<br/>Vendor_Module/js/component<br/>Vendor_Module/*<br/>mage/component<br/>mage/*]]></description>
                         </tooltip>
                         <dataScope>breeze_experimental_better_compatibility_ignore</dataScope>
                     </settings>
                     <formElements>
                         <textarea>
                             <settings>
-                                <rows>7</rows>
+                                <rows>5</rows>
                             </settings>
                         </textarea>
                     </formElements>
