@@ -105,7 +105,7 @@
                 }
 
                 if (loadingCount || this.tries++ < 10) {
-                    return setTimeout(reportUnresolved.bind(this), 1000);
+                    return setTimeout(reportUnresolved.bind(this), 500);
                 }
 
                 console.error('Unable to resolve dependency', this);
