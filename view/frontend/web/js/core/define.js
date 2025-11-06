@@ -47,6 +47,9 @@
         if (rjsConfig.shim[this.name]?.exports) {
             return _.get(window, rjsConfig.shim[this.name].exports.split('.'));
         }
+        if (rjsConfig.shim[this.name]?.init && this.loaded) {
+            return rjsConfig.shim[this.name].init();
+        }
     }
 
     function run() {
@@ -399,7 +402,14 @@
             path = rjsConfig.paths[path];
         }
 
-        if (path.includes(':') || path.startsWith('/')) {
+        $.each(rjsConfig.paths, (key, value) => {
+            if (path === key || path.startsWith(key + '/')) {
+                path = value + path.slice(key.length);
+                return false;
+            }
+        });
+
+        if (path.includes(':') || path.startsWith('/') || path.includes('?')) {
             return path;
         }
 

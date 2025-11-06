@@ -21,6 +21,7 @@
             <arguments>
                 <argument name="cache_lifetime" xsi:type="number">864000</argument> <!-- 10 days -->
                 <argument name="ignore" xsi:type="array"> <!-- Do not load/report these components -->
+                    <item name="checkoutLoader" xsi:type="string">checkoutLoader</item>
                     <item name="jquery/jquery-storageapi" xsi:type="string">jquery/jquery-storageapi</item>
                     <item name="jquery/jquery.parsequery" xsi:type="string">jquery/jquery.parsequery</item>
                     <item name="jquery/validate" xsi:type="string">jquery/validate</item>
@@ -47,7 +48,9 @@
                     <item name="Magento_Ui/js/lib/knockout/bootstrap" xsi:type="string">Magento_Ui/js/lib/knockout/bootstrap</item>
                     <item name="Magento_Weee/js/view/cart/totals/weee" xsi:type="string">Magento_Weee/js/view/cart/totals/weee</item>
                     <item name="Magento_Weee/js/view/checkout/summary/weee" xsi:type="string">Magento_Weee/js/view/checkout/summary/weee</item>
+                    <item name="moment-timezone-with-data" xsi:type="string">moment-timezone-with-data</item>
                     <item name="requireCookie" xsi:type="string">requireCookie</item>
+                    <item name="rjsResolver" xsi:type="string">rjsResolver</item>
                     <item name="passwordStrengthIndicator" xsi:type="string">passwordStrengthIndicator</item>
                 </argument>
                 <argument name="bundles" xsi:type="array">
@@ -84,6 +87,7 @@
                         <item name="sort_order" xsi:type="number">1</item>
                         <item name="items" xsi:type="array">
                             <item name="knockout" xsi:type="string">Swissup_Breeze/js/lib/knockout-3.5.1.min.js</item>
+                            <item name="knockout-es5" xsi:type="string">Swissup_Breeze/js/lib/knockout-es5-clean.min.js</item>
                             <item name="knockout-renderer" xsi:type="string">Swissup_Breeze/js/core/extend-ko-renderer</item>
                             <item name="knockout-engine" xsi:type="string">Swissup_Breeze/js/core/extend-ko-engine</item>
                             <item name="knockout-extend" xsi:type="string">Swissup_Breeze/js/core/extend-ko</item>
@@ -97,6 +101,7 @@
                             <item name="class" xsi:type="string">Swissup_Breeze/js/lib/class</item>
                             <item name="breeze-registry" xsi:type="string">Swissup_Breeze/js/core/registry</item>
                             <item name="breeze-component" xsi:type="string">Swissup_Breeze/js/core/component</item>
+                            <item name="breeze-component-ui" xsi:type="string">Swissup_Breeze/js/core/component-ui</item>
                             <item name="breeze-dynamic-js" xsi:type="string">Swissup_Breeze/js/core/dynamic-js</item>
                             <item name="breeze-translate" xsi:type="string">Swissup_Breeze/js/core/translate</item>
                             <item name="breeze-storage" xsi:type="string">Swissup_Breeze/js/core/storage</item>
@@ -1040,7 +1045,7 @@
                 <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.modal.customTpl" template="Magento_Ui::modal/modal-custom.html"/>
                 <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.modal.promptTpl" template="Magento_Ui::modal/modal-prompt-content.html"/>
                 <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.uiMessages" template="Magento_Ui::messages.html"/>
-                <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.uiComponent" template="Swissup_Breeze::ui/component.html"/>
+                <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.uiComponent" template="Magento_Ui::collection.html"/>
                 <block class="Swissup\Breeze\Block\HtmlTemplate" name="breeze.image_with_borders" template="Swissup_Breeze::catalog/product-image.html">
                     <arguments>
                         <argument name="id" xsi:type="string">Magento_Catalog/product/image_with_borders</argument>

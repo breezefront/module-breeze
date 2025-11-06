@@ -93,7 +93,7 @@ define([
         },
 
         showModal: async function () {
-            await this._applyBindings(this.element[0], true);
+            await this._applyBindings(this.el[0], true);
             $(this.modalWindow).modal('openModal');
         },
 

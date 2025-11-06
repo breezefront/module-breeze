@@ -83,7 +83,6 @@ define([
         component: 'Magento_Theme/js/view/messages',
         defaults: {
             allowedTags: ['div', 'span', 'b', 'strong', 'i', 'em', 'u', 'a'],
-            template: 'uiComponent',
         },
 
         create: function () {
@@ -115,7 +114,7 @@ define([
         },
 
         destroy: function () {
-            $('.messages', this.element).remove();
+            $('.messages', this.el).remove();
             this._super();
         }
     });

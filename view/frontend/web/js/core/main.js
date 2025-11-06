@@ -9,7 +9,8 @@
 
     /** Init 'data-mage-init' and 'text/x-magento-init' scripts */
     function mount(component, data, now) {
-        var storageEl = data.settings.__el || data.el;
+        var storageEl = data.settings.__el || data.el,
+            key = data.settings?.__scope || component;
 
         if (data.settings?.componentDisabled === true) {
             return;
@@ -29,10 +30,10 @@
         if (storageEl) {
             if (!mounted.has(storageEl)) {
                 mounted.set(storageEl, {});
-            } else if (mounted.get(storageEl)[component]) {
+            } else if (mounted.get(storageEl)[key]) {
                 return;
             }
-            mounted.get(storageEl)[component] = data;
+            mounted.get(storageEl)[key] = data;
         }
 
         // will load components from non-active bundle if needed (product.js on homepage)
@@ -324,7 +325,8 @@
 
     // automatically mount components
     $(document).on('breeze:mount', function (event, data) {
-        var name = $.breezemap.__aliases[data.__component] || data.__component,
+        var key = data.name || data.__component,
+            name = $.breezemap.__aliases[data.__component] || data.__component,
             component = $.breezemap[name],
             instance = component,
             proto = {};
@@ -333,35 +335,37 @@
             return;
         }
 
-        if (['uiComponent', 'uiCollection'].includes(name)) {
-            proto.defaults = {
-                template: 'uiComponent'
-            };
-        }
-
         $(data.el || document.body).each((i, el) => {
-            if ($.registry.get(name, el)) {
+            if ($.registry.get(key, el)) {
                 return;
             }
 
-            if (_.isFunction(component)) {
-                instance = component(data.settings, el);
-                if (_.isFunction(instance) && instance.extend && instance._proto) {
-                    instance = instance(data.settings, el); // cmp is a function that returns UI Component
-                } else if (!component.extend && !instance?.component) {
-                    instance = component;
+            try {
+                if (_.isFunction(component)) {
+                    instance = component(data.settings, el);
+                    if (_.isFunction(instance) && instance.extend && instance._proto) {
+                        instance = instance(data.settings, el); // cmp is a function that returns UI Component
+                    } else if (!component.extend && !instance?.component) {
+                        instance = component;
+                    }
+                } else if (_.isObject(component) && _.isFunction(component[name])) {
+                    component[name].bind(component)(data.settings, el);
+                } else if (_.isObject(component) && _.isFunction(component.extend)) {
+                        instance = component.extend(proto)(data.settings, el);
+                } else {
+                    return;
                 }
-            } else if (_.isObject(component) && _.isFunction(component[name])) {
-                component[name].bind(component)(data.settings, el);
-            } else if (_.isObject(component) && _.isFunction(component.extend)) {
-                instance = component.extend(proto)(data.settings, el);
-            } else {
-                return;
-            }
 
-            if (instance) {
-                $(el).component(name, instance);
-                $.registry.set(name, el, instance);
+                if (instance) {
+                    [...new Set(key, name)].forEach(k => {
+                        $(el).component(k, instance);
+                        $.registry.set(k, el, instance);
+                    });
+                }
+            } catch (e) {
+                if (!data.settings?.__scope) {
+                    throw e;
+                }
             }
         });
     });

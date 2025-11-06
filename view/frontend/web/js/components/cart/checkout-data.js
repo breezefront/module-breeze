@@ -12,7 +12,14 @@
     (() => {
         var cacheKey = 'checkout-data',
             updateCheckoutData = (data) => storage.set(cacheKey, _.extend(storage.get(cacheKey) || {}, data)),
-            snakeCase = (string) => string.replace(/([A-Z])/g, ($1) => '_' + $1.toLowerCase());
+            snakeCase = (string) => string.replace(/([A-Z])/g, ($1) => '_' + $1.toLowerCase()),
+            getShippingAddressByStore = function (shippingAddressObj) {
+                if (!shippingAddressObj) {
+                    return null;
+                }
+
+                return shippingAddressObj[window.checkoutConfig.storeCode];
+            };
 
         $.breezemap['Magento_Checkout/js/checkout-data'] = {
             setShippingAddressFromData: (address) => {
@@ -25,8 +32,14 @@
                 updateCheckoutData({ shippingAddressFromData: data });
             },
             setSelectedShippingRate: (rate) => updateCheckoutData({ selectedShippingRate: rate }),
+            setSelectedPaymentMethod: (data) => updateCheckoutData({ selectedPaymentMethod: data }),
             getShippingAddressFromData: () => storage.get(cacheKey)?.shippingAddressFromData,
-            getSelectedShippingRate: () => storage.get(cacheKey)?.selectedShippingRate
+            getSelectedShippingRate: () => storage.get(cacheKey)?.selectedShippingRate,
+            getSelectedShippingAddress: () => storage.get(cacheKey)?.selectedShippingAddress,
+            getNewCustomerShippingAddress: () => getShippingAddressByStore(storage.get(cacheKey)?.newCustomerShippingAddress),
+            getSelectedPaymentMethod: () => storage.get(cacheKey)?.selectedPaymentMethod,
+            getValidatedEmailValue: () => storage.get(cacheKey)?.validatedEmailValue || '',
+            getInputFieldEmailValue: () => storage.get(cacheKey)?.inputFieldEmailValue || '',
         };
     })();
 

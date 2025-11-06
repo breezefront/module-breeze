@@ -66,7 +66,7 @@ define([
         },
 
         addressForm: function () {
-            return this.element.find('#shipping-zip-form');
+            return this.el.find('#shipping-zip-form');
         },
 
         addressField: function (name) {

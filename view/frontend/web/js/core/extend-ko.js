@@ -80,15 +80,37 @@ define(['ko/template/renderer'], (renderer) => {
             binding: 'i18n'
         });
 
+    function applyComponents(el, bindingContext, promise, component) {
+        promise.resolve();
+        component = bindingContext.createChildContext(component);
+        ko.utils.arrayForEach(ko.virtualElements.childNodes(el), ko.cleanNode);
+        ko.applyBindingsToDescendants(component, el);
+    }
+
     ko.bindingHandlers.scope = {
         init: function () {
             return {
                 controlsDescendantBindings: true
             };
+        },
+        update: function (el, valueAccessor, allBindings, viewModel, bindingContext) {
+            var component = valueAccessor(),
+                promise = $.Deferred(),
+                apply = applyComponents.bind(this, el, bindingContext, promise);
+
+            if (typeof component === 'string') {
+                $.breezemap.uiRegistry.get(component, apply);
+            } else if (typeof component === 'function') {
+                component(apply);
+            }
         }
     };
-
     ko.virtualElements.allowedBindings.scope = true;
+    renderer
+       .addNode('scope')
+       .addAttribute('scope', {
+           name: 'ko-scope'
+       });
 
     ko.bindingHandlers.bindHtml = {
         init: function () {
@@ -148,6 +170,13 @@ define(['ko/template/renderer'], (renderer) => {
                 });
             });
         }
+    };
+
+    ko.observableArray.fn.each = function (cb) {
+        return this().forEach(cb);
+    };
+    ko.observableArray.fn.some = function (cb) {
+        return this().some(cb);
     };
 
     $.breezemap.ko = $.breezemap.knockout = ko;
