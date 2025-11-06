@@ -363,7 +363,9 @@
                     });
                 }
             } catch (e) {
-                if (!data.settings?.__scope) {
+                if (data.settings?.__scope) {
+                    console.error(e);
+                } else {
                     throw e;
                 }
             }

@@ -61,6 +61,7 @@
         try {
             this.result = this.cb?.apply(window, this.deps.map(dep => dep.run()));
         } catch (e) {
+            this.failed = true;
             console.error(e);
         }
         this.loaded = true;
@@ -379,7 +380,8 @@
                     loadingCount--;
                     dep.run();
                 }
-            });
+            })
+            .catch(e => console.error(e));
 
         return mod.run();
     };

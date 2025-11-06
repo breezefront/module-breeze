@@ -975,9 +975,6 @@
                                     <item name="rowBuilder" xsi:type="string">rowBuilder</item>
                                 </item>
                             </item>
-                            <item name="Magento_Ui/js/model/messages" xsi:type="array">
-                                <item name="path" xsi:type="string">Magento_Ui/js/model/messages</item>
-                            </item>
                             <item name="Magento_Catalog/js/price-option-date" xsi:type="array">
                                 <item name="path" xsi:type="string">Magento_Catalog/js/price-option-date</item>
                                 <item name="import" xsi:type="array">
