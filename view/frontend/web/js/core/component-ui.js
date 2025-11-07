@@ -46,14 +46,18 @@
             }
             this._super(name, options, element);
             delete this.element;
-            // this._fixMissingElementInKoTemplates();
 
             if (this.deps) {
                 if (typeof this.deps === 'string') {
                     this.deps = [this.deps];
                 }
                 Promise.all(
-                    this.deps.filter(v => v).map(v => $.breezemap.uiRegistry.promise(v))
+                    this.deps.filter(v => v).map(async v => {
+                        if (v.startsWith(this.__scope)) {
+                            await this._processChildren();
+                        }
+                        return $.breezemap.uiRegistry.promise(v)
+                    })
                 ).then(() => this._applyBindings.bind(this, element)());
             } else {
                 window.setTimeout(this._applyBindings.bind(this, element), 0);
@@ -75,21 +79,6 @@
             return this;
         },
 
-        // Fix for UI form:
-        // 1. foreach: elems as 'element'
-        // 2. element.hasAddons
-        _fixMissingElementInKoTemplates: function () {
-            var html = this.hasTemplate() && document.getElementById(this.getTemplate())?.innerHTML;
-
-            if (!html) {
-                return;
-            }
-
-            if (html.includes('element.') || html.includes('\'element\'')) {
-                delete this.element;
-            }
-        },
-
         _applyBindings: async function (element) {
             var koEl = element.firstChild;
 
@@ -97,8 +86,7 @@
                 return;
             }
 
-            await this._resolveChildren();
-            this._initElems();
+            await this._processChildren();
 
             while (koEl) {
                 if (koEl.nodeType === 1 || (koEl.nodeType === 8 && koEl.nodeValue.match(/\s*ko\s+/))) {
@@ -115,6 +103,14 @@
                 ko.applyBindingsToDescendants(this, element);
                 $(element).trigger('contentUpdated');
                 this.afterRender();
+            }
+        },
+
+        _processChildren: async function () {
+            if (!this._childrenProcessed) {
+                this._childrenProcessed = true;
+                await this._resolveChildren();
+                this._initElems();
             }
         },
 
@@ -136,15 +132,6 @@
 
                 if (this.hasChild(key)) {
                     return;
-                }
-
-                if (config.deps) {
-                    if (typeof config.deps === 'string') {
-                        config.deps = [config.deps];
-                    }
-                    await Promise.all(
-                        config.deps.filter(v => v).map(v => $.breezemap.uiRegistry.promise(v))
-                    );
                 }
 
                 config.component = config.component || 'uiComponent';
@@ -482,15 +469,15 @@
     };
     $.breezemap.uiCollection = $.uiComponent;
     $.breezemap.uiComponent = $.uiComponent;
-    $.breezemap.uiElement = {
-        extend: function (proto) {
-            if (!proto.template && !proto.defaults?.template) {
-                proto.defaults = proto.defaults || {};
-                proto.defaults.template = '';
-            }
-            return $.view(proto.component || `__component${$.breezemap.__counter++}`, proto);
-        },
-        register: $.breezemap.__register,
+    $.breezemap.uiElement = function (proto) {
+        return $.breezemap.uiElement.extend(proto || {})();
+    };
+    $.breezemap.uiElement.extend = function (proto) {
+        if (!proto.template && !proto.defaults?.template) {
+            proto.defaults = proto.defaults || {};
+            proto.defaults.template = '';
+        }
+        return $.view(proto.component || `__component${$.breezemap.__counter++}`, proto);
     };
     $.breezemap.uiClass = $.Base;
 })();

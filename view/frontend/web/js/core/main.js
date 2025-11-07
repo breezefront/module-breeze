@@ -325,7 +325,7 @@
 
     // automatically mount components
     $(document).on('breeze:mount', function (event, data) {
-        var key = data.name || data.__component,
+        var key = data.settings.__scope || data.__component,
             name = $.breezemap.__aliases[data.__component] || data.__component,
             component = $.breezemap[name],
             instance = component,

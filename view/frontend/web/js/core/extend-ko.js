@@ -39,6 +39,8 @@ define(['ko/template/renderer'], (renderer) => {
         }
     };
 
+    ko.bindingHandlers.optgroup = ko.bindingHandlers.options;
+
     ko.bindingHandlers.blockLoader = {
         /**
          * @param {String} element
