@@ -89,7 +89,9 @@
             };
 
             constructor = function (settings, element) {
-                return $(element || '<div>')[name](settings)[name]('instance');
+                element = $(element || '<div>');
+                element[name](settings);
+                return $.registry.get(settings?.__scope || name, element[0]);
             };
             constructor._proto = prototype;
             constructor.prototype = prototype.prototype;

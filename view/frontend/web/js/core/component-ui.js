@@ -31,6 +31,8 @@
 
     $.View = $.Widget.extend({
         defaults: {
+            name: '',
+            provider: '',
             _requested: {},
             tracks: {},
             template: 'uiComponent'
@@ -342,6 +344,8 @@
 
                 [valScope, valPath] = val.includes(':') ? val.split(':') : [this.__scope, val];
                 [keyScope, keyPath] = key.includes(':') ? key.split(':') : [this.__scope, key];
+                valScope = valScope || this.__scope;
+                keyScope = keyScope || this.__scope;
 
                 $.breezemap.uiRegistry.get(valScope, valCmp => {
                     $.breezemap.uiRegistry.get(keyScope, keyCmp => {
@@ -355,7 +359,7 @@
                         } else if (ko.es5.isTracked(source, sourceKey)) {
                             ko.getObservable(source, sourceKey).subscribe(update);
                         } else {
-                            source.on(sourceKey, (e, data) => update(data.value));
+                            source.on(sourceKey, update);
                         }
 
                         if (_.isFunction(value)) {
@@ -375,13 +379,16 @@
         on: function (name, callback) {
             var [scope, event] = name.includes(':') ? name.split(':') : [this.__scope, name];
 
+            scope = scope || this.__scope;
             $.breezemap.uiRegistry.get(scope, cmp => {
                 if (cmp[event] && ko.isObservable(cmp[event])) {
                     cmp[event].subscribe(callback);
                 } else if (cmp[event] && ko.es5.isTracked(cmp, event)) {
                     ko.getObservable(cmp, event).subscribe(callback);
                 } else {
-                    cmp._on(cmp.__name + ':' + event.replaceAll('.', '_'), callback);
+                    cmp._on(cmp.__name + ':' + event.replaceAll('.', '_'), (e, data) => {
+                        callback(data.value);
+                    });
                 }
             });
 
@@ -392,7 +399,12 @@
             var [scope, event] = name.includes(':') ? name.split(':') : [this.__scope, name];
 
             $.breezemap.uiRegistry.get(scope, cmp => {
-                cmp._trigger(event.replaceAll('.', '_'), data);
+                event += '.';
+                do {
+                    event = event.substring(0, event.lastIndexOf('.'));
+                    cmp._trigger(event.replaceAll('.', '_'), data);
+                    data.value = this.get(event.substring(0, event.lastIndexOf('.')));
+                } while (event.includes('.'));
             });
         },
 
@@ -424,7 +436,9 @@
         },
 
         get: function (path) {
-            return _.get(this, path.split('.'));
+            var result = _.get(this, path.split('.'));
+
+            return ko.isObservable(result) ? result() : result;
         },
 
         _renderLiterals: function (obj, context, canIgnore = true) {
