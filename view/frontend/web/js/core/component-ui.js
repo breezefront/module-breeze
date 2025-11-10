@@ -125,7 +125,8 @@
         },
 
         _initElems: function () {
-            var children = this.options.children || {};
+            var children = this.options.children || {},
+                components = [];
 
             Object.keys(children).sort((a, b) => {
                 return (children[a].sortOrder || 1000000) - (children[b].sortOrder || 1000000);
@@ -144,10 +145,10 @@
                     return;
                 }
 
-                this._elems.push(cmp);
+                components.push(cmp);
             });
 
-            this._updateCollection();
+            this.insertChild(components);
         },
 
         _updateCollection: function () {
@@ -165,6 +166,8 @@
             });
 
             this.elems(this._elems);
+
+            return this;
         },
 
         hasChild: function (index) {
@@ -181,6 +184,14 @@
             }
             this._elems.push(...elems);
             this._updateCollection();
+            elems.forEach(el => {
+                this.initElement(el);
+            });
+
+            return this;
+        },
+
+        initElement: function () {
             return this;
         },
 
@@ -271,6 +282,10 @@
                 parentScope: this.index,
                 dataScope: '',
             }, config);
+
+            if (config.dataScope) {
+                config.parentScope = config.dataScope.substr(0, config.dataScope.lastIndexOf('.'));
+            }
 
             if (config.index) {
                 config = _.extend({
@@ -427,6 +442,11 @@
 
             if (_.isFunction(target[last])) {
                 target[last](value);
+            } else if ($.isPlainObject(value)) {
+                _.each(value, (val, key) => {
+                    this.trigger(`${path}.${key}`, { value: val });
+                });
+                this.trigger(path, { value });
             } else if (target[last] != value) { // eslint-disable-line eqeqeq
                 target[last] = value;
                 this.trigger(path, { value });

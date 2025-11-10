@@ -100,7 +100,7 @@
         }
 
         if (this.result === undefined && this.waitForResult && !this.failed &&
-            this.path && !this.path.includes('//')
+            this.path && !this.path.includes('//') && !this.path.startsWith('Magento_')
         ) {
             this.ran = this.loaded = false;
             setTimeout(function reportUnresolved() {
