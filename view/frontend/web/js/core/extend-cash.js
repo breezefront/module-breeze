@@ -1,10 +1,23 @@
 (function () {
     'use strict';
 
-    var _$ = $;
+    var _$ = $,
+        selectorsRe = {
+            inputTypes: /:(button|checkbox|hidden|image|password|radio|submit|text)\b/g,
+            attrWithNumber: /\[([\w-]+)?=(\d+)\]/g,
+            dataType: /:data\(([\w\d-_]+)\)/g,
+        };
 
     window.$ = function (selector, context) {
-        var result = _$(selector, context);
+        var result;
+
+        // Handle ':visible' when its used in the end of the selector
+        if (typeof selector === 'string' && selector.endsWith(':visible')) {
+            result = _$(selector.substr(0, selector.lastIndexOf(':visible')), context);
+            result = result.visible();
+        } else {
+            result = _$(selector, context);
+        }
 
         // HANDLE: $(html, props)
         // See: https://github.com/jquery/jquery/blob/main/src/core/init.js#L76
@@ -292,35 +305,22 @@
             return s;
         }).join(',');
 
-        ['button', 'checkbox', 'hidden', 'image', 'password', 'radio', 'submit', 'text'].forEach(type => {
-            var pseudo = `:${type}`, parts;
+        // normalize :image, :checkox, etc
+        selector = selector.replace(selectorsRe.inputTypes, (match, type, offset, str) => {
+            var before = str.slice(0, offset);
 
-            if (!selector.includes(pseudo)) {
-                return;
-            }
-
-            parts = selector.split(pseudo);
-            selector = parts.map((part, i) => {
-                if (i === parts.length - 1) {
-                    return part;
-                }
-
-                // $(':image') $('div input:image')
-                if (!part || part.endsWith(' ') || part.endsWith('input')) {
-                    return part + `[type="${type}"]`;
-                }
-
-                // $('[name="og:image"]')
-                return part + pseudo;
-            }).join('');
+            // Do not normalize [name="og:image"]
+            return before.lastIndexOf('[') > before.lastIndexOf(']') ? match : `[type="${type}"]`;
         });
 
+        // add quotes around number in [attr=number]
         if (selector.includes('[') && selector.includes('=')) {
-            selector = selector.replaceAll(/\[([\w-]+)?=(\d+)\]/g, '[$1="$2"]');
+            selector = selector.replaceAll(selectorsRe.attrWithNumber, '[$1="$2"]');
         }
 
+        // normalize :data(name)
         if (selector.includes(':data(')) {
-            selector = selector.replaceAll(/:data\(([\w\d-_]+)\)/g, '[data-$1]');
+            selector = selector.replaceAll(selectorsRe.dataType, '[data-$1]');
         }
 
         return selector
