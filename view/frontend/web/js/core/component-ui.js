@@ -125,19 +125,17 @@
         },
 
         _initElems: function () {
-            var children = this.options.children || {},
-                components = [];
+            var children = this.options.children || {};
 
             Object.keys(children).sort((a, b) => {
                 return (children[a].sortOrder || 1000000) - (children[b].sortOrder || 1000000);
-            }).forEach(async key => {
+            }).forEach(key => {
                 var cmp, config = children[key];
 
-                if (this.hasChild(key)) {
+                if (!config.component || this.hasChild(key)) {
                     return;
                 }
 
-                config.component = config.component || 'uiComponent';
                 config.index = key;
                 cmp = this.mount(config);
 
@@ -145,10 +143,9 @@
                     return;
                 }
 
-                components.push(cmp);
+                this._elems.push(cmp);
+                this._updateCollection().initElement(cmp);
             });
-
-            this.insertChild(components);
         },
 
         _updateCollection: function () {
@@ -182,10 +179,10 @@
             if (!_.isArray(elems)) {
                 elems = [elems];
             }
-            this._elems.push(...elems);
-            this._updateCollection();
-            elems.forEach(el => {
-                this.initElement(el);
+
+            elems.forEach(elem => {
+                this._elems.push(elem);
+                this._updateCollection().initElement(elem);
             });
 
             return this;

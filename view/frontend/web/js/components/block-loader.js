@@ -91,5 +91,27 @@
         }
     });
 
-    $.widget('mage.loader', 'blockLoader', {});
+    $.widget('mage.loader', 'blockLoader', {
+        _create: function () {
+            this._on({
+                'processStop': 'hide',
+                'processStart': 'show',
+                'show.loader': 'show',
+                'hide.loader': 'hide',
+                'contentUpdated.loader': '_contentUpdated'
+            });
+        },
+
+        _contentUpdated: function () {
+            this.show();
+        },
+
+        show: function () {
+            this._super(this.element);
+        },
+
+        hide: function () {
+            this._super(this.element);
+        }
+    });
 })();

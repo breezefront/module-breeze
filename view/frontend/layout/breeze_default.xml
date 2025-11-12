@@ -28,7 +28,6 @@
                     <item name="jquery-ui-modules/*" xsi:type="string">jquery-ui-modules/*</item>
                     <item name="loader" xsi:type="string">loader</item>
                     <item name="loaderAjax" xsi:type="string">loaderAjax</item>
-                    <item name="mage/loader" xsi:type="string">mage/loader</item>
                     <item name="mage/polyfill" xsi:type="string">mage/polyfill</item>
                     <item name="mage/trim-input" xsi:type="string">mage/trim-input</item>
                     <item name="Magento_Bundle/js/validation" xsi:type="string">Magento_Bundle/js/validation</item>
@@ -309,7 +308,13 @@
                                     <item name="login" xsi:type="string">Magento_Customer/js/action/login</item>
                                 </item>
                             </item>
-                            <item name="Magento_Ui/js/block-loader" xsi:type="string">Swissup_Breeze/js/components/block-loader</item>
+                            <item name="Magento_Ui/js/block-loader" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/block-loader</item>
+                                <item name="export" xsi:type="array">
+                                    <item name="mage/loader" xsi:type="string">mage/loader</item>
+                                    <item name="loader" xsi:type="string">loader</item>
+                                </item>
+                            </item>
                             <item name="Magento_PageBuilder/js/widget-initializer" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/pagebuilder/initializer</item>
                             </item>
