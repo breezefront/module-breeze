@@ -21,7 +21,7 @@ define([
             availableCountries: [],
             availableRegions: [],
             rates: cartData.get('rates') || [],
-            isShippingBlockVisible: cartData.get('rates')?.length > 0,
+            isShippingBlockVisible: cartData.get('rates')?.length > 0 && !quote.isVirtual(),
             isDisplayShippingPriceExclTax: config.isDisplayShippingPriceExclTax,
             isDisplayShippingBothPrices: config.isDisplayShippingBothPrices,
         },
@@ -163,7 +163,7 @@ define([
             estimation.getShippingRates().then(result => {
                 cartData.set('rates', result);
                 this.isLoading(false);
-                this.isShippingBlockVisible(true);
+                this.isShippingBlockVisible(!quote.isVirtual());
                 this.rates(result);
                 this.shippingMethodToQuote();
                 this.fetchTotals();
