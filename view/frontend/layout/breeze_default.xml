@@ -28,6 +28,7 @@
                     <item name="jquery-ui-modules/*" xsi:type="string">jquery-ui-modules/*</item>
                     <item name="loader" xsi:type="string">loader</item>
                     <item name="loaderAjax" xsi:type="string">loaderAjax</item>
+                    <item name="mage/apply/scripts" xsi:type="string">mage/apply/scripts</item>
                     <item name="mage/polyfill" xsi:type="string">mage/polyfill</item>
                     <item name="mage/trim-input" xsi:type="string">mage/trim-input</item>
                     <item name="Magento_Bundle/js/validation" xsi:type="string">Magento_Bundle/js/validation</item>
