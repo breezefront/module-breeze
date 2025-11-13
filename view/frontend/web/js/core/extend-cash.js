@@ -622,6 +622,7 @@
         contained = contained?.parentNode;
         return container === contained || container.contains(contained);
     };
+    $.trim = (text) => text == null ? '' : `${text}`.trim();
     $.proxy = _.bind;
     $.map = _.map;
     $.now = Date.now;

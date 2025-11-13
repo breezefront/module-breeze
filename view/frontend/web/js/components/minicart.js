@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    $.widget('sidebar', {
+    $.widget('mage.sidebar', {
         options: {
             minicart: {
                 maxItemsVisible: 3
