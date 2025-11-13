@@ -617,6 +617,11 @@
 
     $.noConflict = () => {};
     $.find = $;
+    $.data = (el, ...args) => $(el).data(...args);
+    $.contains = (container, contained) => {
+        contained = contained?.parentNode;
+        return container === contained || container.contains(contained);
+    };
     $.proxy = _.bind;
     $.map = _.map;
     $.now = Date.now;
