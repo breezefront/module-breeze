@@ -313,6 +313,7 @@
                                 <item name="export" xsi:type="array">
                                     <item name="mage/loader" xsi:type="string">mage/loader</item>
                                     <item name="loader" xsi:type="string">loader</item>
+                                    <item name="loaderAjax" xsi:type="string">loaderAjax</item>
                                 </item>
                             </item>
                             <item name="Magento_PageBuilder/js/widget-initializer" xsi:type="array">
