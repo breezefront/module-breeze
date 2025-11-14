@@ -232,13 +232,21 @@
                             </item>
                             <item name="menu" xsi:type="string">Swissup_Breeze/js/components/menu</item>
                             <item name="Magento_Checkout/js/view/minicart" xsi:type="string">Swissup_Breeze/js/components/minicart</item>
-                            <item name="Magento_Checkout/js/view/cart-item-renderer" xsi:type="string">Magento_Checkout/js/view/cart-item-renderer</item>
-                            <item name="Magento_Catalog/js/view/image" xsi:type="string">Magento_Catalog/js/view/image</item>
+                            <item name="Magento_Checkout/js/view/cart-item-renderer" xsi:type="array">
+                                <item name="path" xsi:type="string">Magento_Checkout/js/view/cart-item-renderer</item>
+                                <item name="anonymous" xsi:type="boolean">true</item>
+                            </item>
+                            <item name="Magento_Catalog/js/view/image" xsi:type="array">
+                                <item name="path" xsi:type="string">Magento_Catalog/js/view/image</item>
+                                <item name="anonymous" xsi:type="boolean">true</item>
+                            </item>
                             <item name="Magento_Tax/js/view/checkout/minicart/subtotal/totals" xsi:type="array">
                                 <item name="path" xsi:type="string">Magento_Tax/js/view/checkout/minicart/subtotal/totals</item>
+                                <item name="anonymous" xsi:type="boolean">true</item>
                             </item>
                             <item name="Magento_Msrp/js/view/checkout/minicart/subtotal/totals" xsi:type="array">
                                 <item name="path" xsi:type="string">Magento_Msrp/js/view/checkout/minicart/subtotal/totals</item>
+                                <item name="anonymous" xsi:type="boolean">true</item>
                             </item>
                             <item name="Magento_Checkout/js/proceed-to-checkout" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/proceed-to-checkout</item>
