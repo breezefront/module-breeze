@@ -99,7 +99,7 @@
                     <settings>
                         <dataType>text</dataType>
                         <label translate="true">Better Compatibility</label>
-                        <notice translate="true">When enabled, Breeze will fallback to Luma-based components, templates, and mixins.</notice>
+                        <notice translate="true">When enabled, Breeze will fallback to Luma-based components if integration is missing.</notice>
                         <dataScope>breeze_experimental_better_compatibility</dataScope>
                     </settings>
                     <formElements>
