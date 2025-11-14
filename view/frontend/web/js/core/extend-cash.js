@@ -630,6 +630,16 @@
     $.inArray = (elem, arr, i) => arr == null ? -1 : Array.prototype.indexOf.call(arr, elem, i);
     $.parseJSON = JSON.parse;
 
+    $.globalEval = (code, options) => {
+        var script = document.createElement('script');
+
+        for (const [key, value] of Object.entries(options || {})) {
+            script.setAttribute(key, value);
+        }
+
+        document.head.appendChild(script).parentNode.removeChild(script);
+    };
+
     $.each = _.wrap($.each, function (original, object, callback) {
         return original(object || [], callback);
     });
