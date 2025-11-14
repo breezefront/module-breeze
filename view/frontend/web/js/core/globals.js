@@ -24,8 +24,4 @@
             console.log(message);
         }
     };
-
-    if (typeof jQuery === 'undefined' && $.breeze.isCompatMode()) {
-        window.jQuery = $;
-    }
 })();
