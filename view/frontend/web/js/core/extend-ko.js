@@ -174,12 +174,12 @@ define(['ko/template/renderer'], (renderer) => {
         }
     };
 
-    ko.observableArray.fn.each = function (cb) {
-        return this().forEach(cb);
-    };
-    ko.observableArray.fn.some = function (cb) {
-        return this().some(cb);
-    };
+    ['each', 'map', 'filter', 'some', 'every', 'groupBy', 'sortBy'].forEach(method => {
+        ko.observableArray.fn[method] = function (...args) {
+            args.unshift(this());
+            return _[method].apply(_, args);
+        };
+    });
 
     $.breezemap.ko = $.breezemap.knockout = ko;
 });
