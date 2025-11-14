@@ -363,11 +363,11 @@
     $.fn.find = _.wrap($.fn.find, function (original, selector) {
         if (selector instanceof Node) {
             selector = [Node];
-        } else if (selector.get) {
+        } else if (selector?.get) {
             selector = selector.get();
         }
 
-        if (selector.reduce) {
+        if (selector?.reduce) {
             return selector.reduce((acc, el) => {
                 return acc.add(this[0] !== el && this[0].contains(el) ? $(el) : $());
             }, $());
@@ -451,6 +451,24 @@
 
         return result;
     });
+
+    $.fn.removeData = function (keys) {
+        if (!keys) {
+            keys = Object.keys(this.data() || {});
+        } else if (typeof keys === 'string') {
+            keys = keys.split(' ');
+        }
+
+        keys.forEach(key => {
+            this.each(function () {
+                if (this.__breeze) {
+                    delete this.__breeze[key];
+                }
+            });
+        });
+
+        return this;
+    };
 
     function setOffset(elem, options, i) {
         var curPosition, curLeft, curCSSTop, curTop, curOffset, curCSSLeft, calculatePosition,
