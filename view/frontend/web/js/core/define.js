@@ -157,7 +157,11 @@
                 modules[name].ignored = true;
                 modules[name].loaded = true;
                 modules[name].result = false;
-            } else if (!name.startsWith('__') && !name.endsWith(origSuffix) && !$.breezemap.__has(name)) {
+            } else if (!name.startsWith('__') &&
+                !name.startsWith('Swissup_Breeze/bundles/') &&
+                !name.endsWith(origSuffix) &&
+                !$.breezemap.__has(name)
+            ) {
                 Object.keys($.breeze.jsconfig).filter(k => k.includes('*')).some(k => {
                     if (name.startsWith(k.split('*').at(0))) {
                         modules[name].path = name;
