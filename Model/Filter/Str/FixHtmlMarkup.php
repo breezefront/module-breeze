@@ -2,15 +2,18 @@
 
 namespace Swissup\Breeze\Model\Filter\Str;
 
-class Varnish
+class FixHtmlMarkup
 {
+    public function process($html)
+    {
+        $html = $this->fixVarnishIncludes($html);
+        return $html;
+    }
+
     /**
      * Varnish ESI fix: replace <include> tag with <esi:include>
-     *
-     * @param  string $html
-     * @return string
      */
-    public function process($html)
+    private function fixVarnishIncludes($html)
     {
         $replaceMapping = [
             '<include src=' => '<esi:include src=',
