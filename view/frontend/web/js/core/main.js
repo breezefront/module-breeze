@@ -17,6 +17,9 @@
         }
 
         function callback() {
+            if (!$.breezemap[$.breezemap.__aliases[component] || component]) {
+                return $(document).on(`breeze:component:load:${component}`, callback);
+            }
             $(document).trigger('breeze:mount', $.extend({}, data, {
                 __component: component
             }));
