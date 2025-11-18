@@ -36,7 +36,7 @@
                 <item name="lazyload_images" xsi:type="object">Swissup\Breeze\Model\Filter\Dom\LazyLoadImages</item>
             </argument>
             <argument name="strFilters" xsi:type="array">
-                <item name="varnish" xsi:type="object">Swissup\Breeze\Model\Filter\Str\Varnish</item>
+                <item name="fix_html_markup" xsi:type="object">Swissup\Breeze\Model\Filter\Str\FixHtmlMarkup</item>
                 <item name="inject_components" xsi:type="object">Swissup\Breeze\Model\Filter\Str\InjectComponents</item>
                 <item name="inject_preload_links" xsi:type="object">Swissup\Breeze\Model\Filter\Str\InjectPreloadLinks</item>
                 <item name="inject_js_class" xsi:type="object">Swissup\Breeze\Model\Filter\Str\InjectJsClass</item>

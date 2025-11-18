@@ -31,7 +31,12 @@ class LazyLoadImages extends AbstractFilter
             $node->setAttribute('class', 'breeze-bg-lazy ' . (string) $node->getAttribute('class'));
         }
 
-        if ($xpaths = $this->getLazyImagesBlock()->getImageXpaths()) {
+        $lazyImagesBlock = $this->getLazyImagesBlock();
+        if (!$lazyImagesBlock) {
+            return;
+        }
+
+        if ($xpaths = $lazyImagesBlock->getImageXpaths()) {
             $images = $xpath->query(implode(' | ', $xpaths));
             foreach ($images as $node) {
                 $node->setAttribute('loading', 'lazy');
@@ -39,7 +44,7 @@ class LazyLoadImages extends AbstractFilter
             }
         }
 
-        if ($xpaths = $this->getLazyImagesBlock()->getBackgroundXpaths()) {
+        if ($xpaths = $lazyImagesBlock->getBackgroundXpaths()) {
             $backgrounds = $xpath->query(implode(' | ', $xpaths));
             foreach ($backgrounds as $node) {
                 // see Swissup_Breeze/js/common/theme.js
