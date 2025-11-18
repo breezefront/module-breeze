@@ -800,8 +800,14 @@
                             </item>
 
                             <!-- Captcha -->
-                            <item name="Magento_Captcha/js/view/checkout/defaultCaptcha" xsi:type="string">Swissup_Breeze/js/components/captcha-ui</item>
-                            <item name="Magento_Captcha/js/view/checkout/loginCaptcha" xsi:type="string">Swissup_Breeze/js/components/captcha-ui</item>
+                            <item name="Magento_Captcha/js/view/checkout/loginCaptcha" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/captcha-ui</item>
+                                <item name="export" xsi:type="array">
+                                    <item name="captchaModel" xsi:type="string">Magento_Captcha/js/model/captcha</item>
+                                    <item name="captchaList" xsi:type="string">Magento_Captcha/js/model/captchaList</item>
+                                    <item name="defaultCaptcha" xsi:type="string">Magento_Captcha/js/view/checkout/defaultCaptcha</item>
+                                </item>
+                            </item>
                             <item name="captcha" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/captcha</item>
                                 <item name="enabled" xsi:type="helper" helper="Swissup\Breeze\Helper\Config::isEnabled">
