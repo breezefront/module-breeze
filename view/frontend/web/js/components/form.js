@@ -8,34 +8,51 @@
         },
 
         _initialize: function (name, options, element) {
-            this.source = $.registry.get(options.provider);
-
             this._super(name, options, element);
-
             this.selector = 'input, select, textarea, [data-form-part=' + this.namespace + ']';
         },
 
-        save: function () {
-            var provider = $.registry.get(this.options.provider);
+        initObservable: function () {
+            return this._super().observe(['responseData', 'responseStatus']);
+        },
 
-            if (!this.validate()) {
+        save: function (redirect, data) {
+            this.validate();
+
+            if (this.source.get('params.invalid')) {
                 return;
             }
 
-            $(this.element).find(this.selector).each(function () {
-                provider.set(this.name, $(this).val());
+            $(this.el).find(this.selector).each((i, el) => {
+                this.source.set(`data.${el.name}`, $(el).val());
             });
 
-            return provider.save();
+            return this.setAdditionalData(data).submit();
         },
 
-        /**
-         * @return {Boolean}
-         */
-        validate: function () {
-            var validator = this.element.find('form').validator('instance');
+        setAdditionalData: function (data) {
+            $.each(data || {}, (key, value) => {
+                this.source.set(`data.${key}`, value);
+            });
+            return this;
+        },
 
-            return !validator || validator.isValid();
+        submit: function () {
+            return this.source.save({
+                response: {
+                    data: this.responseData,
+                    status: this.responseStatus
+                },
+            });
+        },
+
+        validate: function () {
+            var validator = this.el.find('form').validator('instance'),
+                isValid = !validator || validator.isValid();
+
+            this.source.set('params.invalid', !isValid);
+
+            return isValid;
         }
     });
 })();

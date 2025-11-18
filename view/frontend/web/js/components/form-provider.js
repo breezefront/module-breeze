@@ -1,28 +1,18 @@
 (function () {
     'use strict';
 
-    var FormProvider = $.Base.extend({
-        defaults: {
-            data: {}
-        },
-
-        set: function (key, value) {
-            this.data[key] = value;
-        },
-
-        /**
-         * @param {String} path
-         * @return {Mixed}
-         */
-        get: function (path) {
-            return _.get(this, path.split('.'));
-        },
-
-        save: function () {
+    var FormProvider = $.breezemap.uiElement.extend({
+        save: function (params) {
+            $('body').trigger('processStart');
             return $.request.post({
                 url: this.options.submit_url,
                 type: 'form',
-                data: this.data
+                data: this.get('data'),
+                complete: function (response) {
+                    $('body').trigger('processStop');
+                    params?.response?.data(response.body);
+                    params?.response?.status(response.status);
+                }
             });
         }
     });

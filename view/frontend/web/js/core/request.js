@@ -360,14 +360,16 @@
         });
     }
 
-    $.breezemap['mage/storage'] = {
-        get: (url, global, contentType, headers) =>
-            storageRequest(url, global, contentType, headers, 'get'),
-        post: (url, data, global, contentType, headers) =>
-            storageRequest(url, global, contentType, headers, 'post', data),
-        put: (url, data, global, contentType, headers) =>
-            storageRequest(url, global, contentType, headers, 'put', data),
-        delete: (url, global, contentType, headers) =>
-            storageRequest(url, global, contentType, headers, 'delete'),
-    };
+    setTimeout(() => {
+        $.breezemap['mage/storage'] = {
+            get: (url, global, contentType, headers) =>
+                storageRequest(url, global, contentType, headers, 'get'),
+            post: (url, data, global, contentType, headers) =>
+                storageRequest(url, global, contentType, headers, 'post', data),
+            put: (url, data, global, contentType, headers) =>
+                storageRequest(url, global, contentType, headers, 'put', data),
+            delete: (url, global, contentType, headers) =>
+                storageRequest(url, global, contentType, headers, 'delete'),
+        };
+    });
 })();

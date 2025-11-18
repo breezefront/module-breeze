@@ -18,12 +18,7 @@ define([
         paymentMethod = ko.observable(null),
         shippingAddress = ko.observable(null),
         shippingMethod = ko.observable(null),
-        totals = ko.observable(processTotalsData(window.checkoutConfig || {
-            items: [],
-            extension_attributes: [],
-            total_segments: [],
-            totalsData: {},
-        }));
+        totals = ko.observable(processTotalsData(window.checkoutConfig.totalsData));
 
     if (cartData.get('totals')) {
         totals(cartData.get('totals'));
@@ -61,7 +56,8 @@ define([
         getItems: () => window.checkoutConfig?.quoteItemData,
         getTotals: () => totals,
         setTotals: (data) => totals(processTotalsData(data)),
-        getStoreCode: () => window.checkoutConfig?.storeCode
+        getStoreCode: () => window.checkoutConfig?.storeCode,
+        isPersistent: () => !!Number(window.checkoutConfig?.quoteData?.is_persistent),
     };
 
     (() => {

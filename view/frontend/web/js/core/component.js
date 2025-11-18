@@ -31,11 +31,12 @@
             /** @param {Object|Function|String} settings */
             $.fn[name] = function (settings) {
                 var result = this,
-                    args = arguments;
+                    args = arguments,
+                    key = settings?.__scope || name;
 
                 if ($.isPlainObject(this)) {
                     // object without element: $.fn.dataPost().send()
-                    result = factory.create(name, prototype, settings, window);
+                    result = factory.create(key, prototype, settings, window);
                 } else if (typeof settings === 'string') {
                     // object instance or method: $(el).dropdown('open')
                     args = Array.prototype.slice.call(args, 1);
@@ -46,7 +47,7 @@
 
                     this.each(function () {
                         var tmp,
-                            instance = $.registry.get(name, this);
+                            instance = $.registry.get(key, this);
 
                         if (settings === 'instance') {
                             if (!instance) {
@@ -74,10 +75,10 @@
                     // object initialization: $(el).dropdown({...})
                     this.each(function () {
                         var el = this,
-                            instance = $.registry.get(name, el);
+                            instance = $.registry.get(key, el);
 
                         if (!instance) {
-                            instance = factory.create(name, prototype, settings, el);
+                            instance = factory.create(key, prototype, settings, el);
                         } else {
                             instance._options(settings).init();
                         }
@@ -88,7 +89,9 @@
             };
 
             constructor = function (settings, element) {
-                return $(element || '<div>')[name](settings)[name]('instance');
+                element = $(element || '<div>');
+                element[name](settings);
+                return $.registry.get(settings?.__scope || name, element[0]);
             };
             constructor._proto = prototype;
             constructor.prototype = prototype.prototype;
@@ -99,17 +102,17 @@
             );
             $.breezemap[name] = constructor;
 
+            if (ns) {
+                $[ns] = $[ns] || {};
+                $[ns][name] = constructor;
+            }
+
             if (prototype.prototype.hasOwnProperty('component') &&
                 prototype.prototype.component &&
                 prototype.prototype.component !== name
             ) {
                 $.breezemap[prototype.prototype.component] = constructor;
                 $.breezemap.__aliases[prototype.prototype.component] = name;
-            }
-
-            if (ns) {
-                $[ns] = $[ns] || {};
-                $[ns][name] = constructor;
             }
 
             return constructor;
@@ -246,7 +249,7 @@
         },
 
         _defaults: function (values) {
-            var defaults = this._processDefaults(this.defaults || {}, _.extend({}, this.defaults, this.options));
+            var defaults = this._processDefaults(this.defaults || {});
 
             _.each(defaults, (value, key) => {
                 if ($.isPlainObject(values[key]) && $.isPlainObject(value)) {
@@ -268,7 +271,7 @@
                 this.options = $.extendProps(this.options.config || {}, this.options);
             }
 
-            this.options = this._processDefaults(this.options || {}, _.extend({}, this.defaults, this.options));
+            this.options = this._processDefaults(this.options || {});
 
             return this;
         },
@@ -322,7 +325,7 @@
             this.__bindings = $();
             this.__element = $(element);
             this.uuid = this.__uuid;
-            this.element = $(element);
+            this.el = this.element = $(element);
             this.__element.one(`${this.__name}:beforeCreate`, () => {
                 this.__element.component(name, this);
                 $.registry.set(name, element, this);
@@ -452,263 +455,8 @@
         }
     });
 
-    $.View = $.Widget.extend({
-        beforeRender: _.noop,
-        afterRender: _.noop,
-
-        _initialize: function (name, options, element) {
-            this._elems = [];
-            if (!$(element).is('body')) {
-                this._markup = $(element).html();
-            }
-            this._super(name, options, element);
-            this._fixMissingElementInKoTemplates();
-
-            if (this.provider) {
-                $.breezemap.uiRegistry.get(this.provider, provider => {
-                    this.source = provider;
-                });
-            }
-
-            if (this.deps) {
-                Promise.all(
-                    this.deps.filter(v => v).map(v => $.breezemap.uiRegistry.promise(v))
-                ).then(() => this._applyBindings.bind(this, element)());
-            } else {
-                window.setTimeout(this._applyBindings.bind(this, element), 0);
-            }
-        },
-
-        initialize: function () {
-            return this.initObservable();
-        },
-
-        initObservable: function () {
-            this.elems = ko.observableArray();
-            return this;
-        },
-
-        // Fix for UI form:
-        // 1. foreach: elems as 'element'
-        // 2. element.hasAddons
-        _fixMissingElementInKoTemplates: function () {
-            var html = this.hasTemplate() && document.getElementById(this.getTemplate())?.innerHTML;
-
-            if (!html) {
-                return;
-            }
-
-            if (html.includes('element.') || html.includes('\'element\'')) {
-                delete this.element;
-            }
-        },
-
-        _applyBindings: async function (element) {
-            var koEl = element.firstChild;
-
-            if (element === document.body) {
-                return;
-            }
-
-            await this._resolveChildren();
-            this._initElems();
-
-            while (koEl) {
-                if (koEl.nodeType === 1 || (koEl.nodeType === 8 && koEl.nodeValue.match(/\s*ko\s+/))) {
-                    break;
-                }
-                koEl = koEl.nextSibling;
-            }
-
-            if (!koEl || !ko.dataFor(koEl)) {
-                if (!element.isConnected || this.beforeRender() === false) {
-                    return;
-                }
-
-                ko.applyBindingsToDescendants(this, element);
-                $(element).trigger('contentUpdated');
-                this.afterRender();
-            }
-        },
-
-        _resolveChildren: function () {
-            return Promise.all(Object.values(this.options.children || {})
-                .filter(config => config.component)
-                .map(config => {
-                    return new Promise(resolve => require([config.component], resolve));
-                }));
-        },
-
-        _initElems: function () {
-            var children = this.options.children || {};
-
-            Object.keys(children).sort((a, b) => {
-                return (children[a].sortOrder || 1000000) - (children[b].sortOrder || 1000000);
-            }).forEach(key => {
-                var cmp, config = children[key];
-
-                if (this.hasChild(key)) {
-                    return;
-                }
-
-                config.component = config.component || 'uiComponent';
-                config.index = key;
-                cmp = this.mount(config);
-
-                if (!cmp) {
-                    return;
-                }
-
-                this._elems.push(cmp);
-            });
-
-            this._updateCollection();
-        },
-
-        _updateCollection: function () {
-            this.regions = {};
-
-            this._elems.forEach(el => {
-                var displayArea = el.displayArea || null;
-
-                [...new Set([null, displayArea])].forEach(regionCode => {
-                    if (regionCode && displayArea !== regionCode) {
-                        return;
-                    }
-                    this.getRegion(regionCode).push(el);
-                });
-            });
-
-            this.elems(this._elems);
-        },
-
-        hasChild: function (index) {
-            return !!this.getChild(index);
-        },
-
-        getChild: function (index) {
-            return _.findWhere(this._elems, { index });
-        },
-
-        insertChild: function (elems) {
-            if (!_.isArray(elems)) {
-                elems = [elems];
-            }
-            this._elems.push(...elems);
-            this._updateCollection();
-            return this;
-        },
-
-        regionHasElements: function (name) {
-            return this.getRegion(name)().length > 0;
-        },
-
-        getRegion: function (name) {
-            name = name || null;
-            this.regions = this.regions || {};
-            this.regions[name] = this.regions[name] || ko.observableArray();
-            return this.regions[name];
-        },
-
-        destroy: function () {
-            // Restore initial markup that is used as a template in knockout
-            if (!this.__element.is('body')) {
-                this.__element.html(this._markup);
-            }
-            this._super();
-        },
-
-        _defaults: function (values) {
-            this._super(values);
-
-            _.each(values, (value, key) => {
-                if (value !== undefined && !_.has(this, key)) {
-                    this[key] = $.copyProp(value);
-                }
-            });
-        },
-
-        observe: function (items) {
-            if (typeof items === 'string') {
-                items = items.split(' ');
-            }
-
-            $.each(items, (key, value) => {
-                if (typeof key !== 'string') {
-                    key = value;
-                    value = ko.isObservable(this[value]) ? this[value]() : this[value];
-                }
-
-                if (ko.isObservable(this[key])) {
-                    this[key](value);
-                } else {
-                    this[key] = _.isArray(value) ? ko.observableArray(value) : ko.observable(value);
-                }
-            });
-
-            return this;
-        },
-
-        hasTemplate: function () {
-            return this.template || this.options.template;
-        },
-
-        getTemplate: function () {
-            var template = this.template || this.options.template,
-                templates = [
-                    template.replace(/[/.]/g, '_'),
-                    template.replace(/\//g, '_'),
-                    template + '.html',
-                    template,
-                ],
-                found = _.find(templates, (id) => document.getElementById(id));
-
-            return found || templates[0];
-        },
-
-        mount: function (config) {
-            var element = $('<div>');
-
-            if (this.dataScope) {
-                config.dataScope = [this.dataScope, config.dataScope].join('.');
-            }
-
-            config = _.extend({
-                parentName: this.__scope,
-                parentScope: this.index,
-                dataScope: '',
-            }, config);
-
-            if (config.index) {
-                config = _.extend({
-                    __scope: [this.__scope, config.index].filter(v => v).join('.'),
-                    name: [this.__scope, config.index].filter(v => v).join('.'),
-                }, config);
-            }
-
-            $.breeze.mount(config.component, {
-                el: element,
-                settings: config
-            }, true);
-
-            return element.component(config.component);
-        }
-    });
-
     $.widget = $.createComponentFn($.Widget);
-    $.view = $.createComponentFn($.View);
-    $.uiComponent = {
-        extend: function (proto) {
-            return $.view(proto.component || `__component${$.breezemap.__counter++}`, proto);
-        },
-        register: $.breezemap.__register,
-    };
-    $.breezemap.uiCollection = $.uiComponent;
-    $.breezemap.uiComponent = $.uiComponent;
-    $.breezemap.uiElement = $.uiComponent;
-    $.breezemap.uiClass = $.Base;
 
-    /** Wrap prototype with mixins */
     $.mixin = function (name, mixins, useSuper) {
         var proto = name,
             wrapper = $.breezemap['mage/utils/wrapper'];

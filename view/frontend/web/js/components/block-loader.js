@@ -91,5 +91,68 @@
         }
     });
 
-    $.widget('mage.loader', 'blockLoader', {});
+    $.widget('mage.loader', 'blockLoader', {
+        _create: function () {
+            this._on({
+                'processStop': 'hide',
+                'processStart': 'show',
+                'show.loader': 'show',
+                'hide.loader': 'hide',
+                'contentUpdated.loader': '_contentUpdated'
+            });
+        },
+
+        _contentUpdated: function () {
+            this.show();
+        },
+
+        show: function () {
+            this._super(this.element);
+        },
+
+        hide: function () {
+            this._super(this.element);
+        }
+    });
+
+    $.widget('mage.loaderAjax', 'blockLoader', {
+        options: {
+            defaultContainer: '[data-container=body]',
+            loadingClass: 'ajax-loading'
+        },
+
+        _create: function () {
+            $(document).on({
+                ajaxSend: this._onAjaxSend.bind(this),
+                ajaxComplete: this._onAjaxComplete.bind(this),
+            });
+        },
+
+        _getJqueryObj: function (loaderContext) {
+            if (loaderContext) {
+                return loaderContext.jquery ? loaderContext : $(loaderContext);
+            }
+            return $('[data-container="body"]');
+        },
+
+        _onAjaxSend: function (e, jqxhr, settings) {
+            $(this.options.defaultContainer)
+                .addClass(this.options.loadingClass)
+                .attr('aria-busy', true);
+
+            if (settings && settings.showLoader) {
+                this._getJqueryObj(settings.loaderContext).trigger('processStart');
+            }
+        },
+
+        _onAjaxComplete: function (e, jqxhr, settings) {
+            $(this.options.defaultContainer)
+                .removeClass(this.options.loadingClass)
+                .attr('aria-busy', false);
+
+            if (settings && settings.showLoader) {
+                this._getJqueryObj(settings.loaderContext).trigger('processStop');
+            }
+        }
+    });
 })();

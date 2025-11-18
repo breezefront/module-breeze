@@ -2,6 +2,8 @@
 
 namespace Swissup\Breeze\Block;
 
+use Magento\Store\Model\ScopeInterface;
+
 class Js extends \Magento\Framework\View\Element\AbstractBlock
 {
     const TEMPLATE_DYNAMIC = '<script type="breeze/dynamic-js">%s</script>';
@@ -14,6 +16,11 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         'async' => self::TEMPLATE_ASYNC,
         'module' => self::TEMPLATE_MODULE,
     ];
+
+    /**
+     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     */
+    protected $scopeConfig;
 
     /**
      * @var \Magento\Framework\App\View\Deployment\Version
@@ -36,9 +43,19 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
     protected $storeManager;
 
     /**
+     * @var \Magento\RequireJs\Model\FileManager
+     */
+    protected $requireJsFileManager;
+
+    /**
      * @var \Swissup\Breeze\Model\JsBuildFactory
      */
     protected $jsBuildFactory;
+
+    /**
+     * @var \Swissup\Breeze\Helper\Data
+     */
+    protected $breezeHelper;
 
     /**
      * @var array
@@ -64,28 +81,26 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
     protected $itemInfoMap = [];
 
-    /**
-     * @param \Magento\Backend\Block\Context $context
-     * @param \Magento\Framework\View\Asset\ConfigInterface $assetConfig
-     * @param \Magento\Framework\View\Page\Config $pageConfig
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Swissup\Breeze\Model\JsBuildFactory $jsBuildFactory
-     * @param array $data
-     */
     public function __construct(
         \Magento\Backend\Block\Context $context,
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Framework\App\View\Deployment\Version $deploymentVersion,
         \Magento\Framework\View\Asset\ConfigInterface $assetConfig,
         \Magento\Framework\View\Page\Config $pageConfig,
+        \Magento\RequireJs\Model\FileManager $requireJsFileManager,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Swissup\Breeze\Model\JsBuildFactory $jsBuildFactory,
+        \Swissup\Breeze\Helper\Data $breezeHelper,
         array $data = []
     ) {
+        $this->scopeConfig = $scopeConfig;
         $this->deploymentVersion = $deploymentVersion;
         $this->assetConfig = $assetConfig;
         $this->pageConfig = $pageConfig;
+        $this->requireJsFileManager = $requireJsFileManager;
         $this->storeManager = $storeManager;
         $this->jsBuildFactory = $jsBuildFactory;
+        $this->breezeHelper = $breezeHelper;
 
         $bundles = $data['bundles'] ?? [];
         foreach ($bundles as $key => $bundle) {
@@ -101,10 +116,19 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
     protected function _prepareLayout()
     {
-        if (!$this->getData('assets')) {
-            return $this;
+        if ($this->getData('assets')) {
+            $this->addPageAssets();
         }
 
+        if ($this->breezeHelper->isBetterCompatibilityEnabled()) {
+            $this->addRequireJsConfig();
+        }
+
+        return $this;
+    }
+
+    private function addPageAssets()
+    {
         $properties = [
             'attributes' => 'defer',
         ];
@@ -128,8 +152,13 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                 );
             }
         }
+    }
 
-        return $this;
+    private function addRequireJsConfig()
+    {
+        $assetCollection = $this->pageConfig->getAssetCollection();
+        $requireJsConfig = $this->requireJsFileManager->createRequireJsConfigAsset();
+        $assetCollection->add($requireJsConfig->getFilePath(), $requireJsConfig);
     }
 
     /**
@@ -254,8 +283,23 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
         return [
             'bundles' => $result,
-            'ignore' => array_values($this->ignore),
+            'ignore' => $this->getIgnoredPaths(),
         ];
+    }
+
+    private function getIgnoredPaths()
+    {
+        if ($this->breezeHelper->isBetterCompatibilityEnabled()) {
+            $ignore = (string) $this->scopeConfig->getValue(
+                'design/breeze/better_compatibility_ignore',
+                ScopeInterface::SCOPE_STORE
+            );
+            foreach (explode("\n", $ignore) as $path) {
+                $this->ignore[] = trim($path);
+            }
+        }
+
+        return array_unique(array_filter(array_values($this->ignore)));
     }
 
     public function deployAssets(): array

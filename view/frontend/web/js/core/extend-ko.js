@@ -1,4 +1,4 @@
-(function () {
+define(['ko/template/renderer'], (renderer) => {
     'use strict';
 
     function isVirtualElement(node) {
@@ -39,6 +39,8 @@
         }
     };
 
+    ko.bindingHandlers.optgroup = ko.bindingHandlers.options;
+
     ko.bindingHandlers.blockLoader = {
         /**
          * @param {String} element
@@ -72,19 +74,45 @@
     };
 
     ko.virtualElements.allowedBindings.i18n = true;
+    renderer
+        .addNode('translate', {
+            binding: 'i18n'
+        })
+        .addAttribute('translate', {
+            binding: 'i18n'
+        });
 
-    ko.bindingHandlers.translate = ko.bindingHandlers.i18n;
-    ko.virtualElements.allowedBindings.translate = true;
+    function applyComponents(el, bindingContext, promise, component) {
+        promise.resolve();
+        component = bindingContext.createChildContext(component);
+        ko.utils.arrayForEach(ko.virtualElements.childNodes(el), ko.cleanNode);
+        ko.applyBindingsToDescendants(component, el);
+    }
 
     ko.bindingHandlers.scope = {
         init: function () {
             return {
                 controlsDescendantBindings: true
             };
+        },
+        update: function (el, valueAccessor, allBindings, viewModel, bindingContext) {
+            var component = valueAccessor(),
+                promise = $.Deferred(),
+                apply = applyComponents.bind(this, el, bindingContext, promise);
+
+            if (typeof component === 'string') {
+                $.breezemap.uiRegistry.get(component, apply);
+            } else if (typeof component === 'function') {
+                component(apply);
+            }
         }
     };
-
     ko.virtualElements.allowedBindings.scope = true;
+    renderer
+       .addNode('scope')
+       .addAttribute('scope', {
+           name: 'ko-scope'
+       });
 
     ko.bindingHandlers.bindHtml = {
         init: function () {
@@ -146,5 +174,12 @@
         }
     };
 
+    ['each', 'map', 'filter', 'some', 'every', 'groupBy', 'sortBy'].forEach(method => {
+        ko.observableArray.fn[method] = function (...args) {
+            args.unshift(this());
+            return _[method].apply(_, args);
+        };
+    });
+
     $.breezemap.ko = $.breezemap.knockout = ko;
-})();
+});

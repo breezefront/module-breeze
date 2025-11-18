@@ -1,10 +1,23 @@
 (function () {
     'use strict';
 
-    var _$ = $;
+    var _$ = $,
+        selectorsRe = {
+            inputTypes: /:(button|checkbox|hidden|image|password|radio|submit|text)\b/g,
+            attrWithNumber: /\[([\w-]+)?=(\d+)\]/g,
+            dataType: /:data\(([\w\d-_]+)\)/g,
+        };
 
     window.$ = function (selector, context) {
-        var result = _$(selector, context);
+        var result;
+
+        // Handle ':visible' when its used in the end of the selector
+        if (typeof selector === 'string' && selector.endsWith(':visible')) {
+            result = _$(selector.substr(0, selector.lastIndexOf(':visible')), context);
+            result = result.visible();
+        } else {
+            result = _$(selector, context);
+        }
 
         // HANDLE: $(html, props)
         // See: https://github.com/jquery/jquery/blob/main/src/core/init.js#L76
@@ -292,35 +305,22 @@
             return s;
         }).join(',');
 
-        ['button', 'checkbox', 'hidden', 'image', 'password', 'radio', 'submit', 'text'].forEach(type => {
-            var pseudo = `:${type}`, parts;
+        // normalize :image, :checkox, etc
+        selector = selector.replace(selectorsRe.inputTypes, (match, type, offset, str) => {
+            var before = str.slice(0, offset);
 
-            if (!selector.includes(pseudo)) {
-                return;
-            }
-
-            parts = selector.split(pseudo);
-            selector = parts.map((part, i) => {
-                if (i === parts.length - 1) {
-                    return part;
-                }
-
-                // $(':image') $('div input:image')
-                if (!part || part.endsWith(' ') || part.endsWith('input')) {
-                    return part + `[type="${type}"]`;
-                }
-
-                // $('[name="og:image"]')
-                return part + pseudo;
-            }).join('');
+            // Do not normalize [name="og:image"]
+            return before.lastIndexOf('[') > before.lastIndexOf(']') ? match : `[type="${type}"]`;
         });
 
+        // add quotes around number in [attr=number]
         if (selector.includes('[') && selector.includes('=')) {
-            selector = selector.replaceAll(/\[([\w-]+)?=(\d+)\]/g, '[$1="$2"]');
+            selector = selector.replaceAll(selectorsRe.attrWithNumber, '[$1="$2"]');
         }
 
+        // normalize :data(name)
         if (selector.includes(':data(')) {
-            selector = selector.replaceAll(/:data\(([\w\d-_]+)\)/g, '[data-$1]');
+            selector = selector.replaceAll(selectorsRe.dataType, '[data-$1]');
         }
 
         return selector
@@ -363,11 +363,11 @@
     $.fn.find = _.wrap($.fn.find, function (original, selector) {
         if (selector instanceof Node) {
             selector = [Node];
-        } else if (selector.get) {
+        } else if (selector?.get) {
             selector = selector.get();
         }
 
-        if (selector.reduce) {
+        if (selector?.reduce) {
             return selector.reduce((acc, el) => {
                 return acc.add(this[0] !== el && this[0].contains(el) ? $(el) : $());
             }, $());
@@ -451,6 +451,24 @@
 
         return result;
     });
+
+    $.fn.removeData = function (keys) {
+        if (!keys) {
+            keys = Object.keys(this.data() || {});
+        } else if (typeof keys === 'string') {
+            keys = keys.split(' ');
+        }
+
+        keys.forEach(key => {
+            this.each(function () {
+                if (this.__breeze) {
+                    delete this.__breeze[key];
+                }
+            });
+        });
+
+        return this;
+    };
 
     function setOffset(elem, options, i) {
         var curPosition, curLeft, curCSSTop, curTop, curOffset, curCSSLeft, calculatePosition,
@@ -616,12 +634,29 @@
     };
 
     $.noConflict = () => {};
+    $.find = $;
+    $.data = (el, ...args) => $(el).data(...args);
+    $.contains = (container, contained) => {
+        contained = contained?.parentNode;
+        return container === contained || container.contains(contained);
+    };
+    $.trim = (text) => text == null ? '' : `${text}`.trim();
     $.proxy = _.bind;
     $.map = _.map;
     $.now = Date.now;
     $.isEmptyObject = _.isEmpty;
     $.inArray = (elem, arr, i) => arr == null ? -1 : Array.prototype.indexOf.call(arr, elem, i);
     $.parseJSON = JSON.parse;
+
+    $.globalEval = (code, options) => {
+        var script = document.createElement('script');
+
+        for (const [key, value] of Object.entries(options || {})) {
+            script.setAttribute(key, value);
+        }
+
+        document.head.appendChild(script).parentNode.removeChild(script);
+    };
 
     $.each = _.wrap($.each, function (original, object, callback) {
         return original(object || [], callback);

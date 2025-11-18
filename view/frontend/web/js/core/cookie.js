@@ -96,5 +96,8 @@
 
     $.mage = $.mage || {};
     $.mage.cookies = $.cookies;
-    $.breezemap['mage/cookies'] = $.cookies;
+
+    setTimeout(() => {
+        $.breezemap['mage/cookies'] = $.cookies;
+    });
 })();

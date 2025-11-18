@@ -184,6 +184,20 @@ class Data extends AbstractHelper
         return $this->isResponsiveImagesEnabled;
     }
 
+    public function isBetterCompatibilityEnabled()
+    {
+        $flag = $this->scopeConfig->isSetFlag(
+            'design/breeze/better_compatibility',
+            ScopeInterface::SCOPE_STORE
+        );
+
+        if (!$flag && $this->getConfig('design/breeze/debug')) {
+            $flag = (bool) $this->_getRequest()->getParam('compat');
+        }
+
+        return $flag;
+    }
+
     /**
      * @param string $key
      * @param string $module

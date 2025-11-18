@@ -33,6 +33,13 @@
                     </tooltip>
                     <dataScope>breeze_excluded_urls</dataScope>
                 </settings>
+                <formElements>
+                    <textarea>
+                        <settings>
+                            <rows>3</rows>
+                        </settings>
+                    </textarea>
+                </formElements>
             </field>
             <field name="breeze_excluded_urls_exceptions" formElement="textarea">
                 <settings>
@@ -44,6 +51,13 @@
                     </tooltip>
                     <dataScope>breeze_excluded_urls_exceptions</dataScope>
                 </settings>
+                <formElements>
+                    <textarea>
+                        <settings>
+                            <rows>3</rows>
+                        </settings>
+                    </textarea>
+                </formElements>
             </field>
             <field name="breeze_responsive_images" formElement="select">
                 <settings>
@@ -64,7 +78,7 @@
                 <settings>
                     <dataType>string</dataType>
                     <label translate="true">Debug Mode</label>
-                    <notice translate="true">Allows to force breeze status via query parameter: ?breeze=1 or ?breeze=0</notice>
+                    <notice translate="true"><![CDATA[Allows forcing "Breeze Experience" using ?breeze=1 query string. Or, use ?breeze=1&compat=1 to force "Better compatibility" mode.]]></notice>
                     <dataScope>breeze_debug_mode</dataScope>
                 </settings>
                 <formElements>
@@ -75,6 +89,46 @@
                     </select>
                 </formElements>
             </field>
+            <fieldset name="experimental">
+                <settings>
+                    <level>2</level>
+                    <collapsible>true</collapsible>
+                    <label translate="true">Experimental Settings</label>
+                </settings>
+                <field name="breeze_experimental_better_compatibility" formElement="select">
+                    <settings>
+                        <dataType>text</dataType>
+                        <label translate="true">Better Compatibility</label>
+                        <notice translate="true">When enabled, Breeze will fallback to Luma-based components if integration is missing.</notice>
+                        <dataScope>breeze_experimental_better_compatibility</dataScope>
+                    </settings>
+                    <formElements>
+                        <select>
+                            <settings>
+                                <options class="Magento\Config\Model\Config\Source\YesNo"/>
+                            </settings>
+                        </select>
+                    </formElements>
+                </field>
+                <field name="breeze_experimental_better_compatibility_ignore" formElement="textarea">
+                    <settings>
+                        <dataType>text</dataType>
+                        <label translate="true">Excluded from Better Compatibility</label>
+                        <notice translate="true">One alias or path per line. Use asterisk to ignore whole path: Vendor_Module/*</notice>
+                        <tooltip>
+                            <description><![CDATA[Examples:<br/>Vendor_Module/js/component<br/>Vendor_Module/*<br/>mage/component<br/>mage/*]]></description>
+                        </tooltip>
+                        <dataScope>breeze_experimental_better_compatibility_ignore</dataScope>
+                    </settings>
+                    <formElements>
+                        <textarea>
+                            <settings>
+                                <rows>5</rows>
+                            </settings>
+                        </textarea>
+                    </formElements>
+                </field>
+            </fieldset>
         </fieldset>
     </fieldset>
 </form>

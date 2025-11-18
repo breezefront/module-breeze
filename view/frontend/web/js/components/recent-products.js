@@ -26,7 +26,7 @@
 
         afterRender: function () {
             // Fixed non-clickable links in Safari 18
-            this.element.find('a').hide().show();
+            this.el.find('a').hide().show();
         },
 
         getIds: function () {

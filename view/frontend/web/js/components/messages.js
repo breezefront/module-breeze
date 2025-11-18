@@ -55,12 +55,18 @@ define([
 
     $.view('uiMessages', {
         component: 'Magento_Ui/js/view/messages',
+        isHidden: false,
         defaults: {
             template: 'uiMessages'
         },
 
-        create: function () {
+        initialize: function () {
+            this._super();
             this.messageContainer = this.options.messageContainer || $.breezemap['Magento_Ui/js/model/messageList'];
+        },
+
+        initObservable: function () {
+            return this._super().observe('isHidden');
         },
 
         isVisible: function () {
@@ -77,7 +83,6 @@ define([
         component: 'Magento_Theme/js/view/messages',
         defaults: {
             allowedTags: ['div', 'span', 'b', 'strong', 'i', 'em', 'u', 'a'],
-            template: 'uiComponent',
         },
 
         create: function () {
@@ -109,7 +114,7 @@ define([
         },
 
         destroy: function () {
-            $('.messages', this.element).remove();
+            $('.messages', this.el).remove();
             this._super();
         }
     });
