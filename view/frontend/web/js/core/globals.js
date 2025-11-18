@@ -21,7 +21,7 @@
     $.breeze.isCompatMode = () => !!$('script[src*="/requirejs-config"]').length;
     $.breeze.debug = message => {
         if ($.breeze.isDebugMode()) {
-            console.log(message);
+            console.debug(message);
         }
     };
 })();
