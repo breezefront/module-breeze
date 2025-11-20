@@ -12,7 +12,7 @@
     }
 
     function updateDisplaySubtotal(cart) {
-        $.registry.get('minicart')[0]?.displaySubtotal(!isMsrpApplied(cart.items));
+        $.registry.get('minicart_content')[0]?.displaySubtotal(!isMsrpApplied(cart.items));
     }
 
     updateDisplaySubtotal($.customerData.get('cart')());
