@@ -6,26 +6,23 @@ define(['jquery'], async function ($) {
         required = window.required;
 
     // process inline scripts with resolved dependencies
-    required.map((args, i) => {
-        if (args[0].every?.(arg => $.breezemap[arg]) && typeof args[1] === 'function') {
+    required = required.filter(args => {
+        if (args[0].every?.(arg => $.breezemap.__has(arg)) && typeof args[1] === 'function') {
             try {
                 require(...args);
-                required.splice(i, 1);
+                return false;
             } catch (e) {}
         }
+        return true;
     });
 
     // load async scripts
     for (let chunk of chunks) {
-        await new Promise(resolve => {
-            setTimeout(async () => {
-                await Promise.all(chunk.map($.preloadScript));
-                for (let script of chunk) {
-                    await $.loadScript(script);
-                }
-                resolve();
-            });
-        });
+        await Promise.all(chunk.map($.preloadScript));
+        for (let script of chunk) {
+            await $.loadScript(script);
+        }
+        await $.sleep(0);
     }
 
     // process inline scripts
