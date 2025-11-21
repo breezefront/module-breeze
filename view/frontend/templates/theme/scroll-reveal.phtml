@@ -25,6 +25,7 @@ require(['jquery', 'underscore'], ($, _) => {
             '[data-content-type="html"], [data-content-type="row"], .columns, body',
         ];
 
+    $.breeze.busy($(selector).length ? 1100 : 0);
     $.async(selector, _.debounce(() => {
         $(selector).filter(':not(.reveal-ready)').onReveal(items => {
             var counter = 0, prevContainer;
@@ -47,6 +48,7 @@ require(['jquery', 'underscore'], ($, _) => {
                 .addClass('scroll-reveal reveal-slide-in reveal-ready')
                 .one('animationend', function () {
                     $(this).addClass('scroll-reveal-finished');
+                    $.breeze.done();
                 });
         });
     }, 40));

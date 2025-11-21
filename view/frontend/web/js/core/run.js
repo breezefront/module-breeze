@@ -16,6 +16,9 @@ define(['jquery'], async function ($) {
         return true;
     });
 
+    await new Promise($.rafraf);
+    await $.breeze.idle();
+
     // load async scripts
     for (let chunk of chunks) {
         await Promise.all(chunk.map($.preloadScript));

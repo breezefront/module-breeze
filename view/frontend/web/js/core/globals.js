@@ -24,4 +24,29 @@
             console.debug(message);
         }
     };
+
+    (() => {
+        const state = {
+            busy: false,
+            promise: Promise.resolve(),
+            resolve: null,
+            timer: null,
+        };
+
+        $.breeze.busy = ms => {
+            if (!state.busy) {
+                state.busy = true;
+                state.promise = new Promise(r => { state.resolve = r });
+                state.timer = setTimeout($.breeze.done, ms);
+            }
+        };
+        $.breeze.done = () => {
+            if (state.busy) {
+                state.busy = false;
+                clearTimeout(state.timer);
+                state.resolve?.();
+            }
+        };
+        $.breeze.idle = () => state.promise;
+    })();
 })();
