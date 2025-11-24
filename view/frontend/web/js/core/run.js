@@ -4,7 +4,9 @@ define(['jquery'], async function ($) {
     var scripts = $('script[type="breeze/async-js"]').get().map(script => script.src),
         chunks = _.chunk(scripts, Math.ceil(scripts.length / 3));
 
-    // process inline scripts with resolved dependencies
+    await new Promise($.rafraf);
+
+    // process inline scripts with resolved dependencies (scroll reveal)
     window.required = window.required.filter(args => {
         if (args[0].every?.(arg => $.breezemap.__has(arg)) && typeof args[1] === 'function') {
             try {
@@ -15,7 +17,6 @@ define(['jquery'], async function ($) {
         return true;
     });
 
-    await new Promise($.rafraf);
     await $.breeze.idle();
 
     // load async scripts
