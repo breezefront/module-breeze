@@ -2,11 +2,10 @@ define(['jquery'], async function ($) {
     'use strict';
 
     var scripts = $('script[type="breeze/async-js"]').get().map(script => script.src),
-        chunks = _.chunk(scripts, Math.ceil(scripts.length / 3)),
-        required = window.required;
+        chunks = _.chunk(scripts, Math.ceil(scripts.length / 3));
 
     // process inline scripts with resolved dependencies
-    required = required.filter(args => {
+    window.required = window.required.filter(args => {
         if (args[0].every?.(arg => $.breezemap.__has(arg)) && typeof args[1] === 'function') {
             try {
                 require(...args);
@@ -30,8 +29,8 @@ define(['jquery'], async function ($) {
 
     // process inline scripts
     require.ready = true;
-    required.map(args => setTimeout(() => {
+    window.required.map(args => setTimeout(() => {
         require(...args);
     }));
-    required = [];
+    window.required = [];
 });
