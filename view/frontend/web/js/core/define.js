@@ -300,7 +300,7 @@
         deps = deps.map(dep => resolveRelativePath(name, dep));
 
         // A fix for inline nested `require([], () => { require(...) })` call.
-        if (!window.require.ready && !deps.every?.(arg => $.breezemap[arg])) {
+        if (!window.require.ready && !deps.every?.(arg => $.breezemap.__has(arg))) {
             return window.required.push([deps, cb, extra]);
         }
 
