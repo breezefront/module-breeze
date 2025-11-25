@@ -2,17 +2,7 @@
 @media (prefers-reduced-motion: no-preference) {
     <?= /* @noEscape */ $block->getCssSelector() ?> {
         opacity: .01;
-        visibility: hidden;
-    }
-    <?= /* @noEscape */ $block->getCssSelectorForActiveKeyboard() ?> {
-        visibility: visible;
-    }
-
-    /* Fixed unclickable elements in Safari 18 */
-    @supports (font: -apple-system-body) and (-webkit-appearance: none) {
-        <?= /* @noEscape */ $block->getCssSelector() ?> {
-            visibility: visible;
-        }
+        filter: contrast(0);
     }
 }
 </style>

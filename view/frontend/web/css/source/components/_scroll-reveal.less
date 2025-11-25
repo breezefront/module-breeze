@@ -7,24 +7,17 @@
     @media (prefers-reduced-motion: no-preference) {
         .js #html-body.scroll-reveal-enabled .scroll-reveal {
             opacity: .01;
-            visibility: hidden;
-            will-change: opacity, transform, visibility;
+            filter: contrast(0);
+            will-change: opacity, transform;
 
             &.reveal-slide-in {
                 transform: translateY(2rem);
             }
 
             &.reveal-ready {
-                visibility: visible;
+                filter: none;
                 animation: var(--animation, var(--animation-slide-in));
                 animation-delay: ~"calc(var(--animation-order) * 75ms)";
-            }
-        }
-
-        /* Fixed unclickable elements in Safari 18 */
-        @supports (font: -apple-system-body) and (-webkit-appearance: none) {
-            .js #html-body.scroll-reveal-enabled .scroll-reveal {
-                visibility: visible;
             }
         }
 
@@ -39,7 +32,7 @@
 
     .scroll-reveal-finished {
         opacity: 1 !important;
-        visibility: visible !important;
+        filter: none !important;
         animation: none !important;
         transform: none !important;
         will-change: unset !important;
