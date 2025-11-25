@@ -60,7 +60,7 @@
 
             $('body').css({
                 'box-sizing': 'border-box',
-                'padding-right': padding + scrollbar,
+                'padding-right': $('html').css('scrollbar-gutter') === 'stable' ? '' : padding + scrollbar,
                 'overflow': 'hidden',
                 'position': 'fixed',
                 'width': '100%',
