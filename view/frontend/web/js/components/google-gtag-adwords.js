@@ -2,36 +2,33 @@
 (function () {
     'use strict';
 
-    $.widget('googleGtagAdwords', {
-        component: 'Magento_GoogleGtag/js/google-adwords',
+    $.breezemap['Magento_GoogleGtag/js/google-adwords'] = function (config) {
+        var gtagScript;
 
-        create: function () {
-            var gtagScript;
+        if (!window.gtag) {
+            gtagScript = document.createElement('script');
+            gtagScript.type = 'text/javascript';
+            gtagScript.async = true;
+            gtagScript.src = config.gtagSiteSrc;
+            document.head.appendChild(gtagScript);
 
-            if (!window.gtag) {
-                gtagScript = document.createElement('script');
-                gtagScript.type = 'text/javascript';
-                gtagScript.async = true;
-                gtagScript.src = this.options.gtagSiteSrc;
-                document.head.appendChild(gtagScript);
+            window.dataLayer = window.dataLayer || [];
 
-                window.dataLayer = window.dataLayer || [];
+            // eslint-disable-next-line no-inner-declarations
+            function gtag() { dataLayer.push(arguments); }
 
-                // eslint-disable-next-line no-inner-declarations
-                function gtag() { dataLayer.push(arguments); }
-
-                gtag('js', new Date());
-                gtag('set', 'developer_id.dYjhlMD', true);
-                if (this.options.conversionLabel) {
-                    gtag(
-                        'event',
-                        'conversion',
-                        {'send_to': this.options.conversionId + '/' + this.options.conversionLabel}
-                    );
-                }
-            } else {
-                gtag('config', this.options.conversionId);
+            gtag('js', new Date());
+            gtag('set', 'developer_id.dYjhlMD', true);
+            if (config.conversionLabel) {
+                gtag(
+                    'event',
+                    'conversion',
+                    {'send_to': config.conversionId + '/'
+                            + config.conversionLabel}
+                );
             }
+        } else {
+            gtag('config', config.conversionId);
         }
-    });
+    };
 }());
