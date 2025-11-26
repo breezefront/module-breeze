@@ -43,7 +43,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
     protected $storeManager;
 
     /**
-     * @var \Magento\RequireJs\Model\FileManager
+     * @var \Swissup\Breeze\Model\RequireJs\FileManager
      */
     protected $requireJsFileManager;
 
@@ -67,6 +67,8 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
      */
     protected $ignore = [];
 
+    protected $requireJsIgnore = [];
+
     /**
      * @var array
      */
@@ -87,7 +89,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         \Magento\Framework\App\View\Deployment\Version $deploymentVersion,
         \Magento\Framework\View\Asset\ConfigInterface $assetConfig,
         \Magento\Framework\View\Page\Config $pageConfig,
-        \Magento\RequireJs\Model\FileManager $requireJsFileManager,
+        \Swissup\Breeze\Model\RequireJs\FileManager $requireJsFileManager,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Swissup\Breeze\Model\JsBuildFactory $jsBuildFactory,
         \Swissup\Breeze\Helper\Data $breezeHelper,
@@ -110,6 +112,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         }
         $this->bundles = $bundles;
         $this->ignore = $data['ignore'] ?? [];
+        $this->requireJsIgnore = $data['requirejs_module_ignore'] ?? [];
 
         parent::__construct($context, $data);
     }
@@ -157,7 +160,9 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
     private function addRequireJsConfig()
     {
         $assetCollection = $this->pageConfig->getAssetCollection();
-        $requireJsConfig = $this->requireJsFileManager->createRequireJsConfigAsset();
+        $requireJsConfig = $this->requireJsFileManager->createRequireJsConfigAssetForBreeze(
+            $this->requireJsIgnore
+        );
         $assetCollection->add($requireJsConfig->getFilePath(), $requireJsConfig);
     }
 

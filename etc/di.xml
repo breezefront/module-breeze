@@ -42,6 +42,17 @@
         </arguments>
     </type>
 
+    <type name="Swissup\Breeze\Model\RequireJs\FileManager">
+        <arguments>
+            <argument name="config" xsi:type="object">Swissup\Breeze\Model\RequireJs\Config</argument>
+        </arguments>
+    </type>
+    <virtualType name="Swissup\Breeze\Model\RequireJs\Config" type="Magento\Framework\RequireJs\Config">
+        <arguments>
+            <argument name="fileSource" xsi:type="object">Swissup\Breeze\Model\RequireJs\FileSource</argument>
+        </arguments>
+    </virtualType>
+
     <type name="Magento\Deploy\Config\BundleConfig">
         <plugin name="swissup_breeze" type="Swissup\Breeze\Plugin\BundleConfig" />
     </type>
