@@ -461,8 +461,13 @@
         }
     }), {
         async set(obj, alias, value) {
-            var mixins = rjsConfig.config.mixins?.[alias],
+            var mixins = rjsConfig.config.mixins?.[value.prototype?.lumapath || alias || value.prototype?.component],
                 mixin;
+
+            if (obj[alias]) {
+                obj[alias] = value;
+                return true;
+            }
 
             obj[alias] = value;
 

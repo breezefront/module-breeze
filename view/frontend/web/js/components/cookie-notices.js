@@ -2,6 +2,7 @@
     'use strict';
 
     $.widget('cookieNotices', {
+        lumapath: 'Magento_Cookie/js/notices', // allows using Luma-based mixins
         component: 'cookieNotices',
 
         create: function () {
