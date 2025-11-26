@@ -12,14 +12,23 @@
         var storageEl = data.settings.__el || data.el,
             key = data.settings?.__scope || component;
 
-        if (data.settings?.componentDisabled === true) {
+        if (data.settings?.componentDisabled === true || $.breezemap.__isIgnored(component)) {
             return;
         }
 
-        function callback() {
-            if (!$.breezemap[$.breezemap.__aliases[component] || component]) {
-                return $(document).one(`breeze:component:load:${component}`, callback);
+        function callback(force) {
+            var timer;
+
+            if (!force && !$.breezemap[$.breezemap.__aliases[component] || component]) {
+                // timeout is used for modules that wait for `breeze:mount:cmp` event
+                timer = setTimeout(() => callback(true), 200);
+
+                return $(document).one(`breeze:component:load:${component}`, () => {
+                    clearTimeout(timer);
+                    callback(true);
+                });
             }
+
             $(document).trigger('breeze:mount', $.extend({}, data, {
                 __component: component
             }));
