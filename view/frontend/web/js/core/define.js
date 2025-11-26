@@ -4,6 +4,7 @@
     var modules = {},
         htmls = {},
         aliases = [],
+        ignoredMemo = {},
         lastDefines = [],
         loadingCount = 0,
         rjsConfig = {
@@ -25,8 +26,8 @@
             .match(suffixRe).groups.suffix;
 
     function isIgnored(name) {
-        if (!$.breeze.jsignore) {
-            return false;
+        if (!$.breeze.jsignore || name in ignoredMemo) {
+            return ignoredMemo[name];
         }
 
         if (!jsignorePrefixes.length) {
@@ -35,8 +36,10 @@
                 .map(prefix => prefix.slice(0, -1));
         }
 
-        return $.breeze.jsignore.includes(name) ||
+        ignoredMemo[name] = $.breeze.jsignore.includes(name) ||
             jsignorePrefixes.some(prefix => name.startsWith(prefix));
+
+        return ignoredMemo[name];
     }
 
     function isRunningFromBundle() {
@@ -438,6 +441,7 @@
         __getAll: () => ({ ...$.breezemap }),
         __get: key => $.breezemap[key],
         __has: key => $.breezemap[key] !== undefined,
+        __isIgnored: isIgnored,
         __lastComponent: (offset = 0) => $.breezemap[`__component${$.breezemap.__counter - 1 - offset}`],
         __register: (name, oldName) => {
             if ($.breezemap[name]) {
