@@ -35,7 +35,10 @@ class FileManager
         if ($excludedModules) {
             // Config is a private class, so use closure to set excluded modules
             (function ($modules) {
-                $this->fileSource->setExcludedModules($modules);
+                /** @var Config $this */
+                /** @var FileSource $fileSource */
+                $fileSource = $this->fileSource;
+                $fileSource->setExcludedModules($modules);
             })->bindTo($this->config, Config::class)($excludedModules);
         }
 
