@@ -2,6 +2,7 @@
 
 namespace Swissup\Breeze\Model\RequireJs;
 
+use ReflectionClass;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\State as AppState;
 use Magento\Framework\Filesystem;
@@ -33,13 +34,10 @@ class FileManager
     public function createRequireJsConfigAssetForBreeze(array $excludedModules = [])
     {
         if ($excludedModules) {
-            // Config is a private class, so use closure to set excluded modules
-            (function ($modules) {
-                /** @var Config $this */
-                /** @var FileSource $fileSource */
-                $fileSource = $this->fileSource;
-                $fileSource->setExcludedModules($modules);
-            })->bindTo($this->config, Config::class)($excludedModules);
+            (new ReflectionClass($this->config))
+                ->getProperty('fileSource')
+                ->getValue($this->config)
+                ->setExcludedModules($excludedModules);
         }
 
         $relPath = $this->config->getConfigFileRelativePath();
