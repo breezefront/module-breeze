@@ -172,15 +172,15 @@
                     }
                 });
 
-                if ($.breeze.isCompatMode()) {
-                    // AutoRegister alias declared in rjsConfig
-                    if (!modules[name].path && rjsConfig.map?.['*']?.[name]) {
+                if (!modules[name].path) {
+                    if (rjsConfig.map?.['*']?.[name]) {
+                        // AutoRegister alias declared in rjsConfig
                         $.breeze.debug(`Better compatibility alias: ${name}`);
                         modules[name].path = rjsConfig.map['*'][name];
-                    }
-
-                    // AutoRegister paths: Vendor_Module/js/file, js/hello, main
-                    if (!modules[name].path) {
+                    } else if (!$.breeze.jsinclude ||
+                        $.breeze.jsinclude.some(m => name.startsWith(m))
+                    ) {
+                        // AutoRegister paths: Vendor_Module/js/file, js/hello, main
                         $.breeze.debug(`Better compatibility path: ${name}`);
                         modules[name].path = name;
                     }

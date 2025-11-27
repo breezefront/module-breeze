@@ -119,7 +119,6 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         $this->requireJsInclude = [];
         foreach ($data['better_compatibility'] ?? [] as $module => $status) {
             if (!$status) {
-                $this->ignore[] = $module . '/*';
                 $this->requireJsExclude[] = $module;
             } else {
                 $this->requireJsInclude[] = $module;
@@ -176,6 +175,9 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
             );
         } else {
             // load exlicitly included configs only
+            if (!$this->requireJsInclude) {
+                return;
+            }
             $requireJsConfig = $this->requireJsFileManager->createRequireJsConfigIncluding(
                 $this->requireJsInclude
             );
@@ -306,10 +308,16 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
             }
         }
 
-        return [
+        $result = [
             'bundles' => $result,
             'ignore' => $this->getIgnoredPaths(),
         ];
+
+        if (!$this->breezeHelper->isBetterCompatibilityEnabled() && $this->requireJsInclude) {
+            $result['include'] = $this->requireJsInclude;
+        }
+
+        return $result;
     }
 
     private function getIgnoredPaths()
