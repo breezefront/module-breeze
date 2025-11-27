@@ -31,7 +31,7 @@ class FileManager
         $this->assetRepo = $assetRepo;
     }
 
-    public function createRequireJsConfigAssetForBreeze(array $excludedModules = [])
+    public function createRequireJsConfigExcluding(array $excludedModules = [])
     {
         if ($excludedModules) {
             (new ReflectionClass($this->config))
@@ -39,6 +39,19 @@ class FileManager
                 ->getValue($this->config)
                 ->setExcludedModules($excludedModules);
         }
+
+        $relPath = $this->config->getConfigFileRelativePath();
+        $relPath = str_replace('requirejs-config', 'requirejs-config-breeze', $relPath);
+        $this->ensureSourceFile($relPath);
+        return $this->assetRepo->createArbitrary($relPath, '');
+    }
+
+    public function createRequireJsConfigIncluding(array $includedModules = [])
+    {
+        (new ReflectionClass($this->config))
+            ->getProperty('fileSource')
+            ->getValue($this->config)
+            ->setIncludedModules($includedModules);
 
         $relPath = $this->config->getConfigFileRelativePath();
         $relPath = str_replace('requirejs-config', 'requirejs-config-breeze', $relPath);

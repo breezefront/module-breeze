@@ -112,7 +112,17 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         }
         $this->bundles = $bundles;
         $this->ignore = $data['ignore'] ?? [];
-        $this->requireJsIgnore = $data['requirejs_config_ignore'] ?? [];
+
+        $this->requireJsExclude = [];
+        $this->requireJsInclude = [];
+        foreach ($data['better_compatibility'] ?? [] as $module => $status) {
+            if (!$status) {
+                $this->ignore[] = $module . '/*';
+                $this->requireJsExclude[] = $module;
+            } else {
+                $this->requireJsInclude[] = $module;
+            }
+        }
 
         parent::__construct($context, $data);
     }
@@ -123,9 +133,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
             $this->addPageAssets();
         }
 
-        if ($this->breezeHelper->isBetterCompatibilityEnabled()) {
-            $this->addRequireJsConfig();
-        }
+        $this->addRequireJsConfig();
 
         return $this;
     }
@@ -159,11 +167,21 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
     private function addRequireJsConfig()
     {
-        $assetCollection = $this->pageConfig->getAssetCollection();
-        $requireJsConfig = $this->requireJsFileManager->createRequireJsConfigAssetForBreeze(
-            $this->requireJsIgnore
-        );
-        $assetCollection->add($requireJsConfig->getFilePath(), $requireJsConfig);
+        if ($this->breezeHelper->isBetterCompatibilityEnabled()) {
+            // load all configs except exlicitly excluded
+            $requireJsConfig = $this->requireJsFileManager->createRequireJsConfigExcluding(
+                $this->requireJsExclude
+            );
+        } else {
+            // load exlicitly included configs only
+            $requireJsConfig = $this->requireJsFileManager->createRequireJsConfigIncluding(
+                $this->requireJsInclude
+            );
+        }
+
+        $this->pageConfig
+            ->getAssetCollection()
+            ->add($requireJsConfig->getFilePath(), $requireJsConfig);
     }
 
     /**

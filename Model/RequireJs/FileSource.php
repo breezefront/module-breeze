@@ -8,9 +8,19 @@ class FileSource extends \Magento\Framework\RequireJs\Config\File\Collector\Aggr
 {
     private array $excludedModules = [];
 
+    private array $includedModules = [];
+
+    private bool $onlyIncludedModules = false;
+
     public function setExcludedModules(array $modules): void
     {
         $this->excludedModules = $modules;
+    }
+
+    public function setIncludedModules(array $modules): void
+    {
+        $this->onlyIncludedModules = true;
+        $this->includedModules = $modules;
     }
 
     public function getFiles(ThemeInterface $theme, $filePath)
@@ -25,7 +35,9 @@ class FileSource extends \Magento\Framework\RequireJs\Config\File\Collector\Aggr
                 continue;
             }
 
-            if (in_array($module, $this->excludedModules)) {
+            if (in_array($module, $this->excludedModules) ||
+                $this->onlyIncludedModules && !in_array($module, $this->includedModules)
+            ) {
                 unset($files[$key]);
                 continue;
             }
