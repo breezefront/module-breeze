@@ -475,7 +475,7 @@
 
             obj[alias] = value;
 
-            if (mixins && $.breeze.isCompatMode()) {
+            if (mixins) {
                 if (modules[alias]) {
                     modules[alias].mixinsPromise = $.Deferred();
                 }
