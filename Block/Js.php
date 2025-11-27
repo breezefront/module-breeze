@@ -112,7 +112,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         }
         $this->bundles = $bundles;
         $this->ignore = $data['ignore'] ?? [];
-        $this->requireJsIgnore = $data['requirejs_module_ignore'] ?? [];
+        $this->requireJsIgnore = $data['requirejs_config_ignore'] ?? [];
 
         parent::__construct($context, $data);
     }
