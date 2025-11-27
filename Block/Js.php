@@ -311,9 +311,12 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         $result = [
             'bundles' => $result,
             'ignore' => $this->getIgnoredPaths(),
+            'exclude' => [],
         ];
 
-        if (!$this->breezeHelper->isBetterCompatibilityEnabled() && $this->requireJsInclude) {
+        if ($this->breezeHelper->isBetterCompatibilityEnabled()) {
+            $result['exclude'] = $this->requireJsExclude;
+        } elseif ($this->requireJsInclude) {
             $result['include'] = $this->requireJsInclude;
         }
 

@@ -6,6 +6,7 @@
     $.breeze.jsbundles = config.bundles;
     $.breeze.jsignore = config.ignore;
     $.breeze.jsinclude = config.include;
+    $.breeze.jsexclude = config.exclude;
 
     try {
         $.each($.breeze.jsbundles, (bundle, items) => {
