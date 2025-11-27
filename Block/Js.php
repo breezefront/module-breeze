@@ -67,7 +67,9 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
      */
     protected $ignore = [];
 
-    protected $requireJsIgnore = [];
+    protected $requireJsExclude = [];
+
+    protected $requireJsInclude = [];
 
     /**
      * @var array
