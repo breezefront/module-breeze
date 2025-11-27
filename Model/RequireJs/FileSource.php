@@ -31,19 +31,20 @@ class FileSource extends \Magento\Framework\RequireJs\Config\File\Collector\Aggr
         ];
 
         foreach ($files as $key => $file) {
-            if (!$module = $file->getModule()) {
+            $code = $file->getModule() ?: $file->getTheme()->getCode();
+            if (!$code) {
                 continue;
             }
 
-            if (in_array($module, $this->excludedModules) ||
-                $this->onlyIncludedModules && !in_array($module, $this->includedModules)
+            if (in_array($code, $this->excludedModules) ||
+                $this->onlyIncludedModules && !in_array($code, $this->includedModules)
             ) {
                 unset($files[$key]);
                 continue;
             }
 
             foreach ($ignoredVendors as $vendor) {
-                if (strpos($module, $vendor . '_') === 0) {
+                if (strpos($code, $vendor . '_') === 0) {
                     unset($files[$key]);
                     continue 2;
                 }
