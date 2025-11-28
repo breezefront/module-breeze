@@ -2,7 +2,6 @@
 
 namespace Swissup\Breeze\Helper;
 
-use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Store\Model\ScopeInterface;
 
