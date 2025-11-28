@@ -7,26 +7,10 @@ use Magento\Framework\Controller\ResultInterface;
 
 class ViewResultPage
 {
-    /**
-     * @var \Swissup\Breeze\Helper\Data
-     */
-    protected $helper;
-
-    /**
-     * @var \Swissup\Breeze\Model\Filter
-     */
-    protected $filter;
-
-    /**
-     * @param \Swissup\Breeze\Helper\Data $helper
-     * @param \Swissup\Breeze\Model\Filter $filter
-     */
     public function __construct(
-        \Swissup\Breeze\Helper\Data $helper,
-        \Swissup\Breeze\Model\Filter $filter
+        protected \Swissup\Breeze\Helper\Data $helper,
+        protected \Swissup\Breeze\Model\Filter $filter
     ) {
-        $this->helper = $helper;
-        $this->filter = $filter;
     }
 
     /**

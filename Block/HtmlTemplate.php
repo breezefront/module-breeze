@@ -6,21 +6,12 @@ use Magento\Framework\View\Element\Template;
 
 class HtmlTemplate extends KoTemplate
 {
-    private \Magento\Framework\Filesystem\Driver\File $file;
-
-    /**
-     * @param Template\Context $context
-     * @param \Magento\Framework\Filesystem\Driver\File $file
-     * @param array $data
-     */
     public function __construct(
         Template\Context $context,
-        \Magento\Framework\Filesystem\Driver\File $file,
+        private \Magento\Framework\Filesystem\Driver\File $file,
         array $data = []
     ) {
         parent::__construct($context, $data);
-
-        $this->file = $file;
     }
 
     /**

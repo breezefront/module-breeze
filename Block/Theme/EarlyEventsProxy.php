@@ -9,15 +9,11 @@ class EarlyEventsProxy extends Template
 {
     protected $_template = 'Swissup_Breeze::theme/early-events-proxy.phtml';
 
-    private Json $json;
-
     public function __construct(
         Template\Context $context,
-        Json $json,
+        private Json $json,
         array $data = []
     ) {
-        $this->json = $json;
-
         parent::__construct($context, $data);
     }
 

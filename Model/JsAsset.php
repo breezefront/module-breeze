@@ -6,14 +6,10 @@ use Magento\Framework\View\Asset\File;
 
 class JsAsset
 {
-    private File $asset;
-
-    private array $bundleInfo;
-
-    public function __construct(File $asset, array $bundleInfo)
-    {
-        $this->asset = $asset;
-        $this->bundleInfo = $bundleInfo;
+    public function __construct(
+        private File $asset,
+        private array $bundleInfo
+    ) {
     }
 
     public function getAsset()

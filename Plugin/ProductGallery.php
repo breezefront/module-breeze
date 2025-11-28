@@ -4,20 +4,10 @@ namespace Swissup\Breeze\Plugin;
 
 class ProductGallery
 {
-    private \Swissup\Breeze\Helper\Data $helper;
-
-    private \Swissup\Breeze\Helper\Image $imageHelper;
-
-    /**
-     * @param \Swissup\Breeze\Helper\Data $helper
-     * @param \Swissup\Breeze\Helper\Image $imageHelper
-     */
     public function __construct(
-        \Swissup\Breeze\Helper\Data $helper,
-        \Swissup\Breeze\Helper\Image $imageHelper
+        private \Swissup\Breeze\Helper\Data $helper,
+        private \Swissup\Breeze\Helper\Image $imageHelper
     ) {
-        $this->helper = $helper;
-        $this->imageHelper = $imageHelper;
     }
 
     /**

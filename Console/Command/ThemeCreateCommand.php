@@ -15,9 +15,6 @@ use Symfony\Component\Console\Question\QuestionFactory;
 
 class ThemeCreateCommand extends AbstractCreateCommand
 {
-    /** @var BreezeThemesProvider */
-    protected $breezeThemesProvider;
-
     public function __construct(
         Stubs $stubs,
         Filesystem $filesystem,
@@ -25,7 +22,7 @@ class ThemeCreateCommand extends AbstractCreateCommand
         QuestionFactory $questionFactory,
         ChoiceQuestionFactory $choiceQuestionFactory,
         QuestionHelper $questionHelper,
-        BreezeThemesProvider $breezeThemesProvider
+        protected BreezeThemesProvider $breezeThemesProvider
     ) {
         parent::__construct(
             $stubs,
@@ -35,8 +32,6 @@ class ThemeCreateCommand extends AbstractCreateCommand
             $choiceQuestionFactory,
             $questionHelper
         );
-
-        $this->breezeThemesProvider = $breezeThemesProvider;
     }
 
     protected function configure()

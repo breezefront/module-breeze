@@ -2,7 +2,6 @@
 
 namespace Swissup\Breeze\Model;
 
-use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\View\Design\Fallback\Rule;
 use Magento\Framework\View\Design\Fallback\Rule\Composite;
 use Magento\Framework\View\Design\Fallback\Rule\RuleInterface;
@@ -11,62 +10,14 @@ class HtmlTemplateFileResolutionRulePool extends \Magento\Framework\View\Design\
 {
     const TYPE_HTML_TEMPLATE_FILE = 'html_template';
 
-    /**
-     * Rules
-     *
-     * @var array
-     */
-    private $rules = [];
+    private array $rules = [];
 
-    /**
-     * Factory for simple rule
-     *
-     * @var \Magento\Framework\View\Design\Fallback\Rule\SimpleFactory
-     */
-    private $simpleFactory;
-
-    /**
-     * Factory for theme rule
-     *
-     * @var Rule\ThemeFactory
-     */
-    private $themeFactory;
-
-    /**
-     * Factory for modular switcher
-     *
-     * @var Rule\ModularSwitchFactory
-     */
-    private $modularSwitchFactory;
-
-    /**
-     * Factory for module rule
-     *
-     * @var Rule\ModuleFactory
-     */
-    private $moduleFactory;
-
-    /**
-     * Constructor
-     *
-     * @param \Magento\Framework\Filesystem $filesystem
-     * @param Rule\SimpleFactory $simpleFactory
-     * @param Rule\ThemeFactory $themeFactory
-     * @param Rule\ModuleFactory $moduleFactory
-     * @param Rule\ModularSwitchFactory $modularSwitchFactory
-     */
     public function __construct(
-        \Magento\Framework\Filesystem $filesystem,
-        Rule\SimpleFactory $simpleFactory,
-        Rule\ThemeFactory $themeFactory,
-        Rule\ModuleFactory $moduleFactory,
-        Rule\ModularSwitchFactory $modularSwitchFactory
+        private Rule\SimpleFactory $simpleFactory,
+        private Rule\ThemeFactory $themeFactory,
+        private Rule\ModuleFactory $moduleFactory,
+        private Rule\ModularSwitchFactory $modularSwitchFactory
     ) {
-        $this->filesystem = $filesystem;
-        $this->simpleFactory = $simpleFactory;
-        $this->themeFactory = $themeFactory;
-        $this->moduleFactory = $moduleFactory;
-        $this->modularSwitchFactory = $modularSwitchFactory;
     }
 
     /**

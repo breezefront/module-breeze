@@ -6,11 +6,9 @@ use Magento\Config\Console\Command\ConfigSet\ConfigSetProcessorFactory;
 use Magento\Config\Model\ResourceModel\Config\Data\CollectionFactory;
 use Magento\Framework\App\Config\ScopeCodeResolver;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\Config\Scope\Converter;
 use Magento\Framework\App\DeploymentConfig;
 use Magento\Framework\App\Utility\Files;
 use Magento\Framework\Console\Cli;
-use Magento\Framework\DB\Adapter\TableNotFoundException;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Simplexml\Config;
 use Symfony\Component\Console\Command\Command;
@@ -19,36 +17,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ConfigDumpCommand extends Command
 {
-    private CollectionFactory $collectionFactory;
-
-    private ScopeCodeResolver $scopeCodeResolver;
-
-    private Converter $converter;
-
-    private DeploymentConfig $deploymentConfig;
-
-    private Files $files;
-
-    private ConfigSetProcessorFactory $configSetProcessorFactory;
-
-    private ManagerInterface $eventManager;
-
     public function __construct(
-        CollectionFactory $collectionFactory,
-        ScopeCodeResolver $scopeCodeResolver,
-        Converter $converter,
-        DeploymentConfig $deploymentConfig,
-        Files $files,
-        ConfigSetProcessorFactory $configSetProcessorFactory,
-        ManagerInterface $eventManager
+        private CollectionFactory $collectionFactory,
+        private ScopeCodeResolver $scopeCodeResolver,
+        private DeploymentConfig $deploymentConfig,
+        private Files $files,
+        private ConfigSetProcessorFactory $configSetProcessorFactory,
+        private ManagerInterface $eventManager
     ) {
-        $this->collectionFactory = $collectionFactory;
-        $this->scopeCodeResolver = $scopeCodeResolver;
-        $this->converter = $converter;
-        $this->deploymentConfig = $deploymentConfig;
-        $this->files = $files;
-        $this->configSetProcessorFactory = $configSetProcessorFactory;
-        $this->eventManager = $eventManager;
         parent::__construct();
     }
 

@@ -4,22 +4,15 @@ namespace Swissup\Breeze\Helper;
 
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\Helper\AbstractHelper;
+use Swissup\Breeze\Helper\Config as ConfigHelper;
 
 class GoogleAnalytics extends AbstractHelper
 {
-    private \Swissup\Breeze\Helper\Config $configHelper;
-
-    /**
-     * @param Context $context
-     * @param Config $configHelper
-     */
     public function __construct(
         Context $context,
-        Config $configHelper
+        private ConfigHelper $configHelper
     ) {
         parent::__construct($context);
-
-        $this->configHelper = $configHelper;
     }
 
     private function isEnabled()

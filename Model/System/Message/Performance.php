@@ -6,29 +6,10 @@ use Magento\Framework\Notification\MessageInterface;
 
 class Performance implements MessageInterface
 {
-    /**
-     * @var \Magento\Backend\Model\UrlInterface
-     */
-    private $urlBuilder;
-
-    /**
-     * @var \Magento\Framework\FlagManager
-     */
-    private $flagManager;
-
-    /**
-     * @var \Magento\Framework\App\Config\ScopeConfigInterface
-     */
-    private $scopeConfig;
-
     public function __construct(
-        \Magento\Backend\Model\UrlInterface $urlBuilder,
-        \Magento\Framework\FlagManager $flagManager,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+        private \Magento\Framework\FlagManager $flagManager,
+        private \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
     ) {
-        $this->urlBuilder = $urlBuilder;
-        $this->flagManager = $flagManager;
-        $this->scopeConfig = $scopeConfig;
     }
 
     /**

@@ -4,30 +4,11 @@ namespace Swissup\Breeze\Plugin;
 
 class ConfigurableProductRenderer
 {
-    private \Swissup\Breeze\Helper\Data $helper;
-
-    private \Swissup\Breeze\Helper\Image $imageHelper;
-
-    private \Magento\Framework\Serialize\Serializer\Json $json;
-
-    private \Magento\ConfigurableProduct\Helper\Data $configurableHelper;
-
-    /**
-     * @param \Swissup\Breeze\Helper\Data $helper
-     * @param \Swissup\Breeze\Helper\Image $imageHelper
-     * @param \Magento\Framework\Serialize\Serializer\Json $json
-     * @param \Magento\ConfigurableProduct\Helper\Data $configurableHelper
-     */
     public function __construct(
-        \Swissup\Breeze\Helper\Data $helper,
-        \Swissup\Breeze\Helper\Image $imageHelper,
-        \Magento\Framework\Serialize\Serializer\Json $json,
-        \Magento\ConfigurableProduct\Helper\Data $configurableHelper
+        private \Swissup\Breeze\Helper\Data $helper,
+        private \Swissup\Breeze\Helper\Image $imageHelper,
+        private \Magento\Framework\Serialize\Serializer\Json $json
     ) {
-        $this->helper = $helper;
-        $this->imageHelper = $imageHelper;
-        $this->json = $json;
-        $this->configurableHelper = $configurableHelper;
     }
 
     public function afterGetJsonConfig(

@@ -16,20 +16,11 @@ class AsyncCssPlugin
 {
     private const XML_PATH_USE_CSS_CRITICAL_PATH = 'dev/css/use_css_critical_path';
 
-    private ModuleManager $moduleManager;
-
-    private ScopeConfigInterface $scopeConfig;
-
-    private ObjectManagerInterface $objectManager;
-
     public function __construct(
-        ModuleManager $moduleManager,
-        ScopeConfigInterface $scopeConfig,
-        ObjectManagerInterface $objectManager
+        private ModuleManager $moduleManager,
+        private ScopeConfigInterface $scopeConfig,
+        private ObjectManagerInterface $objectManager
     ) {
-        $this->moduleManager = $moduleManager;
-        $this->scopeConfig = $scopeConfig;
-        $this->objectManager = $objectManager;
     }
 
     public function afterRenderResult(Layout $subject, Layout $result, ResponseInterface $httpResponse)

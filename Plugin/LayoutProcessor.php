@@ -7,11 +7,9 @@ use Magento\Framework\View\Layout\ProcessorInterface;
 
 class LayoutProcessor
 {
-    private DeploymentConfig $deploymentConfig;
-
-    public function __construct(DeploymentConfig $deploymentConfig)
-    {
-        $this->deploymentConfig = $deploymentConfig;
+    public function __construct(
+        private DeploymentConfig $deploymentConfig
+    ) {
     }
 
     public function aroundGetDbUpdateString(ProcessorInterface $subject, callable $proceed, $handle)

@@ -5,7 +5,6 @@ namespace Swissup\Breeze\Helper;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product\Image\ParamsBuilder;
 use Magento\Catalog\Model\View\Asset\ImageFactory;
-use Magento\Catalog\Model\View\Asset\PlaceholderFactory;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\View\Layout;
@@ -20,35 +19,15 @@ class Image extends AbstractHelper
 
     private $srcsetParamsMemo;
 
-    private $helper;
-
-    private $imageParamsBuilder;
-
-    private $viewAssetImageFactory;
-
-    private $viewAssetPlaceholderFactory;
-
-    private $layout;
-
-    private $pageConfig;
-
     public function __construct(
         Context $context,
-        Data $helper,
-        ParamsBuilder $imageParamsBuilder,
-        ImageFactory $viewAssetImageFactory,
-        PlaceholderFactory $viewAssetPlaceholderFactory,
-        Layout $layout,
-        Config $pageConfig
+        private Data $helper,
+        private ParamsBuilder $imageParamsBuilder,
+        private ImageFactory $viewAssetImageFactory,
+        private Layout $layout,
+        private Config $pageConfig
     ) {
         parent::__construct($context);
-
-        $this->helper = $helper;
-        $this->imageParamsBuilder = $imageParamsBuilder;
-        $this->viewAssetImageFactory = $viewAssetImageFactory;
-        $this->viewAssetPlaceholderFactory = $viewAssetPlaceholderFactory;
-        $this->layout = $layout;
-        $this->pageConfig = $pageConfig;
     }
 
     /**

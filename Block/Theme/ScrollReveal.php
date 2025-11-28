@@ -9,15 +9,11 @@ class ScrollReveal extends Template
 {
     protected $_template = 'Swissup_Breeze::theme/scroll-reveal.phtml';
 
-    private Json $json;
-
     public function __construct(
         Template\Context $context,
-        Json $json,
+        private Json $json,
         array $data = []
     ) {
-        $this->json = $json;
-
         parent::__construct($context, $data);
     }
 

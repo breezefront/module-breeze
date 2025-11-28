@@ -11,101 +11,40 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
     const TEMPLATE_ASYNC = '<script type="breeze/async-js" src="%s"></script>';
     const TEMPLATE = '<script defer src="%s"></script>';
 
-    protected $templateTypes = [
+    protected array $templateTypes = [
         'defer' => self::TEMPLATE,
         'async' => self::TEMPLATE_ASYNC,
         'module' => self::TEMPLATE_MODULE,
     ];
 
-    /**
-     * @var \Magento\Framework\App\Config\ScopeConfigInterface
-     */
-    protected $scopeConfig;
+    protected array $bundles = [];
 
-    /**
-     * @var \Magento\Framework\App\View\Deployment\Version
-     */
-    protected $deploymentVersion;
+    protected array $ignore = [];
 
-    /**
-     * @var \Magento\Framework\View\Asset\ConfigInterface
-     */
-    protected $assetConfig;
+    protected array $requireJsExclude = [];
 
-    /**
-     * @var \Magento\Framework\View\Page\Config
-     */
-    protected $pageConfig;
+    protected array $requireJsInclude = [];
 
-    /**
-     * @var \Magento\Store\Model\StoreManagerInterface
-     */
-    protected $storeManager;
+    protected ?array $activeBundles = null;
 
-    /**
-     * @var \Swissup\Breeze\Model\RequireJs\FileManager
-     */
-    protected $requireJsFileManager;
+    protected ?array $allBundles = null;
 
-    /**
-     * @var \Swissup\Breeze\Model\JsBuildFactory
-     */
-    protected $jsBuildFactory;
+    protected bool $redeploy = false;
 
-    /**
-     * @var \Swissup\Breeze\Helper\Data
-     */
-    protected $breezeHelper;
-
-    /**
-     * @var array
-     */
-    protected $bundles = [];
-
-    /**
-     * @var array
-     */
-    protected $ignore = [];
-
-    protected $requireJsExclude = [];
-
-    protected $requireJsInclude = [];
-
-    /**
-     * @var array
-     */
-    protected $activeBundles = null;
-
-    /**
-     * @var array
-     */
-    protected $allBundles = null;
-
-    protected $redeploy = false;
-
-    protected $itemInfoMap = [];
+    protected array $itemInfoMap = [];
 
     public function __construct(
         \Magento\Backend\Block\Context $context,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Framework\App\View\Deployment\Version $deploymentVersion,
-        \Magento\Framework\View\Asset\ConfigInterface $assetConfig,
-        \Magento\Framework\View\Page\Config $pageConfig,
-        \Swissup\Breeze\Model\RequireJs\FileManager $requireJsFileManager,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Swissup\Breeze\Model\JsBuildFactory $jsBuildFactory,
-        \Swissup\Breeze\Helper\Data $breezeHelper,
+        protected \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        protected \Magento\Framework\App\View\Deployment\Version $deploymentVersion,
+        protected \Magento\Framework\View\Asset\ConfigInterface $assetConfig,
+        protected \Magento\Framework\View\Page\Config $pageConfig,
+        protected \Swissup\Breeze\Model\RequireJs\FileManager $requireJsFileManager,
+        protected \Magento\Store\Model\StoreManagerInterface $storeManager,
+        protected \Swissup\Breeze\Model\JsBuildFactory $jsBuildFactory,
+        protected \Swissup\Breeze\Helper\Data $breezeHelper,
         array $data = []
     ) {
-        $this->scopeConfig = $scopeConfig;
-        $this->deploymentVersion = $deploymentVersion;
-        $this->assetConfig = $assetConfig;
-        $this->pageConfig = $pageConfig;
-        $this->requireJsFileManager = $requireJsFileManager;
-        $this->storeManager = $storeManager;
-        $this->jsBuildFactory = $jsBuildFactory;
-        $this->breezeHelper = $breezeHelper;
-
         $bundles = $data['bundles'] ?? [];
         foreach ($bundles as $key => $bundle) {
             if (empty($bundle['items'])) {

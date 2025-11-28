@@ -9,40 +9,15 @@ class JsTranslations extends \Magento\Framework\View\Element\AbstractBlock
 {
     const TEMPLATE = '<script>var translations = %s</script>';
 
-    private \Magento\Translation\Model\FileManager $fileManager;
-
-    private \Magento\Framework\Filesystem\Driver\File $file;
-
-    private \Magento\Framework\HTTP\Adapter\CurlFactory $curlFactory;
-
-    private \Magento\Framework\App\Filesystem\DirectoryList $directoryList;
-
-    private \Magento\Translation\Model\Js\Config $config;
-
-    /**
-     * @param \Magento\Framework\View\Element\Context $context
-     * @param \Magento\Translation\Model\FileManager $fileManager
-     * @param \Magento\Framework\Filesystem\Driver\File $file
-     * @param \Magento\Framework\HTTP\Adapter\CurlFactory $curlFactory
-     * @param DirectoryList $directoryList
-     * @param Config $config
-     * @param array $data
-     */
     public function __construct(
-        \Magento\Framework\View\Element\Context $context,
-        \Magento\Translation\Model\FileManager $fileManager,
-        \Magento\Framework\Filesystem\Driver\File $file,
-        \Magento\Framework\HTTP\Adapter\CurlFactory $curlFactory,
-        DirectoryList $directoryList,
-        Config $config,
+        private \Magento\Framework\View\Element\Context $context,
+        private \Magento\Translation\Model\FileManager $fileManager,
+        private \Magento\Framework\Filesystem\Driver\File $file,
+        private \Magento\Framework\HTTP\Adapter\CurlFactory $curlFactory,
+        private DirectoryList $directoryList,
+        private Config $config,
         array $data = []
     ) {
-        $this->fileManager = $fileManager;
-        $this->file = $file;
-        $this->curlFactory = $curlFactory;
-        $this->directoryList = $directoryList;
-        $this->config = $config;
-
         parent::__construct($context, $data);
     }
 

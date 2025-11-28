@@ -8,32 +8,16 @@ use Magento\Framework\App\ObjectManager;
 
 class Css extends \Magento\Framework\View\Element\AbstractBlock
 {
-    private $assetRepo;
-
-    private $cssResolver;
-
-    private $moduleManager;
-
-    private $filesystem;
-
-    private $curlHelper;
-
     public function __construct(
-        \Magento\Framework\View\Element\Context $context,
-        \Magento\Framework\View\Asset\Repository $assetRepo,
-        \Magento\Framework\View\Url\CssResolver $cssResolver,
-        \Magento\Framework\Module\Manager $moduleManager,
-        \Magento\Framework\Filesystem $filesystem,
-        \Swissup\Breeze\Helper\Curl $curlHelper,
+        private \Magento\Framework\View\Element\Context $context,
+        private \Magento\Framework\View\Asset\Repository $assetRepo,
+        private \Magento\Framework\View\Url\CssResolver $cssResolver,
+        private \Magento\Framework\Module\Manager $moduleManager,
+        private \Magento\Framework\Filesystem $filesystem,
+        private \Swissup\Breeze\Helper\Curl $curlHelper,
         array $data = []
     ) {
         parent::__construct($context, $data);
-
-        $this->assetRepo = $assetRepo;
-        $this->cssResolver = $cssResolver;
-        $this->moduleManager = $moduleManager;
-        $this->filesystem = $filesystem;
-        $this->curlHelper = $curlHelper;
     }
 
     /**

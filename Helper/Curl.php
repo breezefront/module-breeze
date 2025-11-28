@@ -6,11 +6,9 @@ use Magento\Framework\HTTP\Adapter\CurlFactory;
 
 class Curl
 {
-    private CurlFactory $curlFactory;
-
-    public function __construct(CurlFactory $curlFactory)
-    {
-        $this->curlFactory = $curlFactory;
+    public function __construct(
+        private CurlFactory $curlFactory
+    ) {
     }
 
     public function deployAndRead($url)

@@ -11,24 +11,12 @@ use Magento\Framework\View\Asset\Repository as AssetRepository;
 
 class FileManager
 {
-    private Config $config;
-
-    private Filesystem $filesystem;
-
-    private AppState $appState;
-
-    private AssetRepository $assetRepo;
-
     public function __construct(
-        Config $config,
-        Filesystem $appFilesystem,
-        AppState $appState,
-        AssetRepository $assetRepo
+        private Config $config,
+        private Filesystem $filesystem,
+        private AppState $appState,
+        private AssetRepository $assetRepo
     ) {
-        $this->config = $config;
-        $this->filesystem = $appFilesystem;
-        $this->appState = $appState;
-        $this->assetRepo = $assetRepo;
     }
 
     public function createRequireJsConfigExcluding(array $excludedModules = [])

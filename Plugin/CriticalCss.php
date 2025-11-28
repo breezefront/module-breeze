@@ -4,20 +4,10 @@ namespace Swissup\Breeze\Plugin;
 
 class CriticalCss
 {
-    private \Swissup\Breeze\Helper\Data $helper;
-
-    private \Magento\Framework\View\Asset\Repository $assetRepo;
-
-    /**
-     * @param \Swissup\Breeze\Helper\Data $helper
-     * @param \Magento\Framework\View\Asset\Repository $assetRepo
-     */
     public function __construct(
-        \Swissup\Breeze\Helper\Data $helper,
-        \Magento\Framework\View\Asset\Repository $assetRepo
+        private \Swissup\Breeze\Helper\Data $helper,
+        private \Magento\Framework\View\Asset\Repository $assetRepo
     ) {
-        $this->helper = $helper;
-        $this->assetRepo = $assetRepo;
     }
 
     /**

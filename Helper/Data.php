@@ -4,30 +4,20 @@ namespace Swissup\Breeze\Helper;
 
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Framework\View\ConfigInterface;
 use Magento\Store\Model\ScopeInterface;
 
 class Data extends AbstractHelper
 {
-    private \Magento\Framework\View\ConfigInterface $viewConfig;
-
-    /**
-     * @var boolean
-     */
-    private $isEnabled = null;
+    private ?bool $isEnabled = null;
 
     private ?bool $isResponsiveImagesEnabled = null;
 
-    /**
-     * @param Context $context
-     * @param \Magento\Framework\View\ConfigInterface $viewConfig
-     */
     public function __construct(
         Context $context,
-        \Magento\Framework\View\ConfigInterface $viewConfig
+        private ConfigInterface $viewConfig
     ) {
         parent::__construct($context);
-
-        $this->viewConfig = $viewConfig;
     }
 
     /**

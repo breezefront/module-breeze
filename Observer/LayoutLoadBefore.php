@@ -6,28 +6,13 @@ use Magento\Framework\Event\ObserverInterface;
 
 class LayoutLoadBefore implements ObserverInterface
 {
-    private $helper;
-
-    private $pageConfig;
-
-    private $customerSession;
-
-    private $design;
-
-    private $entitySpecificHandlesList;
-
     public function __construct(
-        \Swissup\Breeze\Helper\Data $helper,
-        \Magento\Framework\View\Page\Config $pageConfig,
-        \Magento\Customer\Model\Session $customerSession,
-        \Magento\Framework\View\DesignInterface $design,
-        \Magento\Framework\View\EntitySpecificHandlesList $entitySpecificHandlesList
+        private \Swissup\Breeze\Helper\Data $helper,
+        private \Magento\Framework\View\Page\Config $pageConfig,
+        private \Magento\Customer\Model\Session $customerSession,
+        private \Magento\Framework\View\DesignInterface $design,
+        private \Magento\Framework\View\EntitySpecificHandlesList $entitySpecificHandlesList
     ) {
-        $this->helper = $helper;
-        $this->pageConfig = $pageConfig;
-        $this->customerSession = $customerSession;
-        $this->design = $design;
-        $this->entitySpecificHandlesList = $entitySpecificHandlesList;
     }
 
     /**

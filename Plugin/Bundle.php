@@ -6,44 +6,17 @@ use Magento\Framework\App\Area;
 
 class Bundle
 {
-    private \Magento\Framework\App\State $appState;
-
-    private \Magento\Framework\Event\ManagerInterface $eventManager;
-
-    private \Magento\Framework\View\DesignInterfaceFactory $designFactory;
-
-    private \Magento\Framework\View\Asset\RepositoryFactory $assetRepoFactory;
-
-    private \Magento\Framework\View\LayoutFactory $layoutFactory;
-
-    private \Magento\Framework\Locale\ResolverInterfaceFactory $localeFactory;
-
-    private \Magento\Framework\View\Design\Theme\ThemeProviderInterface $themeProvider;
-
-    private \Magento\Store\Model\StoreManagerInterface $storeManager;
-
-    private \Swissup\Breeze\Model\ThemeResolver $themeResolver;
-
     public function __construct(
-        \Magento\Framework\App\State $appState,
-        \Magento\Framework\Event\ManagerInterface $eventManager,
-        \Magento\Framework\View\DesignInterfaceFactory $designFactory,
-        \Magento\Framework\View\Asset\RepositoryFactory $assetRepoFactory,
-        \Magento\Framework\View\LayoutFactory $layoutFactory,
-        \Magento\Framework\Locale\ResolverInterfaceFactory $localeFactory,
-        \Magento\Framework\View\Design\Theme\ThemeProviderInterface $themeProvider,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Swissup\Breeze\Model\ThemeResolver $themeResolver
+        private \Magento\Framework\App\State $appState,
+        private \Magento\Framework\Event\ManagerInterface $eventManager,
+        private \Magento\Framework\View\DesignInterfaceFactory $designFactory,
+        private \Magento\Framework\View\Asset\RepositoryFactory $assetRepoFactory,
+        private \Magento\Framework\View\LayoutFactory $layoutFactory,
+        private \Magento\Framework\Locale\ResolverInterfaceFactory $localeFactory,
+        private \Magento\Framework\View\Design\Theme\ThemeProviderInterface $themeProvider,
+        private \Magento\Store\Model\StoreManagerInterface $storeManager,
+        private \Swissup\Breeze\Model\ThemeResolver $themeResolver
     ) {
-        $this->appState = $appState;
-        $this->eventManager = $eventManager;
-        $this->designFactory = $designFactory;
-        $this->assetRepoFactory = $assetRepoFactory;
-        $this->layoutFactory = $layoutFactory;
-        $this->localeFactory = $localeFactory;
-        $this->themeProvider = $themeProvider;
-        $this->storeManager = $storeManager;
-        $this->themeResolver = $themeResolver;
     }
 
     /**

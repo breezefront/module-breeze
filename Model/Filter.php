@@ -4,36 +4,11 @@ namespace Swissup\Breeze\Model;
 
 class Filter
 {
-    protected DomDocument $domDocument;
-
-    /**
-     * @var array
-     */
-    protected $domFilters;
-
-    /**
-     * @var array
-     */
-    protected $strFilters;
-
-    /**
-     * @var array
-     */
-    protected $escapedBlocks = [];
-
-    /**
-     * @param DomDocument $domDocument
-     * @param array $domFilters
-     * @param array $strFilters
-     */
     public function __construct(
-        DomDocument $domDocument,
-        array $domFilters = [],
-        array $strFilters = []
+        protected DomDocument $domDocument,
+        protected array $domFilters = [],
+        protected array $strFilters = []
     ) {
-        $this->domDocument = $domDocument;
-        $this->domFilters = $domFilters;
-        $this->strFilters = $strFilters;
     }
 
     /**

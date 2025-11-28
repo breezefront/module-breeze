@@ -8,19 +8,9 @@ use Magento\Framework\View\Design\ThemeInterface;
 
 class HtmlTemplateFileResolution extends TemplateFile
 {
-    /**
-     * @var ResolverInterface
-     */
-    private $resolver;
-
-    /**
-     * Constructor
-     *
-     * @param ResolverInterface $resolver
-     */
-    public function __construct(ResolverInterface $resolver)
-    {
-        $this->resolver = $resolver;
+    public function __construct(
+        private ResolverInterface $resolver
+    ) {
     }
 
     /**

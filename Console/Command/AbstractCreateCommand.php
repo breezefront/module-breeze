@@ -4,6 +4,7 @@ namespace Swissup\Breeze\Console\Command;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem;
+use Magento\Framework\Filesystem\Directory\WriteInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,44 +15,21 @@ use Symfony\Component\Console\Question\QuestionFactory;
 
 class AbstractCreateCommand extends Command
 {
-    /** @var \Magento\Framework\Filesystem\Directory\WriteInterface */
-    protected $directory;
+    protected WriteInterface $directory;
 
-    /** @var Stubs */
-    protected $stubs;
+    protected InputInterface $input;
 
-    /** @var ConfirmationQuestionFactory */
-    protected $confirmationQuestionFactory;
-
-    /** @var QuestionFactory */
-    protected $questionFactory;
-
-    /** @var ChoiceQuestionFactory */
-    protected $choiceQuestionFactory;
-
-    /** @var QuestionHelper */
-    protected $questionHelper;
-
-    /** @var InputInterface */
-    protected $input;
-
-    /** @var OutputInterface */
-    protected $output;
+    protected OutputInterface $output;
 
     public function __construct(
-        Stubs $stubs,
-        Filesystem $filesystem,
-        ConfirmationQuestionFactory $confirmationQuestionFactory,
-        QuestionFactory $questionFactory,
-        ChoiceQuestionFactory $choiceQuestionFactory,
-        QuestionHelper $questionHelper
+        protected Stubs $stubs,
+        protected Filesystem $filesystem,
+        protected ConfirmationQuestionFactory $confirmationQuestionFactory,
+        protected QuestionFactory $questionFactory,
+        protected ChoiceQuestionFactory $choiceQuestionFactory,
+        protected QuestionHelper $questionHelper
     ) {
-        $this->stubs = $stubs;
         $this->directory = $filesystem->getDirectoryWrite(DirectoryList::APP);
-        $this->confirmationQuestionFactory = $confirmationQuestionFactory;
-        $this->questionFactory = $questionFactory;
-        $this->choiceQuestionFactory = $choiceQuestionFactory;
-        $this->questionHelper = $questionHelper;
         parent::__construct();
     }
 

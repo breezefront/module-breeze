@@ -2,21 +2,18 @@
 
 namespace Swissup\Breeze\Block\Theme;
 
+use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\View\Element\Template;
 
 class Dropdown extends Template
 {
     protected $_template = 'Swissup_Breeze::theme/dropdown.phtml';
 
-    private \Magento\Framework\Serialize\Serializer\Json $json;
-
     public function __construct(
         Template\Context $context,
-        \Magento\Framework\Serialize\Serializer\Json $json,
+        private Json $json,
         array $data = []
     ) {
-        $this->json = $json;
-
         parent::__construct($context, $data);
     }
 

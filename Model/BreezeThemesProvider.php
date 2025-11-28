@@ -9,20 +9,14 @@ use Magento\Theme\Model\Theme\ThemePackageInfo;
 
 class BreezeThemesProvider
 {
-    private \Magento\Theme\Model\ResourceModel\Theme\CollectionFactory $collectionFactory;
-
-    private \Magento\Theme\Model\Theme\ThemePackageInfo $themePackageInfo;
-
     private array $breezeThemes = [];
 
-    private ?\Magento\Theme\Model\ResourceModel\Theme\Collection $allThemes = null;
+    private ?Collection $allThemes = null;
 
     public function __construct(
-        CollectionFactory $collectionFactory,
-        ThemePackageInfo $themePackageInfo
+        private CollectionFactory $collectionFactory,
+        private ThemePackageInfo $themePackageInfo
     ) {
-        $this->collectionFactory = $collectionFactory;
-        $this->themePackageInfo = $themePackageInfo;
     }
 
     public function getThemes(): array

@@ -8,72 +8,30 @@ use Magento\Framework\Module\Dir;
 
 class JsBuild
 {
-    private \Magento\Framework\View\Asset\Repository $assetRepo;
-
     private \Magento\Framework\View\Asset\File\FallbackContext $staticContext;
 
-    private \Magento\Framework\Filesystem $filesystem;
-
     private \Magento\Framework\Filesystem\Directory\WriteInterface $staticDir;
-
-    private \Magento\Framework\Filesystem\Directory\ReadFactory $readDirFactory;
-
-    private \Magento\Framework\Module\Dir $moduleDir;
-
-    private \Magento\Framework\Module\Manager $moduleManager;
-
-    private \Magento\Framework\View\Asset\Minification $minification;
-
-    private \Magento\Framework\Code\Minifier\AdapterInterface $minifier;
-
-    private \Swissup\Breeze\Helper\Curl $curlHelper;
-
-    private \Magento\Framework\View\DesignInterface $design;
-
-    private \Magento\Framework\Component\ComponentRegistrar $componentRegistrar;
-
-    private JsAssetFactory $jsAssetFactory;
-
-    private string $name;
-
-    private string $type;
-
-    private array $items;
 
     private array $assets = [];
 
     public function __construct(
-        \Magento\Framework\View\Asset\Repository $assetRepo,
-        \Magento\Framework\Filesystem $filesystem,
-        \Magento\Framework\Filesystem\Directory\ReadFactory $readDirFactory,
-        \Magento\Framework\Module\Manager $moduleManager,
-        \Magento\Framework\View\Asset\Minification $minification,
-        \Magento\Framework\Code\Minifier\AdapterInterface $minifier,
-        \Magento\Framework\View\DesignInterface $design,
-        \Swissup\Breeze\Helper\Curl $curlHelper,
-        ComponentRegistrar $componentRegistrar,
-        Dir $moduleDir,
-        JsAssetFactory $jsAssetFactory,
-        $name,
-        string $type = 'async',
-        array $items = []
+        private \Magento\Framework\View\Asset\Repository $assetRepo,
+        private \Magento\Framework\Filesystem $filesystem,
+        private \Magento\Framework\Filesystem\Directory\ReadFactory $readDirFactory,
+        private \Magento\Framework\Module\Manager $moduleManager,
+        private \Magento\Framework\View\Asset\Minification $minification,
+        private \Magento\Framework\Code\Minifier\AdapterInterface $minifier,
+        private \Magento\Framework\View\DesignInterface $design,
+        private \Swissup\Breeze\Helper\Curl $curlHelper,
+        private ComponentRegistrar $componentRegistrar,
+        private Dir $moduleDir,
+        private JsAssetFactory $jsAssetFactory,
+        private $name,
+        private string $type = 'async',
+        private array $items = []
     ) {
-        $this->assetRepo = $assetRepo;
         $this->staticContext = $assetRepo->getStaticViewFileContext();
-        $this->filesystem = $filesystem;
-        $this->staticDir = $this->filesystem->getDirectoryWrite(DirectoryList::STATIC_VIEW);
-        $this->readDirFactory = $readDirFactory;
-        $this->design = $design;
-        $this->componentRegistrar = $componentRegistrar;
-        $this->moduleDir = $moduleDir;
-        $this->jsAssetFactory = $jsAssetFactory;
-        $this->moduleManager = $moduleManager;
-        $this->minification = $minification;
-        $this->minifier = $minifier;
-        $this->curlHelper = $curlHelper;
-        $this->name = $name;
-        $this->type = $type;
-        $this->items = $items;
+        $this->staticDir = $filesystem->getDirectoryWrite(DirectoryList::STATIC_VIEW);
     }
 
     public function getAsset($path = null): JsAsset
