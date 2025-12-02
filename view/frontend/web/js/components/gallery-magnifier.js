@@ -386,7 +386,9 @@
                 result = {
                     width: this.convertSize(stage.width),
                     height: this.convertSize(stage.height),
-                    top: this.element.offset().top + parseFloat(this.element.css('border-top-width')),
+                    top: this.element.offset().top
+                        + Math.abs($('body').offset().top)
+                        + parseFloat(this.element.css('border-top-width')),
                     left: stage.position === 'right' ? rightPosition : leftPosition
                 },
                 modalContent = this.element.closest('.modal-content'),
