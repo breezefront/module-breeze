@@ -157,11 +157,11 @@
                 });
             });
 
-            this._on(document, 'scroll', _.debounce(() => {
+            this._on(this.element.closest('.modal-content')[0] || document, 'scroll', _.debounce(() => {
                 if (this.isLoaded()) {
                     this.updateSizeAndPosition();
                 }
-            }, 500));
+            }, 100));
 
             this._on(isTouch ? 'touchend' : 'mouseleave', () => {
                 if (this.activateTimer) {
