@@ -386,7 +386,7 @@
                 var slide = $(this).attr('data-index', index),
                     slideWidth = isHorizontal ? $(this).width() : $(this).height();
 
-                if (!slideWidth && (slide.is('img') || slide.find('img').length)) {
+                if (!slideWidth && slide.is(':visible') && (slide.is('img') || slide.find('img').length)) {
                     console.error(
                         [
                             'Slide width must be greater than 0.',
