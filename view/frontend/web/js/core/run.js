@@ -2,19 +2,21 @@ define(['jquery'], async function ($) {
     'use strict';
 
     var scripts = $('script[type="breeze/async-js"]').get().map(script => script.src),
-        chunks = _.chunk(scripts, Math.ceil(scripts.length / 3));
+        chunks = _.chunk(scripts, Math.ceil(scripts.length / 3)),
+        requiredCopy = window.required.slice();
 
     await new Promise($.rafraf);
 
     // process inline scripts with resolved dependencies (scroll reveal)
-    window.required = window.required.filter(args => {
+    window.required = [];
+    requiredCopy.forEach(args => {
         if (args[0].every?.(arg => $.breezemap.__has(arg)) && typeof args[1] === 'function') {
             try {
                 require(...args);
-                return false;
+                return;
             } catch (e) {}
         }
-        return true;
+        window.required.push(args);
     });
 
     // load async scripts

@@ -424,7 +424,16 @@
 
         return window.VIEW_URL + '/' + path;
     };
-    window.require.config = (cfg) => cfg ? $.extend(true, rjsConfig, cfg) : rjsConfig;
+    window.require.config = (cfg) => {
+        if (cfg) {
+            $.extend(true, rjsConfig, cfg);
+            if (cfg.deps) {
+                window.require(cfg.deps);
+            }
+        } else {
+            return rjsConfig;
+        }
+    };
     window.require.s = {
         contexts: {
             _: {
