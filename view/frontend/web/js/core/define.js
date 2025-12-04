@@ -57,6 +57,7 @@
 
     function run() {
         if (this.ran || this.deps.some(dep => !dep.loaded)) {
+            this.result = this.result || $.breezemap[this.name];
             return this.result;
         }
 
