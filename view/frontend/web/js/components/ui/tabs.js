@@ -238,4 +238,6 @@ define(['collapsible'], () => {
             return index;
         }
     });
+
+    $.breezemap['mage/tabs'] = $.breezemap.tabs;
 });
