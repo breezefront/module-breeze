@@ -32,13 +32,13 @@ class Data extends AbstractHelper
         if ($this->_getRequest()->getParam('amp') || $this->isUrlExcluded()) {
             $this->isEnabled = false;
         } else {
-            $this->isEnabled = $this->getConfig('design/breeze/enabled');
+            $isEnabled = $this->getConfig('design/breeze/enabled');
 
-            if ($this->isEnabled === 'theme') {
-                $this->isEnabled = $this->getThemeConfig('enabled');
+            if ($isEnabled === 'theme') {
+                $isEnabled = $this->getThemeConfig('enabled');
             }
 
-            $this->isEnabled = (bool) $this->isEnabled;
+            $this->isEnabled = (bool) $isEnabled;
         }
 
         if ($this->isEnabled) {
