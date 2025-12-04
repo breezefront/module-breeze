@@ -155,6 +155,9 @@
     $.fn.toArray = $.fn.get;
     $.fn.fadeIn = $.fn.show;
     $.fn.fadeOut = $.fn.hide;
+    $.fn.slideDown = $.fn.show;
+    $.fn.slideUp = $.fn.hide;
+    $.fn.slideToggle = $.fn.toggle;
     $.fn.bind = $.fn.on;
     $.fn.unbind = $.fn.off;
 
