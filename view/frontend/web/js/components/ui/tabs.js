@@ -29,10 +29,15 @@ define(['collapsible'], () => {
                 this.triggers = this.headers;
             }
 
-            this.collapsibles
-                .attr('role', 'presentation')
-                .parent()
-                .prepend(`<div role="tablist" aria-owns="${this.triggers.map((i, t) => t.id).get().join(' ')}">`);
+            this.collapsibles.attr('role', 'presentation');
+
+            if (this.options.tablist) {
+                this.element.find(this.options.tablist).filter(isNotNested).attr('role', 'tablist');
+            } else {
+                this.collapsibles
+                    .parent()
+                    .prepend(`<div role="tablist" aria-owns="${this.triggers.map((i, t) => t.id).get().join(' ')}">`);
+            }
 
             this.triggers.attr('role', 'tab');
             this.triggers.last().addClass('last');
