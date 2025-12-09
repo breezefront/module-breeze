@@ -19,7 +19,7 @@
         function callback(force) {
             var timer;
 
-            if (!force && !$.breezemap[$.breezemap.__aliases[component] || component]) {
+            if (force !== true && !$.breezemap[$.breezemap.__aliases[component] || component]) {
                 // timeout is used for modules that wait for `breeze:mount:cmp` event
                 timer = setTimeout(() => callback(true), 200);
 
