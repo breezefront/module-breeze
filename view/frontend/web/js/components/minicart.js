@@ -212,8 +212,10 @@
                 if (response.success) {
                     callback.call(self, elem, response);
                 } else if (response.error_message) {
-                    $.alert({
-                        content: response.error_message
+                    require(['Magento_Ui/js/modal/alert'], () => {
+                        $.alert({
+                            content: response.error_message
+                        });
                     });
                 }
             });
