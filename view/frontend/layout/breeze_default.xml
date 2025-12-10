@@ -257,7 +257,12 @@
                                     </item>
                                 </item>
                             </item>
-                            <item name="catalogAddToCart" xsi:type="string">Swissup_Breeze/js/components/catalog-add-to-cart</item>
+                            <item name="catalogAddToCart" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/catalog-add-to-cart</item>
+                                <item name="export" xsi:type="array">
+                                    <item name="catalog-add-to-cart" xsi:type="string">Magento_Catalog/js/catalog-add-to-cart</item>
+                                </item>
+                            </item>
                             <item name="productListToolbarForm" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/product-list-toolbar-form</item>
                                 <item name="load" xsi:type="array">

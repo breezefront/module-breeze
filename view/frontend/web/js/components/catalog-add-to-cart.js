@@ -187,6 +187,8 @@
         }
     });
 
+    $.breezemap['Magento_Catalog/js/catalog-add-to-cart'] = $.breezemap.catalogAddToCart;
+
     $(document).on('submit', '[data-catalog-addtocart-initialized]', function (event) {
         event.preventDefault();
         $(this).catalogAddToCart('instance').ajaxSubmit($(this));
