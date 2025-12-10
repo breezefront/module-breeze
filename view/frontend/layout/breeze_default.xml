@@ -50,6 +50,7 @@
                     <item name="Magento_Weee/js/view/cart/totals/weee" xsi:type="string">Magento_Weee/js/view/cart/totals/weee</item>
                     <item name="Magento_Weee/js/view/checkout/summary/weee" xsi:type="string">Magento_Weee/js/view/checkout/summary/weee</item>
                     <item name="moment-timezone-with-data" xsi:type="string">moment-timezone-with-data</item>
+                    <item name="newsletterSignUp" xsi:type="string">newsletterSignUp</item>
                     <item name="passwordStrengthIndicator" xsi:type="string">passwordStrengthIndicator</item>
                     <item name="priceOptionFile" xsi:type="string">priceOptionFile</item>
                     <item name="requireCookie" xsi:type="string">requireCookie</item>
