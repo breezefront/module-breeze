@@ -87,7 +87,7 @@
                 itemQty = elem.data('item-qty');
 
             if (this._isValidQty(itemQty, elem.val())) {
-                this.element.find('#update-cart-item-' + itemId).show('fade', 300);
+                this.element.find(`.update-cart-item[data-cart-item="${itemId}"]`).show('fade', 300);
             } else if (elem.val() == 0) { //eslint-disable-line eqeqeq
                 this._hideItemButton(elem);
             } else {
