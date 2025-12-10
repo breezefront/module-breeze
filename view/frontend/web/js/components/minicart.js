@@ -122,7 +122,7 @@
          * @param {HTMLElement} elem
          */
         _hideItemButton: function (elem) {
-            this.element.find('#update-cart-item-' + elem.data('cart-item')).hide();
+            this.element.find(`.update-cart-item[data-cart-item="${elem.data('cart-item')}"]`).hide();
         },
 
         /**
@@ -133,7 +133,7 @@
 
             this._ajax(this.options.url.update, {
                 'item_id': itemId,
-                'item_qty': this.element.find('#cart-item-' + itemId + '-qty').val()
+                'item_qty': this.element.find(`.item-qty[data-cart-item="${itemId}"]`).val()
             }, elem, this._updateItemQtyAfter);
         },
 
