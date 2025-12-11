@@ -113,19 +113,26 @@ class JsBuild
             $deps = [];
             foreach (['deps', 'import'] as $key) {
                 foreach ($item[$key] ?? [] as $depName) {
-                    if ($name !== $depName && isset($this->items[$depName]['path'])) {
-                        $deps[] = $this->items[$depName]['path'];
+                    $depItem = $this->items[$depName] ?? [];
+                    $depItem['name'] = $depName;
+
+                    if ($name !== $depName && isset($depItem['path'])) {
+                        $deps[$depItem['path']] = $depItem;
                     } else {
-                        $deps[] = $depName;
+                        $depItem['path'] = $depName;
+                        $deps[$depName] = $depItem;
                     }
                 }
             }
-            $deps = array_diff($deps, $loadedDeps);
+            $deps = array_diff_key($deps, $loadedDeps);
 
             $build[$name] ??= [];
-            foreach ($deps as $depPath) {
+            foreach ($deps as $depPath => $depItem) {
                 // $build[$name][] = "// dependency of {$name} - {$depPath}";
                 $build[$name][] = $this->getContents($depPath);
+                if (!empty($depItem['anonymous'])) {
+                    $build[$name][] = ";define([], () => $.breezemap.__register('{$depItem['name']}'));";
+                }
                 $loadedDeps[$depPath] = $depPath;
             }
 
