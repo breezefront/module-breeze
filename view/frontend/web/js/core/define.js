@@ -14,7 +14,8 @@
         },
         defaultStackTraceLimit = Error.stackTraceLimit || 10,
         autoloadedBundles = {},
-        jsignorePrefixes = [],
+        jsignorePrefixes,
+        jsincludePrefixes,
         origSuffix = '-mage-original',
         bundlePathRe = /(?<path>Swissup_Breeze\/bundles\/\d+\/.*?)\d*(\.min\.js|\.js)$/,
         bundlePrefixRe = /(?<prefix>Swissup_Breeze\/bundles\/\d+\/).*\.js$/,
@@ -30,14 +31,21 @@
             return ignoredMemo[name];
         }
 
-        if (!jsignorePrefixes.length) {
+        if (!jsignorePrefixes) {
             jsignorePrefixes = $.breeze.jsignore
+                .filter(prefix => prefix.endsWith('*'))
+                .map(prefix => prefix.slice(0, -1));
+            jsincludePrefixes = Object.keys($.breeze.jsconfig)
                 .filter(prefix => prefix.endsWith('*'))
                 .map(prefix => prefix.slice(0, -1));
         }
 
-        ignoredMemo[name] = $.breeze.jsignore.includes(name) ||
-            jsignorePrefixes.some(prefix => name.startsWith(prefix));
+        if ($.breeze.jsconfig[name] || jsincludePrefixes.some(p => name.startsWith(p))) {
+            ignoredMemo[name] = false;
+        } else {
+            ignoredMemo[name] = $.breeze.jsignore.includes(name) ||
+                jsignorePrefixes.some(p => name.startsWith(p));
+        }
 
         return ignoredMemo[name];
     }
