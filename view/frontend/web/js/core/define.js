@@ -179,7 +179,7 @@
                         $.breeze.debug(`Better compatibility alias: ${name}`);
                         modules[name].path = rjsConfig.map['*'][name];
                     } else if ($.breeze.jsexclude.every(m => !name.startsWith(m)) &&
-                        (!$.breeze.jsinclude || $.breeze.jsinclude.some(m => name.startsWith(m)))
+                        ($.breeze.jsinclude.includes('*') || $.breeze.jsinclude.some(m => name.startsWith(m)))
                     ) {
                         // AutoRegister paths: Vendor_Module/js/file, js/hello, main
                         $.breeze.debug(`Better compatibility path: ${name}`);

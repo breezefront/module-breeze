@@ -250,13 +250,13 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         $result = [
             'bundles' => $result,
             'ignore' => $this->getIgnoredPaths(),
+            'include' => $this->requireJsInclude,
             'exclude' => [],
         ];
 
         if ($this->breezeHelper->isBetterCompatibilityEnabled()) {
             $result['exclude'] = $this->requireJsExclude;
-        } elseif ($this->requireJsInclude) {
-            $result['include'] = $this->requireJsInclude;
+            $result['include'] = ['*'];
         }
 
         return $result;
@@ -375,6 +375,8 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
             $this->getNameInLayout(),
             $this->storeManager->getStore()->getId(),
             $this->_design->getDesignTheme()->getId(),
+            $this->breezeHelper->isBetterCompatibilityEnabled(),
+            implode(',', $this->getIgnoredPaths()),
             $version,
         ];
 
