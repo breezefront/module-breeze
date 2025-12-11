@@ -325,7 +325,7 @@
         depsWithImports.filter(dep => dep.global()).map(dep => dep.run());
 
         if (bundlePath) {
-            depsWithImports = depsWithImports.filter(dep => !dep.name.includes(bundlePath));
+            depsWithImports = depsWithImports.filter(dep => !dep.path?.includes(bundlePath));
         }
 
         depsWithImports = depsWithImports
