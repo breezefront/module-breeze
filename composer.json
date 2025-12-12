@@ -2,7 +2,7 @@
     "name": "swissup/module-breeze",
     "description": "Performant Magento Frontend",
     "type": "magento2-module",
-    "version": "2.27.1",
+    "version": "2.27.2",
     "license": "MIT",
     "require": {
         "php": "^8.1",
