@@ -136,7 +136,7 @@
 
         if (this.result === undefined && this.unknown && !this.ignored && $.breeze.isDebugMode()) {
             Error.stackTraceLimit = 100;
-            console.groupCollapsed(this.name);
+            console.groupCollapsed(`Unknown component: ${this.name}`);
             console.log(new Error(`Unknown component ${this.name}`));
             console.groupEnd();
             Error.stackTraceLimit = defaultStackTraceLimit;
