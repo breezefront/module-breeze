@@ -61,6 +61,9 @@
 
         init: function () {
             this.disabled = false;
+            if (this.options.active) {
+                this.open();
+            }
         },
 
         processState: function () {
