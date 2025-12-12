@@ -211,7 +211,12 @@
                                 </item>
                             </item>
                             <item name="Magento_Customer/js/view/customer" xsi:type="string">Swissup_Breeze/js/components/customer</item>
-                            <item name="pageCache" xsi:type="string">Swissup_Breeze/js/components/page-cache</item>
+                            <item name="pageCache" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/page-cache</item>
+                                <item name="export" xsi:type="array">
+                                    <item name="pageCache" xsi:type="string">Magento_PageCache/js/page-cache</item>
+                                </item>
+                            </item>
                             <item name="Magento_Theme/js/view/messages" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/messages</item>
                                 <item name="import" xsi:type="array">

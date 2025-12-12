@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    $.widget('pageCache', {
+    $.widget('mage.pageCache', {
         component: 'pageCache',
         options: {
             url: '/',
@@ -169,4 +169,9 @@
             });
         }
     });
+
+    $.breezemap['Magento_PageCache/js/page-cache'] = {
+        pageCache: $.mage.pageCache,
+        formKey: $.mage.formKey
+    };
 })();
