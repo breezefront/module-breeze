@@ -366,10 +366,6 @@
             _elems: [],
         },
 
-        _initialize: function (name, options, element) {
-            this._super(name, options, element);
-        },
-
         initObservable: function () {
             this._super();
             this.elems = ko.observableArray();
