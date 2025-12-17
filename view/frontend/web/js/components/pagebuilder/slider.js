@@ -255,6 +255,7 @@
                         x: event.clientX,
                         y: event.clientY,
                     },
+                    maxAbsDelta = 0,
                     sliderRect = this.slider[0].getBoundingClientRect(),
                     sliderSize = this.isHorizontal ? this.slider.width() : this.slider.height(),
                     initialPage = this.page;
@@ -272,6 +273,11 @@
                         clearTimeout(timer);
                         pos.delta = this.isHorizontal ? e.clientX - pos.x : e.clientY - pos.y;
                         this.scrollValue(pos.scroll - pos.delta);
+
+                        maxAbsDelta = Math.max(Math.abs(pos.delta), maxAbsDelta);
+                        if (maxAbsDelta <= 5) {
+                            return;
+                        }
 
                         if (sliderRect.left > e.clientX || sliderRect.right < e.clientX ||
                             sliderRect.top > e.clientY || sliderRect.bottom < e.clientY
