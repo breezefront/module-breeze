@@ -259,7 +259,7 @@
         maxItemsToDisplay: window.checkout ? window.checkout.maxItemsToDisplay : '',
         shouldRender: ko.observable(false),
         isLoading: ko.observable(false),
-        displaySubtotal: ko.observable(true),
+        displaySubtotal: ko.observable(true), // deprecated. Not used since 2.27.0
         addToCartCalls: 0,
         minicartSelector: '[data-block="minicart"]',
 
