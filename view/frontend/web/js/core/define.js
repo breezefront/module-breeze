@@ -340,7 +340,7 @@
                 } else if (dep.path) {
                     dep.url = window.require.toUrl(dep.path);
 
-                    if (!dep.name.startsWith('text!')) {
+                    if (!dep.name.startsWith('text!') && !rjsConfig.paths[dep.path]) {
                         if (dep.path.endsWith('.min')) {
                             dep.url += '.js';
                         } else if (!dep.path.endsWith('.js')) {
