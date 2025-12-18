@@ -425,17 +425,18 @@
         },
 
         _updateCollection: function () {
-            this.regions = {};
+            var grouped = _.groupBy(this._elems.filter(el => {
+                    return el.displayArea && _.isString(el.displayArea);
+                }), 'displayArea');
 
-            this._elems.forEach(el => {
-                var displayArea = el.displayArea || null;
+            _.each(grouped, this.updateRegion, this);
 
-                [...new Set([null, displayArea])].forEach(regionCode => {
-                    if (regionCode && displayArea !== regionCode) {
-                        return;
-                    }
-                    this.getRegion(regionCode).push(el);
-                });
+            _.each(this.regions, items => {
+                var hasObsoleteComponents = items().length && !_.intersection(this._elems, items()).length;
+
+                if (hasObsoleteComponents) {
+                    items.removeAll();
+                }
             });
 
             this.elems(this._elems);
@@ -470,6 +471,11 @@
 
         regionHasElements: function (name) {
             return this.getRegion(name)().length > 0;
+        },
+
+        updateRegion: function (items, name) {
+            this.getRegion(name)(items);
+            return this;
         },
 
         getRegion: function (name) {
