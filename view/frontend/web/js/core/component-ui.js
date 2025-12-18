@@ -431,7 +431,7 @@
 
             _.each(grouped, this.updateRegion, this);
 
-            _.each(this.regions, items => {
+            _.each(this.regions || {}, items => {
                 var hasObsoleteComponents = items().length && !_.intersection(this._elems, items()).length;
 
                 if (hasObsoleteComponents) {
