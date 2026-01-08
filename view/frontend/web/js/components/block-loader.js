@@ -71,7 +71,7 @@
 
             element = element || this.element;
             timerId = element.data('spinner-timer');
-            loaders = element.find('.breeze-block-loader');
+            loaders = element.children('.breeze-block-loader');
 
             if (timerId) {
                 clearTimeout(timerId);
