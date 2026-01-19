@@ -89,9 +89,17 @@
             };
 
             constructor = function (settings, element) {
+                var result;
+
                 element = $(element || '<div>');
                 element[name](settings);
-                return $.registry.get(settings?.__scope || name, element[0]);
+                result = $.registry.get(settings?.__scope || name, element[0]);
+
+                if (result && name !== settings?.__scope) {
+                    $.registry.set(name, element[0], result);
+                }
+
+                return result;
             };
             constructor._proto = prototype;
             constructor.prototype = prototype.prototype;
