@@ -25,7 +25,6 @@
                     <item name="checkoutLoader" xsi:type="string">checkoutLoader</item>
                     <item name="jquery/jquery-storageapi" xsi:type="string">jquery/jquery-storageapi</item>
                     <item name="jquery/jquery.parsequery" xsi:type="string">jquery/jquery.parsequery</item>
-                    <item name="jquery/validate" xsi:type="string">jquery/validate</item>
                     <item name="jquery-ui-modules/*" xsi:type="string">jquery-ui-modules/*</item>
                     <item name="loader" xsi:type="string">loader</item>
                     <item name="loaderAjax" xsi:type="string">loaderAjax</item>
@@ -718,6 +717,7 @@
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/core/validator</item>
                                 <item name="export" xsi:type="array">
                                     <item name="utils" xsi:type="string">Magento_Ui/js/lib/validation/utils</item>
+                                    <item name="jquery/validate" xsi:type="string">jquery/validate</item>
                                 </item>
                             </item>
                             <item name="validation" xsi:type="array">
