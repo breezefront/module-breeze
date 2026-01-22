@@ -51,15 +51,17 @@
         }
     });
 
-    $.validator.addMethod(
-        'rating-required',
-        function (value) {
-            return value !== undefined;
-        },
-        $.__('Please select one of each of the ratings above.')
-    );
+    $(document).on('breeze:mount:Magento_Review/js/validate-review', async function (event, data) {
+        await require.async('validation');
 
-    $(document).on('breeze:mount:Magento_Review/js/validate-review', function (event, data) {
+        $.validator.addMethod(
+            'rating-required',
+            function (value) {
+                return value !== undefined;
+            },
+            $.__('Please select one of each of the ratings above.')
+        );
+
         $(data.el).validator({
             /** Disable button to prevent multiple submits */
             onValid: function () {
