@@ -37,6 +37,10 @@
         params.always.filter(fn => fn).forEach(fn => fn(jqXHR, 'error', error));
         params.complete?.(jqXHR, 'error');
 
+        if (params.global === false) {
+            return;
+        }
+
         $(document).trigger('ajaxError', {
             response: jqXHR,
             responseText: jqXHR.text,
@@ -242,9 +246,12 @@
             }
         });
 
-        $(document).trigger('ajaxSend', {
-            settings: params,
-        });
+        if (params.global !== false) {
+            $(document).trigger('ajaxSend', {
+                settings: params,
+            });
+        }
+
         if (params.beforeSend && params.beforeSend(params, params) === false) {
             return;
         }
