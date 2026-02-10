@@ -20,6 +20,7 @@ class FixLayoutShifts
                 <div class="breadcrumbs">
                     <ul class="items" aria-hidden="true">
                         <li class="item home"><a href="#">$home</a></li>
+                        <li class="item"><a href="#">&nbsp;</a></li>
                     </ul>
                 </div>
             HTML,
