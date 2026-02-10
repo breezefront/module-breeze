@@ -42,6 +42,7 @@
                 <item name="inject_js_class" xsi:type="object">Swissup\Breeze\Model\Filter\Str\InjectJsClass</item>
                 <item name="replace_jquery_calls" xsi:type="object">Swissup\Breeze\Model\Filter\Str\ReplaceJqueryCalls</item>
                 <item name="fix_a11y_issues" xsi:type="object">Swissup\Breeze\Model\Filter\Str\FixA11yIssues</item>
+                <item name="fix_layout_shifts" xsi:type="object">Swissup\Breeze\Model\Filter\Str\FixLayoutShifts</item>
             </argument>
         </arguments>
     </type>
