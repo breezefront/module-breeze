@@ -1,10 +1,11 @@
 define([
     'jquery',
     'underscore',
+    'mage/translate',
     'uiClass',
     'Magento_Customer/js/customer-data',
     'escaper'
-], function ($, _, uiClass, customerData, escaper) {
+], function ($, _, $t, uiClass, customerData, escaper) {
     'use strict';
 
     $.breezemap['Magento_Ui/js/model/messages'] = uiClass.extend({
@@ -136,7 +137,11 @@ define([
         }
 
         $.async('.message:where(.warning, .success, .notice, .error, .info)', (el) => {
-            $(el).append('<button type="button" class="button-close"></button>');
+            $(el).append(`
+                <button type="button" class="button-close">
+                    <span>${$t('Close')}</span>
+                </button>
+            `);
 
             setTimeout(() => {
                 $(el).addClass('shown');
