@@ -18,7 +18,7 @@ class FixLayoutShifts
         return strtr($html, [
             '<div class="breadcrumbs"></div>' => <<<HTML
                 <div class="breadcrumbs">
-                    <ul class="items" aria-hidden="true">
+                    <ul class="items" aria-hidden="true" style="opacity:0">
                         <li class="item home"><a href="#">$home</a></li>
                         <li class="item"><a href="#">&nbsp;</a></li>
                     </ul>
