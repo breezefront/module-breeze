@@ -13,30 +13,36 @@ define([
         renderer,
         preset;
 
-    function load(tmplPath) {
-        var el;
+    $.breezemap['Magento_Ui/js/lib/knockout/template/loader'] = {
+        loadTemplate: function (tmplPath) {
+            var el;
 
-        try {
-            el = document.getElementById(tmplPath);
-            if (el) {
-                return new Promise(resolve => resolve(el.innerHTML));
+            try {
+                el = document.getElementById(tmplPath);
+                if (el) {
+                    return new Promise(resolve => resolve(el.innerHTML));
+                }
+            } catch (e) {}
+
+            if (!tmplPath.endsWith('.html')) {
+                tmplPath += '.html';
             }
-        } catch (e) {}
+            if (!tmplPath.includes('/template/')) {
+                tmplPath = tmplPath.replace(/^([^/]+)/g, '$1/template');
+            }
 
-        if (!tmplPath.endsWith('.html')) {
-            tmplPath += '.html';
-        }
-        if (!tmplPath.includes('/template/')) {
-            tmplPath = tmplPath.replace(/^([^/]+)/g, '$1/template');
-        }
+            $.breeze.debug(`Loading template: ${tmplPath}`);
 
-        $.breeze.debug(`Loading template: ${tmplPath}`);
-
-        return require.async(`text!${tmplPath}`).then(html => {
-            return html.replace(/<!--[\s\S]*?-->/, match => {
-                return ~match.indexOf('/**') ? '' : match;
+            return require.async(`text!${tmplPath}`).then(html => {
+                return html.replace(/<!--[\s\S]*?-->/, match => {
+                    return ~match.indexOf('/**') ? '' : match;
+                });
             });
-        });
+        }
+    };
+
+    function load(tmplPath) {
+        return $.breezemap['Magento_Ui/js/lib/knockout/template/loader'].loadTemplate(tmplPath);
     }
 
     renderer = {

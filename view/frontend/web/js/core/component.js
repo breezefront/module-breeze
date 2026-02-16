@@ -241,8 +241,12 @@
             this.initialize(this.options, this.__element?.[0]);
             this.create();
             this._create();
-            this.init();
-            this._init();
+
+            if (!this._applyBindings) {
+                this.init();
+                this._init();
+            }
+
             this._trigger('afterCreate');
 
             return this;

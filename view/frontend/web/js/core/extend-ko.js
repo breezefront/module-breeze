@@ -166,10 +166,7 @@ define(['ko/template/renderer'], (renderer) => {
             var data = valueAccessor();
 
             _.each(data, function (config, component) {
-                $.breeze.mount(component, {
-                    settings: config,
-                    el: el
-                });
+                $.breeze.mountCmp(component, el, config);
             });
         }
     };

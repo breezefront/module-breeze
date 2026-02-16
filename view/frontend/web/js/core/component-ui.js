@@ -312,6 +312,7 @@
                 _.each(value, (val, key) => {
                     this.trigger(`${path}.${key}`, { value: val });
                 });
+                target[last] = value;
                 this.trigger(path, { value });
             } else if (target[last] != value) { // eslint-disable-line eqeqeq
                 target[last] = value;
@@ -388,7 +389,7 @@
             if (!this._childrenProcessed) {
                 this._childrenProcessed = true;
                 await this._resolveChildren();
-                this._initElems();
+                this._initChildren();
             }
         },
 
@@ -400,7 +401,7 @@
                 }));
         },
 
-        _initElems: function () {
+        _initChildren: function () {
             var children = this.options.children || {};
 
             Object.keys(children).sort((a, b) => {
@@ -426,7 +427,7 @@
 
         _updateCollection: function () {
             var grouped = _.groupBy(this._elems.filter(el => {
-                    return el.displayArea && _.isString(el.displayArea);
+                    return el && el.displayArea && _.isString(el.displayArea);
                 }), 'displayArea');
 
             _.each(grouped, this.updateRegion, this);

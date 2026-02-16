@@ -35,7 +35,7 @@
             $(document).trigger('breeze:mount:' + component, data);
         }
 
-        if (now && (!$.breeze.jsconfig[component] || $.breezemap.__get(component))) {
+        if (now && ($.breezemap.__get(component) || !$.breeze.jsconfig[component] && !$.breeze.jsinclude.some(m => component.startsWith(m)))) {
             return callback();
         }
 
@@ -58,8 +58,6 @@
             }
         });
     }
-
-    $.breeze.mount = mount;
 
     /** Init view components */
     function mountView(scope, config) {
@@ -93,6 +91,25 @@
             elements.forEach(el => cmp._applyBindings(el));
         });
     }
+
+    $.breeze.mount = mount;
+    $.breeze.mountCmp = function (name, el, settings) {
+        if (name === 'Magento_Ui/js/core/app') {
+            if (!settings.components) {
+                return;
+            }
+
+            $.each(settings.components, function (scope, cfg) {
+                if (cfg.component) {
+                    cfg.name = cfg.index = cfg.ns = cfg.__scope = scope;
+                    cfg.__el = el;
+                    mountView(scope, cfg);
+                }
+            });
+        } else {
+            mount(name, { settings, el });
+        }
+    };
 
     $.breezemap.uiLayout = (nodes) => {
         $(document).one('breeze:load', () => {
@@ -148,25 +165,7 @@
             }
 
             $.each(component, function (i, name) {
-                if (name === 'Magento_Ui/js/core/app') {
-                    if (!config[i].components) {
-                        return;
-                    }
-
-                    // eslint-disable-next-line max-nested-callbacks
-                    $.each(config[i].components, function (scope, cfg) {
-                        if (cfg.component) {
-                            cfg.name = cfg.index = cfg.ns = cfg.__scope = scope;
-                            cfg.__el = el;
-                            mountView(scope, cfg);
-                        }
-                    });
-                } else {
-                    mount(name, {
-                        settings: config[i],
-                        el: el
-                    });
-                }
+                $.breeze.mountCmp(name, el, config[i]);
             });
         });
     }
@@ -205,6 +204,9 @@
             }
 
             $.each(literal, function (i, object) {
+                if (typeof object.key === 'undefined') {
+                    return;
+                }
                 parsed[object.key] = parseJson(object.value);
             });
 
