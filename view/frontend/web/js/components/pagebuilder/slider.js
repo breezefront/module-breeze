@@ -260,7 +260,7 @@
                     sliderSize = this.isHorizontal ? this.slider.width() : this.slider.height(),
                     initialPage = this.page;
 
-                if (touching) {
+                if (touching || $(event.target).is(':input')) {
                     return;
                 }
 
