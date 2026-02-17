@@ -486,8 +486,8 @@
             return this.regions[name];
         },
 
-        mount: function (config) {
-            var element = $('<div>');
+        mount: function (config, element) {
+            element = element?.length ? element : $('<div>');
 
             if (this.dataScope) {
                 config.dataScope = [this.dataScope, config.dataScope].join('.');

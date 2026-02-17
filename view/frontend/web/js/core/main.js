@@ -63,23 +63,28 @@
         });
     }
 
+    function getMathingScopedElements(scope) {
+        var scopeRe = new RegExp(`scope:.*${scope}'`);
+
+        return scopedElements.filter(function () {
+            var bind = $(this).attr('data-bind').trim(),
+                result = bind.includes('\'' + scope + '\'') || bind.match(scopeRe);
+
+            if (result || !bind.includes('\\u')) {
+                return result;
+            }
+
+            try {
+                return JSON.parse(`{"val":"${bind}"}`).val.includes('\'' + scope + '\'');
+            } catch (e) {
+                return false;
+            }
+        });
+    }
+
     /** Init view components */
     function mountView(scope, config) {
-        var scopeRe = new RegExp(`scope:.*${scope}'`),
-            elements = scopedElements.filter(function () {
-                var bind = $(this).attr('data-bind').trim(),
-                    result = bind.includes('\'' + scope + '\'') || bind.match(scopeRe);
-
-                if (result || !bind.includes('\\u')) {
-                    return result;
-                }
-
-                try {
-                    return JSON.parse(`{"val":"${bind}"}`).val.includes('\'' + scope + '\'');
-                } catch (e) {
-                    return false;
-                }
-            });
+        var elements = getMathingScopedElements(scope);
 
         if (!elements.length) {
             elements = $([false]);
@@ -119,10 +124,18 @@
         $(document).one('breeze:load', () => {
             nodes.forEach(node => {
                 node.index = node.ns = node.name;
+
+                if (!node.provider && !node.config?.provider && node.deps) {
+                    $.breezemap.uiRegistry.get(node.deps, deps => {
+                        node.provider = deps?.name || node.provider;
+                    });
+                }
+
                 if (node.parent) {
-                    // eslint-disable-next-line max-nested-callbacks
                     $.breezemap.uiRegistry.get(node.parent, parent => {
-                        parent.insertChild(parent.mount(node));
+                        parent.insertChild(
+                            parent.mount(node, getMathingScopedElements(node.name))
+                        );
                     });
                 } else {
                     node.__scope = node.name;
