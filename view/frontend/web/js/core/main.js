@@ -35,7 +35,11 @@
             $(document).trigger('breeze:mount:' + component, data);
         }
 
-        if (now && ($.breezemap.__get(component) || !$.breeze.jsconfig[component] && !$.breeze.jsinclude.some(m => component.startsWith(m)))) {
+        if (now &&
+            ($.breezemap.__get(component) ||
+                !$.breeze.jsconfig[component] &&
+                !$.breeze.jsinclude.some(m => component.startsWith(m)))
+        ) {
             return callback();
         }
 
