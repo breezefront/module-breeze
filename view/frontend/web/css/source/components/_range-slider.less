@@ -14,11 +14,11 @@
         --thumb-mobile-height: ~"calc(var(--thumb-height) * var(--thumb-mobile-scale))";
         --thumb-border: 1px solid #fff;
         --thumb-border-radius: 999px;
-        --thumb-bg: 10 89 254;
+        --thumb-bg: #0a59fe;
         --thumb-mobile-scale: 1.4;
         --track-height: 4px;
         --track-border-radius: var(--thumb-border-radius);
-        --track-bg: 234 234 234;
+        --track-bg: #eaeaea;
 
         position: relative;
         display: inline-block;
@@ -33,33 +33,33 @@
         }
         &::before,
         [type=range]::-webkit-slider-runnable-track {
-            background: ~"rgb(var(--track-bg))";
+            background: var(--track-bg);
             height: var(--track-height);
             border-radius: var(--track-border-radius);
         }
         [type=range]::-webkit-slider-thumb {
             -webkit-appearance: none;
             cursor: pointer;
-            background: ~"rgba(var(--thumb-bg) / .9)";
+            background: ~"color-mix(in oklch, var(--thumb-bg) 90%, transparent)";
             border: var(--thumb-border);
             border-radius: var(--thumb-border-radius);
             height: var(--thumb-height);
             width: var(--thumb-width);
             margin-top: ~"calc(var(--track-height) / 2 - var(--thumb-height) / 2)";
             transition: box-shadow 200ms ease-out;
-            @media (pointer:coarse) {
+            @media (pointer: coarse) {
                 --thumb-height: var(--thumb-mobile-height);
                 --thumb-width: var(--thumb-mobile-width);
             }
         }
         [type=range]:focus::-webkit-slider-thumb,
         [type=range]:active::-webkit-slider-thumb {
-            box-shadow: ~"0 0 0 3px rgba(var(--thumb-bg) / .2)";
+            box-shadow: ~"0 0 0 3px color-mix(in oklch, var(--thumb-bg) 20%, transparent)";
         }
         [type=range]::-moz-range-thumb {
             -webkit-appearance: none;
             cursor: pointer;
-            background: ~"rgba(var(--thumb-bg) / .9)";
+            background: ~"color-mix(in oklch, var(--thumb-bg) 90%, transparent)";
             border: var(--thumb-border);
             border-radius: var(--thumb-border-radius);
             height: var(--thumb-height);
@@ -69,7 +69,7 @@
             transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
         [type=range]:focus::-moz-range-thumb {
-            box-shadow: ~"0 0 0 3px rgba(var(--thumb-bg) / .2)";
+            box-shadow: ~"0 0 0 3px color-mix(in oklch, var(--thumb-bg) 20%, transparent)";
         }
 
         .filler {
