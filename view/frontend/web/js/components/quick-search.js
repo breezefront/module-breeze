@@ -58,6 +58,11 @@
             this.searchLabel.on('click.quickSearch', function (event) {
                 if (self.isActive()) {
                     event.preventDefault();
+                    if (self.element.val()) {
+                        self.searchForm.submit();
+                    } else {
+                        self.setActiveState(false);
+                    }
                 } else {
                     // in case if element is hidden
                     self.element.focus();
