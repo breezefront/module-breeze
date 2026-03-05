@@ -1,5 +1,9 @@
 & when (@media-common = true) {
 & when (@critical = unsure), (@critical) {
+    :root {
+        --gallery-columns-gap: @bz-gallery-expanded__gap;
+    }
+
     .breeze-gallery {
         display: flex;
         flex-direction: column;
@@ -242,7 +246,6 @@
         }
         .images {
             --gallery-columns-count: @bz-gallery-expanded__columns-count;
-            --gallery-columns-gap: @bz-gallery-expanded__gap;
             display: flex;
             position: relative;
             gap: var(--gallery-columns-gap);

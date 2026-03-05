@@ -380,7 +380,7 @@
             }
 
             // eslint-disable-next-line one-var, vars-on-top
-            var shift = parseFloat(this.element.var('--magnifier-gap')),
+            var shift = this.varToPixels(this.element.var('--magnifier-gap')),
                 leftPosition = this.element.offset().left - this.element.width() - shift,
                 rightPosition = this.element.offset().left + this.element.width() + shift,
                 result = {
@@ -408,6 +408,15 @@
             }
 
             return result;
+        },
+
+        varToPixels: function (val) {
+            var el = $(`<div style="margin-left: ${val || 0}">`).appendTo('body'),
+                px = parseFloat(el.css('marginLeft'));
+
+            el.remove();
+
+            return px;
         },
 
         convertSize: function (size) {
