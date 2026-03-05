@@ -65,7 +65,7 @@
                     }
                 } else {
                     self.setActiveState(true);
-                    setTimeout(() => self.element.focus(), 20);
+                    setTimeout(() => self.element.focus(), 40);
                 }
             });
 
