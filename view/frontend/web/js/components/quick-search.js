@@ -64,9 +64,8 @@
                         self.setActiveState(false);
                     }
                 } else {
-                    // in case if element is hidden
-                    self.element.focus();
                     self.setActiveState(true);
+                    setTimeout(() => self.element.focus(), 20);
                 }
             });
 
