@@ -9,6 +9,7 @@
 <script>
 require(['jquery', 'underscore'], ($, _) => {
     var selector = <?= /* @noEscape */ $block->getJsSelector() ?>,
+        revealOptions = <?= /* @noEscape */ $block->getOnRevealOptions() ?>,
         containers = [
             '.scroll-reveal-cascade',
             '.scroll-reveal-container',
@@ -38,7 +39,7 @@ require(['jquery', 'underscore'], ($, _) => {
                 .one('animationend', function () {
                     $(this).addClass('scroll-reveal-finished');
                 });
-        });
+        }, revealOptions);
     }, 40));
 });
 </script>
