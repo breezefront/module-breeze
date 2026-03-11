@@ -54,4 +54,20 @@ class ScrollReveal extends Template
     {
         return $this->json->serialize(implode(',', $this->getSelectors()));
     }
+
+    /**
+     * Get options for on reveal event
+     *
+     * @return string
+     */
+    public function getOnRevealOptions(): string
+    {
+        $options = $this->getData('on_reveal_options');
+
+        if (!is_array($options)) {
+            $options = [];
+        }
+
+        return $this->json->serialize($options);
+    }
 }
