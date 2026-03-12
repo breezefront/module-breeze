@@ -89,30 +89,34 @@ define(['collapsible'], () => {
                 });
             }
 
-            // listeners must be added after initialization to avoid early callback (scrollTo when tab is reveled)
-            $(this.element).on('collapsible:beforeOpen', function (event, data) {
-                var oldActiveTab = self.getActiveTab(),
-                    newActiveTab = data.instance.element,
-                    prevContent;
+            this.collapsibles.each((i, collapsible) => {
+                var instance = $(collapsible).collapsible('instance');
 
-                if (self.collapsibles.index(newActiveTab.get(0)) === -1) {
-                    return; // nested tabs
-                }
+                instance.open = _.wrap(instance.open, function (o) {
+                    var oldActiveTab = self.getActiveTab(),
+                        newActiveTab = this.element,
+                        prevContent;
 
-                if (oldActiveTab) {
-                    prevContent = oldActiveTab.collapsible('instance').content;
-                }
+                    if (oldActiveTab) {
+                        prevContent = oldActiveTab.collapsible('instance').content;
+                    }
 
-                if (data.instance.options.multipleCollapsible) {
-                    return;
-                }
+                    if (this.options.multipleCollapsible) {
+                        return;
+                    }
 
-                self.prevHeight = prevContent ? $(prevContent).outerHeight() : false;
-                self.collapsibles.not(newActiveTab).collapsible('close');
+                    self.prevHeight = prevContent ? $(prevContent).outerHeight() : false;
 
-                if (newActiveTab && !newActiveTab.isInViewport()) {
-                    self.scrollTo(newActiveTab);
-                }
+                    document.startViewTransition(() => {
+                        self.collapsibles.not(newActiveTab).collapsible('close');
+
+                        if (newActiveTab && !newActiveTab.isInViewport()) {
+                            self.scrollTo(newActiveTab);
+                        }
+
+                        o.bind(instance)();
+                    });
+                });
             });
 
             $(this.element).on('collapsible:beforeLoad', function (event, data) {
