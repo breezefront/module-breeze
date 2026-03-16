@@ -305,73 +305,36 @@
         }
     });
 
-    $.widget('menuSlideout', {
+    $.widget('menuSlideout', 'slideout', {
         options: {
             openDelay: 42,
             closeDelay: 300
         },
 
         create: function () {
-            $(this.element).attr('tabindex', 0);
-
-            this.focusTrap = this.createFocusTrap($('.navigation-wrapper, .nav-sections').first(), {
-                initialFocus: false
-            });
-
-            this._on({
-                click: this.toggle,
-                keydown: e => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        this.toggle();
-                    } else if (e.key === 'Escape') {
-                        this.close();
-                    }
-                }
-            });
-
-            this._on(document, 'keydown', e => {
-                if (e.key === 'Escape' && $('html').hasClass('nav-open')) {
-                    this.close();
-                }
-            });
-        },
-
-        destroy: function () {
-            $.breeze.scrollbar.reset();
-            $('html').removeClass('nav-open').removeClass('nav-before-open');
             this._super();
-        },
-
-        toggle: function (flag) {
-            if (flag === false || $('html').hasClass('nav-open')) {
-                this.close();
-            } else {
-                this.open();
-            }
-        },
-
-        open: function () {
-            $.breeze.scrollbar.hide();
-            this._trigger('beforeOpen');
-            $('html').addClass('nav-before-open');
-            setTimeout(() => {
-                $('html').addClass('nav-open');
-                this._trigger('afterOpen');
-            }, this.options.openDelay);
-            setTimeout(this.focusTrap.activate, 300); // wait till css animation is over
-        },
-
-        close: function () {
-            this._trigger('beforeClose');
-            this.focusTrap.deactivate();
-            $('html').removeClass('nav-open');
-            setTimeout(() => {
-                $('html').removeClass('nav-before-open');
-                this._trigger('afterClose');
-                $.breeze.scrollbar.reset();
-            }, this.options.closeDelay);
+            this._on({
+                'menuSlideout:beforeOpen': function () {
+                    $('html').addClass('nav-before-open');
+                    setTimeout(() => {
+                        $('html').addClass('nav-open');
+                    }, this.options.openDelay);
+                },
+                'menuSlideout:beforeClose': function () {
+                    $('html').removeClass('nav-open');
+                    setTimeout(() => {
+                        $('html').removeClass('nav-before-open');
+                    }, this.options.closeDelay);
+                }
+            });
         }
     });
 
-    $(document).on('breeze:load', () => $('[data-action="toggle-nav"]').menuSlideout());
+    $(document).on('breeze:load', () => {
+        $('.navigation-wrapper, .nav-sections').first().menuSlideout({
+            trigger: '[data-action="toggle-nav"]',
+            overlay: false,
+            closeButton: false,
+        });
+    });
 })();
