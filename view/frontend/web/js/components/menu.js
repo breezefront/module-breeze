@@ -1,4 +1,4 @@
-(function () {
+define(['slideout'], () => {
     'use strict';
 
     $.widget('menu', {
@@ -337,4 +337,4 @@
             closeButton: false,
         });
     });
-})();
+});
