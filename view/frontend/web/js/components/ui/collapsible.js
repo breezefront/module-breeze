@@ -269,7 +269,7 @@
         }
 
         $.widget('collapsible').each(function (widget) {
-            if (widget === instance) {
+            if (widget === instance || widget.element.has(event.target).length) {
                 return;
             }
 
