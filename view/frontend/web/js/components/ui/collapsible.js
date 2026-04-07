@@ -99,7 +99,8 @@
         },
 
         isActive: function () {
-            return this.content.attr('aria-hidden') === 'false';
+            return this.content.attr('aria-hidden') === 'false' ||
+                $(this.options.collateral.element).hasClass(this.options.collateral.openedState);
         },
 
         isEnabled: function () {
