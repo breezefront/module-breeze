@@ -263,7 +263,7 @@
     function resolveRelativePath(moduleName, relativePath) {
         var basePath, parts;
 
-        if (!relativePath.startsWith('.')) {
+        if (!relativePath.startsWith('.') || !moduleName) {
             return relativePath;
         }
 
