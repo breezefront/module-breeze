@@ -104,7 +104,7 @@
                     return;
                 }
 
-                if (self.element.has(event.target).length ||
+                if (self.searchForm.has(event.target).length ||
                     self.autoComplete.has(event.target).length
                 ) {
                     return clearTimeout(self.blurTimeout);
