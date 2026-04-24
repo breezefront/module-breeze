@@ -47,6 +47,11 @@
                         return;
                     }
 
+                    // event caused by view-transition
+                    if (e.type === 'mouseenter' && !e.movementX && !e.movementY) {
+                        return;
+                    }
+
                     e.preventDefault();
                     e.stopImmediatePropagation();
 
