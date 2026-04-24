@@ -4,12 +4,6 @@
     }
 ?>
 
-<style>
-    @view-transition {
-        navigation: auto;
-    }
-</style>
-
 <script>
 const setTemporaryViewTransitionNames = async (entries, promise) => {
     entries.filter(pair => pair[0]).forEach(async ([el, name]) => {
