@@ -37,75 +37,85 @@
         });
     }
 
-    rules.forEach(rule => {
-        rule.events.forEach(event => {
-            var [, eventName, selector] = event.match(/^([\w:-]*)\s*(.*)$/),
-                handler = (e) => {
-                    var el = e.target.closest?.(selector);
+    function observe(e) {
+        // event caused by view-transition
+        if (e.type === 'pointermove' && !e.movementX && !e.movementY) {
+            return;
+        }
 
-                    if (e.defaultPrevented || !el) {
-                        return;
-                    }
+        document.removeEventListener('pointerdown', observe)
+        document.removeEventListener('pointermove', observe);
 
-                    // event caused by view-transition
-                    if (e.type === 'mouseenter' && !e.movementX && !e.movementY) {
-                        return;
-                    }
-
-                    e.preventDefault();
-                    e.stopImmediatePropagation();
-
-                    if (spinnerConfig.el !== el) {
-                        updateSpinner({
-                            el,
-                            eventName,
-                            component: rule.component,
-                        });
-                    }
-                },
-                mouseleaveHandler = (e) => {
-                    if (e.target.closest?.(selector) && spinnerConfig.component === rule.component) {
-                        updateSpinner({});
-                    }
-                },
-                elements = [];
-
-            selectors.push(selector);
-
-            if (eventName === 'mouseenter') {
-                elements = document.querySelectorAll(selector);
-                elements.forEach(el => {
-                    el.addEventListener('mouseenter', handler);
-                    el.addEventListener('mouseleave', mouseleaveHandler);
-                });
-            } else {
-                document.addEventListener(eventName, handler);
+        rules.forEach(rule => {
+            if (window.$?.breezemap?.[rule.component]) {
+                return;
             }
+            rule.events.forEach(event => {
+                var [, eventName, selector] = event.match(/^([\w:-]*)\s*(.*)$/),
+                    handler = (e) => {
+                        var el = e.target.closest?.(selector);
 
-            document.addEventListener(`breeze:component:load:${rule.component}`, () => {
+                        if (e.defaultPrevented || !el) {
+                            return;
+                        }
+
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+
+                        if (spinnerConfig.el !== el) {
+                            updateSpinner({
+                                el,
+                                eventName,
+                                component: rule.component,
+                            });
+                        }
+                    },
+                    mouseleaveHandler = (e) => {
+                        if (e.target.closest?.(selector) && spinnerConfig.component === rule.component) {
+                            updateSpinner({});
+                        }
+                    },
+                    elements = [];
+
+                selectors.push(selector);
+
                 if (eventName === 'mouseenter') {
+                    elements = document.querySelectorAll(selector);
                     elements.forEach(el => {
-                        el.removeEventListener('mouseenter', handler);
-                        el.removeEventListener('mouseleave', mouseleaveHandler);
+                        el.addEventListener('mouseenter', handler);
+                        el.addEventListener('mouseleave', mouseleaveHandler);
                     });
                 } else {
-                    document.removeEventListener(eventName, handler);
+                    document.addEventListener(eventName, handler);
                 }
 
-                setTimeout(() => {
-                    if (spinnerConfig.component === rule.component) {
-                        try {
-                            rule.proxy !== false && $(spinnerConfig.el)[spinnerConfig.eventName]();
-                        } catch (e) {}
-                        updateSpinner({});
+                document.addEventListener(`breeze:component:load:${rule.component}`, () => {
+                    if (eventName === 'mouseenter') {
+                        elements.forEach(el => {
+                            el.removeEventListener('mouseenter', handler);
+                            el.removeEventListener('mouseleave', mouseleaveHandler);
+                        });
+                    } else {
+                        document.removeEventListener(eventName, handler);
                     }
-                }, 200);
-            }, { once: true });
+
+                    setTimeout(() => {
+                        if (spinnerConfig.component === rule.component) {
+                            try {
+                                rule.proxy !== false && $(spinnerConfig.el)[spinnerConfig.eventName]();
+                            } catch (e) {}
+                            updateSpinner({});
+                        }
+                    }, 200);
+                }, { once: true });
+            });
         });
-    });
+    }
 
     window.addEventListener('resize', () => updateSpinner());
     document.addEventListener('click', () => updateSpinner({}));
+    document.addEventListener('pointerdown', observe)
+    document.addEventListener('pointermove', observe);
 
     var unrevealObserver = new IntersectionObserver(entries => {
         if (entries.some(entry => !entry.isIntersecting && spinnerConfig.el === entry.target)) {
