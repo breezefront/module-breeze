@@ -84,6 +84,11 @@ define(['ko/template/renderer'], (renderer) => {
 
     function applyComponents(el, bindingContext, promise, component) {
         promise.resolve();
+
+        if (component.index && $(el).component(component.index)) {
+            return;
+        }
+
         component = bindingContext.createChildContext(component);
         ko.utils.arrayForEach(ko.virtualElements.childNodes(el), ko.cleanNode);
         ko.applyBindingsToDescendants(component, el);
