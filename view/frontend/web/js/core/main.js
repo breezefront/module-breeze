@@ -388,7 +388,7 @@
                 }
 
                 if (instance) {
-                    [...new Set(key, name)].forEach(k => {
+                    [...new Set([key, name])].forEach(k => {
                         $(el).component(k, instance);
                         $.registry.set(k, el, instance);
                     });
