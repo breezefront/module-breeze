@@ -32,6 +32,7 @@ define([
         _postDataAction: function (e) {
             var params = $(e.currentTarget).data('post') || $(e.currentTarget).data('post-remove');
 
+            params.target = $(e.currentTarget);
             e.preventDefault();
             this.postData(params);
         },
