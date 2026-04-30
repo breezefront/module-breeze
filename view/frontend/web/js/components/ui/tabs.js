@@ -33,7 +33,7 @@ define(['collapsible'], () => {
 
             if (this.options.tablist) {
                 this.element.find(this.options.tablist).filter(isNotNested).attr('role', 'tablist');
-            } else {
+            } else if (this.collapsibles.parent().attr('role') !== 'tablist') {
                 this.collapsibles
                     .parent()
                     .prepend(`<div role="tablist" aria-owns="${this.triggers.map((i, t) => t.id).get().join(' ')}">`);
