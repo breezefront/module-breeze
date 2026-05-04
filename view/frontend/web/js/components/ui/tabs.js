@@ -103,7 +103,7 @@ define(['collapsible'], () => {
 
                     self.prevHeight = prevContent ? $(prevContent).outerHeight() : false;
 
-                    document.startViewTransition(() => {
+                    // document.startViewTransition(() => {
                         self.collapsibles.not(newActiveTab).collapsible('close');
 
                         if (!this.options.multipleCollapsible &&
@@ -114,7 +114,7 @@ define(['collapsible'], () => {
                         }
 
                         o.bind(instance)();
-                    });
+                    // });
                 });
             });
 
