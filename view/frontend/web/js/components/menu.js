@@ -136,11 +136,29 @@ define(['slideout'], () => {
 
         /** Enable desktop mode */
         toggleDesktopMode: function () {
-            var self = this;
+            var self = this,
+                cancelClick = false;
 
             $(self.options.dropdown + '.shown').each(function () {
                 self.close($(this));
             });
+
+            this.element
+                .on('pointerdown.menu', 'li.parent', function (e) {
+                    if (e.pointerType !== 'mouse') {
+                        var dropdown = $(this).children(self.options.dropdown);
+
+                        if (dropdown.length && !dropdown.hasClass('shown')) {
+                            cancelClick = true;
+                        }
+                    }
+                })
+                .on('click.menu', 'li.parent', function (e) {
+                    if (cancelClick) {
+                        cancelClick = false;
+                        e.preventDefault();
+                    }
+                });
 
             $('li.parent', this.element)
                 .microtasks()
@@ -179,6 +197,8 @@ define(['slideout'], () => {
         /** Enable mobile mode */
         toggleMobileMode: function () {
             var self = this;
+
+            this.element.off('pointerdown.menu click.menu');
 
             $('li.parent', this.element)
                 .microtasks()
