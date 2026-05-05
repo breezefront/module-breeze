@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "swissup/module-core": "^1.12.26",
         "swissup/module-rtl": "^1.3.4"
     },
     "autoload": {
