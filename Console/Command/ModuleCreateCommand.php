@@ -23,7 +23,7 @@ class ModuleCreateCommand extends AbstractCreateCommand
         parent::configure();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
             $package = $this->getPackageName();

@@ -37,7 +37,7 @@ class ConfigDumpCommand extends Command
         parent::configure();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$this->deploymentConfig->isDbAvailable()) {
             $output->writeln(
