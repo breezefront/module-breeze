@@ -353,8 +353,8 @@
                 isFirstRun = !this.pages?.length,
                 shouldScroll = !isFirstRun,
                 offsetParentRect = this.slides.first().offsetParent()[0]?.getBoundingClientRect(),
-                gap = parseFloat(this.slider.css('gap')) || 0,
                 isHorizontal = this.slider.css('flex-direction') === 'row',
+                gap = parseFloat(this.slider.css(isHorizontal ? 'column-gap' : 'row-gap')) || 0,
                 isRtl = $('body').hasClass('rtl') && isHorizontal,
                 scrollKey = isHorizontal ? isRtl ? 'right' : 'left' : 'top',
                 sliderWidth = isHorizontal ? this.slider.outerWidth() : this.slider.outerHeight(),
@@ -621,7 +621,7 @@
 
         scrollToPageClone: function (index) {
             var scrollTo = 0,
-                gap = parseFloat(this.slider.css('gap')) || 0;
+                gap = this.gap;
 
             if (!index) {
                 scrollTo = this.pages.at(-1).end + gap;
