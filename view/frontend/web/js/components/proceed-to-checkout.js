@@ -7,7 +7,7 @@
             var cart = $.customerData.get('cart'),
                 customer = $.customerData.get('customer');
 
-            $(this.element).on('click', function (event) {
+            $(this.element).on('click', event => {
                 event.preventDefault();
 
                 if (!customer().firstname && cart().isGuestCheckoutAllowed === false) {
@@ -20,8 +20,9 @@
                     });
                 }
 
+                $(this.element).prop('disabled', true);
                 location.href = this.options.checkoutUrl;
-            }.bind(this));
+            });
         }
     });
 })();
