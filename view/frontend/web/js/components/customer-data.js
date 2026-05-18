@@ -1,12 +1,15 @@
 (function () {
     'use strict';
 
-    var customerData,
-        deferred = $.Deferred(),
+    const GLOBAL_SHARE = '0';
+
+    var options = {},
+        storage = $.storage.ns('mage-cache-storage'),
+        storageInvalidation = $.storage.ns('mage-cache-storage-section-invalidation'),
         sectionConfig = $.sections,
         disposableSubscriptions = new WeakMap(),
-        storage = $.storage.ns('mage-cache-storage'),
-        storageInvalidation = $.storage.ns('mage-cache-storage-section-invalidation');
+        customerData,
+        deferred = $.Deferred();
 
     /**
      * @param {Object} settings
@@ -25,31 +28,79 @@
      * Invalidate Cache By Close Cookie Session
      */
     function invalidateCacheByCloseCookieSession() {
+        var isLoggedIn = parseInt(options.isLoggedIn, 10) || 0,
+            loginStorage = $.localStorage;
+
         if (!$.cookies.get('mage-cache-sessid')) {
-            $.cookies.set('mage-cache-sessid', true, {
-                domain: false
-            });
             storage.removeAll();
         }
+
+        if (options.customerShare === GLOBAL_SHARE) {
+            loginStorage = $.cookieStorage;
+        }
+
+        if (!loginStorage.isSet('mage-customer-login')) {
+            loginStorage.set('mage-customer-login', isLoggedIn);
+        }
+        if (loginStorage.get('mage-customer-login') !== isLoggedIn) {
+            loginStorage.set('mage-customer-login', isLoggedIn);
+            storage.removeAll();
+        }
+
+        $.cookies.set('mage-cache-sessid', true, {
+            domain: false
+        });
     }
+
+    ko.extenders.disposableCustomerData = function (target, sectionName) {
+        var sectionDataIds, newSectionDataIds = {};
+
+        if (!disposableSubscriptions.has(target)) {
+            disposableSubscriptions.set(target, {});
+        }
+
+        if (disposableSubscriptions.get(target)[sectionName]) {
+            return target;
+        }
+
+        disposableSubscriptions.get(target)[sectionName] = target.subscribe(function () {
+            setTimeout(function () {
+                storage.remove(sectionName);
+                sectionDataIds = $.cookieStorage.getJson('section_data_ids') || {};
+                // eslint-disable-next-line max-nested-callbacks
+                _.each(sectionDataIds, function (data, name) {
+                    if (name !== sectionName) {
+                        newSectionDataIds[name] = data;
+                    }
+                });
+                $.cookieStorage.setJson('section_data_ids', newSectionDataIds, {
+                    domain: false
+                });
+            }, 3000);
+        });
+
+        return target;
+    };
 
     customerData = {
         data: {},
 
-        /**
-         * @param {Object} settings
-         */
         initialize: function (settings) {
-            this.options = settings;
-            invalidateCacheBySessionTimeOut(this.options);
+            options = settings;
+            customerData.initStorage();
+            invalidateCacheBySessionTimeOut(settings);
             invalidateCacheByCloseCookieSession();
-            this.create();
+            customerData.init();
             deferred.resolve();
             $(document).trigger('customerData:afterInitialize');
         },
 
-        create: function () {
+        init: function () {
             var sectionNames;
+
+            $.each(storage.get(), function (name, value) {
+                customerData.set(name, value);
+            });
 
             // store switcher
             if ($.cookies.get('section_data_clean')) {
@@ -59,7 +110,7 @@
             }
 
             // magento bugfix for deprecated/removed cookie
-            if (this.options.expirableSectionNames &&
+            if (options.expirableSectionNames &&
                 _.isEmpty($.cookies.getJson('section_data_ids') || {})
             ) {
                 return this.reload([], true);
@@ -72,6 +123,11 @@
             }
         },
 
+        // deprecated
+        create: function () {
+            this.init();
+        },
+
         initStorage: function () {
             // dummy method for luma compatibility
         },
@@ -82,12 +138,12 @@
         getExpiredSectionNames: function () {
             var expiredSectionNames = storageInvalidation.keys(),
                 cookieSectionTimestamps = $.cookies.getJson('section_data_ids') || {},
-                sectionLifetime = this.options.expirableSectionLifetime * 60,
+                sectionLifetime = options.expirableSectionLifetime * 60,
                 currentTimestamp = Math.floor(Date.now() / 1000),
                 sectionData;
 
             // process sections that can expire due to lifetime constraints
-            _.each(this.options.expirableSectionNames, function (sectionName) {
+            _.each(options.expirableSectionNames, function (sectionName) {
                 sectionData = storage.get(sectionName);
 
                 if (sectionData && sectionData.data_id + sectionLifetime <= currentTimestamp) {
@@ -129,7 +185,7 @@
         reload: function (sections, forceNewSectionTimestamp) {
             var params = {};
 
-            if (!this.options) {
+            if (!options) {
                 return this.invalidate(sections);
             }
 
@@ -144,7 +200,7 @@
             }
 
             return $.request.get({
-                url: this.options.sectionLoadUrl,
+                url: options.sectionLoadUrl,
                 data: params,
                 accept: 'json',
                 success: async function (data) {
@@ -221,39 +277,14 @@
                     this.reload(sections, true);
                 }
             }
+        },
+
+        'Magento_Customer/js/customer-data': function (settings) {
+            this.initialize(settings);
         }
     };
 
     window.customerData = $.customerData = $.breezemap['Magento_Customer/js/customer-data'] = customerData;
-
-    ko.extenders.disposableCustomerData = function (target, sectionName) {
-        var sectionDataIds, newSectionDataIds = {};
-
-        if (!disposableSubscriptions.has(target)) {
-            disposableSubscriptions.set(target, {});
-        }
-
-        if (disposableSubscriptions.get(target)[sectionName]) {
-            return target;
-        }
-
-        disposableSubscriptions.get(target)[sectionName] = target.subscribe(function () {
-            setTimeout(function () {
-                storage.remove(sectionName);
-                sectionDataIds = $.cookieStorage.getJson('section_data_ids') || {};
-                _.each(sectionDataIds, function (data, name) {
-                    if (name !== sectionName) {
-                        newSectionDataIds[name] = data;
-                    }
-                });
-                $.cookieStorage.setJson('section_data_ids', newSectionDataIds, {
-                    domain: false
-                });
-            }, 3000);
-        });
-
-        return target;
-    };
 
     $(document).on('customerData:reload', function (event, data) {
         customerData.reload(data.sections, data.forceNewSectionTimestamp);
@@ -261,15 +292,6 @@
 
     $(document).on('customerData:invalidate', function (event, data) {
         customerData.invalidate(data.sections);
-    });
-
-    $(document).on('breeze:load', function () {
-        $.each(storage.get(), function (name, value) {
-            customerData.set(name, value);
-        });
-        setTimeout(() => {
-            customerData.initialize(window.customerDataConfig);
-        });
     });
 
     $(document).on('ajaxComplete', function (event, data) {

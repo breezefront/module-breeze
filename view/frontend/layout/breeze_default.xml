@@ -1034,9 +1034,12 @@
         <referenceBlock name="require.js" template="Swissup_Breeze::theme/js/require_js.phtml"/>
         <referenceBlock name="cookie_config" template="Swissup_Breeze::theme/js/cookie.phtml"/>
         <referenceBlock name="customer.section.config" template="Swissup_Breeze::customer/js/section-config.phtml"/>
-        <referenceBlock name="customer.customer.data" template="Swissup_Breeze::customer/js/customer-data.phtml"/>
         <referenceBlock name="minicart" template="Swissup_Breeze::checkout/minicart.phtml"/>
         <referenceBlock name="google.maps.api" template="Swissup_Breeze::pagebuilder/googlemaps.phtml"/>
+
+        <referenceContainer name="content">
+            <block name="deperecated.customer.customer.data" template="Swissup_Breeze::customer/js/customer-data.phtml" class="Magento\Customer\Block\CustomerData" after="customer.customer.data"/>
+        </referenceContainer>
 
         <referenceBlock name="head.additional">
             <block name="breeze.speculationRules" template="Swissup_Breeze::theme/speculation-rules.phtml"/>

@@ -54,6 +54,10 @@ var createStorage = function (storage) {
         get,
         set,
 
+        isSet: function (key) {
+            return storage.getItem(key) !== null;
+        },
+
         /**
          * @param {Mixed} keys
          */
@@ -97,6 +101,12 @@ var createStorage = function (storage) {
                     data[namespace][key] = value;
 
                     set(namespace, data[namespace]);
+                },
+
+                isSet: function (key) {
+                    loadNamespace(namespace);
+
+                    return Object.keys(data[namespace]).includes(key);
                 },
 
                 /**
