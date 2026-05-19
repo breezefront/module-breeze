@@ -114,6 +114,14 @@ define(['slideout'], () => {
 
                 return false;
             });
+
+            $(window).on('pageshow', e => {
+                if (e.persisted) {
+                    $(this.options.dropdown + '.shown', this.element).each((i, dropdown) => {
+                        this.close($(dropdown));
+                    });
+                }
+            });
         },
 
         /** Hide expanded menu's, remove event listeneres */

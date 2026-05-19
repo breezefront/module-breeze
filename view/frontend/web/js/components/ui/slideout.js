@@ -33,6 +33,12 @@ define([
                     }
                 }
             });
+
+            $(window).on('pageshow', e => {
+                if (e.persisted) {
+                    this.close();
+                }
+            });
         },
 
         destroy: function () {

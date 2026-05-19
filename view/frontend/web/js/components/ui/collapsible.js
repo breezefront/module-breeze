@@ -57,6 +57,12 @@
                     }
                 }.bind(this)
             });
+
+            $(window).on('pageshow', e => {
+                if (e.persisted && !this.options.active) {
+                    this.close();
+                }
+            });
         },
 
         init: function () {

@@ -54,6 +54,12 @@
     $(document).on('breeze:mount:Magento_Review/js/validate-review', async function (event, data) {
         await require.async('validation');
 
+        $(window).on('pageshow', e => {
+            if (e.persisted) {
+                $(data.el).find('.submit').prop('disabled', false);
+            }
+        });
+
         $.validator.addMethod(
             'rating-required',
             function (value) {

@@ -68,6 +68,12 @@ define([
 
         create: function () {
             loginAction.registerLoginCallback(() => this.isLoading(false));
+
+            $(window).on('pageshow', e => {
+                if (e.persisted) {
+                    this.isLoading(false);
+                }
+            });
         },
 
         _applyBindings: async function (element, force) {

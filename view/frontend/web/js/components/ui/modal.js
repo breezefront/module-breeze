@@ -85,6 +85,12 @@
             if (this.options.autoOpen) {
                 this.openModal();
             }
+
+            $(window).on('pageshow', e => {
+                if (e.persisted) {
+                    this.closeModal();
+                }
+            });
         },
 
         destroy: function () {

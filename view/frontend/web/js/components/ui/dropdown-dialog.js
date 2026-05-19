@@ -55,6 +55,12 @@
                     }
                 }.bind(this)
             });
+
+            $(window).on('pageshow', e => {
+                if (e.persisted) {
+                    this.close();
+                }
+            });
         },
 
         addButtons: function () {

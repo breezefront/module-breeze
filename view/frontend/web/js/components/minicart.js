@@ -77,6 +77,12 @@
             }).on('focusout', this.options.item.qty, function (event) {
                 self._validateQty($(event.currentTarget));
             });
+
+            $(window).on('pageshow', e => {
+                if (e.persisted) {
+                    $(this.element).find(this.options.button.checkout).prop('disabled', false);
+                }
+            });
         },
 
         /**
@@ -298,6 +304,13 @@
             ) {
                 $.customerData.reload(['cart'], false);
             }
+
+            $(window).on('pageshow', e => {
+                if (e.persisted) {
+                    self.addToCartCalls = 0;
+                    self.isLoading(false);
+                }
+            });
         },
 
         destroy: function () {

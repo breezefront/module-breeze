@@ -23,6 +23,12 @@
                 $(this.element).prop('disabled', true);
                 location.href = this.options.checkoutUrl;
             });
+
+            $(window).on('pageshow', e => {
+                if (e.persisted) {
+                    $(this.element).prop('disabled', false);
+                }
+            });
         }
     });
 })();

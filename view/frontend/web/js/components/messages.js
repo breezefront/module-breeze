@@ -96,6 +96,13 @@ define([
 
             this.purgeMessages(); // call for magento < 2.4.7
             this.removeCookieMessages();
+
+            $(window).on('pageshow', e => {
+                if (e.persisted) {
+                    this.cookieMessagesObservable([]);
+                    this.purgeMessages();
+                }
+            });
         },
 
         removeCookieMessages: function () {
