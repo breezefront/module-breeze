@@ -3,7 +3,8 @@
     var rules = <?= /* @noEscape */ $block->getRules() ?>,
         spinner,
         selectors = [],
-        spinnerConfig = {};
+        spinnerConfig = {},
+        sleep = async ms => await new Promise(resolve => setTimeout(resolve, ms));
 
     function updateSpinner(config) {
         spinnerConfig = config || spinnerConfig;
@@ -89,7 +90,7 @@
                     document.addEventListener(eventName, handler);
                 }
 
-                document.addEventListener(`breeze:component:load:${rule.component}`, () => {
+                document.addEventListener(`breeze:component:load:${rule.component}`, async () => {
                     if (eventName === 'mouseenter') {
                         elements.forEach(el => {
                             el.removeEventListener('mouseenter', handler);
@@ -99,14 +100,15 @@
                         document.removeEventListener(eventName, handler);
                     }
 
-                    setTimeout(() => {
-                        if (spinnerConfig.component === rule.component) {
-                            try {
-                                rule.proxy !== false && $(spinnerConfig.el)[spinnerConfig.eventName]();
-                            } catch (e) {}
-                            updateSpinner({});
-                        }
-                    }, 250);
+                    await sleep(200);
+
+                    if (spinnerConfig.component === rule.component) {
+                        await sleep(spinnerConfig.eventName === 'mouseenter' ? 400 : 0);
+                        try {
+                            rule.proxy !== false && $(spinnerConfig.el)[spinnerConfig.eventName]();
+                        } catch (e) {}
+                        updateSpinner({});
+                    }
                 }, { once: true });
             });
         });
