@@ -129,9 +129,12 @@ class JsBuild
             $build[$name] ??= [];
             foreach ($deps as $depPath => $depItem) {
                 // $build[$name][] = "// dependency of {$name} - {$depPath}";
-                $build[$name][] = $this->getContents($depPath);
-                if (!empty($depItem['anonymous'])) {
-                    $build[$name][] = ";define([], () => $.breezemap.__register('{$depItem['name']}'));";
+                $content = $this->getContents($depPath);
+                if ($content) {
+                    $build[$name][] = $content;
+                    if (!empty($depItem['anonymous'])) {
+                        $build[$name][] = ";define([], () => $.breezemap.__register('{$depItem['name']}'));";
+                    }
                 }
                 $loadedDeps[$depPath] = $depPath;
             }
@@ -141,9 +144,12 @@ class JsBuild
             }
 
             // $build[$name][] = "// {$item['path']}";
-            $build[$name][] = $this->getContents($item['path']);
-            if (!empty($item['anonymous'])) {
-                $build[$name][] = ";define([], () => $.breezemap.__register('{$name}'));";
+            $content = $this->getContents($item['path']);
+            if ($content) {
+                $build[$name][] = $content;
+                if (!empty($item['anonymous'])) {
+                    $build[$name][] = ";define([], () => $.breezemap.__register('{$name}'));";
+                }
             }
             $loadedDeps[$item['path']] = $item['path'];
         }
