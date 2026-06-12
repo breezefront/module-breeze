@@ -4,7 +4,7 @@ namespace Swissup\Breeze\Console\Command;
 
 class Stubs
 {
-    public function moduleFor(string $package, ?string $forPackage = null): array
+    public function moduleFor(string $package, string $forPackage): array
     {
         $result = $this->module($package);
 
