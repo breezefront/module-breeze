@@ -37,6 +37,7 @@ class ViewResultPage
 
         $html = $this->filter->process($html);
         $httpResponse->setBody($html);
+        $httpResponse->setHeader('X-Built-With', 'Breeze Front');
 
         return $result;
     }
