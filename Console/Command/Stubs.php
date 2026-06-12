@@ -4,7 +4,51 @@ namespace Swissup\Breeze\Console\Command;
 
 class Stubs
 {
-    public function module(string $package)
+    public function moduleFor(string $package, ?string $forPackage = null): array
+    {
+        $result = $this->module($package);
+
+        $placeholders = $this->placeholders($package);
+        $forPlaceholders = $this->placeholders($forPackage);
+        $placeholders['{{ForVendor}}'] = $forPlaceholders['{{Vendor}}'];
+        $placeholders['{{ForModule}}'] = $forPlaceholders['{{Module}}'];
+
+        $key = $this->render('code/{{Vendor}}/{{Module}}/view/frontend/layout/breeze_default.xml', $package);
+        $result[$key]['content'] = $this->render(<<<TEXT
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="breeze.js">
+            <arguments>
+                <argument name="better_compatibility" xsi:type="array">
+                    <item name="{{ForVendor}}_{{ForModule}}" xsi:type="boolean">true</item>
+                </argument>
+                <argument name="bundles" xsi:type="array">
+                    <item name="dynamic" xsi:type="array">
+                        <item name="items" xsi:type="array">
+                            <!-- optional example: override cmp here -->
+                            <!--
+                            <item name="{{ForVendor}}_{{ForModule}}/js/cmp" xsi:type="array">
+                                <item name="path" xsi:type="string">{{Vendor}}_{{Module}}/js/cmp</item>
+                            </item>
+                            -->
+                        </item>
+                    </item>
+                </argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>
+TEXT, $placeholders);
+
+        $key = $this->render('code/{{Vendor}}/{{Module}}/view/frontend/web/js/script.js', $placeholders);
+        unset($result[$key]);
+
+        return $result;
+    }
+
+    public function module(string $package): array
     {
         $stubs = [
             'code/{{Vendor}}/{{Module}}/composer.json' => [
@@ -239,9 +283,12 @@ TEXT,
         ]));
     }
 
-    public function render(string $template, string $package): string
+    public function render(string $template, string|array $placeholders): string
     {
-        return strtr($template, $this->placeholders($package));
+        if (!is_array($placeholders)) {
+            $placeholders = $this->placeholders($placeholders);
+        }
+        return strtr($template, $placeholders);
     }
 
     private function placeholders(string $package): array

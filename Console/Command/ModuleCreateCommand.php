@@ -38,7 +38,11 @@ class ModuleCreateCommand extends AbstractCreateCommand
                 }
             }
 
-            $paths = $this->create($this->stubs->module($package));
+            if ($for = $this->input->getOption('for')) {
+                $paths = $this->create($this->stubs->moduleFor($package, $for));
+            } else {
+                $paths = $this->create($this->stubs->module($package));
+            }
 
             foreach ($paths as $path => $success) {
                 $this->output->writeln(
