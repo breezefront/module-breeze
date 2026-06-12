@@ -119,7 +119,7 @@ TEXT,
         return $this->process($stubs, $this->placeholders($package));
     }
 
-    public function theme(string $package, $parentTheme)
+    public function theme(string $package, $parentTheme): array
     {
         $stubs = [
             'design/frontend/{{Vendor}}/{{theme}}/composer.json' => [
@@ -239,12 +239,12 @@ TEXT,
         ]));
     }
 
-    public function render(string $template, string $package)
+    public function render(string $template, string $package): string
     {
         return strtr($template, $this->placeholders($package));
     }
 
-    private function placeholders(string $package)
+    private function placeholders(string $package): array
     {
         list($vendor, $name) = explode('/', $package);
 
@@ -263,7 +263,7 @@ TEXT,
         ];
     }
 
-    private function process(array $stubs, array $placeholders)
+    private function process(array $stubs, array $placeholders): array
     {
         $result = [];
 
