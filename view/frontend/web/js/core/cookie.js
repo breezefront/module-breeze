@@ -48,6 +48,14 @@
 
             /**
              * @param {String} name
+             * @return {Boolean}
+             */
+            isSet: function (name) {
+                return this.get(name) !== undefined;
+            },
+
+            /**
+             * @param {String} name
              * @return {Mixed}
              */
             getJson: function (name) {
