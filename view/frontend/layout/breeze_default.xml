@@ -355,7 +355,13 @@
                         <item name="items" xsi:type="array">
                             <item name="Magento_Catalog/js/product/view/provider" xsi:type="string">Swissup_Breeze/js/components/register-viewed-products</item>
                             <item name="priceOptions" xsi:type="string">Swissup_Breeze/js/components/price-options</item>
-                            <item name="breadcrumbs" xsi:type="string">Swissup_Breeze/js/components/breadcrumbs</item>
+                            <item name="breadcrumbs" xsi:type="array">
+                                <item name="path" xsi:type="string">Swissup_Breeze/js/components/breadcrumbs</item>
+                                <item name="export" xsi:type="array">
+                                    <item name="breadcrumbs" xsi:type="string">breadcrumbs</item>
+                                    <item name="Magento_Theme/js/model/breadcrumb-list" xsi:type="string">Magento_Theme/js/model/breadcrumb-list</item>
+                                </item>
+                            </item>
                             <item name="mage/gallery/gallery" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/gallery</item>
                                 <item name="import" xsi:type="array">

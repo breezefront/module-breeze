@@ -1,6 +1,13 @@
 (function () {
     'use strict';
 
+    $.breezemap['Magento_Theme/js/model/breadcrumb-list'] = [{
+        name: 'home',
+        label: $.__('Home'),
+        title: $.__('Go to Home Page'),
+        link: window.BASE_URL || ''
+    }];
+
     $.widget('breadcrumbs', {
         component: 'breadcrumbs',
         options: {
@@ -12,12 +19,7 @@
         },
 
         create: function () {
-            this.breadcrumbs = [{
-                name: 'home',
-                label: $.__('Home'),
-                title: $.__('Go to Home Page'),
-                link: window.BASE_URL || ''
-            }];
+            this.breadcrumbs = $.breezemap['Magento_Theme/js/model/breadcrumb-list'];
 
             this._appendCatalogCrumbs();
             this._decorate(this.breadcrumbs);
