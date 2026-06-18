@@ -1,6 +1,8 @@
 (function () {
     'use strict';
 
+    var prefilters = [];
+
     $.active = 0;
 
     /**
@@ -307,6 +309,8 @@
             };
         });
 
+        prefilters.forEach(fn => fn(params, params, result));
+
         result.abort = () => controller.abort();
         result.catch = result.fail;
 
@@ -355,6 +359,9 @@
     $.ajax = $.request.send;
     $.get = $.getJSON = $.request.get;
     $.post = $.request.post;
+    $.ajaxPrefilter = prefilter => {
+        prefilters.push(prefilter);
+    };
 
     function storageRequest(url, global, contentType, headers, method, data) {
         if (!url.startsWith('http')) {
