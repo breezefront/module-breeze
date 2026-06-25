@@ -631,13 +631,20 @@
     };
 
     $.fn.serializeArray = function () {
-        return this.get().flatMap(el =>
-            el instanceof HTMLFormElement
-                ? Array.from(new FormData(el), ([name, value]) => ({ name, value }))
-                : el.name
-                    ? [{ name: el.name, value: el.value }]
-                    : []
-        );
+        var form = document.createElement('form'),
+            result = [];
+
+        this.each((_, el) => {
+            if (el instanceof HTMLFormElement) {
+                result.push(...Array.from(new FormData(el), ([name, value]) => ({ name, value })));
+            } else {
+                form.append(el.cloneNode(true));
+            }
+        });
+
+        result.push(...Array.from(new FormData(form), ([name, value]) => ({ name, value })));
+
+        return result;
     };
 
     $.noConflict = () => {};
