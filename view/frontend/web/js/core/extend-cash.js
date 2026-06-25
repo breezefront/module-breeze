@@ -631,9 +631,13 @@
     };
 
     $.fn.serializeArray = function () {
-        return this.get().reduce((acc, form) => {
-            return [...acc, ...Array.from((new FormData(form)).entries()).map(([name, value]) => ({name, value}))];
-        }, []);
+        return this.get().flatMap(el =>
+            el instanceof HTMLFormElement
+                ? Array.from(new FormData(el), ([name, value]) => ({ name, value }))
+                : el.name
+                    ? [{ name: el.name, value: el.value }]
+                    : []
+        );
     };
 
     $.noConflict = () => {};
