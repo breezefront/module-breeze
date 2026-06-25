@@ -2,6 +2,7 @@
     'use strict';
 
     var modules = {},
+        pathToAlias = {},
         htmls = {},
         aliases = [],
         ignoredMemo = {},
@@ -151,6 +152,7 @@
             parents = [];
         }
 
+        name = pathToAlias[name] || name;
         if (!modules[name]) {
             modules[name] = {
                 name,
@@ -193,6 +195,14 @@
                         $.breeze.debug(`Better compatibility path: ${name}`);
                         modules[name].path = name;
                     }
+                }
+            }
+
+            if (modules[name].path) {
+                if (pathToAlias[modules[name].path]) {
+                    modules[name] = modules[pathToAlias[modules[name].path]];
+                } else {
+                    pathToAlias[modules[name].path] = name;
                 }
             }
         }
