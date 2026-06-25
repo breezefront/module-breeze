@@ -91,6 +91,10 @@
             this.result = $.breezemap.__get(this.name);
         }
 
+        if (this.result === undefined && $.breezemap.__has(this.path)) {
+            this.result = $.breezemap.__get(this.path);
+        }
+
         if ($.breeze.jsconfig[this.name]?.bundle && !autoloadedBundles[$.breeze.jsconfig[this.name].bundle]) {
             autoloadedBundles[$.breeze.jsconfig[this.name].bundle] = true;
             $(document).trigger('bundle:autoload', $.breeze.jsconfig[this.name].bundle);
@@ -200,7 +204,7 @@
 
             if (modules[name].path) {
                 if (pathToAlias[modules[name].path]) {
-                    modules[name] = modules[pathToAlias[modules[name].path]];
+                    modules[pathToAlias[modules[name].path]].parents.push(modules[name]);
                 } else {
                     pathToAlias[modules[name].path] = name;
                 }
