@@ -2,8 +2,10 @@
 
 namespace Swissup\Breeze\Block\Theme;
 
+use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\View\Element\Template;
+use Swissup\BreezeThemeEditor\View\Helper\BreezeThemeEditor;
 
 class ScrollReveal extends Template
 {
@@ -17,9 +19,20 @@ class ScrollReveal extends Template
         parent::__construct($context, $data);
     }
 
+    public function isEnabled(): bool
+    {
+        if ($this->getEnabled() === true || !class_exists(BreezeThemeEditor::class)) {
+            return $this->getEnabled();
+        }
+
+        return ObjectManager::getInstance()
+            ->get(BreezeThemeEditor::class)
+            ->get('animations/scroll-reveal');
+    }
+
     public function getTemplate()
     {
-        if ($this->getEnabled() !== true) {
+        if (!$this->isEnabled()) {
             return '';
         }
         return parent::getTemplate();
@@ -27,7 +40,7 @@ class ScrollReveal extends Template
 
     protected function _prepareLayout()
     {
-        if ($this->getEnabled() === true) {
+        if ($this->isEnabled()) {
             $this->pageConfig->addBodyClass('scroll-reveal-enabled');
         }
         return parent::_prepareLayout();
