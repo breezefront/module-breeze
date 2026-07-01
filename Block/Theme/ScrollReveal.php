@@ -21,13 +21,17 @@ class ScrollReveal extends Template
 
     public function isEnabled(): bool
     {
-        if ($this->getEnabled() === true || !class_exists(BreezeThemeEditor::class)) {
-            return (bool) $this->getEnabled();
+        if (class_exists(BreezeThemeEditor::class)) {
+            $value = ObjectManager::getInstance()
+                ->get(BreezeThemeEditor::class)
+                ->get('animations/scroll-reveal');
+
+            if ($value !== null) {
+                return (bool) $value;
+            }
         }
 
-        return (bool) ObjectManager::getInstance()
-            ->get(BreezeThemeEditor::class)
-            ->get('animations/scroll-reveal');
+        return (bool) $this->getEnabled();
     }
 
     public function getTemplate()
