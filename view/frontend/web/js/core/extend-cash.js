@@ -626,6 +626,22 @@
         return getComputedStyle(el).getPropertyValue(name);
     };
 
+    $.fn.suffixIds = function (suffix) {
+        this.find('[id],[for]').each((i, el) => {
+            el = $(el);
+
+            if (el.attr('for')) {
+                el.attr('for', el.attr('for') + suffix);
+            }
+
+            if (el.attr('id')) {
+                el.attr('id', el.attr('id') + suffix);
+            }
+        });
+
+        return this;
+    };
+
     $.fn.serializeJSON = function () {
         return Object.fromEntries((new FormData(this[0])).entries());
     };
