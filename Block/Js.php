@@ -318,7 +318,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
             foreach ($staticItems as $key => $item) {
                 foreach ($item['import'] ?? [] as $importKey => $importName) {
                     $importItem = $this->findItemInfo($importName);
-                    if ($importItem && $importItem['bundle'] !== $name) {
+                    if ($importItem && ($importItem['bundle'] !== $name || isset($importItem['item']['load']))) {
                         unset($staticItems[$key]['import'][$importKey]);
                     }
                 }
