@@ -85,7 +85,7 @@ define(['ko/template/renderer'], (renderer) => {
     function applyComponents(el, bindingContext, promise, component) {
         promise.resolve();
 
-        if (component.index && el.nodeType === Node.ELEMENT_NODE && $(el).component(component.index)) {
+        if (component.index && !isVirtualElement(el) && $(el).component(component.index)) {
             return;
         }
 
