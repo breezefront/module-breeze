@@ -3,6 +3,7 @@
 namespace Swissup\Breeze\Block\Theme;
 
 use Magento\Framework\App\ObjectManager;
+use Magento\Framework\Module\Manager as ModuleManager;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\View\Element\Template;
 use Swissup\BreezeThemeEditor\View\Helper\BreezeThemeEditor;
@@ -14,6 +15,7 @@ class ScrollReveal extends Template
     public function __construct(
         Template\Context $context,
         private Json $json,
+        private ModuleManager $moduleManager,
         array $data = []
     ) {
         parent::__construct($context, $data);
@@ -21,13 +23,23 @@ class ScrollReveal extends Template
 
     public function isEnabled(): bool
     {
-        if (class_exists(BreezeThemeEditor::class)) {
-            $value = ObjectManager::getInstance()
-                ->get(BreezeThemeEditor::class)
-                ->get('animations/scroll-reveal');
+        // class_exists() only reflects composer autoload availability, not
+        // Magento's module enable/disable state — when Swissup_BreezeThemeEditor
+        // is disabled its di.xml preferences aren't loaded, so instantiating
+        // BreezeThemeEditor (which needs ValueRepositoryInterface) fatals.
+        if ($this->moduleManager->isEnabled('Swissup_BreezeThemeEditor')
+            && class_exists(BreezeThemeEditor::class)
+        ) {
+            try {
+                $value = ObjectManager::getInstance()
+                    ->get(BreezeThemeEditor::class)
+                    ->get('animations/scroll-reveal');
 
-            if ($value !== null) {
-                return (bool) $value;
+                if ($value !== null) {
+                    return (bool) $value;
+                }
+            } catch (\Throwable $e) {
+                // fall through to default below
             }
         }
 
