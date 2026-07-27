@@ -23,10 +23,6 @@ class ScrollReveal extends Template
 
     public function isEnabled(): bool
     {
-        // class_exists() only reflects composer autoload availability, not
-        // Magento's module enable/disable state — when Swissup_BreezeThemeEditor
-        // is disabled its di.xml preferences aren't loaded, so instantiating
-        // BreezeThemeEditor (which needs ValueRepositoryInterface) fatals.
         if ($this->moduleManager->isEnabled('Swissup_BreezeThemeEditor')
             && class_exists(BreezeThemeEditor::class)
         ) {
