@@ -1,8 +1,10 @@
 <?php if ($block->getLayout()->getBlock('breeze.viewTransition')?->getEnabled()) : ?>
 <style id="breeze-view-transition">
+@media (prefers-reduced-motion: no-preference) {
     @view-transition {
         navigation: auto;
     }
+}
 </style>
 <script>
     if (/FBAN|FBAV|Instagram/i.test(navigator.userAgent) && /Android/i.test(navigator.userAgent)) {
