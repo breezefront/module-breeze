@@ -1,9 +1,14 @@
 <?php if ($block->getLayout()->getBlock('breeze.viewTransition')?->getEnabled()) : ?>
-<style>
+<style id="breeze-view-transition">
     @view-transition {
         navigation: auto;
     }
 </style>
+<script>
+    if (/FBAN|FBAV|Instagram/i.test(navigator.userAgent) && /Android/i.test(navigator.userAgent)) {
+        document.querySelector('#breeze-view-transition')?.remove();
+    }
+</script>
 <?php endif ?>
 
 <script type="speculationrules">
