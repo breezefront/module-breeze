@@ -382,9 +382,15 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
         foreach ($this->getActiveBundles() as $bundleName => $bundle) {
             $info[] = $bundleName;
-            $info = [...$info, ...array_keys($bundle['items'])];
+            foreach ($bundle['items'] as $key => $item) {
+                $info[] = $key . ':' . $item['path'];
+                $info[] = implode(',', $item['import'] ?? []);
+                $info[] = implode(',', $item['mixins'] ?? []);
+                $info[] = implode(',', array_filter(array_keys($item['load'] ?? [])));
+            }
         }
 
+        $info = array_filter($info);
         sort($info);
 
         return $info;
