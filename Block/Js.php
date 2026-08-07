@@ -124,7 +124,11 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
         $this->pageConfig
             ->getAssetCollection()
-            ->add($requireJsConfig->getFilePath(), $requireJsConfig);
+            ->add($requireJsConfig->getFilePath(), $requireJsConfig, [
+                'attributes' => [
+                    'defer' => true,
+                ],
+            ]);
     }
 
     /**
