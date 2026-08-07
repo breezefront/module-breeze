@@ -40,7 +40,13 @@ class PreloadCriticalImages extends AbstractFilter
         } elseif ($this->isProductPage($body)) {
             $this->walkImgNodes($xpath->query('(//img[@class="main-image"])[1]', $content));
         } else {
-            $this->walkImgNodes($xpath->query('//div[@class="category-image"]//img', $content), 1);
+            $this->walkImgNodes(
+                $xpath->query(implode(' | ', [
+                    '//div[@class="category-image"]//img',
+                    '//div[contains(concat(" ", normalize-space(@class), " "), " category-view ")]//img[not(@loading="lazy")]',
+                ]), $content),
+                1
+            );
             $this->walkImgNodes($xpath->query('//img[@class="product-image-photo"]', $content));
         }
     }
