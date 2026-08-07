@@ -122,6 +122,15 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
             );
         }
 
+        try {
+            $content = (string) $requireJsConfig->getContent();
+            if (!str_contains($content, ' config')) {
+                return;
+            }
+        } catch (\Exception $e) {
+            //
+        }
+
         $this->pageConfig
             ->getAssetCollection()
             ->add($requireJsConfig->getFilePath(), $requireJsConfig, [
