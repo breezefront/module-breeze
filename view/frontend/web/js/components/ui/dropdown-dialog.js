@@ -214,6 +214,13 @@
         }
     });
 
+    // eslint-disable-next-line vars-on-top
+    var dropdownInFocus;
+
+    $(document).on('mousedown.dropdownDialog', event => {
+        dropdownInFocus = $(event.target).closest('[role="dialog"]').children().dropdownDialog('instance');
+    });
+
     $(document).on('click.dropdownDialog', function (event) {
         var dropdown = $(event.target).closest('[role="dialog"]').children().dropdownDialog('instance'),
             modalContext = $(event.target).closest('.modal-popup');
@@ -230,7 +237,10 @@
                 return;
             }
 
-            if (widget.options.closeOnClickOutside && dropdown !== widget) {
+            if (widget.options.closeOnClickOutside &&
+                dropdown !== widget &&
+                dropdownInFocus !== widget
+            ) {
                 widget.close();
             }
         });
