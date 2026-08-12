@@ -13,6 +13,23 @@
 </script>
 <?php endif ?>
 
+<?php
+    $urlPrefix = (string) parse_url($block->getBaseUrl(), PHP_URL_PATH);
+    $urlPrefix = rtrim($urlPrefix, '/');
+    $excludePaths = [
+        'checkout',
+        'customer',
+        'download',
+        'stores/store/redirect',
+        'sales',
+        'wishlist'
+    ];
+    foreach ($excludePaths as $i => $path) {
+        $excludePaths[$i] = $urlPrefix . '/' . $path . '/*';
+    }
+    $excludePaths[] = '*.pdf';
+?>
+
 <script type="speculationrules">
 {
     "prerender": [{
@@ -22,15 +39,7 @@
             "and": [
                 { "href_matches": "/*" },
                 { "not": {
-                    "href_matches": [
-                        "**/checkout/*",
-                        "**/customer/*",
-                        "**/download/*",
-                        "**/redirect/*",
-                        "**/sales/*",
-                        "**/wishlist/*",
-                        "*.pdf"
-                    ]
+                    "href_matches": <?= /* @noEscape */ json_encode($excludePaths, JSON_HEX_TAG | JSON_UNESCAPED_SLASHES) ?>
                 }},
                 { "not": {
                     "selector_matches": [
