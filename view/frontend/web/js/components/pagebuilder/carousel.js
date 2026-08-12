@@ -23,6 +23,11 @@ define(['pagebuilderSlider'], () => {
             });
         },
 
+        destroy: function () {
+            this.slider()?.destroy();
+            this._super();
+        },
+
         slider: function () {
             return this.element.pagebuilderSlider('instance');
         },
