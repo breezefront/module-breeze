@@ -64,7 +64,8 @@
     }
 
     function getMathingScopedElements(scope) {
-        var scopeRe = new RegExp(`scope:.*${scope}'`);
+        var quotedScope = scope.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
+            scopeRe = new RegExp(`scope:.*[^\\w.-]${quotedScope}'`);
 
         return scopedElements.filter(function () {
             var bind = $(this).attr('data-bind').trim(),
