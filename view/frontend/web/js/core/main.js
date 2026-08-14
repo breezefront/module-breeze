@@ -4,6 +4,8 @@
     var scopedElements,
         configs = new WeakMap(),
         mounted = new WeakMap(),
+        processed = new WeakMap(),
+        convertedBindings = new WeakSet(),
         parsedSettings = {},
         oldDimensions = {};
 
@@ -153,6 +155,8 @@
         if (isScript) {
             el.remove();
             el = false;
+        } else {
+            processed.set(el, settings);
         }
 
         if (typeof parsedSettings[settings] === 'undefined') {
@@ -247,6 +251,8 @@
     function convertDataBindToDataMageInit(el) {
         var json;
 
+        convertedBindings.add(el);
+
         try {
             json = extractJsonFromDataBind('mageInit', $(el).data('bind'));
         } catch (e) {
@@ -257,6 +263,7 @@
             $(el).attr('data-mage-init', '{}');
         }
         configs.set(el, $.extend(true, configs.get(el) || {}, json));
+        processed.delete(el);
     }
 
     function convertXMagentoInitToDataMageInit(script) {
@@ -282,6 +289,7 @@
                             $(el).attr('data-mage-init', '{}');
                         }
                         configs.set(el, $.extend(true, configs.get(el) || {}, json));
+                        processed.delete(el);
                     });
                     delete settings[selector];
                 });
@@ -299,6 +307,7 @@
 
     async function walk() {
         [...document.querySelectorAll('[data-bind*="mageInit:"]')]
+            .filter(el => !convertedBindings.has(el))
             .filter(el => !$(el).parents('[data-bind*="scope:"]').length)
             .forEach(convertDataBindToDataMageInit);
 
@@ -308,6 +317,7 @@
         );
 
         [...document.querySelectorAll('[data-mage-init],[type="text/x-magento-init"]')]
+            .filter(el => el.tagName === 'SCRIPT' || processed.get(el) !== el.dataset.mageInit)
             .forEach(el => setTimeout(() => processElement(el)));
     }
 
