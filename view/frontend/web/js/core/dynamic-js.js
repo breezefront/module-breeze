@@ -6,7 +6,7 @@
     function processMatchedLoadRule(loadRules, alias, callback) {
         callback = callback || (() => {
             require([alias], () => {
-                $(document).trigger('contentUpdated');
+                // $(document).trigger('contentUpdated');
             });
         });
 
