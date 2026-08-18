@@ -104,13 +104,12 @@ define(['collapsible'], () => {
                     self.prevHeight = prevContent ? $(prevContent).outerHeight() : false;
 
                     // document.startViewTransition(() => {
-                        self.collapsibles.not(newActiveTab).collapsible('close');
+                        if (!this.options.multipleCollapsible) {
+                            self.collapsibles.not(newActiveTab).collapsible('close');
 
-                        if (!this.options.multipleCollapsible &&
-                            newActiveTab &&
-                            !newActiveTab.isInViewport()
-                        ) {
-                            self.scrollTo(newActiveTab);
+                            if (newActiveTab && !newActiveTab.isInViewport()) {
+                                self.scrollTo(newActiveTab);
+                            }
                         }
 
                         o.bind(instance)();
