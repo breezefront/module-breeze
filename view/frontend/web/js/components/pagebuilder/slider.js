@@ -39,7 +39,7 @@
                 });
             }
 
-            this.onReveal(this.createSlider.bind(this));
+            this.revealObserver = this.onReveal(this.createSlider.bind(this));
         },
 
         createSlider: function () {
@@ -78,8 +78,16 @@
         },
 
         destroy: function () {
+            this.revealObserver?.disconnect();
+            this.resizeObserver?.disconnect();
+            this.resizeObserver = null;
+            this.mutationObservers?.forEach(observer => observer.disconnect());
+            this.mutationObservers = [];
+            this.nextEl?.add(this.prevEl).css('display', '');
+            this.element.find('.slick-dots').remove();
             this.element.removeClass('slick-initialized');
             this._super();
+            this.slider?.find('[data-clone]').remove();
         },
 
         prepareMarkup: function () {
@@ -126,8 +134,16 @@
         addEventListeners: async function () {
             var scrollToTimer,
                 lastResize = new Date(),
-                debouncedUpdate = _.debounce(this.update.bind(this), 200),
-                throttledUpdateCurPage = _.throttle(this.updateCurrentPage.bind(this), 50);
+                debouncedUpdate = _.debounce(() => {
+                    if (this.resizeObserver) {
+                        this.update();
+                    }
+                }, 200),
+                throttledUpdateCurPage = _.throttle(() => {
+                    if (this.resizeObserver) {
+                        this.updateCurrentPage();
+                    }
+                }, 50);
 
             if (!this.slider.length) {
                 return;
@@ -194,7 +210,7 @@
                 throttledUpdateCurPage();
             });
 
-            new ResizeObserver(() => {
+            this.resizeObserver = new ResizeObserver(() => {
                 var width = this.slider.width(),
                     height = this.slider.height(),
                     prevWidth = this.slider.data('breeze-prev-width'),
@@ -213,14 +229,19 @@
                         debouncedUpdate();
                     }
                 }
-            }).observe(this.slider.get(0));
+            });
+            this.resizeObserver.observe(this.slider.get(0));
 
+            this.mutationObservers = [];
             this.slides.each((i, slide) => {
-                new MutationObserver(function (records) {
+                var observer = new MutationObserver(function (records) {
                     if (records[0].oldValue?.match(/display:\s*none/)) {
                         debouncedUpdate();
                     }
-                }).observe(slide, {
+                });
+
+                this.mutationObservers.push(observer);
+                observer.observe(slide, {
                     attributeFilter: ['style'],
                     attributeOldValue: true
                 });
