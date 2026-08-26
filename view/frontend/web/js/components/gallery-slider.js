@@ -3,29 +3,45 @@ define([
 ], async function ($) {
     'use strict';
 
-    var galleryEl = $('.breeze-gallery.slider'),
+    var galleryEl = $('.breeze-gallery'),
+        imagesWrapper = $('.images', galleryEl),
+        thumbsWrapper = $('.thumbnails', galleryEl),
         gallery = await galleryEl.find('.stage').componentAsync('gallery'),
         slideChanged = false;
 
-    function createSlider() {
-        $('.thumbnails', galleryEl).pagebuilderSlider('destroy');
+    if (!galleryEl.hasClass('slider') && !galleryEl.hasClass('expanded')) {
+        return;
+    }
+
+    function reinitSlider() {
+        thumbsWrapper.pagebuilderSlider('destroy');
+        imagesWrapper.pagebuilderSlider('destroy');
+
+        if (imagesWrapper.find('.slick-list').css('overflow') !== 'auto') {
+            return;
+        }
+
         if ($('.thumbnails img', galleryEl).length) {
-            $('.thumbnails', galleryEl).pagebuilderSlider({
+            thumbsWrapper.pagebuilderSlider({
                 skippable: false,
-                tabbable: false
+                tabbable: false,
             });
         }
 
-        $('.images a', galleryEl).attr('tabindex', -1);
-        $('.images', galleryEl).pagebuilderSlider('destroy').pagebuilderSlider({
+        imagesWrapper.find('a').attr('tabindex', -1);
+        imagesWrapper.pagebuilderSlider({
             infinite: gallery.options.loop,
-            skippable: false
+            skippable: false,
         });
     }
 
-    createSlider();
+    reinitSlider();
 
-    $('.images', galleryEl)
+    if (galleryEl.hasClass('expanded')) {
+        $(document).on('breeze:resize-x.gallery', reinitSlider);
+    }
+
+    imagesWrapper
         .on('keydown', e => {
             if (e.key === 'Enter') {
                 gallery.open();
@@ -62,7 +78,7 @@ define([
                     data.instance.activeIndex
                 );
             }
-            $('.thumbnails', galleryEl).data('pagebuilderSlider')?.scrollToSlide(
+            thumbsWrapper.data('pagebuilderSlider')?.scrollToSlide(
                 data.instance.activeIndex
             );
         })
@@ -71,10 +87,10 @@ define([
                 data.instance.activeIndex,
                 true
             );
-            $('.thumbnails', galleryEl).data('pagebuilderSlider')?.scrollToSlide(
+            thumbsWrapper.data('pagebuilderSlider')?.scrollToSlide(
                 data.instance.activeIndex,
                 true
             );
         })
-        .on('gallery:afterUpdateData', createSlider);
+        .on('gallery:afterUpdateData', reinitSlider);
 });

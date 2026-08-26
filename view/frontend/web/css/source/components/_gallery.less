@@ -226,80 +226,64 @@
                     .lib-css(box-shadow, @bz-gallery-thumb-item__active__box-shadow);
                 }
             }
+
+            .slick-list {
+                gap: @bz-gallery-thumb__gap;
+                flex-direction: var(--gallery-thumbs-direction, row);
+            }
+            .slick-arrow {
+                transition: opacity var(--transition-duration);
+                top: ~"calc(50% - 12px / 2)";
+            }
         }
 
         &:not(.opened) .thumbnails.dots {
             .bz-gallery-nav-dots();
         }
 
-        // expanded mode (all images at once, not thumbnails)
-        &.expanded {
-            &:not(.opened) {
-                .stage,
-                .thumbnails {
-                    display: none;
-                }
-            }
-            &.opened .images {
-                display: none;
-            }
-        }
         .images {
             --gallery-columns-count: @bz-gallery-expanded__columns-count;
-            display: flex;
             position: relative;
-            gap: var(--gallery-columns-gap);
-            overflow: auto;
-            scroll-snap-type: x mandatory;
-            scroll-snap-stop: always;
             .item {
                 max-width: 100%;
                 scroll-snap-align: center;
                 text-align: center;
                 cursor: zoom-in;
             }
+
+            .slick-list {
+                gap: var(--gallery-columns-gap);
+                &:focus-visible {
+                    outline-offset: 0;
+                }
+            }
+            .slick-arrow {
+                z-index: 110;
+            }
         }
 
-        &.slider {
-            .action.skip {
+        &.slider,
+        &.expanded {
+            &:not(.opened) {
+                .stage {
+                    display: none;
+                }
+            }
+            &.opened .images {
                 display: none;
             }
-
-            .images {
-                flex-wrap: nowrap !important;
-                overflow: auto !important;
-                scrollbar-width: none;
-
-                &.slick-initialized:has(:focus-visible) {
-                    overflow: visible !important;
-                }
-
-                .slick-list {
-                    gap: var(--gallery-columns-gap);
-                    &:focus-visible {
-                        outline-offset: 0;
-                    }
-                }
-                .slick-arrow {
-                    z-index: 110;
-                }
-            }
-
-            .thumbnails{
+            .thumbnails {
                 &:not(.hidden) {
                     display: flex !important;
                     scrollbar-width: none;
                     position: relative;
                     overflow: hidden;
                 }
-                .slick-list {
-                    gap: @bz-gallery-thumb__gap;
-                    flex-direction: var(--gallery-thumbs-direction, row);
-                }
-                .slick-arrow {
-                    transition: opacity var(--transition-duration);
-                    top: ~"calc(50% - 12px / 2)";
-                }
+            }
+        }
+        &.slider {
+            .action.skip {
+                display: none;
             }
         }
     }
@@ -309,9 +293,24 @@
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
     & when (@critical = unsure), (@critical) {
         .breeze-gallery {
+            &.expanded {
+                // convert slider to expanded gallery for desktop view
+                .images {
+                    > .slick-list {
+                        overflow: visible;
+                        flex-wrap: wrap;
+                        [data-clone] {
+                            display: none;
+                        }
+                    }
+                }
+                &:not(.opened) {
+                    .thumbnails {
+                        display: none !important;
+                    }
+                }
+            }
             .images {
-                overflow: visible;
-                flex-wrap: wrap;
                 .item {
                     width: ~"calc((100% - (var(--gallery-columns-gap) * var(--gallery-columns-count) - var(--gallery-columns-gap))) / var(--gallery-columns-count))";
                 }

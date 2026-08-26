@@ -38,7 +38,6 @@ $thumbSizes = $responsiveImageHelper->getSizes('product_page_image_small');
 $galleryId = 'gallery-' . $block->getProduct()->getId();
 $galleryCss = array_filter([
     $mode,
-    $mode === 'slider' ? 'expanded' : '',
     $navDir,
     $showCaption ? 'caption' : '',
 ]);
@@ -99,16 +98,14 @@ $galleryCss = array_filter([
 
     <?php if (in_array($mode, ['expanded', 'slider'])) : ?>
         <div class="images">
-            <?php if ($mode === 'slider') : ?>
-                <?php if (count($images) > 1) : ?>
-                    <button class="slick-prev slick-arrow" type="button" tabindex="-1"
-                        aria-label="<?= $escaper->escapeHtmlAttr(__('Previous Image')) ?>">
-                        <?= $escaper->escapeHtml(__('Previous Image')) ?>
-                    </button>
-                <?php endif ?>
-                <div class="slick-list">
+            <?php if (count($images) > 1) : ?>
+                <button class="slick-prev slick-arrow" type="button" tabindex="-1"
+                    aria-label="<?= $escaper->escapeHtmlAttr(__('Previous Image')) ?>">
+                    <?= $escaper->escapeHtml(__('Previous Image')) ?>
+                </button>
             <?php endif ?>
 
+            <div class="slick-list">
             <?php if (!count($images)) : ?>
                 <a class="item item-main" role="button"
                     title="<?= $block->escapeHtmlAttr($mainImageLabel) ?>"
@@ -160,15 +157,13 @@ $galleryCss = array_filter([
                         height="<?= $block->escapeHtmlAttr($height) ?>"/>
                 </a>
             <?php endforeach ?>
+            </div>
 
-            <?php if ($mode === 'slider') : ?>
-                </div>
-                <?php if (count($images) > 1) : ?>
-                    <button class="slick-next slick-arrow" type="button" tabindex="-1"
-                        aria-label="<?= $escaper->escapeHtmlAttr(__('Next Image')) ?>">
-                        <?= $escaper->escapeHtml(__('Next Image')) ?>
-                    </button>
-                <?php endif ?>
+            <?php if (count($images) > 1) : ?>
+                <button class="slick-next slick-arrow" type="button" tabindex="-1"
+                    aria-label="<?= $escaper->escapeHtmlAttr(__('Next Image')) ?>">
+                    <?= $escaper->escapeHtml(__('Next Image')) ?>
+                </button>
             <?php endif ?>
         </div>
     <?php endif ?>
@@ -244,12 +239,17 @@ $galleryCss = array_filter([
     </a>
 </script>
 
-<?php if ($mode === 'slider') : ?>
+<?php if (in_array($mode, ['expanded', 'slider'])) : ?>
     <script>
-        document.querySelector('.breeze-gallery .slick-list .item-main')?.scrollIntoView({
-            behavior: 'instant',
-            block: 'end',
-            inline: 'nearest',
-        });
+        var slickList = document.querySelector('.breeze-gallery .images .slick-list'),
+            overflow = slickList ? getComputedStyle(slickList).overflow : 'visible';
+
+        if (overflow !== 'visible') {
+            slickList.querySelector('.item-main')?.scrollIntoView({
+                behavior: 'instant',
+                block: 'end',
+                inline: 'nearest',
+            });
+        }
     </script>
 <?php endif ?>
