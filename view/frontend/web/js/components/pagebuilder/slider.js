@@ -87,6 +87,7 @@
             this.element.find('.slick-dots').remove();
             this.element.removeClass('slick-initialized');
             this._super();
+            this.slider?.removeAttr('tabindex');
             this.slider?.find('[data-clone]').remove();
         },
 

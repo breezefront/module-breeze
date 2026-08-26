@@ -16,6 +16,7 @@ define([
     function reinitSlider() {
         thumbsWrapper.pagebuilderSlider('destroy');
         imagesWrapper.pagebuilderSlider('destroy');
+        imagesWrapper.find('a').attr('tabindex', 0);
 
         if (imagesWrapper.find('.slick-list').css('overflow') !== 'auto') {
             return;
