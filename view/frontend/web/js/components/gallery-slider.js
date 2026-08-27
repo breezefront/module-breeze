@@ -18,7 +18,7 @@ define([
         imagesWrapper.pagebuilderSlider('destroy');
         imagesWrapper.find('a').attr('tabindex', 0);
 
-        if (imagesWrapper.find('.slick-list').css('overflow') !== 'auto') {
+        if (imagesWrapper.css('overflow') !== 'auto') {
             return;
         }
 
@@ -75,7 +75,7 @@ define([
     galleryEl
         .on('gallery:afterActivate', (e, data) => {
             if (!slideChanged && !data.instance.opened()) {
-                data.instance.imagesWrapper.data('pagebuilderSlider')?.scrollToPage(
+                data.instance.imagesWrapper.data('pagebuilderSlider')?.scrollToSlide(
                     data.instance.activeIndex
                 );
             }
@@ -84,7 +84,7 @@ define([
             );
         })
         .on('gallery:afterClose', (e, data) => {
-            data.instance.imagesWrapper.data('pagebuilderSlider')?.scrollToPage(
+            data.instance.imagesWrapper.data('pagebuilderSlider')?.scrollToSlide(
                 data.instance.activeIndex,
                 true
             );

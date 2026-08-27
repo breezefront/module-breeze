@@ -244,6 +244,16 @@
         .images {
             --gallery-columns-count: @bz-gallery-expanded__columns-count;
             position: relative;
+            display: flex;
+            gap: var(--gallery-columns-gap);
+            overflow: auto;
+            scrollbar-width: none;
+            flex-wrap: nowrap;
+
+            &.slick-initialized:has(:focus-visible) {
+                overflow: visible !important;
+            }
+
             .item {
                 max-width: 100%;
                 scroll-snap-align: center;
@@ -257,9 +267,6 @@
                     outline-offset: 0;
                 }
             }
-            .slick-arrow {
-                z-index: 110;
-            }
         }
 
         &.slider,
@@ -272,6 +279,9 @@
             &.opened .images {
                 display: none;
             }
+            .action.skip {
+                display: none;
+            }
             .thumbnails {
                 &:not(.hidden) {
                     display: flex !important;
@@ -279,11 +289,6 @@
                     position: relative;
                     overflow: hidden;
                 }
-            }
-        }
-        &.slider {
-            .action.skip {
-                display: none;
             }
         }
     }
@@ -294,8 +299,12 @@
     & when (@critical = unsure), (@critical) {
         .breeze-gallery {
             &.expanded {
-                // convert slider to expanded gallery for desktop view
+                .action.skip {
+                    display: block;
+                }
                 .images {
+                    overflow: visible;
+                    flex-wrap: wrap;
                     > .slick-list {
                         overflow: visible;
                         flex-wrap: wrap;
