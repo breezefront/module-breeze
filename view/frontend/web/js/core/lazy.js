@@ -11,7 +11,6 @@
         }
         callbacks.push(callback);
     };
-    $.lazyAsync = new Promise(resolve => $.lazy(resolve));
 
     function process(selector) {
         $.lazy(() => {
