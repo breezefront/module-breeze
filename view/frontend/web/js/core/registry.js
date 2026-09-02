@@ -73,8 +73,10 @@ $.registry = (function () {
             if (!element) {
                 data[name] = component;
             } else {
+                if (!data[name].objects.has(element || document.body)) {
+                    data[name].elements.push(element || document.body);
+                }
                 data[name].objects.set(element || document.body, component);
-                data[name].elements.push(element || document.body);
             }
         },
 
