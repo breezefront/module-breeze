@@ -124,8 +124,8 @@ $galleryCss = array_filter([
 
             <?php $i = 0; $markedAsMain = false; foreach ($images as $image) : ?>
                 <?php
-                    $lazy = (bool) $i++;
                     $isMain = !$markedAsMain && $image->getMediumImageUrl() === $mainImageUrl;
+                    $lazy = !$isMain;
                     $classes = array_filter([
                         'item',
                         $image->getVideoUrl() ? 'video' : '',
