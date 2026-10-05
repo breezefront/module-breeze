@@ -29,7 +29,7 @@
             this.gallery = this.options.gallery;
             this.image = this.element.find('img');
 
-            if (this.element.parent().hasClass('images')) {
+            if (this.element.closest('.images').length) {
                 this.imageIndex = this.element.index();
             }
 
