@@ -169,6 +169,13 @@
         },
 
         renderReCaptcha: function () {
+            if (!this.captchaInitialized && this.getIsInvisibleRecaptcha()) {
+                // Block submit inside auth-popup form until reCAPTCHA is ready
+                $('#' + this.getReCaptchaId() + '-wrapper')
+                    .closest('form')
+                    .find('button:not([type]), [type=submit]').prop('disabled', true);
+            }
+
             if (window.grecaptcha && window.grecaptcha.render) {
                 this.initCaptcha();
             } else {
