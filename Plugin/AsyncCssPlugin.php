@@ -41,16 +41,15 @@ class AsyncCssPlugin
 
         while ($styleOpenPos !== false) {
             $styleClosePos = strpos($content, $styleClose, $styleOpenPos);
-            $style = substr($content, $styleOpenPos, $styleClosePos - $styleOpenPos + strlen($styleClose));
-
-            if (!preg_match('@rel=["\']stylesheet["\']@', $style)) {
-                // Link is not a stylesheet
-                $styleOpenPos = strpos($content, $styleOpen, $styleClosePos);
-                continue;
+            if ($styleClosePos === false) {
+                break;
             }
 
-            if (!preg_match('@href=("|\')(.*?)\1@', $style, $hrefAttribute)) {
-                // Invalid link syntax
+            $style = substr($content, $styleOpenPos, $styleClosePos - $styleOpenPos + strlen($styleClose));
+            if (!preg_match('@rel=["\']stylesheet["\']@', $style) ||
+                !preg_match('@href=("|\')(.*?)\1@', $style, $hrefAttribute)
+            ) {
+                $styleOpenPos = strpos($content, $styleOpen, $styleClosePos);
                 continue;
             }
 
