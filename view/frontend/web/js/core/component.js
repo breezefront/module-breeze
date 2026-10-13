@@ -267,7 +267,10 @@
                 if ($.isPlainObject(values[key]) && $.isPlainObject(value)) {
                     this[key] = $.extendProps(values[key], value);
                 } else {
-                    this[key] = $.copyProp(_.has(values, key) ? values[key] : value);
+                    value = _.has(values, key) ? values[key] : value;
+                    if (value !== undefined) {
+                        this[key] = $.copyProp(value);
+                    }
                 }
             });
         },
