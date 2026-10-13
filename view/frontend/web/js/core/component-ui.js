@@ -395,7 +395,7 @@
 
         _resolveChildren: function () {
             return Promise.all(Object.values(this.options.children || {})
-                .filter(config => config.component)
+                .filter(config => config.component && !config.componentDisabled && !config.config?.componentDisabled)
                 .map(config => {
                     return new Promise(resolve => require([config.component], resolve));
                 }));

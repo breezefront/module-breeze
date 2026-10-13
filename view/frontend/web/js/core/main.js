@@ -14,7 +14,10 @@
         var storageEl = data.settings.__el || data.el,
             key = data.settings?.__scope || component;
 
-        if (data.settings?.componentDisabled === true || $.breezemap.__isIgnored(component)) {
+        if (data.settings?.componentDisabled === true ||
+            data.settings?.config?.componentDisabled === true ||
+            $.breezemap.__isIgnored(component)
+        ) {
             return;
         }
 
