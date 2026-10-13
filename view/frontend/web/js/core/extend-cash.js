@@ -676,6 +676,7 @@
     $.now = Date.now;
     $.isEmptyObject = _.isEmpty;
     $.inArray = (elem, arr, i) => arr == null ? -1 : Array.prototype.indexOf.call(arr, elem, i);
+    $.grep = (arr, callback, invert) => Array.prototype.filter.call(arr, (el, i) => !callback(el, i) === !!invert);
     $.parseJSON = JSON.parse;
 
     $.globalEval = (code, options) => {
