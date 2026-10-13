@@ -22,6 +22,7 @@ define(['Magento_Ui/js/lib/validation/validator'], function () {
                 'isValid',
                 'valid',
                 'validate',
+                'check',
                 'checkForm',
                 'showErrors',
                 'hideErrors',

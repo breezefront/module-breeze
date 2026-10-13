@@ -32,6 +32,10 @@
             return this.isValid(elements, silent);
         },
 
+        check: function (element) {
+            return this.isValid(element, true);
+        },
+
         /**
          * Silent validation
          * @return {Boolean}
