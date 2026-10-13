@@ -11,6 +11,9 @@
         customerData,
         deferred = $.Deferred();
 
+    $.breeze.url.setBaseUrl(window.BASE_URL);
+    options.sectionLoadUrl = $.breeze.url.build('customer/section/load');
+
     /**
      * @param {Object} settings
      */

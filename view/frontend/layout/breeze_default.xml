@@ -107,6 +107,7 @@
                             <item name="breeze-dynamic-js" xsi:type="string">Swissup_Breeze/js/core/dynamic-js</item>
                             <item name="breeze-translate" xsi:type="string">Swissup_Breeze/js/core/translate</item>
                             <item name="breeze-storage" xsi:type="string">Swissup_Breeze/js/core/storage</item>
+                            <item name="mage/url" xsi:type="string">Swissup_Breeze/js/common/url</item>
                             <item name="Magento_Customer/js/section-config" xsi:type="string">Swissup_Breeze/js/core/sections</item>
                             <item name="Magento_Customer/js/customer-data" xsi:type="string">Swissup_Breeze/js/components/customer-data</item>
                             <item name="Magento_PageCache/js/form-key-provider" xsi:type="string">Swissup_Breeze/js/components/form-key</item>
@@ -125,7 +126,6 @@
                                 <item name="path" xsi:type="string">Magento_Security/js/escaper</item>
                                 <item name="anonymous" xsi:type="boolean">true</item>
                             </item>
-                            <item name="mage/url" xsi:type="string">Swissup_Breeze/js/common/url</item>
                             <item name="Magento_Ui/js/form/form" xsi:type="string">Swissup_Breeze/js/components/form</item>
                             <item name="Magento_Ui/js/form/provider" xsi:type="string">Swissup_Breeze/js/components/form-provider</item>
                             <item name="breeze-lite-youtube" xsi:type="array">
