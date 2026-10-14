@@ -294,11 +294,16 @@
                 return jqXHR.body;
             })
             .catch(function (error) {
-                return onError(error.xhr, params, error);
+                onError(error.xhr, params, error);
+
+                // reject like jQuery, so then(fn) is skipped and then(null, fn) receives jqXHR
+                throw error.xhr || error;
             })
             .finally(() => {
                 $.active--;
             });
+
+        result.catch(_.noop); // errors are reported via fail callbacks and ajaxError event
 
         // Emulate jQuery's functions that are not avaialble in native Promise
         ['done', 'fail', 'always'].forEach(name => {
@@ -313,6 +318,13 @@
 
         result.abort = () => controller.abort();
         result.catch = result.fail;
+        // keep done/fail/always available after then(): $.ajax().then().fail()
+        result.then = _.wrap(result.then, (then, ...args) => {
+            return $.Deferred(d => {
+                // don't return deferred from handlers: rejected thenable would become unhandled rejection
+                then.apply(result, args).then(v => { d.resolve(v); }, e => { d.reject(e); });
+            }).promise();
+        });
 
         return result;
     }
