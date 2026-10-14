@@ -281,16 +281,22 @@
             return this;
         },
 
-        trigger: function (name, data) {
+        // Same as Magento: plain event without bubbling, e.g. source.trigger('data.validate')
+        trigger: function (name, value) {
+            this._triggerChange(name, value, false);
+        },
+
+        // Notify listeners of changed path and all its parents (used by set)
+        _triggerChange: function (name, value, bubble = true) {
             var [scope, event] = name.includes(':') ? name.split(':') : [this.__scope, name];
 
             $.breezemap.uiRegistry.get(scope, cmp => {
-                event += '.';
-                do {
+                cmp._trigger(event.replaceAll('.', '_'), { value });
+
+                while (bubble && event.includes('.')) {
                     event = event.substring(0, event.lastIndexOf('.'));
-                    cmp._trigger(event.replaceAll('.', '_'), data);
-                    data.value = this.get(event.substring(0, event.lastIndexOf('.')));
-                } while (event.includes('.'));
+                    cmp._trigger(event.replaceAll('.', '_'), { value: cmp.get(event) });
+                }
             });
         },
 
@@ -315,13 +321,13 @@
                 target[last](value);
             } else if ($.isPlainObject(value)) {
                 _.each(value, (val, key) => {
-                    this.trigger(`${path}.${key}`, { value: val });
+                    this._triggerChange(`${path}.${key}`, val);
                 });
                 target[last] = value;
-                this.trigger(path, { value });
+                this._triggerChange(path, value);
             } else if (target[last] != value) { // eslint-disable-line eqeqeq
                 target[last] = value;
-                this.trigger(path, { value });
+                this._triggerChange(path, value);
             }
 
             return this;
