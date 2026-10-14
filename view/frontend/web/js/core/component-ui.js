@@ -184,9 +184,12 @@
             });
 
             if (this.provider && !this.source) {
-                $.breezemap.uiRegistry.get(this.provider, provider => {
-                    this.source = provider;
-                });
+                this.source = $.breezemap.uiRegistry.get(this.provider);
+                if (!this.source) {
+                    $.breezemap.uiRegistry.get(this.provider, provider => {
+                        this.source = provider;
+                    });
+                }
             }
 
             return this;
