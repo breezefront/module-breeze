@@ -22,7 +22,6 @@
                 <argument name="cache_lifetime" xsi:type="number">864000</argument> <!-- 10 days -->
                 <argument name="ignore" xsi:type="array"> <!-- Do not load/report these components -->
                     <item name="addToWishlist" xsi:type="string">addToWishlist</item>
-                    <item name="checkoutLoader" xsi:type="string">checkoutLoader</item>
                     <item name="jquery/jquery-storageapi" xsi:type="string">jquery/jquery-storageapi</item>
                     <item name="jquery/jquery.parsequery" xsi:type="string">jquery/jquery.parsequery</item>
                     <item name="jquery-ui-modules/*" xsi:type="string">jquery-ui-modules/*</item>
@@ -973,6 +972,9 @@
                             <!-- Checkout -->
                             <item name="Magento_Checkout/js/model/full-screen-loader" xsi:type="array">
                                 <item name="path" xsi:type="string">Swissup_Breeze/js/components/cart/full-screen-loader</item>
+                            </item>
+                            <item name="checkoutLoader" xsi:type="array">
+                                <item name="path" xsi:type="string">Magento_Checkout/js/checkout-loader</item>
                             </item>
                             <item name="Magento_Checkout/js/empty-cart" xsi:type="array">
                                 <item name="path" xsi:type="string">Magento_Checkout/js/empty-cart</item>
