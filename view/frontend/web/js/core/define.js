@@ -8,6 +8,9 @@
         ignoredMemo = {},
         lastDefines = [],
         loadingCount = 0,
+        pendingCount = 0,
+        resolverCallbacks = [],
+        resolvePending,
         rjsConfig = {
             config: {},
             paths: {},
@@ -376,6 +379,7 @@
         }
 
         lastDefines.push(depsWithImports.filter(dep => dep.url).length > 0);
+        pendingCount++;
 
         Promise.all(
                 depsWithImports
@@ -411,7 +415,11 @@
                     dep.run();
                 }
             })
-            .catch(e => console.error(e));
+            .catch(e => console.error(e))
+            .finally(() => {
+                pendingCount--;
+                resolvePending();
+            });
 
         return mod.run();
     };
@@ -463,6 +471,17 @@
                 config: rjsConfig,
             }
         }
+    };
+
+    resolvePending = _.debounce(() => {
+        if (!pendingCount) {
+            resolverCallbacks.splice(0).forEach(c => c.handler.call(c.ctx));
+        }
+    }, 100);
+
+    $.breezemap.rjsResolver = $.breezemap['mage/requirejs/resolver'] = (handler, ctx) => {
+        resolverCallbacks.push({ handler, ctx });
+        resolvePending();
     };
 
     $.breezemap.require = window.require;
