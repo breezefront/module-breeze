@@ -238,7 +238,7 @@
             this._defaults(this.options);
             this.initConfig(options);
             this._trigger('beforeCreate');
-            this.initialize(this.options, this.__element?.[0]);
+            this.initialize(this.options, this.options.__scope ? undefined : this.__element?.[0]);
             this.create();
             this._create();
 
