@@ -53,6 +53,7 @@
          */
         validate: function (elements, silent) {
             var self = this,
+                focusInvalid,
                 result = {
                     valid: true,
                     errors: []
@@ -63,6 +64,9 @@
                 elements = false;
             }
 
+            // Same as jquery-validation: focus first invalid field on full form validation only.
+            // Focusing on check()/element validation loops with hasFocus bindings (checkout email).
+            focusInvalid = !elements && !silent;
             elements = this._elements(elements);
 
             this.reset(elements);
@@ -82,7 +86,7 @@
                 }
             });
 
-            if (result.errors.length) {
+            if (focusInvalid && result.errors.length) {
                 result.errors[0].field.focus();
             }
 
