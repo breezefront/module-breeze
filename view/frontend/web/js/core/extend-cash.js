@@ -8,15 +8,40 @@
             dataType: /:data\(([\w\d-_]+)\)/g,
         };
 
-    window.$ = function (selector, context) {
-        var result,
-            parts = typeof selector === 'string' && selector.includes(':visible') ?
-                selector.split(',').map(s => s.trim()) : [];
+    function queryVisible(selector, context) {
+        return selector.split(',').reduce((result, part) => {
+            var index = part.indexOf(':visible'),
+                head, tail, found;
 
-        // Handle ':visible' when its used in the end of each selector: 'a:visible' or 'a:visible, b:visible'
-        if (parts.length && parts.every(s => s.endsWith(':visible'))) {
-            result = _$(parts.map(s => s.slice(0, -':visible'.length)).join(','), context);
-            result = result.visible();
+            if (index === -1) {
+                return result.add(_$(part, context));
+            }
+
+            // rest of the compound selector goes to head: 'a:visible.active .b' => 'a.active', ' .b'
+            [, head, tail] = part.slice(index + ':visible'.length).match(/^([^\s>+~]*)(.*)$/);
+            head = part.slice(0, index) + head;
+            tail = tail.trim();
+
+            // '.a :visible' => '.a *'
+            if (!head.trim() || /[\s>+~]$/.test(head)) {
+                head += '*';
+            }
+
+            found = _$(head, context).visible();
+
+            if (tail) {
+                found = found.get().reduce((acc, el) => acc.add(queryVisible(':scope ' + tail, el)), _$());
+            }
+
+            return result.add(found);
+        }, _$());
+    }
+
+    window.$ = function (selector, context) {
+        var result;
+
+        if (typeof selector === 'string' && selector.includes(':visible') && !selector.trim().startsWith('<')) {
+            result = queryVisible(selector, context);
         } else {
             result = _$(selector, context);
         }
@@ -376,6 +401,10 @@
             return selector.reduce((acc, el) => {
                 return acc.add(this[0] !== el && this[0].contains(el) ? $(el) : $());
             }, $());
+        }
+
+        if (typeof selector === 'string' && selector.includes(':visible')) {
+            return this.get().reduce((acc, el) => acc.add(queryVisible(selector, el)), _$());
         }
 
         return original.bind(this)(selector);
