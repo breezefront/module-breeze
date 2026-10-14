@@ -4,8 +4,11 @@
     var mapping = {
         'yyyy': { regex: '(?<year>\\d{4})', dayjs: 'YYYY' },
         'y':    { regex: '(?<year>\\d{4})', dayjs: 'YYYY' },
+        'Y':    { regex: '(?<year>\\d{4})', dayjs: 'YYYY' },
         'yy':   { regex: '(?<year>\\d{2})', dayjs: 'YY' },
 
+        'MMMM': { regex: '(?<monthName>[^\\d\\s./-]+)', dayjs: 'MMMM', long: true },
+        'MMM':  { regex: '(?<monthName>[^\\d\\s./-]+)', dayjs: 'MMM' },
         'MM':   { regex: '(?<month>\\d{2})', dayjs: 'MM' },
         'M':    { regex: '(?<month>\\d{1,2})', dayjs: 'M' },
 
@@ -21,6 +24,18 @@
         return [separator, format.split(separator)];
     }
 
+    // 'Oct' -> 9, using page locale (Magento renders localized month names)
+    function monthIndex(name, long) {
+        var locale = document.documentElement.lang || 'en';
+
+        name = name.toLowerCase().replace('.', '');
+
+        return _.range(12).findIndex(i => {
+            return new Date(2000, i, 1).toLocaleString(locale, { month: long ? 'long' : 'short' })
+                .toLowerCase().replace('.', '') === name;
+        });
+    }
+
     function parseMagentoDate(value, format) {
         var [separator, parts] = parseFormat(format),
             regex = new RegExp('^' + _.map(parts, part => mapping[part].regex).join(separator) + '$'),
@@ -29,6 +44,10 @@
 
         if (!match) {
             return null;
+        }
+
+        if (match.groups.monthName) {
+            match.groups.month = monthIndex(match.groups.monthName, parts.some(part => mapping[part].long)) + 1;
         }
 
         if (match.groups.year.length === 2) {
