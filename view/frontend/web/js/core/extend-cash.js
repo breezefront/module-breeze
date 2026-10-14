@@ -9,11 +9,13 @@
         };
 
     window.$ = function (selector, context) {
-        var result;
+        var result,
+            parts = typeof selector === 'string' && selector.includes(':visible') ?
+                selector.split(',').map(s => s.trim()) : [];
 
-        // Handle ':visible' when its used in the end of the selector
-        if (typeof selector === 'string' && selector.endsWith(':visible')) {
-            result = _$(selector.substr(0, selector.lastIndexOf(':visible')), context);
+        // Handle ':visible' when its used in the end of each selector: 'a:visible' or 'a:visible, b:visible'
+        if (parts.length && parts.every(s => s.endsWith(':visible'))) {
+            result = _$(parts.map(s => s.slice(0, -':visible'.length)).join(','), context);
             result = result.visible();
         } else {
             result = _$(selector, context);
