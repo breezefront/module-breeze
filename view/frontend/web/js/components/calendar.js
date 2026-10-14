@@ -39,7 +39,7 @@
                     value = date.format($.breeze.date.normalizeFormat(this.options.dateFormat));
                 }
 
-                this.element.val(value);
+                this.element.val(value).trigger('change'); // same as jquery-ui datepicker
             });
 
             this.element.on('input', async () => {
@@ -49,9 +49,7 @@
 
                 value = this.toISOString();
 
-                if (value) {
-                    this.calendar.val(value);
-                }
+                this.calendar.val(value); // empty value clears calendar too
             });
         },
 
@@ -75,6 +73,10 @@
 
             if (rules instanceof Date) {
                 return $.breeze.date(rules);
+            }
+
+            if (typeof rules === 'number') { // days from today, same as jquery-ui
+                return result.add(rules, 'd');
             }
 
             rules.split(' ').forEach(period => {
