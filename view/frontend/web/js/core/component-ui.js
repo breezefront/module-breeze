@@ -221,15 +221,17 @@
         },
 
         setLinks: function (links, direction) {
-            var isImport = direction === 'imports';
+            var isImport = direction === 'imports',
+                // Same as Magento's parseData: 'provider:' (empty dataScope) means own 'provider' property
+                parse = (str) => {
+                    var [scope, path] = str.split(':');
+
+                    return path ? [scope || this.__scope, path] : [this.__scope, scope];
+                };
 
             _.each(links || {}, (val, key) => {
-                var valScope, valPath, keyScope, keyPath;
-
-                [valScope, valPath] = val.includes(':') ? val.split(':') : [this.__scope, val];
-                [keyScope, keyPath] = key.includes(':') ? key.split(':') : [this.__scope, key];
-                valScope = valScope || this.__scope;
-                keyScope = keyScope || this.__scope;
+                var [valScope, valPath] = parse(val),
+                    [keyScope, keyPath] = parse(key);
 
                 $.breezemap.uiRegistry.get(valScope, valCmp => {
                     $.breezemap.uiRegistry.get(keyScope, keyCmp => {
