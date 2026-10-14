@@ -540,6 +540,11 @@
                     value = mixin?.(value);
                 }
 
+                // store mixed value before resolving: dependents waiting for mixinsPromise read module.result
+                obj[alias] = value;
+                if (modules[alias]) {
+                    modules[alias].result = value;
+                }
                 modules[alias]?.mixinsPromise?.resolve();
             }
 
