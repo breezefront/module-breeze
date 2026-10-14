@@ -52,7 +52,6 @@
                     <item name="passwordStrengthIndicator" xsi:type="string">passwordStrengthIndicator</item>
                     <item name="priceOptionFile" xsi:type="string">priceOptionFile</item>
                     <item name="requireCookie" xsi:type="string">requireCookie</item>
-                    <item name="rjsResolver" xsi:type="string">rjsResolver</item>
                 </argument>
                 <argument name="bundles" xsi:type="array">
                     <item name="main" xsi:type="array">
