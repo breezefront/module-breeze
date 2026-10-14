@@ -40,6 +40,7 @@ define(['ko/template/renderer'], (renderer) => {
     };
 
     ko.bindingHandlers.optgroup = ko.bindingHandlers.options;
+    ko.bindingHandlers.fadeVisible = ko.bindingHandlers.visible;
 
     ko.bindingHandlers.blockLoader = {
         /**
