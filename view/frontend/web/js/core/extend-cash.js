@@ -710,6 +710,10 @@
     $.grep = (arr, callback, invert) => Array.prototype.filter.call(arr, (el, i) => !callback(el, i) === !!invert);
     $.parseJSON = JSON.parse;
 
+    $.Event = function (type, props) {
+        return Object.assign(new CustomEvent(type, { bubbles: true, cancelable: true }), props);
+    };
+
     $.globalEval = (code, options) => {
         var script = document.createElement('script');
 
