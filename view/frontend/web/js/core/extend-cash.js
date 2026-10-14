@@ -825,49 +825,59 @@
         return value;
     };
 
+    function jqPromise(native, state = () => 'pending') {
+        var promise = {
+            state,
+            then: (onFulfilled, onRejected) => jqPromise(native.then(onFulfilled, onRejected)),
+            catch: onRejected => jqPromise(native.catch(onRejected)),
+            finally: onFinally => jqPromise(native.finally(onFinally)),
+            done: function (...fns) {
+                fns.flat().forEach(fn => native.then(fn, _.noop));
+                return this;
+            },
+            fail: function (...fns) {
+                fns.flat().forEach(fn => native.then(null, fn));
+                return this;
+            },
+            always: function (...fns) {
+                fns.flat().forEach(fn => native.then(fn, fn));
+                return this;
+            },
+            promise: () => promise
+        };
+
+        native.catch(_.noop); // do not report rejection that is handled via fail()
+
+        return promise;
+    }
+
     $.Deferred = (fn) => {
-        var deferred = new function Defer() {
-            var promise = new Promise((resolve, reject) => {
-                this.resolve = (...args) => {
-                    resolve(...args);
-                    return promise;
-                };
-                this.reject = (...args) => {
-                    reject(...args);
-                    return promise;
-                };
-            }).then(result => {
-                this.stateText = 'resolved';
-                return result;
-            }).catch(() => {
-                this.stateText = 'rejected';
-            });
+        var resolve, reject,
+            stateText = 'pending',
+            native = new Promise((res, rej) => {
+                resolve = res;
+                reject = rej;
+            }),
+            deferred = jqPromise(native, () => stateText);
 
-            promise.finally = _.wrap(promise.finally, (o, onFinally) => {
-                o.bind(promise)(onFinally);
-                return this;
-            });
+        native.then(() => {
+            stateText = 'resolved';
+        }, () => {
+            stateText = 'rejected';
+        });
 
-            promise.then = _.wrap(promise.then, (o, onFulfilled, onRejected) => {
-                o.bind(promise)(onFulfilled, onRejected);
-                return this;
-            });
-
-            promise.catch = _.wrap(promise.catch, (o, onRejected) => {
-                o.bind(promise)(onRejected);
-                return this;
-            });
-
-            this.always = promise.always = promise.finally.bind(promise);
-            this.done = this.then = promise.done = promise.then.bind(promise);
-            this.fail = promise.fail = promise.catch.bind(promise);
-            this.stateText = 'pending';
-            this.state = () => this.stateText;
-            this.promise = () => promise;
+        deferred = Object.create(deferred);
+        deferred.resolve = value => {
+            resolve(value);
+            return deferred;
+        };
+        deferred.reject = value => {
+            reject(value);
+            return deferred;
         };
 
         if (fn) {
-            fn(deferred);
+            fn.call(deferred, deferred);
         }
 
         return deferred;
@@ -876,8 +886,11 @@
     $.when = (...args) => {
         return $.Deferred((defer) => {
             Promise.all(args.map(arg => arg instanceof Promise ? arg : arg?.promise?.() || arg))
-                .then(results => defer.resolve(...results))
-                .catch(err => defer.reject(err));
+                .then(results => {
+                    defer.resolve(...results);
+                }, err => {
+                    defer.reject(err);
+                });
         }).promise();
     };
 
