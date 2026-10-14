@@ -142,6 +142,46 @@ define(['ko/template/renderer'], (renderer) => {
            name: 'ko-scope'
        });
 
+    ko.bindingHandlers.repeat = {
+        init: function (el, valueAccessor, allBindings, viewModel, bindingContext) {
+            var template = ko.virtualElements.childNodes(el).map(node => node.cloneNode(true));
+
+            ko.computed(() => {
+                var options = valueAccessor(),
+                    items = ko.unwrap(options.foreach) || [],
+                    itemName = options.item || '$item',
+                    indexName = options.index || '$index',
+                    last = null;
+
+                ko.virtualElements.emptyNode(el);
+                ko.utils.arrayForEach(items, (item, index) => {
+                    var context = bindingContext.extend({
+                        [itemName]: () => item,
+                        [indexName]: () => index
+                    });
+
+                    template.forEach(node => {
+                        node = node.cloneNode(true);
+                        last ? ko.virtualElements.insertAfter(el, node, last) : ko.virtualElements.prepend(el, node);
+                        last = node;
+
+                        if (node.nodeType === 1 || node.nodeType === 8) {
+                            ko.applyBindings(context, node);
+                        }
+                    });
+                });
+            }, null, { disposeWhenNodeIsRemoved: el });
+
+            return {
+                controlsDescendantBindings: true
+            };
+        }
+    };
+    ko.virtualElements.allowedBindings.repeat = true;
+    renderer
+        .addNode('repeat')
+        .addAttribute('repeat', renderer.handlers.wrapAttribute);
+
     ko.bindingHandlers.bindHtml = {
         init: function () {
             return {
