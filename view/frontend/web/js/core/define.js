@@ -68,7 +68,7 @@
     }
 
     function run() {
-        if (this.ran || this.deps.some(dep => !dep.loaded)) {
+        if (this.ran || this.deps.some(dep => !dep.loaded || dep.mixinsPromise?.state() === 'pending')) {
             this.result = this.result || $.breezemap[this.name];
             return this.result;
         }
