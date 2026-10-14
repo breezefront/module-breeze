@@ -42,6 +42,28 @@ define(['ko/template/renderer'], (renderer) => {
     ko.bindingHandlers.optgroup = ko.bindingHandlers.options;
     ko.bindingHandlers.fadeVisible = ko.bindingHandlers.visible;
 
+    // datepicker: { storage: value, options: options } (Magento_Ui/js/lib/knockout/bindings/datepicker)
+    ko.bindingHandlers.datepicker = {
+        init: function (el, valueAccessor) {
+            var config = valueAccessor(),
+                storage = config.storage || config,
+                options = config.options || {};
+
+            // `options` of ui element without own `options` default is breeze's settings object
+            options = options.__scope ? options.options || {} : options;
+
+            require(['mage/calendar'], () => $(el).calendar(options));
+            $(el).on('change', () => storage(el.value));
+        },
+
+        update: function (el, valueAccessor) {
+            var config = valueAccessor();
+
+            el.value = ko.unwrap(config.storage || config) || '';
+            $(el).trigger('input'); // sync breeze calendar input
+        }
+    };
+
     ko.bindingHandlers.blockLoader = {
         /**
          * @param {String} element
