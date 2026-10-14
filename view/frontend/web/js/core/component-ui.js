@@ -397,8 +397,12 @@
         },
 
         _resolveChildren: function () {
-            return Promise.all(Object.values(this.options.children || {})
-                .filter(config => config.component && !config.componentDisabled && !config.config?.componentDisabled)
+            var isEnabled = config => !config.componentDisabled && !config.config?.componentDisabled,
+                flatten = children => Object.values(children || {})
+                    .filter(isEnabled)
+                    .flatMap(config => [config.component ? config : [], flatten(config.children)].flat());
+
+            return Promise.all(flatten(this.options.children)
                 .map(config => {
                     return new Promise(resolve => require([config.component], resolve));
                 }));
