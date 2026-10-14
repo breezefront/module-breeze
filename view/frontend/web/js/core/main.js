@@ -138,9 +138,13 @@
 
                 if (node.parent) {
                     $.breezemap.uiRegistry.get(node.parent, parent => {
-                        parent.insertChild(
-                            parent.mount(node, getMathingScopedElements(node.name))
-                        );
+                        require([node.component], () => {
+                            var cmp = parent.mount(node, getMathingScopedElements(node.name));
+
+                            if (cmp) {
+                                parent.insertChild(cmp);
+                            }
+                        });
                     });
                 } else {
                     node.__scope = node.name;
