@@ -417,27 +417,74 @@
         },
 
         _initChildren: function () {
-            var children = this.options.children || {};
+            var children = this.options.children || {},
+                keys = Object.keys(children).sort((a, b) => {
+                    return (children[a].sortOrder || 1000000) - (children[b].sortOrder || 1000000);
+                });
 
-            Object.keys(children).sort((a, b) => {
-                return (children[a].sortOrder || 1000000) - (children[b].sortOrder || 1000000);
-            }).forEach(key => {
-                var cmp, config = children[key];
+            keys.forEach(key => {
+                var deps, config = children[key];
 
-                if (!config.component || this.hasChild(key)) {
+                if (!config.component) {
+                    return this._initComponentlessChildren(config, key);
+                }
+
+                if (this.hasChild(key)) {
                     return;
                 }
 
                 config.index = key;
-                cmp = this.mount(config);
 
-                if (!cmp) {
+                // Same as Magento's uiLayout: do not create component until its deps are registered.
+                // Skip deps on own descendants, they can't exist before the component itself.
+                deps = [].concat(config.deps || [], config.config?.deps || []).filter(v => {
+                    return v && !v.startsWith([this.__scope, key].filter(s => s).join('.'));
+                });
+
+                if (deps.length) {
+                    Promise.all(deps.map(v => $.breezemap.uiRegistry.promise(v)))
+                        .then(() => this._initChild(config, keys));
+                } else {
+                    this._initChild(config, keys);
+                }
+            });
+        },
+
+        // Same as Magento's uiLayout: node without component still creates its children, named by full path.
+        // E.g. step-config.shipping-rates-validation.flatrate-rates-validation (registers shipping rates rules).
+        // They are not added to elems, like in Magento.
+        _initComponentlessChildren: function (node, path) {
+            _.each(node.children || {}, (config, key) => {
+                var name = [this.__scope, path, key].filter(s => s).join('.');
+
+                if (!config.component) {
+                    return this._initComponentlessChildren(config, `${path}.${key}`);
+                }
+
+                if (config.componentDisabled || config.config?.componentDisabled || $.breezemap.uiRegistry.get(name)) {
                     return;
                 }
 
-                this._elems.push(cmp);
-                this._updateCollection().initElement(cmp);
+                // component is already loaded by _resolveChildren
+                this.mount($.extend({}, config, {
+                    index: key,
+                    name: name,
+                    __scope: name
+                }));
             });
+        },
+
+        _initChild: function (config, keys) {
+            var cmp, pos;
+
+            if (this.hasChild(config.index) || !(cmp = this.mount(config))) {
+                return;
+            }
+
+            // keep sortOrder for children mounted later because of deps
+            pos = this._elems.findIndex(el => keys.indexOf(el.index) > keys.indexOf(config.index));
+            this._elems.splice(pos < 0 ? this._elems.length : pos, 0, cmp);
+            this._updateCollection().initElement(cmp);
         },
 
         _updateCollection: function () {
