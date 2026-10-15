@@ -30,11 +30,23 @@
             prefix: data.prefix,
             suffix: data.suffix,
             vatId: data.vat_id,
-            customAttributes: data.custom_attributes,
+            saveInAddressBook: data.save_in_address_book,
+            customAttributes: _.isArray(data.custom_attributes) || !data.custom_attributes
+                ? data.custom_attributes
+                : _.map(data.custom_attributes, (value, code) => ({ attribute_code: code, value })),
             extensionAttributes: data.extension_attributes,
             country_id: countryId,
             region_id: regionId,
             region_code: data.region?.region_code || data.regionCode || data.region_code,
+            isDefaultShipping: function () {
+                return data.default_shipping;
+            },
+            isDefaultBilling: function () {
+                return data.default_billing;
+            },
+            isEditable: function () {
+                return true;
+            },
             canUseForBilling: function () {
                 return true;
             },

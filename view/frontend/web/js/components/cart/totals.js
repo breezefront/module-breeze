@@ -17,7 +17,22 @@ define([
     AbstractTotal = Component.extend({
         component: 'Magento_Checkout/js/view/summary/abstract-total',
         getFormattedPrice: (price) => priceUtils.formatPriceLocale(price, quote.getPriceFormat()),
-        totals: quote.getTotals()
+        totals: quote.getTotals(),
+
+        getTotals: function () {
+            return this.totals();
+        },
+
+        isFullMode: function () {
+            var stepNavigator = $.breezemap.__get('Magento_Checkout/js/model/step-navigator');
+
+            if (!this.getTotals()) {
+                return false;
+            }
+
+            // cart page has no steps
+            return stepNavigator ? stepNavigator.isProcessed('shipping') : true;
+        }
     });
 
     AbstractTotal.extend({

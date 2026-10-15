@@ -18,10 +18,15 @@
                     return null;
                 }
 
-                return shippingAddressObj[window.checkoutConfig.storeCode];
+                return shippingAddressObj[window.checkoutConfig?.storeCode];
+            },
+            setShippingAddressByStore = function (shippingAddressObj, data) {
+                return { ...shippingAddressObj, [window.checkoutConfig?.storeCode]: data };
             };
 
         $.breezemap['Magento_Checkout/js/checkout-data'] = {
+            setSelectedShippingAddress: (address) => updateCheckoutData({ selectedShippingAddress: address }),
+            getSelectedShippingAddress: () => storage.get(cacheKey)?.selectedShippingAddress,
             setShippingAddressFromData: (address) => {
                 var data = {};
 
@@ -29,17 +34,37 @@
                     data[snakeCase(key)] = value;
                 });
 
-                updateCheckoutData({ shippingAddressFromData: data });
+                updateCheckoutData({
+                    shippingAddressFromData: setShippingAddressByStore(
+                        storage.get(cacheKey)?.shippingAddressFromData,
+                        data
+                    )
+                });
             },
-            setSelectedShippingRate: (rate) => updateCheckoutData({ selectedShippingRate: rate }),
-            setSelectedPaymentMethod: (data) => updateCheckoutData({ selectedPaymentMethod: data }),
-            getShippingAddressFromData: () => storage.get(cacheKey)?.shippingAddressFromData,
-            getSelectedShippingRate: () => storage.get(cacheKey)?.selectedShippingRate,
-            getSelectedShippingAddress: () => storage.get(cacheKey)?.selectedShippingAddress,
+            getShippingAddressFromData: () => getShippingAddressByStore(storage.get(cacheKey)?.shippingAddressFromData),
+            setNewCustomerShippingAddress: (address) => updateCheckoutData({
+                newCustomerShippingAddress: setShippingAddressByStore(
+                    storage.get(cacheKey)?.newCustomerShippingAddress,
+                    address
+                )
+            }),
             getNewCustomerShippingAddress: () => getShippingAddressByStore(storage.get(cacheKey)?.newCustomerShippingAddress),
+            setSelectedShippingRate: (rate) => updateCheckoutData({ selectedShippingRate: rate }),
+            getSelectedShippingRate: () => storage.get(cacheKey)?.selectedShippingRate,
+            setSelectedPaymentMethod: (data) => updateCheckoutData({ selectedPaymentMethod: data }),
             getSelectedPaymentMethod: () => storage.get(cacheKey)?.selectedPaymentMethod,
+            setSelectedBillingAddress: (address) => updateCheckoutData({ selectedBillingAddress: address }),
+            getSelectedBillingAddress: () => storage.get(cacheKey)?.selectedBillingAddress,
+            setBillingAddressFromData: (address) => updateCheckoutData({ billingAddressFromData: address }),
+            getBillingAddressFromData: () => storage.get(cacheKey)?.billingAddressFromData,
+            setNewCustomerBillingAddress: (address) => updateCheckoutData({ newCustomerBillingAddress: address }),
+            getNewCustomerBillingAddress: () => storage.get(cacheKey)?.newCustomerBillingAddress,
+            setValidatedEmailValue: (email) => updateCheckoutData({ validatedEmailValue: email }),
             getValidatedEmailValue: () => storage.get(cacheKey)?.validatedEmailValue || '',
+            setInputFieldEmailValue: (email) => updateCheckoutData({ inputFieldEmailValue: email }),
             getInputFieldEmailValue: () => storage.get(cacheKey)?.inputFieldEmailValue || '',
+            setCheckedEmailValue: (email) => updateCheckoutData({ checkedEmailValue: email }),
+            getCheckedEmailValue: () => storage.get(cacheKey)?.checkedEmailValue || '',
         };
     })();
 

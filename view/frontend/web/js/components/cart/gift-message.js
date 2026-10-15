@@ -20,11 +20,13 @@ define([
             this._super();
             this.index = this.__scope;
             this.itemId = this.itemId || 'orderLevel';
+            this.model = this; // compatibility with mixins that use this.model.getObservable
 
             this.observe({
                 formBlockVisibility: false,
                 resultBlockVisibility: false,
                 alreadyAdded: _.isObject(message),
+                additionalOptionsApplied: false,
                 recipient: message?.recipient || '',
                 sender: message?.sender || '',
                 message: message?.message || ''
@@ -38,6 +40,8 @@ define([
                 this.resultBlockVisibility(true);
             }
         },
+
+        afterSubmit: _.noop,
 
         getObservable: function (key) {
             return this[key];
@@ -122,6 +126,8 @@ define([
                         this.sender('');
                         this.message('');
                     }
+
+                    this.afterSubmit();
 
                     // window.location.href = urlBuilder.build('checkout/cart/updatePost') +
                     //     '?form_key=' + window.checkoutConfig.formKey +
