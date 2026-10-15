@@ -3,6 +3,7 @@
 
     var modules = {},
         pathToAlias = {},
+        definedByPath = {},
         htmls = {},
         aliases = [],
         ignoredMemo = {},
@@ -153,6 +154,15 @@
         return this.result;
     }
 
+    function waitForDefine(mod) {
+        var owner = definedByPath[mod.path];
+
+        if (owner && owner !== mod && !mod.ran && !mod.deps.includes(owner)) {
+            mod.deps.push(owner);
+            owner.parents.includes(mod) || owner.parents.push(mod);
+        }
+    }
+
     function getModule(name, deps = [], parents = [], cb) {
         if (typeof parents === 'function') {
             cb = parents;
@@ -211,6 +221,7 @@
                 } else {
                     pathToAlias[modules[name].path] = name;
                 }
+                waitForDefine(modules[name]);
             }
         }
 
@@ -347,6 +358,14 @@
         }
 
         mod = getModule(name || `__module-${$.guid++}`, deps, cb);
+
+        // Script is shared by several aliases ("export"), but define() is bound to data-name only.
+        // Make other aliases wait for it, so they don't resolve before its async deps are loaded.
+        if (name && name === scriptName && mod.path) {
+            definedByPath[mod.path] = mod;
+            Object.values(modules).filter(m => m.path === mod.path).forEach(waitForDefine);
+        }
+
         deps.forEach(depname => depsWithImports.push(...collectDeps(depname)));
         depsWithImports.filter(dep => dep.global()).map(dep => dep.run());
 
