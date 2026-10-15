@@ -131,6 +131,7 @@ class JsBuild
                 // $build[$name][] = "// dependency of {$name} - {$depPath}";
                 $content = $this->getContents($depPath);
                 if ($content) {
+                    $build[$name][] = ";define.item('{$depItem['name']}');";
                     $build[$name][] = $content;
                     if (!empty($depItem['anonymous'])) {
                         $build[$name][] = ";define([], () => $.breezemap.__register('{$depItem['name']}'));";
@@ -146,6 +147,7 @@ class JsBuild
             // $build[$name][] = "// {$item['path']}";
             $content = $this->getContents($item['path']);
             if ($content) {
+                $build[$name][] = ";define.item('{$name}');";
                 $build[$name][] = $content;
                 if (!empty($item['anonymous'])) {
                     $build[$name][] = ";define([], () => $.breezemap.__register('{$name}'));";
@@ -237,7 +239,7 @@ class JsBuild
 
     private function getVersion()
     {
-        return implode(',', array_keys($this->items));
+        return 'v2|' . implode(',', array_keys($this->items));
     }
 
     private function versionMatches()

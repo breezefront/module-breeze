@@ -18,6 +18,7 @@ $scriptString = <<<script
     window.required = [];
     window.define = window.require = window.requirejs = (...args) => required.push(args);
     window.require.config = (cfg) => require([], () => { require.config(cfg) });
+    window.require.item = () => {};
 
 script;
 

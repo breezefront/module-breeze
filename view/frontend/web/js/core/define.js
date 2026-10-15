@@ -4,6 +4,8 @@
     var modules = {},
         pathToAlias = {},
         definedByPath = {},
+        definedByItem = {},
+        currentItem,
         htmls = {},
         aliases = [],
         ignoredMemo = {},
@@ -163,6 +165,29 @@
         }
     }
 
+    function itemOf(name) {
+        return $.breeze.jsconfig[name]?.ref || name;
+    }
+
+    // Bundle item (file) may export several aliases. Make them wait for defines of that item.
+    function waitForItem(mod) {
+        (definedByItem[itemOf(mod.name)] || []).forEach(owner => {
+            if (owner === mod || mod.cb || mod.deps.includes(owner) || owner.deps.includes(mod)) {
+                return;
+            }
+
+            // Alias was resolved before its define appeared (sibling alias, bundle autoload)
+            if (mod.ran && !owner.loaded && mod.result === undefined && !$.breezemap.__has(mod.name)) {
+                mod.ran = mod.loaded = false;
+            }
+
+            if (!mod.ran) {
+                mod.deps.push(owner);
+                owner.parents.includes(mod) || owner.parents.push(mod);
+            }
+        });
+    }
+
     function getModule(name, deps = [], parents = [], cb) {
         if (typeof parents === 'function') {
             cb = parents;
@@ -223,6 +248,8 @@
                 }
                 waitForDefine(modules[name]);
             }
+
+            waitForItem(modules[name]);
         }
 
         modules[name].cb = modules[name].cb || cb;
@@ -366,6 +393,12 @@
             Object.values(modules).filter(m => m.path === mod.path).forEach(waitForDefine);
         }
 
+        // Bundled file is marked with define.item(). Make its aliases wait for this define.
+        if (isBundle && cb && currentItem) {
+            (definedByItem[currentItem] ||= []).push(mod);
+            Object.values(modules).filter(m => itemOf(m.name) === currentItem).forEach(waitForItem);
+        }
+
         deps.forEach(depname => depsWithImports.push(...collectDeps(depname)));
         depsWithImports.filter(dep => dep.global()).map(dep => dep.run());
 
@@ -464,6 +497,9 @@
     });
 
     window.define = window.requirejs = window.require;
+    window.require.item = (name) => {
+        currentItem = name;
+    };
     window.require.defined = (name) => getModule(name).loaded;
     window.require.toUrl = (path) => {
         if (rjsConfig.paths[path]) {
