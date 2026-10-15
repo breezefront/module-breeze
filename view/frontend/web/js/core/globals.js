@@ -16,7 +16,7 @@
     $.breeze.isDebugMode = () => {
         return location.search.includes('breeze=1')
             || location.hash.includes('breeze')
-            || $.storage.get('breeze_debug');
+            || localStorage.getItem('breeze_debug');
     };
     $.breeze.debug = message => {
         if ($.breeze.isDebugMode()) {
