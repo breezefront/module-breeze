@@ -227,6 +227,7 @@
             imports = aliasAsPath ? [] : $.breeze.jsconfig[alias]?.import || [],
             index = imports.indexOf(alias),
             [bundle, lastIndex] = path.split('*'),
+            shimDeps,
             dep;
 
         if (lastIndex) {
@@ -243,6 +244,14 @@
 
         if (dep.collectedDeps) {
             return dep.collectedDeps;
+        }
+
+        // requirejs-config shim: { name: { deps: [] } } or { name: [] }
+        shimDeps = rjsConfig.shim[alias];
+        shimDeps = Array.isArray(shimDeps) ? shimDeps : shimDeps?.deps || [];
+        if (shimDeps.length) {
+            getModule(dep.name, shimDeps); // dep.run() waits for shim deps
+            shimDeps.forEach(name => result.push(...collectDeps(name)));
         }
 
         imports.forEach((item, i) => {
