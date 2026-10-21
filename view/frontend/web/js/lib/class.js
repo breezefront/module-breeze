@@ -51,6 +51,7 @@ define(['mage/utils/wrapper'], function (wrapper) {
 
         Class.prototype = prototype;
         Class.prototype.constructor = Class;
+        Class.defaults = prototype.defaults;
         // eslint-disable-next-line no-caller
         Class.extend = arguments.callee;
 

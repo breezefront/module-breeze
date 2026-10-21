@@ -29,6 +29,16 @@
         }
     }
 
+    function assignOptions(values) {
+        this._super(values);
+
+        _.each(values, (value, key) => {
+            if (value !== undefined && !_.has(this, key)) {
+                this[key] = $.copyProp(value);
+            }
+        });
+    }
+
     $.UiElement = $.Widget.extend({
         defaults: {
             name: '',
@@ -112,15 +122,7 @@
             this._super();
         },
 
-        _defaults: function (values) {
-            this._super(values);
-
-            _.each(values, (value, key) => {
-                if (value !== undefined && !_.has(this, key)) {
-                    this[key] = $.copyProp(value);
-                }
-            });
-        },
+        _defaults: assignOptions,
 
         _processDefaults: function (obj) {
             return this._renderLiterals(obj, _.extend({}, this.defaults, this.options));
@@ -597,5 +599,7 @@
 
     $.breezemap.uiCollection = $.uiComponent;
     $.breezemap.uiComponent = $.uiComponent;
-    $.breezemap.uiClass = $.Base;
+    $.breezemap.uiClass = $.Base.extend({
+        _defaults: assignOptions
+    });
 })();
