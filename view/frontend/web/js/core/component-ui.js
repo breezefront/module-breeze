@@ -77,6 +77,7 @@
         },
 
         initialize: function () {
+            this._defaults(this.options);
             return this.initObservable().initModules().initLinks();
         },
 
