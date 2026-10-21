@@ -475,7 +475,7 @@
             ];
 
             $.each(keys, function (i, widgetName) {
-                result = $.registry.get(widgetName, collection[0]);
+                result = $.registry.get($.breezemap.__aliases[widgetName] || widgetName, collection[0]);
 
                 if (result) {
                     return false;
