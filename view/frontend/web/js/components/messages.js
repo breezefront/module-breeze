@@ -79,9 +79,10 @@ define([
             template: 'uiMessages'
         },
 
-        initialize: function () {
+        initialize: function (config, messageContainer) {
             this._super();
-            this.messageContainer = this.options.messageContainer || $.breezemap['Magento_Ui/js/model/messageList'];
+            this.messageContainer = messageContainer || this.options.messageContainer ||
+                $.breezemap['Magento_Ui/js/model/messageList'];
         },
 
         initObservable: function () {
