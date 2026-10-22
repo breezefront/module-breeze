@@ -29,11 +29,13 @@
         }
     }
 
-    function assignOptions(values) {
+    function assignOptions(values, overwrite) {
         this._super(values);
 
         _.each(values, (value, key) => {
-            if (value !== undefined && !_.has(this, key)) {
+            if (value !== undefined && (!_.has(this, key) ||
+                overwrite && key !== 'options' && !_.has(this.defaults, key))
+            ) {
                 this[key] = $.copyProp(value);
             }
         });
@@ -76,9 +78,14 @@
             }
         },
 
-        initialize: function () {
-            this._defaults(this.options);
+        initialize: function (config) {
+            this.initConfig(config);
             return this.initObservable().initModules().initLinks();
+        },
+
+        initConfig: function (config) {
+            this._defaults(config, true);
+            return this;
         },
 
         initObservable: function () {
@@ -125,8 +132,8 @@
 
         _defaults: assignOptions,
 
-        _processDefaults: function (obj) {
-            return this._renderLiterals(obj, _.extend({}, this.defaults, this.options));
+        _processDefaults: function (obj, values = this.options) {
+            return this._renderLiterals(obj, _.extend({}, this.defaults, values));
         },
 
         observe: function (useAccessors, items) {
@@ -516,6 +523,20 @@
 
         getChild: function (index) {
             return _.findWhere(this._elems, { index });
+        },
+
+        delegate: function (target, ...args) {
+            if (_.isFunction(this[target])) {
+                return this[target](...args);
+            }
+
+            return _.flatten(this.elems().map(elem => {
+                if (_.isFunction(elem.delegate)) {
+                    return elem.delegate(target, ...args);
+                }
+
+                return _.isFunction(elem[target]) ? elem[target](...args) : undefined;
+            }));
         },
 
         insertChild: function (elems) {

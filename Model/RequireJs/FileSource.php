@@ -26,9 +26,6 @@ class FileSource extends \Magento\Framework\RequireJs\Config\File\Collector\Aggr
     public function getFiles(ThemeInterface $theme, $filePath)
     {
         $files = parent::getFiles($theme, $filePath);
-        $ignoredVendors = [
-            'Magento',
-        ];
 
         foreach ($files as $key => $file) {
             $code = $file->getModule() ?: $file->getTheme()->getCode();
@@ -41,13 +38,6 @@ class FileSource extends \Magento\Framework\RequireJs\Config\File\Collector\Aggr
             ) {
                 unset($files[$key]);
                 continue;
-            }
-
-            foreach ($ignoredVendors as $vendor) {
-                if (strpos($code, $vendor . '_') === 0) {
-                    unset($files[$key]);
-                    continue 2;
-                }
             }
         }
 

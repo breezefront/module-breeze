@@ -234,11 +234,19 @@
          * @return {Base}
          */
         _initialize: function (options) {
+            var settings;
+
             this._options(options);
-            this._defaults(this.options);
-            this.initConfig(options);
+            settings = this.options;
+            this._defaults(settings);
+
+            // ui elements call initConfig from initialize, like Magento's uiClass
+            if (!this._applyBindings) {
+                this.initConfig(options);
+            }
+
             this._trigger('beforeCreate');
-            this.initialize(this.options, this.options.__scope ? undefined : this.__element?.[0]);
+            this.initialize(settings, settings.__scope ? undefined : this.__element?.[0]);
             this.create();
             this._create();
 
@@ -261,13 +269,13 @@
         },
 
         _defaults: function (values) {
-            var defaults = this._processDefaults(this.defaults || {});
+            var defaults = this._processDefaults(this.defaults || {}, values);
 
             _.each(defaults, (value, key) => {
                 if ($.isPlainObject(values[key]) && $.isPlainObject(value)) {
                     this[key] = $.extendProps(values[key], value);
                 } else {
-                    value = _.has(values, key) ? values[key] : value;
+                    value = values[key] !== undefined ? values[key] : value;
                     if (value !== undefined) {
                         this[key] = $.copyProp(value);
                     }

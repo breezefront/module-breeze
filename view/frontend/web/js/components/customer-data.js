@@ -288,7 +288,8 @@
         }
     };
 
-    window.customerData = $.customerData = $.breezemap['Magento_Customer/js/customer-data'] = customerData;
+    $.customerData = $.breezemap['Magento_Customer/js/customer-data'] = customerData;
+    window.customerData = window.customerData || customerData;
 
     $(document).on('customerData:reload', function (event, data) {
         customerData.reload(data.sections, data.forceNewSectionTimestamp);

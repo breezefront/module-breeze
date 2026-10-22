@@ -30,6 +30,16 @@
             return this.setAdditionalData(data).submit();
         },
 
+        focusInvalid: function () {
+            var invalidField = _.find(this.delegate('checkInvalid'));
+
+            if (!_.isUndefined(invalidField) && _.isFunction(invalidField.focused)) {
+                invalidField.focused(true);
+            }
+
+            return this;
+        },
+
         setAdditionalData: function (data) {
             $.each(data || {}, (key, value) => {
                 this.source.set(`data.${key}`, value);

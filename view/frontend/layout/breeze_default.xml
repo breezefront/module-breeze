@@ -20,6 +20,27 @@
         <block class="Swissup\Breeze\Block\Js" name="breeze.js">
             <arguments>
                 <argument name="cache_lifetime" xsi:type="number">864000</argument> <!-- 10 days -->
+                <argument name="better_compatibility" xsi:type="array">
+                    <item name="Magento_Directory" xsi:type="boolean">false</item>
+                    <item name="Magento_Theme" xsi:type="boolean">false</item>
+                    <item name="Magento_Catalog" xsi:type="boolean">false</item>
+                    <item name="Magento_Security" xsi:type="boolean">false</item>
+                    <item name="Magento_Search" xsi:type="boolean">false</item>
+                    <item name="Magento_Downloadable" xsi:type="boolean">false</item>
+                    <item name="Magento_CatalogSearch" xsi:type="boolean">false</item>
+                    <item name="Magento_Msrp" xsi:type="boolean">false</item>
+                    <item name="Magento_Bundle" xsi:type="boolean">false</item>
+                    <item name="Magento_ConfigurableProduct" xsi:type="boolean">false</item>
+                    <item name="Magento_GroupedProduct" xsi:type="boolean">false</item>
+                    <item name="Magento_Cookie" xsi:type="boolean">false</item>
+                    <item name="Magento_Newsletter" xsi:type="boolean">false</item>
+                    <item name="Magento_PageCache" xsi:type="boolean">false</item>
+                    <item name="Magento_InventoryConfigurableProductFrontendUi" xsi:type="boolean">false</item>
+                    <item name="Magento_InventorySwatchesFrontendUi" xsi:type="boolean">false</item>
+                    <item name="Magento_ProductVideo" xsi:type="boolean">false</item>
+                    <item name="Magento_Translation" xsi:type="boolean">false</item>
+                    <item name="Magento_Wishlist" xsi:type="boolean">false</item>
+                </argument>
                 <argument name="ignore" xsi:type="array"> <!-- Do not load/report these components -->
                     <item name="addToWishlist" xsi:type="string">addToWishlist</item>
                     <item name="jquery/jquery-storageapi" xsi:type="string">jquery/jquery-storageapi</item>
