@@ -34,7 +34,7 @@
      * @throws {Exception}
      */
     function onError(jqXHR, params, error) {
-        params.fail.push(params.error);
+        params.fail.unshift(params.error);
         params.fail.filter(fn => fn).forEach(fn => fn(jqXHR, 'error', error));
         params.always.filter(fn => fn).forEach(fn => fn(jqXHR, 'error', error));
         params.complete?.(jqXHR, 'error');
@@ -57,7 +57,7 @@
      * @param {Object} params
      */
     function onSuccess(jqXHR, params) {
-        params.done.push(params.success);
+        params.done.unshift(params.success);
         params.done.filter(fn => fn).forEach(fn => fn(jqXHR.body, 'success', jqXHR));
         params.always.filter(fn => fn).forEach(fn => fn(jqXHR.body, 'success', jqXHR));
         params.complete?.(jqXHR, 'success');
