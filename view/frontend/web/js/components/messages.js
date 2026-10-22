@@ -20,9 +20,27 @@ define([
             return this;
         },
 
-        add: function (message, type) {
+        add: function (messageObj, type) {
+            var message = messageObj.message || messageObj;
+
+            if (messageObj.parameters) {
+                message = message.replace(/([%])\w+/g, varName => {
+                    varName = varName.substr(1);
+
+                    if (!isNaN(varName)) {
+                        varName--;
+                    }
+
+                    if (_.has(messageObj.parameters, varName)) {
+                        return messageObj.parameters[varName];
+                    }
+
+                    return messageObj.parameters.shift();
+                });
+            }
+
             this.clear();
-            type.push(message.message || message);
+            type.push(message);
             return true;
         },
 
