@@ -205,28 +205,29 @@
             return $.request.get({
                 url: options.sectionLoadUrl,
                 data: params,
-                accept: 'json',
-                success: async function (data) {
-                    var sectionDataIds = $.cookies.getJson('section_data_ids') || {};
+                accept: 'json'
+            }).then(async function (data) {
+                var sectionDataIds = $.cookies.getJson('section_data_ids') || {};
 
-                    await $.breezemap.uiRegistry.promise('messages');
+                await $.breezemap.uiRegistry.promise('messages');
 
-                    $(document).trigger('customer-data-reload', {
-                        sections: sections,
-                        response: data
-                    });
+                $(document).trigger('customer-data-reload', {
+                    sections: sections,
+                    response: data
+                });
 
-                    $.each(data, function (sectionName, sectionData) {
-                        sectionDataIds[sectionName] = sectionData.data_id;
-                        storage.set(sectionName, sectionData);
-                        storageInvalidation.remove(sectionName);
-                        $.customerData.set(sectionName, sectionData);
-                    });
+                $.each(data, function (sectionName, sectionData) {
+                    sectionDataIds[sectionName] = sectionData.data_id;
+                    storage.set(sectionName, sectionData);
+                    storageInvalidation.remove(sectionName);
+                    $.customerData.set(sectionName, sectionData);
+                });
 
-                    $.cookies.setJson('section_data_ids', sectionDataIds, {
-                        domain: false
-                    });
-                }
+                $.cookies.setJson('section_data_ids', sectionDataIds, {
+                    domain: false
+                });
+
+                return data;
             });
         },
 
