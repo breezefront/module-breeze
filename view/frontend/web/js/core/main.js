@@ -453,6 +453,7 @@
     }, 100));
 
     $.breeze.referrer = document.referrer;
+    $.breezemap['Magento_Ui/js/core/app'] = (data) => data && $.breeze.mountCmp('Magento_Ui/js/core/app', null, data);
     $.breezemap['mage/apply/main'] = {
         apply: walk,
         applyFor: (el, settings, component) => {
