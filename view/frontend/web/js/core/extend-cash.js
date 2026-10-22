@@ -752,7 +752,7 @@
                     key = prefix ? `${prefix}[${value.name}]` : value.name;
                     value = value.value;
                 } else {
-                    key = `${prefix}[]`;
+                    key = value && typeof value === 'object' ? `${prefix}[${key}]` : `${prefix}[]`;
                 }
             } else if (params.constructor === Object) {
                 key = prefix ? `${prefix}[${key}]` : key;
