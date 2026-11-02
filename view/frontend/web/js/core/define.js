@@ -418,10 +418,10 @@
                 } else if (dep.path) {
                     dep.url = window.require.toUrl(dep.path);
 
-                    if (!dep.name.startsWith('text!') && !rjsConfig.paths[dep.path]) {
-                        if (dep.path.endsWith('.min')) {
+                    if (!dep.name.startsWith('text!') && !dep.url.endsWith('.js') && !dep.url.includes('?')) {
+                        if (dep.url.endsWith('.min') || !dep.url.startsWith(window.VIEW_URL)) {
                             dep.url += '.js';
-                        } else if (!dep.path.endsWith('.js')) {
+                        } else {
                             dep.url += jsSuffix;
                         }
                     }
@@ -467,6 +467,7 @@
                         }
                     } else if (dep.url) {
                         await $.loadScript({
+                            ...rjsConfig.attributes?.[dep.name],
                             'src': dep.url,
                             'data-name': dep.name
                         }).catch(e => console.error(e));
