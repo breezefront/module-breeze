@@ -294,10 +294,15 @@
                 return jqXHR.body;
             })
             .catch(function (error) {
+                var xhr = error.xhr || error;
+
                 onError(error.xhr, params, error);
 
+                // jqXHR is a thenable in jQuery: then(null, xhr => xhr) must stay rejected
+                xhr.then = (...args) => result.then(...args);
+
                 // reject like jQuery, so then(fn) is skipped and then(null, fn) receives jqXHR
-                throw error.xhr || error;
+                throw xhr;
             })
             .finally(() => {
                 $.active--;
