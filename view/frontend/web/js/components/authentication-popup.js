@@ -1,35 +1,44 @@
 define([
     'uiComponent',
+    'mage/storage',
     'Magento_Ui/js/modal/modal',
     'Magento_Customer/js/customer-data'
-], function (Component, modal, customerData) {
+], function (Component, storage, modal, customerData) {
     'use strict';
 
     var authenticationPopup, loginAction, loginCallbacks = [];
 
-    loginAction = async function (loginData, redirectUrl, isGlobal, messageContainer) {
-        messageContainer = messageContainer || await require.async('Magento_Ui/js/model/messageList');
+    loginAction = function (loginData, redirectUrl, isGlobal, messageContainer) {
+        var customerLoginUrl = window.authenticationPopup?.customerLoginUrl || 'customer/ajax/login',
+            addError = async (message) => {
+                messageContainer = messageContainer || await require.async('Magento_Ui/js/model/messageList');
+                messageContainer.addErrorMessage(message);
+            };
 
-        return $.post({
-            url: window.authenticationPopup.customerLoginUrl,
-            data: JSON.stringify(loginData),
-            global: isGlobal === undefined ? true : isGlobal,
-            done: (response) => {
-                if (response.errors) {
-                    return messageContainer.addErrorMessage(response.message);
-                }
+        if (loginData.customerLoginUrl) {
+            customerLoginUrl = loginData.customerLoginUrl;
+            delete loginData.customerLoginUrl;
+        }
 
-                customerData.invalidate(['customer']);
+        return storage.post(
+            customerLoginUrl,
+            JSON.stringify(loginData),
+            isGlobal === undefined ? true : isGlobal
+        ).done((response) => {
+            if (response.errors) {
+                return addError(response.message);
+            }
 
-                if (response.redirectUrl || redirectUrl) {
-                    window.location.href = response.redirectUrl || redirectUrl;
-                } else {
-                    location.reload();
-                }
-            },
-            fail: () => messageContainer.addErrorMessage($t('Could not authenticate. Please try again later')),
-            always: () => loginCallbacks.forEach((callback) => callback(loginData))
-        });
+            customerData.invalidate(['customer']);
+
+            if (response.redirectUrl || redirectUrl) {
+                window.location.href = response.redirectUrl || redirectUrl;
+            } else {
+                location.reload();
+            }
+        })
+        .fail(() => addError($t('Could not authenticate. Please try again later')))
+        .always(() => loginCallbacks.forEach((callback) => callback(loginData)));
     };
     loginAction.registerLoginCallback = (callback) => loginCallbacks.push(callback);
     $.breezemap['Magento_Customer/js/action/login'] = loginAction;
