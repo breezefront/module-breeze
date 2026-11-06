@@ -6,7 +6,7 @@ use Magento\Framework\Notification\MessageInterface;
 
 class Performance implements MessageInterface
 {
-    private const XML_PATH_SHOW_MESSAGE = 'swissup_core/performance/show_message';
+    private const XML_PATH_SHOW_MESSAGE = 'swissup_core/notification/performance_warning';
 
     public function __construct(
         private \Magento\Framework\FlagManager $flagManager,
