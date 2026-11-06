@@ -6,6 +6,8 @@ use Magento\Framework\Notification\MessageInterface;
 
 class Performance implements MessageInterface
 {
+    private const XML_PATH_SHOW_MESSAGE = 'swissup_core/performance/show_message';
+
     public function __construct(
         private \Magento\Framework\FlagManager $flagManager,
         private \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
@@ -25,7 +27,15 @@ class Performance implements MessageInterface
      */
     public function isDisplayed()
     {
-        return $this->isDismissed() && !$this->checkConfigs();
+        return $this->isEnabled() && $this->isDismissed() && !$this->checkConfigs();
+    }
+
+    /**
+     * @return bool
+     */
+    private function isEnabled()
+    {
+        return $this->scopeConfig->isSetFlag(self::XML_PATH_SHOW_MESSAGE);
     }
 
     /**
