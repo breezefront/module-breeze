@@ -2,17 +2,17 @@
 
 namespace Swissup\Breeze\Model\RequireJs;
 
-use ReflectionClass;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\State as AppState;
 use Magento\Framework\Filesystem;
-use Magento\Framework\RequireJs\Config;
+use Magento\Framework\RequireJs\ConfigFactory;
 use Magento\Framework\View\Asset\Repository as AssetRepository;
 
 class FileManager
 {
     public function __construct(
-        private Config $config,
+        private ConfigFactory $configFactory,
+        private FileSource $fileSource,
         private Filesystem $filesystem,
         private AppState $appState,
         private AssetRepository $assetRepo
@@ -22,36 +22,30 @@ class FileManager
     public function createRequireJsConfigExcluding(array $excludedModules = [])
     {
         if ($excludedModules) {
-            (new ReflectionClass($this->config))
-                ->getProperty('fileSource')
-                ->getValue($this->config)
-                ->setExcludedModules($excludedModules);
+            $this->fileSource->setExcludedModules($excludedModules);
         }
 
-        $relPath = $this->config->getConfigFileRelativePath();
-        $relPath = str_replace('requirejs-config', 'requirejs-config-breeze', $relPath);
-        $this->ensureSourceFile($relPath);
-        return $this->assetRepo->createArbitrary($relPath, '');
+        return $this->createAsset();
     }
 
     public function createRequireJsConfigIncluding(array $includedModules = [])
     {
-        (new ReflectionClass($this->config))
-            ->getProperty('fileSource')
-            ->getValue($this->config)
-            ->setIncludedModules($includedModules);
+        $this->fileSource->setIncludedModules($includedModules);
 
-        $relPath = $this->config->getConfigFileRelativePath();
-        $relPath = str_replace('requirejs-config', 'requirejs-config-breeze', $relPath);
-        $this->ensureSourceFile($relPath);
-        return $this->assetRepo->createArbitrary($relPath, '');
+        return $this->createAsset();
     }
 
-    private function ensureSourceFile($relPath)
+    private function createAsset()
     {
+        $config = $this->configFactory->create(['fileSource' => $this->fileSource]);
+        $relPath = $config->getConfigFileRelativePath();
+        $relPath = str_replace('requirejs-config', 'requirejs-config-breeze', $relPath);
+
         $dir = $this->filesystem->getDirectoryWrite(DirectoryList::STATIC_VIEW);
         if ($this->appState->getMode() == AppState::MODE_DEVELOPER || !$dir->isExist($relPath)) {
-            $dir->writeFile($relPath, $this->config->getConfig());
+            $dir->writeFile($relPath, $config->getConfig());
         }
+
+        return $this->assetRepo->createArbitrary($relPath, '');
     }
 }
