@@ -43,6 +43,7 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         protected \Magento\Store\Model\StoreManagerInterface $storeManager,
         protected \Swissup\Breeze\Model\JsBuildFactory $jsBuildFactory,
         protected \Swissup\Breeze\Helper\Data $breezeHelper,
+        protected \Magento\Framework\Module\Manager $moduleManager,
         array $data = []
     ) {
         $bundles = $data['bundles'] ?? [];
@@ -474,6 +475,10 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
 
                 $item['enabled'] ??= true;
 
+                $item['enabled'] = $item['enabled']
+                    && $this->isEnabledModulePath($itemName)
+                    && $this->isEnabledModulePath($item['path']);
+
                 if (!$item['enabled']) {
                     unset($this->allBundles[$bundleName]['items'][$itemName]);
                 } elseif (empty($item['load']) && $bundleName === 'dynamic' || strpos($item['path'], '//') !== false) {
@@ -482,6 +487,22 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
                 }
             }
         }
+
+        // drop imports/deps that point to disabled modules
+        foreach ($this->allBundles as $bundleName => $bundle) {
+            foreach ($bundle['items'] as $itemName => $item) {
+                foreach (['import', 'deps'] as $key) {
+                    if (empty($item[$key])) {
+                        continue;
+                    }
+                    $this->allBundles[$bundleName]['items'][$itemName][$key] = array_filter(
+                        $item[$key],
+                        fn ($name) => $this->findItemInfo($name) || $this->isEnabledModulePath($name)
+                    );
+                }
+            }
+        }
+        $this->itemInfoMap = []; // memo holds item snapshots with unfiltered imports
 
         foreach ($this->allBundles as $bundleName => $bundle) {
             foreach ($bundle['items'] as $itemName => $item) {
@@ -545,6 +566,12 @@ class Js extends \Magento\Framework\View\Element\AbstractBlock
         }
 
         return $this->allBundles;
+    }
+
+    private function isEnabledModulePath(string $path): bool
+    {
+        return !preg_match('/^([A-Z][A-Za-z0-9]*_[A-Za-z0-9]+)(::|\/)/', $path, $m)
+            || $this->moduleManager->isEnabled($m[1]);
     }
 
     /**
