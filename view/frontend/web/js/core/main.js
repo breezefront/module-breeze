@@ -148,6 +148,7 @@
                     });
                 } else {
                     node.__scope = node.name;
+                    node.parentName = node.parentName || node.name.split('.').slice(0, -1).join('.');
                     mountView(node.name, node);
                 }
             });

@@ -3,8 +3,6 @@
 
     $.mixin('Magento_Paypal/js/view/paylater', {
         initialize: function (parent) {
-            this.amountComponentConfig.name = `${this.name}.amountProvider`;
-            this.amountComponentConfig.parentName = this.name;
             $.registry.delete(this.amountComponentConfig.name, document.body);
             return parent();
         },
